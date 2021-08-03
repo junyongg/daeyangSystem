@@ -1,0 +1,9 @@
+.keystore localhost ssl 로컬 키 비밀번호 qwer4321
+
+ssl 적용 
+
+http://namjackson.tistory.com/25 블로그 참조
+
+<Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="150" SSLEnabled="true" keystoreFile="D:/ssl/localhost/.keystore" keystorePass="qwer4321">
+</Connector>

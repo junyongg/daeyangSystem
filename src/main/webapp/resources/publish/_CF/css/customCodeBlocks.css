@@ -1,0 +1,75 @@
+
+pre > code {   
+    display: table !important;
+    border:1px solid #ccc;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+/* for block of numbers */
+.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+ 
+    text-align: center;
+    color: #ccc;
+    /* border-right: 1px solid #CCC; */
+    vertical-align: top;
+    padding-right: 5px;
+ 
+    /* your custom style here */
+}
+ 
+/* for block of code */
+.hljs-ln-code {
+    padding-left: 10px;
+    text-indent: 0.75rem; /* indent added */
+}
+
+/* for block of numbers */
+.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+ 
+    text-align: center;
+    color: #ccc;
+    /* border-right: 1px solid #CCC; */
+    vertical-align: top;
+    padding-right: 5px;
+ 
+    /* your custom style here */
+}
+ 
+/* for block of code */
+.hljs-ln-code {
+    padding-left: 10px;
+    text-indent: 0.75rem; /* indent added */
+}
+
+.entry-content > table {
+    width:100%;
+    margin-bottom: 22px;
+    border: 1px solid #e6e6e6;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.9375em;
+    line-height: 1.5714;
+    color: #666;
+}
+.entry-content > table thead th {
+    padding:7px 0 11px;
+    border-left: 1px solid #e6e6e6;
+}
+.entry-content > table tbody td {
+    padding:7px 0 11px;
+    border-left: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+}

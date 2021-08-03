@@ -1,0 +1,527 @@
+.txtWlong_1{width: 40%;}
+
+.board_layerPop {display:none; position:fixed; left:0; top:0; z-index:3000; width:100%; height:100%; overflow-y:auto;}
+.board_layerPop .board_layerPop_inner {position:absolute; top:50%; left:50%; margin:-213px 0 0 -145px; width:290px; border:1px solid #f68121; background-color:#fff; padding:30px;}
+.board_layerPop .board_layerPop_inner .board_layerPop_close {position: absolute;right: 20px;top: 20px;font-size: 20px;background:#fff;border:0;cursor:pointer;}
+
+/* 페이지 박스 */
+.pageNumberBox {margin-top:30px; text-align:center;}
+.pageNumberBox .pageNumberUl {display:inline-block;}
+.pageNumberBox .pageNumberUl:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.pageNumberBox .pageNumberUl li {float:left; margin:0 7px;}
+.pageNumberBox .pageNumberUl li a {display:inline-block; vertical-align:middle; padding-top:8.5px; font-size:15px; color:#555;}
+.pageNumberBox .pageNumberUl li.active a {font-weight:bold; color:#105baa;}
+.pageNumberBox .pageNumberUl li.btnPage { margin:0 3px;}
+.pageNumberBox .pageNumberUl li.btnPage a {width:34px; height:34px; border:1px solid #dddddd; border-radius:50%; color:#105baa; font-size:13px; text-align:center;}
+
+
+
+
+/* 게시판 윗 부분 */
+.boardTopWrap {width:100%; margin-bottom:30px;}
+.boardTopWrap:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+
+.boardTopWrap .boardCountBox {float:left; padding-top:13px;}
+.boardTopWrap .boardCountBox .board_count {font-size:15px; color:#444; font-weight:500;}
+.boardTopWrap .boardCountBox .board_count span {color:#0d4e96; text-decoration:underline;}
+
+.boardTopWrap .searchBox {float:right;}
+.boardTopWrap .searchBox .labelSearch {padding:0 10px; font-size:15px; color:#0d4e96; font-weight:500; vertical-align:middle;}
+.boardTopWrap .searchBox .searchSelect {min-width:120px; height:40px;}
+.boardTopWrap .searchBox .txtSearch {min-width:320px; height:40px;}
+.boardTopWrap .searchBox button {margin-left:-4px;}
+
+
+
+
+/* 게시판 테이블 */
+.tblBoardBox {width:100%;}
+.tbl_Board_01 {width:100%; text-align:center; vertical-align:middle; font-size:14px; line-height:1.5;  border-top:2px solid #105baa; position:relative;}
+.tbl_Board_01 th {padding:17px 5px; background-color:#f5f6f7; border-bottom:1px solid #dddddd !important; font-size:15px;}
+.tbl_Board_01 th span {font-size:15px; font-weight:500; color:#444; line-height:1; display:block; width:100%; border-right:1px solid #999;}
+.tbl_Board_01 th:last-of-type span {border-right:none;}
+
+.tbl_Board_01 .notice {display:inline-block; padding:1px 15px; border-radius:20px; border:1px solid #105baa; font-size:14px; color:#105baa; font-weight:500;}
+.tbl_Board_01 .reply {display:inline-block; padding:1px 15px; border-radius:20px; border:1px solid #105baa; font-size:14px; color:#105baa; font-weight:500; margin-right:5px;}
+
+.tbl_Board_01 td {font-size:15px; border-bottom:1px solid #ddd; color:#666;}
+.tbl_Board_01 td.lineBlack {border-bottom:1px solid #333 !important;}
+.tbl_Board_01 td.boardSubject { text-align:left !important; padding:12px 10px 12px 20px;}
+.tbl_Board_01 td.boardSubject a { font-size:15px; color:#555;}
+
+.tbl_Board_01 tr:last-of-type td {border-bottom:1px solid #ddd;}
+
+.tbl_Board_01 tr.boardNotice_Row {background-color:#fafafa;}
+.tbl_Board_01 tr.boardNotice_Row td.number {color:#333 !important; font-weight:500;}
+.tbl_Board_01 a:hover {text-decoration: underline;}
+
+
+.searchBox_01 {text-align:center; background-color:#f3f4f4; padding:20px 10px; border:1px solid #aaaaaa;}
+
+/* 접수상태 */
+.contractstate{background: #fff; border-radius: 10px; font-size: 12px;}
+
+@media all and (max-width:910px){	
+
+	/* 페이지 박스 */
+	.pageNumberBox {margin-top:35px;}
+	.pageNumberBox .pageNumberUl li {float:left; margin:0 5px;}
+	.pageNumberBox .pageNumberUl li a {padding-top:5px; font-size:14px;}
+	.pageNumberBox .pageNumberUl li.btnPage { margin:0 2px;}
+	.pageNumberBox .pageNumberUl li.btnPage a {width:25px; height:25px; font-size:11px;}
+
+
+	/* 게시판 윗 부분 */
+	.boardTopWrap {margin-bottom:15px;}
+	
+	.boardTopWrap .boardCountBox {float:none; width:100%; padding-top:0px; margin-bottom:10px;}
+	.boardTopWrap .boardCountBox .board_count {font-size:14px;}
+	
+	.boardTopWrap .searchBox {float:none; width:100%;}
+	.boardTopWrap .searchBox .labelSearch {display:none;}
+	.boardTopWrap .searchBox .searchSelect {min-width:auto; width:100%; margin:3px 0; height:auto;}
+	.boardTopWrap .searchBox .txtSearch {min-width:auto; width:100%; margin:3px 0; height:auto;}
+	.boardTopWrap .searchBox button {min-width:auto; width:100%; margin:3px 0;}
+
+	/*게시판 부분*/
+	.tbl_Board_01 th {font-size:14px;}		
+	.tbl_Board_01 th {border-right:none;}
+	
+	.tbl_Board_01 th {font-size:14px;}
+	
+	.tbl_Board_01 .notice {font-size:13px;}
+	
+	.tbl_Board_01 td {font-size:13px;}
+	.tbl_Board_01 td.boardSubject {padding:12px 10px 12px 10px;}
+	.tbl_Board_01 td.boardSubject a { font-size:13px;}
+		
+	.searchBox_01 {padding:10px 10px;}
+	
+	.tbl_Board_notice .number{width: 15%;}
+	.tbl_Board_notice .boardSubject{width: 50%;}
+	.tbl_Board_notice .state{width: 20%;}
+	
+}
+
+
+
+/* 포토형식 게시판 목록 */
+
+
+@media all and (max-width:910px){	
+
+}
+
+
+
+
+/* 게시판 상세페이지 */
+
+.detailViewWrap {width:100%;}
+.detailViewWrap:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+
+.detailViewWrap .detail_titleBox {width:100%; background-color:#f5f6f7; border-top:2px solid #105baa; padding:26px 0 25px; text-align:center; border-bottom:1px solid #dddddd;}
+.detailViewWrap .detail_titleBox h2 {font-size:26px; color:#444; vertical-align:middle;}
+.detailViewWrap .detail_titleBox h2 .notice {display:inline-block; vertical-align:middle; padding:3px 15px; border-radius:20px; border:1px solid #105baa; color:#105baa; font-size:16px; margin-right:5px;}
+
+.detailViewWrap .detail_infoBox {border-bottom:1px solid #ddd; padding:18px 40px 16px;}
+.detailViewWrap .detail_infoBox:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailViewWrap .detail_infoBox .board_infoUl {width:100%;}
+.detailViewWrap .detail_infoBox .board_infoUl:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailViewWrap .detail_infoBox .board_infoUl li {float:left; width:33.33%; text-align:center; font-size:15px; color:#555;}
+.detailViewWrap .detail_infoBox .board_infoUl li .subJ {display:inline-block; padding-right:10px; margin-right:8px; border-right:1px solid #ddd; font-weight:500; color:#444444; line-height:1;}
+.detailViewWrap .detail_infoBox .board_infoUl li:first-child {text-align:left;}
+.detailViewWrap .detail_infoBox .board_infoUl li:last-child {text-align:right;}
+
+.detailViewWrap .datail_ContentBox {border-bottom:1px solid #ddd; padding:30px 15px;}
+.detailViewWrap .datail_ContentBox:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailViewWrap .datail_ContentBox p {font-size:15px; line-height:1.5;}
+
+.detailViewWrap .detail_attachBox {border-bottom:1px solid #ddd; padding:25px 35px; margin-bottom:24px;}
+.detailViewWrap .detail_attachBox:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailAttachUl {width:100%;}
+.detailAttachUl li {margin:5px 0px; font-size:14px;}
+.detailAttachUl li:hover a {font-weight:500;}
+.detailAttachUl li .icon {display:inline-block; vertical-align:middle;}
+.detailAttachUl li .subject {display:inline-block; vertical-align:middle; word-break:break-all;}
+
+.detailViewWrap .detial_middleBtnBox {margin:24px 0; text-align:center;}
+.detailViewWrap .detial_middleBtnBox .btnBoardList {display:inline-block;padding: 13px 25px 12px;border:1px solid #105baa;border-radius: 30px;font-size:15px;color:#333;font-weight: 500;}
+.detailViewWrap .detial_middleBtnBox .btnBoardList:hover {background-color:#105baa; color:#fff; font-weight: 500;}
+
+.detailViewWrap .detail_nextPostBox {margin-top:55px;}
+.detailViewWrap .detail_nextPostBox .tbl_next_Prev {width:100%; text-align:left;}
+.detailViewWrap .detail_nextPostBox .tbl_next_Prev th {padding:13px 15px 13px 20px; text-align:left; background-color:#f5f6f7; font-weight:500; font-weight:14px;}
+.detailViewWrap .detail_nextPostBox .tbl_next_Prev td {padding:13px 15px 13px 20px; font-size:14px;}
+.detailViewWrap .detail_nextPostBox .tbl_next_Prev tr {border-top:1px solid #ddd;}
+.detailViewWrap .detail_nextPostBox .tbl_next_Prev tr:last-of-type {border-bottom:1px solid #999;}
+
+
+
+/* old */
+.boardDetailViewBox {width:100%;}
+.detailViewTilteBox {width:100%; background-color:#f3f4f4;}
+.detailViewTilteBox p {font-size:14px; color:#6d6e71;}
+.detailViewTilteBox span {font-size:14px; color:#444; font-weight:500; padding:0 10px 0 0;width: 90px;display: inline-block;text-align: right;vertical-align: top;} 
+.detailViewTilteBox font.contents {width: calc( 100% - 100px);display: inline-block;word-break:keep-all;} 
+.detailViewTilteBox .topBox {padding:10px 10px; border-top:1px solid #252525; border-bottom:1px solid #aaaaaa;position:relative}
+.detailViewTilteBox .topBox .left_1 { width: calc( 100%  - 140px)}
+.detailViewTilteBox .topBox .right_1 {position:absolute;right:10px;top:10px;}
+.detailViewTilteBox .middleBox {padding:10px 10px;border-bottom:1px solid #aaaaaa;}
+.detailViewTilteBox .middleBox a {color: #e22931;text-align:bold;}
+.detailViewTilteBox .middleBox a:hover {text-decoration: underline;}
+.detailViewTilteBox .bottomBox {padding:10px 10px; border-bottom:1px solid #252525;}
+.detailViewTilteBox .bottomBox .left_1 {float:left; margin:0 10px 0 0;}
+.detailViewTilteBox .bottomBox .right_1 {float:right; margin:0 10px 0 0;}
+.detailViewTilteBox .bottomBox .inputBox {display:inline-block; background-color:#fff; border:1px solid #aaa; width:calc(100% - 100px); vertical-align:middle; padding:3px; font-size:12px;}
+.detailViewTilteBox .bottomBox .inputBox a {display:block;padding:3px 0}
+
+.detailViewContentsBox {padding:25px 10px;}
+.detailViewContentsBox p {font-size:14px; color:#666;}
+
+.detailViewNextBox {width:100%;}
+.detailViewNext {width:100%;}
+.detailViewNext li:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailViewNext li {border-top:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; font-size:14px; padding:10px 10px;}
+.detailViewNext li:nth-of-type(2) {border-top:none; border-bottom:1px solid #252525;}
+.detailViewNext li span {display:inline-block; padding:0 8px 0 0; margin:0 8px 0 0; border-right:1px solid #777; font-weight:500;}
+
+.detailViewBtnBox {padding:30px 10px; text-align:center; position:relative;}
+.detailViewBtnBox .rightBtnBox {position:absolute; right:10px; top:30px;}
+
+.detailViewReplyWriteBox {width:100%; padding:15px; background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #aaa;}
+.detailViewReplyWriteBox span {font-size:14px; margin:0 0 10px 0;}
+.detailViewReplyWriteBox .writeBox textarea {width:100%; height:80px;}
+
+.detailViewReplyBox {width:100%;}
+.detailReply {width:100%; border-top:1px solid #aaa;  padding:20px 0;}
+.detailReply:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+/*.detailReply li.img {float:left; width:10%; text-align:center; padding:0 10px;}
+.detailReply li.img .imgBox {display:inline-block; width:48px; height:48px; border:1px solid #aaa; overflow:hidden; background:#fff;}
+.detailReply li.content {float:left; width:80%; text-align:left; padding:0 10px;} */
+.detailReply li.content {float:left; width:100%; text-align:left; padding:0 10px;}
+.detailReply li.content p,
+.detailReply li.content pre {font-size:14px;}
+.detailReply li.content p.title {font-weight:500; margin:0 0 3px 0;}
+.detailReply li.content p.date {margin:5px 0 0 0; color:#888;}
+.detailReply li.content .btnBox {margin:5px 0 0 0; color:#888;}
+.detailReply li.content .btnBox .leftBox {float:left;}
+.detailReply li.content .btnBox .rightBox {float:right;}
+.detailReplyReply {width:100%; background-color:#f3f4f4; padding: 10px 0 10px 5%;border-top:1px solid #ddd;}
+.detailReplyReply:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+/* .detailReplyReply li.img {float:left; width:10%; text-align:center; padding:0 10px;}
+.detailReplyReply li.img .imgBox {display:inline-block; width:48px; height:48px; border:1px solid #aaa; overflow:hidden; background:#fff;}
+.detailReplyReply li.content {float:left; width:80%; text-align:left; padding:0 10px;} */
+.detailReplyReply li.content {float:left; width:100%; text-align:left; padding:0 10px;}
+.detailReplyReply li.content p,
+.detailReplyReply li.content pre {font-size:14px;}
+.detailReplyReply li.content pre .mainName {font-size:13px;color:gray;font-weight:bold;margin-right:10px;}
+.detailReplyReply li.content p.title {font-weight:500; margin:0 0 3px 0;}
+.detailReplyReply li.content p.date {margin:5px 0 0 0; color:#888;}
+.detailReplyReply li.content .btnBox {margin:5px 0 0 0; color:#888;}
+.detailReplyReply li.content .btnBox .leftBox {float:left;}
+.detailReplyReply li.content .btnBox .rightBox {float:right;}
+.detailViewReplyModifyBox {width:100%; padding:20px 10px; background-color:#f3f4f4; border-top:1px solid #aaa;}
+.detailViewReplyModifyBox span {font-size:14px; margin:0 0 10px 0;}
+.detailViewReplyModifyBox .writeBox textarea {margin-left:10%;width:90%; height:80px;}
+.detailViewReplyModifyBox > .btn {padding:5px 0}
+
+.tempComment {display:none;}
+.__se_tbl_ext{width: 100%;}
+.__se_tbl_ext table {width: auto; margin: 0 auto;}
+.__se_tbl_ext tr td{vertical-align: middle;}
+
+
+@media all and (max-width:910px){	
+	
+	.__se_tbl_ext{width: auto;}
+	.__se_tbl_ext table {width: auto; margin: 0 auto;}
+	.__se_tbl_ext tr td{vertical-align: middle;}
+	
+	.detailViewWrap .detail_titleBox {padding:15px 10px 15px; text-align:left;}
+	.detailViewWrap .detail_titleBox h2 {font-size:17px; color:#444;}
+	.detailViewWrap .detail_titleBox h2 .notice {padding:1px 10px; border-radius:20px; font-size:14px;}
+	
+	.detailViewWrap .detail_infoBox {padding:12px 10px 11px;}
+	.detailViewWrap .detail_infoBox .board_infoUl li {font-size:13px; width:50%; text-align:left; margin:2px 0;}
+	.detailViewWrap .detail_infoBox .board_infoUl li .subJ {padding-right:6px; margin-right:4px;}
+	.detailViewWrap .detail_infoBox .board_infoUl li:first-child {text-align:left;}
+	.detailViewWrap .detail_infoBox .board_infoUl li:last-child {text-align:left;}
+	
+	.detailViewWrap .datail_ContentBox {border-bottom:1px solid #ddd; padding:15px 10px;}
+	.detailViewWrap .datail_ContentBox p {font-size:14px; line-height:1.4;}
+	
+	.detailViewWrap .detail_attachBox {padding:15px 10px; margin-bottom:15px;}
+	.detailViewWrap .detail_attachBox .detailAttachUl li {margin:5px 0px; font-size:13px;}
+	.detailViewWrap .detail_attachBox .detailAttachUl li:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+	.detailViewWrap .detail_attachBox .detailAttachUl li .icon {display:block; float:left; margin-right:5px;}
+	.detailViewWrap .detail_attachBox .detailAttachUl li .subject {display:inline;}
+	
+	.detailViewWrap .detial_middleBtnBox {margin:15px 0;}
+	.detailViewWrap .detial_middleBtnBox .btnBoardList {padding: 7px 20px 7px; border-radius: 20px; font-size:13px;}
+	
+	.detailViewWrap .detail_nextPostBox {display:none;}
+	
+	
+	
+	
+	/* old */
+	.detailViewTilteBox .topBox .left_1 {float:none; margin:0 0 5px 0; width:100%;}
+	.detailViewTilteBox .topBox .right_1 {position:relative;right:0;top:0; margin:0 0px 0 0; width:100%;}
+	
+	.detailViewTilteBox .bottomBox .left_1 {float:none; margin:0 0px 5px 0; width:100%;}
+	.detailViewTilteBox .bottomBox .right_1 {float:none; margin:0 0px 0 0; width:100%;}
+	
+	.detailViewTilteBox p {font-size:12px;}
+	.detailViewTilteBox span {font-size:12px; width: 60px;}
+	.detailViewTilteBox font.contents {width: calc( 100% - 70px);}
+	
+	.detailViewBtnBox {padding:20px 10px;}
+	.detailViewBtnBox .rightBtnBox {position:relative; top:0; right:0; margin:0 0 10px 0;}	
+	
+	.detailReply {padding:10px 0;}
+	.detailReply li.img {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReply li.content {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReply li.content .btnBox .leftBox {float:none; width:100%;}
+	.detailReply li.content .btnBox .rightBox {clear:both; float:none; width:100%; margin:5px 0 0 0;}
+	
+	.detailReplyReply {width:100%; background-color:#f3f4f4; padding:10px 0 10px 10%;}
+	.detailReplyReply li.img {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReplyReply li.content {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReplyReply li.content .btnBox .leftBox {float:none; width:100%;}
+	.detailReplyReply li.content .btnBox .rightBox {clear:both; float:none; width:100%; margin:5px 0 0 0;}
+	
+}
+
+
+
+/* 계약정보공개 - 목록 */
+
+.contractTabWrap {margin-bottom:30px;}
+.contractTabUl {}
+.contractTabUl li {min-width:250px; padding:15px 5px;}
+.contractTabUl li a {font-size:16px;}
+
+
+@media all and (max-width:910px){
+	
+	.contractTabWrap {margin-bottom:25px;}
+	.contractTabUl {}
+	.contractTabUl li {min-width:auto; padding:5px 5px;}
+	.contractTabUl li a {font-size:13px;}
+
+		
+}
+
+
+/* 계약정보공개 - 상세보기 - 계약현황내역공개 */
+
+.detailViewWrap .detail_titleBox2 {width:100%; border-top:2px solid #105baa; padding:26px 0 25px; text-align:center; }
+.detailViewWrap .detail_titleBox2 h2 {font-size:26px; color:#444; vertical-align:middle;}
+.detailViewWrap .detail_titleBox2 h2 .notice {display:inline-block; vertical-align:middle; padding:3px 15px; border-radius:20px; border:1px solid #105baa; color:#105baa; font-size:16px; margin-right:5px;}
+
+.detail_infoBox_contract {width:100%;}
+.tbl_contractInfo {width:100%; vertical-align:middle;}
+.tbl_contractInfo tr:first-of-type {border-top:1px solid #ddd;}
+.tbl_contractInfo tr {border-bottom:1px solid #ddd;}
+.tbl_contractInfo th {padding:15px 3px; background-color:#f5f6f7; border-left:1px solid #ddd; font-size:15px; font-weight:500;}
+.tbl_contractInfo tr th:first-of-type {border-left:none;}
+.tbl_contractInfo td {padding:15px 3px; border-left:1px solid #ddd; padding-left:30px; font-size:15px;}
+
+.tbl_contractInfo .writeVertical {}
+
+@media all and (max-width:910px){
+	
+	.detailViewWrap .detail_titleBox2 {padding:15px 10px 15px;}
+	.detailViewWrap .detail_titleBox2 h2 {font-size:17px; color:#444;}
+	.detailViewWrap .detail_titleBox2 h2 .notice {padding:1px 10px; border-radius:20px; font-size:14px;}
+	
+	.tbl_contractInfo tr {border-bottom:none;}
+	.tbl_contractInfo th {padding:10px 3px; border-left:none; font-size:13px; display:block; width:100%; border-bottom:1px solid #aaa;}
+	.tbl_contractInfo td {padding:10px 3px; border-left:none; padding-left:10px; font-size:13px; display:block; width:100%; border-bottom:1px solid #ddd; text-align:center; color:#888;}
+	
+	.tbl_contractInfo .writeVertical { background-color:#e5e5e5;}
+	.tbl_contractInfo .writeVertical br {display:none;}
+	
+	
+}
+
+
+
+/* 게시판 작성하기 */
+.boardWriteBox {width:100%;}
+.boardWriteBox:after { visibility: hidden;display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+
+.tbl_board_Write {width:100%;}
+.tbl_board_Write tr:first-of-type { border-top:2px solid #105baa;}
+.tbl_board_Write tr { border-bottom:1px solid #ddd;}
+
+.tbl_board_Write th {background-color:#f5f6f7; border:1px solid #ddd; padding:16px 10px 16px 30px; text-align:left;}
+.tbl_board_Write th label {font-size:14px; color:#333; font-weight:500;}
+.tbl_board_Write th label span {color:#105baa; padding-right:5px;}
+.tbl_board_Write th label span.redSpan {color:#d0315b;}
+
+.tbl_board_Write td {border:1px solid #ddd; padding:16px 15px 16px 25px;}
+.tbl_board_Write .checkCodeBox {}
+.tbl_board_Write .checkCodeBox label {font-size:14px; color:#555; margin-right:15px;}
+.tbl_board_Write .attachBox {}
+.tbl_board_Write .attachBox .box_1 {margin-bottom:10px;}
+.tbl_board_Write .attachBox .detailContent {font-size:12px; color:#888;}
+.tbl_board_Write .cal {font-size:16px; color:#888; margin-left:10px;}
+
+.tbl_board_Write td label {display:inline-block; margin:0 5px; font-size:14px;}
+
+.tbl_board_Write .passParaph {display:inline-block; font-size:14px; color:#888; padding-left:5px;}
+.tbl_board_Write .autoPrevent {}
+.tbl_board_Write .autoPrevent .autoPreventPara {font-size:14px; color:#888; margin-bottom:7px;}
+.tbl_board_Write .autoPrevent .autoDivBox {}
+.tbl_board_Write .autoPrevent .autoDivBox label {font-size:14px; vertical-align:middle; margin-right:3px;}
+.tbl_board_Write .autoPrevent .autoDivBox .txtDefault {vertical-align:middle;}
+.tbl_board_Write .autoPrevent .autoDivBox .btnImgNew {height:32px; padding:2px 7px; background-color:#afb0b0; color:#fff; font-size:13px; vertical-align:middle;}
+
+
+
+/* 게시판 버튼 상자 */
+.boardBtnBox {margin:15px 0 -30px; text-align:right;}
+
+
+/*게시판 작성 버튼*/
+.btnUploadBox {width:100%; text-align:center; margin:20px 0 25px; padding:10px 10px;}
+.btnUploadBox button {margin:0 3px;}
+
+.btnBoard_01 {min-width:113px; padding:8px 5px; border:1px solid #105baa; text-align:center; color:#444; font-weight:500; font-size:15px; border-radius:30px; margin:0 5px;}
+.btnBoard_01:hover {border:1px solid #105baa; background-color:#105baa; color:#fff;}
+
+
+
+
+@media all and (max-width:910px){	
+
+	/* 게시판 작성하기 */
+	.tbl_board_Write {width:100%;}
+	.tbl_board_Write tr:first-of-type { border-top:2px solid #105baa;}
+	.tbl_board_Write tr { border-bottom:1px solid #ddd;}
+	
+	.tbl_board_Write th {display:block; width:100%; background-color:#f5f6f7; border:none; border-bottom:1px solid #ddd; padding:10px; text-align:center;}
+	.tbl_board_Write th label {font-size:13px;}
+	.tbl_board_Write th label span {padding-right:3px;}
+	
+	.tbl_board_Write .textWDay_1 {width:90% !important;}
+	
+	.tbl_board_Write td {display:block; width:100%; border:none; padding:10px;}
+	.tbl_board_Write .checkCodeBox {text-align:center;}
+	.tbl_board_Write .checkCodeBox label {font-size:14px; margin-right:8px;}
+	.tbl_board_Write .attachBox {}
+	.tbl_board_Write .attachBox .box_1 {margin-bottom:7px;}
+	.tbl_board_Write .attachBox .detailContent { word-break:break-all;}
+	.tbl_board_Write .cal {font-size:14px; margin-left:10px;}
+	
+	.tbl_board_Write .passParaph {font-size:12px; margin-top:3px; text-align:center; width:100%;}
+	.tbl_board_Write .autoPrevent .autoPreventPara {font-size:13px;}
+	.tbl_board_Write .autoPrevent .autoDivBox label {font-size:13px;}
+	.tbl_board_Write .autoPrevent .autoDivBox .txtDefault {vertical-align:middle; width:120px; height:32px;}
+	.tbl_board_Write .autoPrevent .autoDivBox .btnImgNew {height:32px; padding:2px 5px; font-size:12px;}
+	
+	/*게시판 작성 버튼*/
+	.btnUploadBox {margin:15px 0 25px; }
+	
+	.btnBoard_01 {min-width:90px; padding:7px 5px; font-size:13px;}
+}
+
+
+
+
+
+.boardUploadWrap {width:100%; padding:20px 40px 20px 20px;  background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #252525; margin:0 0 20px 0;}
+.boardUploadWrap .row {width:100%; margin:10px 0;}
+.boardUploadWrap .row:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.boardUploadWrap .titleBox {float:left; width:100px; text-align:right; font-size:14px;  padding:0 10px 0 0; line-height:32px;}
+.boardUploadWrap .formBox {float:left; width:calc(100% - 100px); text-align:left; font-size:14px;}
+.boardUploadWrap .formBox iframe,
+.boardUploadWrap #uploadFileDiv {background:#fff}
+.boardUploadWrap #uploadFileDiv .row {border:1px solid #cfcfcf;margin:0;}
+
+.lineheightBox {line-height:34px;}
+.lineheightBox label {margin:0 13px 0 0;}
+.lineheightBox input[type=radio] {vertical-align:middle;}
+.lineheightBox label:last-of-type {margin:0 0px 0 0;}
+
+
+@media all and (max-width:910px){	
+
+	.boardUploadWrap {width:100%; padding:10px 10px; background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #252525; margin:0 0 20px 0;}
+	.boardUploadWrap .titleBox {float:none; width:100%; text-align:left; padding:0 0px 0 0; line-height:1.5;}
+	.boardUploadWrap .formBox {float:none; width:100%;}
+	
+}
+
+
+.tbl_Board_notice td.number {width:8%;}
+.tbl_Board_notice td.boardSubject {width:45%;}
+.tbl_Board_notice td.name {width:12%;}
+.tbl_Board_notice td.date {width:12%;}
+.tbl_Board_notice td.count {width:8%;}
+
+.tbl_Board_info td.number {width:8%;}
+.tbl_Board_info td.boardSubject {width:30%;}
+.tbl_Board_info td.boardLink {width:20%;}
+
+@media all and (max-width:910px){	
+
+	.tbl_Board_notice tr th:not(.boardSubject):not(.number):not(.state) {display:none;}
+	.tbl_Board_notice tr td:not(.boardSubject):not(.number):not(.state):not(.tbl_board_nodata) {display:none;}
+	
+}
+
+.tbl_Board_notice_admin td.number {width:8%;}
+.tbl_Board_notice_admin td.check {width:5%;}
+.tbl_Board_notice_admin td.boardSubject {width:45%;}
+.tbl_Board_notice_admin td.name {width:12%;}
+.tbl_Board_notice_admin td.date {width:12%;}
+.tbl_Board_notice_admin td.count {width:8%;}
+
+
+@media all and (max-width:910px){	
+
+	.tbl_Board_notice_admin tr th:not(.boardSubject):not(.check) {display:none;}
+	.tbl_Board_notice_admin tr td:not(.boardSubject):not(.check) {display:none;}
+	
+}
+
+
+/* 뉴스레터 목록 */
+.tbl_newsLetter {width:100%; border-top:none;}
+.tbl_newsLetter:before {content:""; position:absolute; top:0px; left:0; width:100%; height:2px; background-color:#105baa;}
+
+
+
+
+.btnPublication {width:150px; padding:5px; background-color:#eee; color:#fff; font-size:14px; border-radius:4px;text-align:center;display:block;margin:0 auto 20px;}
+.thumbnailNote {color:#e22931;font-size:12px;}
+
+
+
+
+/** 갤러리 게시판 */
+
+.subPicListBox {width:100%;}
+.subPicListBox:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.subPicListBox li {float:left; width:32.26%; margin:1% 1.6% 1% 0%; border:1px solid #bbb; padding:15px;} 
+.subPicListBox li:nth-of-type(1),
+.subPicListBox li:nth-of-type(2),
+.subPicListBox li:nth-of-type(3) {margin-top:0;}
+.subPicListBox li:nth-of-type(3n) {margin-right:0%;}
+.subPicListBox li .imgBox {width:100%; height:188px; margin:0 0 10px 0; background-image:url(/resources/img/board/no_img.gif); background-repeat:no-repeat; background-position:center center;} 
+.subPicListBox li h1 {height:47px; margin:0 0 20px 0;
+	/* 두줄 넘어가면 숨김 */	
+	display:-webkit-box;
+	overflow:hidden; /* 숨김처리 */
+	text-overflow:ellipsis;
+	-webkit-line-clamp:2; /*라인수 설정*/
+	word-wrap:break-word;
+	-webkit-box-orient:vertical;
+} 
+.subPicListBox li h1 a {font-size:16px; color:#666666; font-weight:500;}
+
+.subPicListBox li p {font-size:14px; color:#aaa; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mypage"> 
+
+    <!-- 예약/신청 모든 리스트 조회  -->
+    <select id="program_AllList" resultType="Hashmap">
+		SELECT	  LEFT(APP.APP_REGDT, 10) REGDT
+				, APP.*
+	  			, AM.AP_NAME
+	          	, APD.APD_PRICE
+	         	, CAST(SUM(APD.APD_PRICE * APD.APD_CNT) AS signed integer) totalPrice
+	         	, APU.APU_NAME
+	         	, APU_RELATION
+		FROM T_APPLICATION_PARTICIPATE APP
+		
+        LEFT JOIN T_APPLICATION_USER	APU
+        ON	APP.APP_APU_KEYNO = APU.APU_KEYNO
+        
+        LEFT JOIN T_APPLICAITON_MANAGER AM
+        ON APP.APP_AP_KEYNO = AM.AP_KEYNO
+        
+        LEFT JOIN T_APPLY_PARTICIPATE_DISCOUNT APD
+        ON APP.APP_KEYNO = APD.APD_APP_KEYNO
+        
+		WHERE 	APP_DELYN 		= 'N'	
+		<if test="APP_APU_KEYNO != null">
+	        AND		APU.APU_UI_KEYNO	= #{APP_APU_KEYNO}		
+		</if>
+<!--         AND		APP_DIVISION 	= #{APP_DIVISION}	 -->
+        GROUP BY APP_KEYNO
+		ORDER BY APP.APP_REGDT DESC
+    </select>
+    
+    <!-- 관람완료조회  -->
+    <select id="program_BeforeViewList" resultType="HashMap">
+		SELECT	APP_KEYNO
+		FROM T_APPLICATION_PARTICIPATE APP
+		
+        LEFT JOIN T_APPLICATION_USER	APU
+        ON	APP.APP_APU_KEYNO = APU.APU_KEYNO
+        
+		WHERE 	APP_DELYN 		= 'N'	
+		<if test="APP_APU_KEYNO != null">
+        AND		APU.APU_UI_KEYNO	= #{APP_APU_KEYNO}	
+        </if>	
+        AND  APP_STATUS = #{APP_STATUS}	<!-- 신청완료인것만 -->
+       	<![CDATA[
+		AND  DATE_FORMAT(CONCAT(APP_ST_DATE, ' ', APP_ST_TIME), "%Y-%m-%d %T" ) <= DATE_FORMAT(NOW(), "%Y-%m-%d %T")
+       ]]>
+        GROUP BY APP_KEYNO
+		ORDER BY APP.APP_REGDT DESC
+    </select>
+    
+     <!-- 관람완료로 상태 변경 -->
+    <update id="viewOk" parameterType="HashMap">
+    	UPDATE 	T_APPLICATION_PARTICIPATE
+    	SET		APP_STATUS	=	#{APP_STATUS}	<!-- 결제완료로 변경 -->
+    	WHERE	APP_KEYNO	=	#{APP_KEYNO}	
+    </update>
+    
+    
+     <!-- 예약/신청 리스트 조회(프로그램 신청) 갯수  -->
+    <select id="program_apply_Count" resultType="int">
+		SELECT COUNT(*) AS ProgramCnt
+		FROM	(
+			SELECT	  LEFT(APP.APP_REGDT, 10) REGDT
+					, APP.*
+		  			, AM.AP_NAME
+		          	, APD.APD_PRICE
+		         	, CAST(SUM(APD.APD_PRICE) AS signed integer) totalPrice
+		         	, APU.APU_NAME
+		         	, APU_RELATION
+			FROM T_APPLICATION_PARTICIPATE APP
+			
+	        LEFT JOIN T_APPLICATION_USER	APU
+	        ON	APP.APP_APU_KEYNO = APU.APU_KEYNO
+	        
+	        LEFT JOIN T_APPLICAITON_MANAGER AM
+	        ON APP.APP_AP_KEYNO = AM.AP_KEYNO
+	        
+	        LEFT JOIN T_APPLY_PARTICIPATE_DISCOUNT APD
+	        ON APP.APP_KEYNO = APD.APD_APP_KEYNO
+	        
+			WHERE 	APU.APU_UI_KEYNO	= #{APP_APU_KEYNO}
+	        AND		 APP_DELYN 		= 'N'	
+	        AND		 APP_DIVISION 	= #{APP_DIVISION}	
+	        <if test='searchCondition.equals("B")'>
+    			<![CDATA[
+	        	AND APP_ST_DATE >= NOW()
+	        	]]>
+	        	AND APP_STATUS IN
+	        	<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+	        		#{item}
+	        	</foreach>
+			</if>
+			<if test='searchCondition.equals("F")'>
+				<![CDATA[
+				AND APP_ST_DATE < NOW()
+				]]>
+				AND APP_STATUS IN
+				<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test='searchCondition.equals("R")'>
+				AND APP_STATUS IN
+				<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+	        GROUP BY APP_KEYNO
+			ORDER BY APP.APP_REGDT DESC
+		) AS A
+    </select>
+    
+    <!-- 예약/신청 리스트 조회(프로그램 신청)  -->
+    <select id="program_apply" resultType="Hashmap">
+    
+		SELECT	  LEFT(APP.APP_REGDT, 10) REGDT
+				, APP.*
+	  			, AM.AP_NAME
+	          	, APD.APD_PRICE
+	         	, CAST(SUM(APD.APD_PRICE * APD.APD_CNT) AS signed integer) totalPrice
+	         	, APU.APU_NAME
+	         	, APU_RELATION
+	         	, GROUP_CONCAT(APS.APS_SEATNAME) as SEATNAME
+		FROM T_APPLICATION_PARTICIPATE APP
+		
+        LEFT JOIN T_APPLICATION_USER	APU
+        ON	APP.APP_APU_KEYNO = APU.APU_KEYNO
+        
+        LEFT JOIN T_APPLICAITON_MANAGER AM
+        ON APP.APP_AP_KEYNO = AM.AP_KEYNO
+        
+        LEFT JOIN T_APPLY_PARTICIPATE_DISCOUNT APD
+        ON APP.APP_KEYNO = APD.APD_APP_KEYNO
+        
+        LEFT JOIN T_APPLICATION_PARTICIPATE_SEAT APS
+        ON APP.APP_KEYNO = APS.APS_APP_KEYNO
+        
+		WHERE 	APU.APU_UI_KEYNO	= #{APP_APU_KEYNO}
+        AND		 APP_DELYN 		= 'N'	
+        AND		 APP_DIVISION 	= #{APP_DIVISION}	
+        
+        <if test='searchCondition.equals("B")'>
+    			<![CDATA[
+	        	AND  DATE_FORMAT(CONCAT(APP_ST_DATE, ' ', APP_ST_TIME), "%Y-%m-%d %T" ) > DATE_FORMAT(NOW(), "%Y-%m-%d %T")
+	        	]]>
+	        	AND APP_STATUS IN
+	        	<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+	        		#{item}
+	        	</foreach>
+		</if>
+		<if test='searchCondition.equals("F")'>
+<!-- 			AND APP_ST_DATE >= NOW() -->
+			<![CDATA[
+			AND  DATE_FORMAT(CONCAT(APP_ST_DATE, ' ', APP_ST_TIME), "%Y-%m-%d %T" ) <= DATE_FORMAT(NOW(), "%Y-%m-%d %T")
+			]]>
+			AND APP_STATUS IN
+			<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test='searchCondition.equals("R")'>
+			AND APP_STATUS IN
+			<foreach collection="searchConditionArr" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+        GROUP BY APP_KEYNO
+		ORDER BY APP.APP_REGDT DESC
+		
+		<if test="recordCountPerPage != 0">
+			LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+		</if>
+    </select>
+    
+    <!-- 예약/신청 리스트 조회(단체) 갯수  -->
+    <select id="tour_apply_Count" resultType="int">
+    	SELECT	COUNT(*)
+		FROM T_GROUP_PARTICIPATE GP
+		
+		LEFT JOIN T_GROUP_MANAGER GM
+		ON		  GP.GP_GM_KEYNO = GM.GM_KEYNO
+		WHERE GP.GP_UI_KEYNO = #{GP_UI_KEYNO}
+		AND	  GP.GP_DELYN = 'N'
+		ORDER BY GP.GP_REGDT DESC
+    </select>
+    
+    <!-- 수강대상자 리스트  -->
+    <select id="APU_List" resultType="Hashmap">
+    	SELECT *
+        FROM T_APPLICATION_USER	
+		WHERE APU_UI_KEYNO	= #{APU_UI_KEYNO}
+		AND	  APU_DELYN		= 'N'
+    </select>
+    
+    <!-- 예약/신청 리스트 조회(단체)  -->
+    <select id="tour_apply" resultType="Hashmap">
+    	SELECT	  GP.GP_KEYNO
+    			, CASE WHEN GM.GM_DIVISION = 'C' THEN '일반' WHEN GM.GM_DIVISION = 'S' THEN '특별' END AS GM_DIVISION
+    			, GP.GP_GROUPNAME
+    			, GP.GP_DATE
+    			, GP.GP_TIME
+    			, GM.GM_NAME
+		FROM T_GROUP_PARTICIPATE GP
+		
+		LEFT JOIN T_GROUP_MANAGER GM
+		ON		  GP.GP_GM_KEYNO = GM.GM_KEYNO
+		WHERE GP.GP_UI_KEYNO = #{GP_UI_KEYNO}
+		AND	  GP.GP_DELYN = 'N'
+		ORDER BY GP.GP_REGDT DESC
+		
+		<if test="recordCountPerPage != 0">
+			LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+		</if>
+    </select>
+    
+    <!-- 신청 프로그램 신청자 세부내용 조회  -->
+    <select id="program_apply_detail" resultType="Hashmap">
+   	 	SELECT    APP.*
+                , AM.AP_NAME
+                 , AU.*
+                 ,GROUP_CONCAT(APS.APS_SEATNAME) AS SEATNAME
+		FROM T_APPLICATION_PARTICIPATE APP
+        
+        LEFT JOIN T_APPLICATION_USER AU
+        ON	APP.APP_APU_KEYNO = AU.APU_KEYNO
+        
+        LEFT JOIN T_APPLICAITON_MANAGER AM
+		ON		  APP.APP_AP_KEYNO = AM.AP_KEYNO
+        
+        LEFT JOIN T_APPLICATION_PARTICIPATE_SEAT APS
+        ON		APP.APP_KEYNO = APS.APS_APP_KEYNO        
+		WHERE APP.APP_KEYNO = #{key}
+		GROUP BY APP.APP_KEYNO
+    </select>
+    
+    <!-- 신청 프로그램 신청자 할인종류 조회  -->
+    <select id="program_sale_detail" resultType="Hashmap">
+    	SELECT 	  APD.*
+        		, AD.AD_NAME
+                , AD.AD_MONEY
+                , AD.AD_TYPE
+		FROM T_APPLICATION_PARTICIPATE APP
+        
+        LEFT JOIN T_APPLY_PARTICIPATE_DISCOUNT APD
+        ON 		  APP.APP_KEYNO = APD.APD_APP_KEYNO
+                
+        LEFT JOIN T_APPLICATION_DISCOUNT AD
+        ON 	APD.APD_AD_KEYNO = AD.AD_KEYNO
+        
+		WHERE APP.APP_KEYNO = #{key}
+    </select>
+    
+    <!-- 예약/신청 세부내용 조회  -->
+    <select id="tour_apply_detail" resultType="Hashmap">
+    	SELECT   GP.*
+    			, CASE WHEN GM.GM_DIVISION = 'C' THEN '일반' WHEN GM.GM_DIVISION = 'S' THEN '특별' END AS GM_DIVISION
+		FROM T_GROUP_PARTICIPATE GP
+		
+		LEFT JOIN T_GROUP_MANAGER GM
+		ON		  GP.GP_GM_KEYNO = GM.GM_KEYNO
+		
+		WHERE GP.GP_KEYNO = #{GP_KEYNO}
+		AND	  GP.GP_DELYN = 'N'
+    </select>
+    
+    <update id="tour_apply_cancel" parameterType="String">
+    	UPDATE 	T_GROUP_PARTICIPATE
+    	SET		GP_DELYN	=	'Y'
+    	WHERE	GP_KEYNO	=	#{GP_KEYNO}
+    </update>
+    <!-- 대기자를 신청완료로 변경 -->
+    <update id="program_apply_change" parameterType="hashmap">
+    	UPDATE 	T_APPLICATION_PARTICIPATE
+    	SET		APP_STATUS	=	#{APP_STATUS}
+    	WHERE	APP_KEYNO	In
+    	<foreach collection="keylist" item="item" open="(" close=")" separator=",">
+    		#{item}
+    	</foreach>
+    </update>
+    <!-- 신청 상태 변경 -->
+    <update id="program_apply_type" parameterType="String">
+    	UPDATE 	T_APPLICATION_PARTICIPATE
+    	SET		APP_STATUS	=	#{APP_STATUS}
+    	WHERE	APP_KEYNO	=	#{APP_KEYNO}
+    </update>
+    
+    <select id="APP_STATUS_SELCECT" resultType="Hashmap">
+    	SELECT  APP_KEYNO, APP_STATUS
+    	FROM	T_APPLICATION_PARTICIPATE
+    	WHERE 	APP_AP_KEYNO	=	#{APP_AP_KEYNO}
+    	AND		APP_STATUS		=	#{APP_STATUS}
+        ORDER BY APP_REGDT
+    </select>
+    
+    <delete id = "program_applySeat_delete" parameterType="ApplicationDTO">
+    	DELETE
+    	FROM 	T_APPLICATION_PARTICIPATE_SEAT
+    	WHERE 	APS_APP_KEYNO = #{APP_KEYNO}
+    </delete>
+    
+    
+    
+</mapper>
+ 

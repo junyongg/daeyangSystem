@@ -1,0 +1,40 @@
+db덤프 한후 
+
+
+뷰새로 만들어 줘야함
+
+CREATE OR REPLACE
+VIEW `AUTHORITY_VIEW` AS select
+    `aa`.`LEV` AS `LEV`,
+    `aa`.`URL` AS `URL`,
+    `aa`.`AUTHORITY` AS `AUTHORITY`
+from
+    (
+        select `A`.`USR_ORDER` AS `LEV`,
+        ifnull
+        (
+            case `D`.`MN_PAGEDIV_C`
+            when 'SC_QXCFB' then concat(`D`.`MN_URL`, '/**')
+            else `D`.`MN_URL`
+        end,
+        `A`.`USR_PATTERN`) AS `URL`,
+        `C`.`UIA_NAME` AS `AUTHORITY`
+    from
+        (((`U_USERINFO_SECURED_RESOURCE` `A`
+    left join `U_USERINFO_RESOURCE_AUTHORITY` `B` on
+        (`A`.`USR_KEYNO` = `B`.`USR_KEYNO`))
+    left join `U_USERINFO_AUTHORITY` `C` on
+        (`B`.`UIA_KEYNO` = `C`.`UIA_KEYNO`))
+    left join `S_MENU_MANAGER` `D` on
+        (`A`.`USR_MN_KEYNO` = `D`.`MN_KEYNO`))
+    where
+        `A`.`USR_KEYNO` = `B`.`USR_KEYNO`
+        and (`D`.`MN_DEL_YN` is null
+        or `D`.`MN_DEL_YN` = 'N')
+        and `A`.`USR_UIR_KEYNO` = 'UIR_0000000019'
+    order by
+        `A`.`USR_ORDER`) `aa`
+where
+    `aa`.`URL` <> ''
+    
+    명령 실행

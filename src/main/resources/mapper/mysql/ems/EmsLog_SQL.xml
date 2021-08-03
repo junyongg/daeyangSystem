@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ems"> 
+		<select id="emsAllDataCnt" resultType="int">
+		SELECT COUNT(*) 
+		<include  refid="emsAllDataBody"/>
+		
+	</select>
+	
+	
+	<select id="emsAllData" resultType="HashMap">
+		SELECT * 
+		<include  refid="emsAllDataBody"/>
+	</select>
+	
+	
+	<sql id="emsAllDataBody">
+		FROM (
+			SELECT *
+			FROM INVERTER
+			WHERE 1=1
+			 <if test="searchBeginDate != null and searchBeginDate != ''">
+	 		AND			DATE_FORMAT(IO_DATE, '%Y-%m-%d')	>=	#{searchBeginDate}
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 		AND			DATE_FORMAT(IO_DATE, '%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+			)AA
+			ORDER BY AA.IO_DATE DESC	
+			<if test=" recordCountPerPage != 0">
+			LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+			</if> 
+	</sql>
+	
+	
+	
+	<select id="PcsSolaData" resultType="HashMap">
+		SELECT *
+		FROM PCS_SOLAR_DATA
+		ORDER BY PSD_KEYNO DESC
+		LIMIT 5
+	</select>
+	
+	<select id="EMSData" resultType="HashMap">
+		SELECT *
+		FROM EMS
+		ORDER BY EMS_KEYNO DESC
+		LIMIT 5
+	</select>
+	
+	
+	
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ELECT"> 
+
+	<select id="SelectElectData_Today" resultType="HashMap">
+		SELECT EL_KEYNO ,EL_DATE ,ROUND(EL_DATA,3) as EL_DATA FROM ELECTRONIX
+		WHERE DATE_FORMAT(EL_DATE,"%Y%m%d") = DATE_FORMAT(CURDATE(), "%Y%m%d")
+	</select>
+
+	<select id="SelectElectData" resultType="HashMap">
+		SELECT * FROM ELECTRONIX
+		WHERE DATE_FORMAT(EL_DATE,"%Y%m") = DATE_FORMAT(CURDATE(), "%Y%m")
+	</select>
+
+	<select id="SelectElectData_M" resultType="HashMap">
+		SELECT * FROM ELECTRONIX
+		WHERE DATE_FORMAT(EL_DATE,"%Y%m") = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),"%Y%m")
+	</select>	
+
+	<select id="SelectElectData_Y" resultType="HashMap">
+		SELECT * FROM ELECTRONIX
+		WHERE DATE_FORMAT(EL_DATE,"%Y%m") = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 YEAR),"%Y%m")
+	</select>	
+	
+</mapper>

@@ -72,7 +72,7 @@ div[id*=LINKBOX] {display:none;}
 							<span class="label label-primary">
 								<i class="fa fa-lg fa-plus-circle">${menu.MN_NAME }</i>
 							</span>
-							<button type="button" class="btn btn-primary btn-xs " onclick="pf_Set_MenuManagerView('Insert','${menu.MN_HOMEDIV_C}', '${menu.MN_KEYNO}','${menu.MN_LEV}','${menu.MN_URL }')" data-toggle="tooltip" data-placement="top" title="추가하기"><i class="fa fa-plus"></i></button>
+							<button type="button" class="btn bg-color-blueDark txt-color-white btn-xs " onclick="pf_Set_MenuManagerView('Insert','${menu.MN_HOMEDIV_C}', '${menu.MN_KEYNO}','${menu.MN_LEV}','${menu.MN_URL }')" data-toggle="tooltip" data-placement="top" title="추가하기"><i class="fa fa-plus"></i></button>
 							
 							<!-- depth1Group 시작 -->
  								<ul id="depth1Group">

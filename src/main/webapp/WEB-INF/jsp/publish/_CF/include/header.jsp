@@ -93,10 +93,7 @@
 	<!-- 모바일 메뉴 끝 -->
     
     <nav id="navWrap"> <!-- 윈도우메뉴 스킨 -->
-    	
       <c:import url="/common/Menu/MenuHeaderTemplate/UserViewAjax.do?key=4"/>
-    	
-    	
     </nav> 
     
     <script>

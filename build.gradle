@@ -173,7 +173,7 @@ liquibase {
     activities {
         mysql_local {
              changeLogFile changeLog_mysql
-                url 'jdbc:mysql://221.144.83.86:3306/ems'
+                url 'jdbc:mysql://221.144.83.86:3306/'
                 username 'ems'
                 password 'xmfhslrtm1!'
             
@@ -208,7 +208,7 @@ liquibase {
 
 
 project.ext{
-    warBaseName = 'ems'
+    warBaseName = 'dy'
     warVersion = '01'
 }
 

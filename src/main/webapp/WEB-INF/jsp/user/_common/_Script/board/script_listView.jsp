@@ -10,7 +10,7 @@ var m = date.getMonth();
 var y = date.getFullYear();
 
 $(function(){
-
+	
 	if('${BoardType.BT_CALENDAR_YN}' == 'Y') boardCalendarCk = true;
 	
 	if(boardCalendarCk){
@@ -168,6 +168,7 @@ function pf_moveCategory(num){
 
 ////////////캘린더형일 경우에 사용////////////////
 function settingCalendar(){
+	
 	$('#calendar').fullCalendar({
 		
         header: {
@@ -177,33 +178,101 @@ function settingCalendar(){
 	    },
 	    height: "auto",
 	    lang:"ko",
+	    selectable: true,
+	  	select: function(start, end, allDay) {
+			$('#fc_create').click();
+	
+			started = start;
+			ended = end;
+	
+			$(".antosubmit").on("click", function() {
+			  var title = $("#title").val();
+			  if (end) {
+				ended = end;
+			  }
+	
+			  categoryClass = $("#event_type").val();
+	
+			  if (title) {
+				calendar.fullCalendar('renderEvent', {
+					title: title,
+					start: started,
+					end: end,
+					allDay: allDay
+				  },
+				  true // make the event "stick"
+				);
+			  }
+	
+			  $('#title').val('');
+	
+			  calendar.fullCalendar('unselect');
+	
+			  $('.antoclose').click();
+	
+			  return false;
+			});
+		},
         events: function(start, end, timezone, callback){
         	var options = "&start="+start.unix()+"&end="+end.unix();
-        	
-            callback(getEvents(options));
-				
-        	
-        } ,
+            //이벤트 리스트
+        	callback(getEvents(options));
+        },
         eventRender: function(event, element) {
-            
             if(event.className[0] == 'holiday'){
             	$day = $('.fc-day-top[data-date='+event.start._i+']');
             	$day.addClass('fc-holiday');
             	$day.find('.fc-day-number').after('<span class="fc-day-title">'+event.title+'</span>')
             	return false;
-            }
+            } 
         },
+        
         eventClick: function(calEvent, jsEvent, view) {
-        	var detailNumber = calEvent.className[0].replace('detail-','');
-        	pf_DetailMove(detailNumber)
+        	/* var detailNumber = calEvent.className[0].replace('detail-','');
+        	pf_DetailMove(detailNumber) */
+        	
+        	$('#fc_edit').click();
+			$('#title2').val(calEvent.title);
+
+			categoryClass = $("#event_type").val();
+
+			$(".antosubmit2").on("click", function() {
+			  calEvent.title = $("#title2").val();
+
+			  calendar.fullCalendar('updateEvent', calEvent);
+			  $('.antoclose2').click();
+			});
+
+			calendar.fullCalendar('unselect');
         },
+        editable: true,
         eventMouseover: function(event, jsEvent, view){
 	       // $(this).css("color", "green")
-        	
         },
       	eventMouseout: function(event, jsEvent, view){
 	       // $(this).css("color", "white")
-      	}
+      	}/* ,events: [{
+			title: 'All Day Event',
+			start: new Date(y, m, 1)
+		  }, {
+			title: 'ㅋㅋ',
+			start: '2021-08-05',
+			end: '2021-08-10'
+		  }, {
+			title: 'Meeting',
+			start: new Date(y, m, d, 10, 30),
+			allDay: false
+		  }, {
+			title: 'Lunch',
+			start: new Date(y, m, d + 14, 12, 0),
+			end: new Date(y, m, d, 14, 0),
+			allDay: false
+		  }, {
+			title: 'Click for Google',
+			start: new Date(y, m, 28),
+			end: new Date(y, m, 29),
+			url: 'http://google.com/'
+		  }] */
     });
 	
     $('#prevYear').click(function(){
@@ -240,6 +309,9 @@ function setDateTitle(type){
 		$('#calendar').fullCalendar('gotoDate',new Date(y,m));
 	}
 	var mString = (m+1)+ '';
+	
+	console.log(mString);
+	
 	$('.date_box').text(y+"."+ ( mString.length == 1 ? '0'+mString:mString ) )
 }
 
@@ -264,7 +336,7 @@ function getEvents(options){
                        start: eventList[i].BN_STDT,
                        end: endDate.format(),
                        allDay:true,
-                       className: 'detail-'+Number(eventList[i].BN_KEYNO.substring(5,20))
+//                        className: 'detail-'+Number(eventList[i].BN_KEYNO.substring(5,20))
                        /*, backgroundColor: '#b8e096' */
                    });
 			})
@@ -274,7 +346,7 @@ function getEvents(options){
                        title: holidayList[i].THM_NAME,
                        start: holidayList[i].THM_DATE,
                        allDay:true,
-                       className: "holiday"
+//                        className: "holiday"
                        /* , rendering:'background'
                        , backgroundColor: 'gray' */ 
                    });

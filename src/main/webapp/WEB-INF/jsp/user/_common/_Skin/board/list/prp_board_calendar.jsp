@@ -35,5 +35,5 @@
 <div id="calendar"></div>
 
 
-<!-- 게시판 리스트형 -->
- <c:import url="/common/board/UserViewAjax.do?key=list"/>
+<%-- <!-- 게시판 리스트형 -->
+ <c:import url="/common/board/UserViewAjax.do?key=list"/> --%>

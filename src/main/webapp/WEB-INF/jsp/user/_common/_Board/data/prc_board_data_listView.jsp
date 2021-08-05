@@ -6,7 +6,8 @@
 <fmt:formatDate value="${toDay}" pattern="yyyy-MM-dd" var="nowDate" />
 
 
-<article id="container" class="container_sub clearfix">
+<!-- <article id="container" class="container_sub clearfix"> -->
+<section id="in-contents">
 	<div class="inner">
 		
 		<div class="conSub01_bottomBox">
@@ -101,7 +102,8 @@
 			</div>
 		</div>
 	</div>
-</article>
+</section>
+<!-- </article> -->
 
 <%@ include file="/WEB-INF/jsp/user/_common/_Script/board/script_listView.jsp"%>
 

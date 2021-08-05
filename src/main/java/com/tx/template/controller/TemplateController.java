@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,21 +17,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibatis.common.logging.Log;
 import com.tx.common.config.SettingData;
 import com.tx.common.config.annotation.CheckActivityHistory;
 import com.tx.common.dto.TilesDTO;
 import com.tx.common.dto.SNS.SNSInfo;
 import com.tx.common.dto.SNS.SNSInfoBuilder;
+import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.publish.CommonPublishService;
 import com.tx.txap.admin.site.service.SiteService;
 import com.tx.txap.homepage.menu.dto.Menu;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class TemplateController {
 	
 	/** 공통 컴포넌트 */
 	@Autowired ComponentService Component;
+	@Autowired CommonService CommonService;
+	
 	@Autowired SiteService SiteService;
 	@Autowired CommonPublishService CommonPublishService;
 	
@@ -70,7 +78,17 @@ public class TemplateController {
 			return mv;
 		}
 		
-		mv.setViewName("/publish/"+sitePath+"/prc_main");
+		//관리자 체크해서 권한없을시  redirect 시킨다.
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String userKeyno = ((String) user.get("UI_KEYNO"));
+		String UIA_KEYNO = Component.getData("Authority.UIA_getDataByUIKEYNO", userKeyno);
+		
+		//관리자(개발자 계정)이 아니면 redirect
+		if(SettingData.AUTHORITY_ADMIN.equals(UIA_KEYNO)) {
+			mv.setViewName("/publish/"+sitePath+"/prc_main");
+		}else {
+			mv.setViewName("redirect:/"+tiles+"/device.do");
+		}
 		
 		if(!"".equals(msg)) {
 			mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지

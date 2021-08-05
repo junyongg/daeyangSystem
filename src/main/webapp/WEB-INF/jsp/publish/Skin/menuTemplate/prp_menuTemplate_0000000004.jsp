@@ -3,8 +3,10 @@
 <div class="navWrapMain">
             <div class="inner clearfix">
                 <ul class="mainMenu clearfix">
+                    <c:if test="${userInfo.isAdmin eq 'Y' }">
+                    	<li><a class="" href="javascript:;" onclick="pf_moveMenu('/cf/index.do','SC_VUWAQ','N','')" title="메인">종합현황</a></li>
+                    </c:if>
                     <c:forEach items="${ menuList}" var="model">
-                    
                         <c:set var="current" value=""/>
                         <c:if test="${model.MN_LEV eq '1' }">
                             <c:if test="${fn:contains(currentMenu.MN_MAINKEYS,model.MN_KEYNO) }">
@@ -12,17 +14,8 @@
                             </c:if>
                             <li><a class="${current}" href="javascript:;" onclick="pf_moveMenu('${model.MN_REAL_URL}','${model.MN_PAGEDIV_C }','${model.MN_NEWLINK}','${model.authStatus}')" title="${model.MN_NAME }">${model.MN_NAME }</a></li>
                         </c:if>
-                    
                     </c:forEach>
                 </ul>
-<!--                 <div class="viewAllBox pointer"> -->
-<!--                     <div class="imgBox"> -->
-<!--                         <img src="/resources/img/icon/icon_eye_01.png" alt="한눈에보기 아이콘" class="mgB5"> -->
-<!--                     </div> -->
-<!--                     <p> -->
-<!--                       	  한눈에 보기 -->
-<!--                     </p> -->
-<!--                 </div> -->
             </div>
         </div>
         <div class="navWrapSubMenu">

@@ -102,15 +102,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- 프로그램 관리 -->
 		<typeAlias alias="ApplicationDTO" type="com.tx.txap.program.application.dto.ApplicationDTO" />
 		
-		<!-- 설문관리 -->
-		<typeAlias alias="SmDTO" type="com.tx.txap.operation.survey.dto.SmDTO"/>
-		
-		<!-- 설문문항관리 -->
-		<typeAlias alias="SqDTO" type="com.tx.txap.operation.survey.dto.SqDTO"/>
-		
-		<!-- 설문결과관리 -->
-		<typeAlias alias="SrmDTO" type="com.tx.txap.operation.survey.dto.SrmDTO"/>
-		
 		<!-- CSS설정 -->
 		<typeAlias alias="Resources" type="com.tx.txap.homepage.resource.dto.ResourcesDTO"/>
 		
@@ -125,9 +116,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		
 		<!-- 메뉴관리 : 메뉴 관리 -->
     	<typeAlias alias="MenuHeaderTemplate" type="com.tx.txap.homepage.menu.dto.MenuHeaderTemplate" />
-		
-		<!-- 설문 스킨 관리 -->
-		<typeAlias alias="SsDTO" type="com.tx.txap.operation.survey.dto.SsDTO"/>
 		
 		<!-- 페이지평가 스킨 관리 -->
 		<typeAlias alias="ResearchSkinDTO" type="com.tx.txap.homepage.research.dto.ResearchSkinDTO"/>

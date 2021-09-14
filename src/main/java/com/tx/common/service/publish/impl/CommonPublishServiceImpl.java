@@ -29,7 +29,6 @@ import com.tx.txap.homepage.popup.dto.PopupSkinDTO;
 import com.tx.txap.homepage.popupzone.dto.PopupZoneCategoryDTO;
 import com.tx.txap.homepage.research.dto.ResearchSkinDTO;
 import com.tx.txap.homepage.resource.dto.ResourcesDTO;
-import com.tx.txap.operation.survey.dto.SsDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -77,8 +76,6 @@ public class CommonPublishServiceImpl extends EgovAbstractServiceImpl implements
 		if (!menuTemplate(null)) return false;
 
 		if (!InsertFonts()) return false;
-		
-		if(!survey(true, "")) return false;
 		
 		if(!researchSkin(null)) return false;
 		
@@ -270,36 +267,6 @@ public class CommonPublishServiceImpl extends EgovAbstractServiceImpl implements
 		return true;
 	}
 
-	/**
-	 * 설문 스킨 배포
-	 */
-	@Override
-	public boolean survey(boolean distributeType, String SS_KEYNO)
-			throws Exception {
-		HashMap<String, Object> data = new HashMap<>();
-		
-		if (!distributeType) {
-			data.put("SS_KEYNO", SS_KEYNO);
-		}
-
-		String filePath = checkSlush("JSP_PATH") + "/publish/Skin";
-
-		List<SsDTO> SsList = Component.getList("survey.SS_getSkinData", data);
-
-		for (SsDTO SsDTO : SsList) {
-			String layoutFilePath = filePath + "/";
-			String str = StringUtils.defaultIfEmpty(SsDTO.getSS_DATA(), "");
-			String fileName = getFileName("survey", SsDTO.getSS_KEYNO(), true);
-			layoutFilePath = filePath + "/survey/";
-			boolean isCompression = fileName.contains(".min");
-
-			if (!FileManageTools.create_File(layoutFilePath, fileName, str, isCompression)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
 
 	/**
 	 * 폰트 자동 배포

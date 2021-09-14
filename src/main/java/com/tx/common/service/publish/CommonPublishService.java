@@ -28,8 +28,6 @@ public interface CommonPublishService {
 		
 	public boolean menuTemplate(MenuHeaderTemplate MenuHeaderTemplate) throws Exception;
 	
-	public boolean survey(boolean distributeType, String SS_KEYNO) throws Exception;
-	
 	public boolean researchSkin(ResearchSkinDTO ResearchSkinDTO) throws Exception;
 
 	public boolean popupSkin(PopupSkinDTO popupSkinDTO) throws Exception;

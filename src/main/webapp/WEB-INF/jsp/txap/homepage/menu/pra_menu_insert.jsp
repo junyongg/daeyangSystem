@@ -335,29 +335,6 @@ div .dl-horizontal {margin-top:5px}
 								</div>
 						    </div>
 					    </section>
-						<section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 Mainmenu-TOURTYPEBOX">
-							<div class="form-group">
-								<label class="col-xs-4 col-sm-4 col-md-4 col-lg-4 control-label labeltitle">카테고리</label>
-								<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-									<select class="form-control input-sm" id="Mainmenu-TOURCATEGORY" onchange="pf_chageTourCategory(this.value)">
-						              <option value="">카테고리 선택</option>
-						            <c:forEach items="${tourInfoList }" var="tourInfo">
-						              <option value="${tourInfo.SC_KEYNO }" ${resultData.MN_TOUR_CATEGORY eq  tourInfo.SC_KEYNO ? 'selected' : '' }>${tourInfo.SC_CODENM }</option>
-						            </c:forEach>
-						            </select>
-								</div>
-						    </div>
-					    </section>
-						<section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 Mainmenu-TOURTYPEBOX">
-							<div class="form-group">
-								<label class="col-xs-4 col-sm-4 col-md-4 col-lg-4 control-label labeltitle">이름</label>
-								<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-									 <select class="form-control input-sm select2" id="Mainmenu-TOURKEY">
-						              	<option value="">선택하세요.</option>
-						            </select>
-								</div>
-						    </div>
-					    </section>
 						<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="Mainmenu-URLBOX" name="Mainmenu-URLBOX">
 							<div class="form-group">
 								<label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label labeltitle"><span>*</span> URL 입력</label>

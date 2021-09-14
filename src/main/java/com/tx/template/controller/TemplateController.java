@@ -181,11 +181,6 @@ public class TemplateController {
 				return "forward:/"+tilesNm+"/Board/main/"+ key +"/view.do";
 			}
 			
-			/* 메뉴가 관광형일 경우 */
-			if(SettingData.MENU_TYPE_TOUR.equals(pageDiv) && StringUtils.isNotEmpty(Menu.getMN_TOURKEY()) ){
-				return "forward:/"+tilesNm+"/tour/"+Integer.parseInt(Menu.getMN_KEYNO().split("_")[1])+"/view.do";
-			}
-			
 			/* 메뉴가 일반뷰형이거나 소개페이지일 경우 */
 			if(SettingData.MENU_TYPE_PAGE.equals(pageDiv) || 
 					( SettingData.MENU_TYPE_SUBMENU.equals(pageDiv) && StringUtils.isNotEmpty(Menu.getMN_FORWARD_URL()))){

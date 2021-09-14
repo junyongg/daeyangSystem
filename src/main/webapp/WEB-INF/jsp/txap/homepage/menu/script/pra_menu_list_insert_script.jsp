@@ -57,13 +57,6 @@ $(function(){
 		   	$('#Mainmenu-LINKURL').val('${resultData.MN_FORWARD_URL}');
 		}
 		
-		if(pageDivC == '${sp:getData("MENU_TYPE_TOUR")}'){ //관광형
-			$('#Mainmenu-TOURCATEGORY').val('${resultData.MN_TOUR_CATEGORY}');
-			pf_chageTourCategory('${resultData.MN_TOUR_CATEGORY}');
-			$('#Mainmenu-TOURKEY').val('${resultData.MN_TOURKEY}');
-			$('#Mainmenu-TOURKEY').trigger('change');
-		
-		}
 			
 		<c:if test="${Menu.MN_HOMEDIV_C eq sp:getData('HOMEDIV_ADMIN') }">
 		pf_refreshIcon_updateForm('${resultData.MN_ICON_CSS}'); // CSS icon리스트 선택하기
@@ -130,7 +123,6 @@ $(function(){
 	//관리자페이지에서 메뉴타입 - 단일페이지, 관광 페이지형 숨김처리
 	<c:if test="${Menu.MN_HOMEDIV_C eq sp:getData('HOMEDIV_ADMIN') }">
 	$('select[id$=-PAGEDIV_C] option[value=${sp:getData("MENU_TYPE_PAGE")}]').hide();
-	$('select[id$=-PAGEDIV_C] option[value=${sp:getData("MENU_TYPE_TOUR")}]').hide();
 	</c:if>
 
 	$("#Mainmenu-LEV").val(level);
@@ -203,12 +195,6 @@ function pf_checkShowAndHide(value,childCnt){
 		$('input[name=accessRole]').removeClass('board');
 	}
 	
-  	//관광 타입 show/hide
-  	if(value == '${sp:getData("MENU_TYPE_TOUR")}'){
-  		$('.Mainmenu-TOURTYPEBOX').show();
-	}else{
-		$('.Mainmenu-TOURTYPEBOX').hide();
-	}
 }
 
 //메뉴 등록,수정
@@ -302,8 +288,6 @@ function pf_getMenuAccess_val(a){
 		$("#MN_DU_KEYNO").val($('#'+a+'-DEPARTMENTUSER').val())
 	}
 	
-	$("#MN_TOURKEY").val($("#" + a + "-TOURKEY").val()); //관광정보 키
-
 	if($("#" + a + "-MAINKEY").val() == ""){
 		$("#MN_LEV").val("1");
 	}else{
@@ -400,20 +384,6 @@ function pf_Input_Check(){
   		return false;
   	}
   	
-  	if($('#MN_PAGEDIV_C').val() == '${sp:getData("MENU_TYPE_TOUR")}' && !$('#MN_TOURKEY').val()){	//관광형
-  		cf_smallBox('Form', '관광정보를 선택하여주세요.', 3000,'#d24158');
-		$("#Mainmenu-TOURKEY").focus();
-  		return false;
-  	}
-  	
-  	/* if($('#MN_PAGEDIV_C').val() == '${sp:getData("MENU_TYPE_LINK")}'){	//링크형
-  		if( !( $('#MN_FORWARD_URL').val().startsWith('http://') || $('#MN_FORWARD_URL').val().startsWith('https://') ) ){
-			cf_smallBox('Form', '링크는 http:// 나 https:// 로 시작되어야됩니다.', 3000,'#d24158');
-			$("#Mainmenu-LINKURL").focus();
-			return false;
-	    }
-  	} */
-	  	
 	return true;
 }
 
@@ -507,40 +477,6 @@ function gonggnognuliShowHide(value){
 	}else{
 		$('.gonggnogType').hide()
 	}
-}
-
-function pf_chageTourCategory(value){
-	
-	var temp = '<option value="">선택하세요.</option>'
-	if(value){
-		$.ajax({
-			type: "POST",
-			url: "/txap/tour/info/list2Ajax.do",
-			async: false,
-			data: {
-				"TC_TYPE"	: value,
-				"TC_USE"	: 'Y'
-			},
-			success : function(data){
-			  	
-				if(data.length > 0){
-					
-					$.each(data,function(i){
-						temp += '<option value="'+data[i].TC_KEYNO+'">'+data[i].TC_TITLE+'</option>'
-					})
-					
-					
-				}else{
-					temp = '<option value="">데이터 없음</option>'
-				}
-				
-				
-			}, error: function(){
-				cf_smallBox('error', '관광정보 가져오기 에러', 3000,'#d24158');
-			}
-		});
-	}
-	$('#Mainmenu-TOURKEY').html(temp).select2();
 }
 
 // 사이트맵 빈도수 설정

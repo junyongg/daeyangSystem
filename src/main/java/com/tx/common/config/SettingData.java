@@ -17,7 +17,6 @@ public class SettingData {
 	public final static int SESSION_DURATION = 17000+30; 	//세션 유지 시간 (초단위) 오차범위 수정을 위해 30초 추가로 셋팅해둠
 	
 	
-	public final static String HOMEDIV_TOUR = "MN_0000001255"; //홈페이지 코드  - 문화관광
 	public final static String HOMEDIV_CF = "MN_0000000207"; //홈페이지 코드  - CF
 	public final static String HOMEDIV_ADMIN = "MN_0000000999"; //홈페이지 코드  - ADMIN
 	public final static String HOMEDIV_JCIA = "MN_0000001158"; //홈페이지 코드  - JCIA
@@ -50,7 +49,6 @@ public class SettingData {
 	public final static String MENU_TYPE_LINK = "SC_HFAIU";  // 메뉴타입 코드 - 링크
 	public final static String MENU_TYPE_SUBMENU = "SC_QXCFB";  // 메뉴타입 코드 - 소메뉴
 	public final static String MENU_TYPE_PAGE2 = "SC_VUWAQ";  // 메뉴타입 코드 - 개발자페이지
-	public final static String MENU_TYPE_TOUR = "SC_DEFGR";  // 메뉴타입 코드 - 관광 페이지
 	public final static String MENU_TYPE_PREPARING = "SC_0000000419";  // 메뉴타입 코드 - 준비중
 	
 	
@@ -102,25 +100,12 @@ public class SettingData {
 	public final static String AUTHORITY_SUB_BOARD = "SC_MYKFE";  			// 서브 권한 타입  - 게시판
 	public final static String AUTHORITY_SUB_ETC = "SC_TZGGA";  			// 서브 권한 타입  - 기타
 	
-	public final static String TOUR_DEFAULT_LAT = "34.5982177";  			// 관광정보 기본 위도값 
-	public final static String TOUR_DEFAULT_LNG = "127.2875759";  			// 관광정보 기본 경도값
-	
 	public final static String TOUR_HOTEL = "";  							// 숙박 타입  - 호텔
 	public final static String TOUR_MOTEL = "";  							// 숙박 타입  - 모텔
 	
 	public final static String TOUR_RESTAURANT_MODEL = "";  				// 식당 타입  - 모범음식점
 	public final static String TOUR_RESTAURANT_HYGIENIC = "";  				// 식당 타입  - 위생등급
 	
-	public final static String TOUR_MENU_DESTINATION = "";  				// 관광메뉴  - 관광명소
-	
-	
-	public final static String TOUR_DESTINATION = "SC_0000000361";  		// 관광정보 타입  - 관광명소
-	public final static String TOUR_THEME = "SC_0000000362";  				// 관광정보 타입  - 테마
-	public final static String TOUR_COURSE = "SC_0000000363";  				// 관광정보 타입  - 코스
-	public final static String TOUR_LODGMENT = "SC_0000000364";  			// 관광정보 타입  - 숙박
-	public final static String TOUR_RESTAURANT = "SC_0000000365";  			// 관광정보 타입  - 식당
-	public final static String TOUR_FESTIVAL = "SC_0000000366";  			// 관광정보 타입  - 축제
-	public final static String TOUR_CULTURAL_HERITAGE = "SC_0000000367";  	// 관광정보 타입  - 문화재
 	
 	public final static String JSPDATA = "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%>\n" + 
 										 "<%@ include file=\"/WEB-INF/jsp/taglib/taglib.jspf\"%>\n";

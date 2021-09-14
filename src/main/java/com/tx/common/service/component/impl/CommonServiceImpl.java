@@ -191,21 +191,6 @@ public class CommonServiceImpl extends EgovAbstractServiceImpl implements Common
 			 case "PSS" 	: TableName = "T_PLACE_SEATGROUP_SUB"; break;		 	// 장소 좌석배치도 관리 서브 테이블
 			 case "APS"     : TableName = "T_APPLICATION_PARTICIPATE_SEAT"; break;  // 프로그램 좌석 관리 테이블 
 			 
-			 //관광 관리 관련
-			 case "TC"	 	: TableName = "T_TOURISM_COMMON"; break;				// 관광정보 공통요소 테이블
-			 case "TA"	 	: TableName = "T_TOURISM_DESTINATION"; break;			// 관광명소 테이블
-			 case "TI" 		: TableName = "T_TOURISM_INFOMATION"; break;			// 이용안내 테이블
-			 case "TR" 		: TableName = "T_TOURISM_RESTAURANT"; break;			// 식당 테이블
-			 case "TM" 		: TableName = "T_TOURISM_MENU"; break;					// 메뉴 테이블
-			 case "TL"	 	: TableName = "T_TOURISM_LODGMENT"; break;				// 숙박 테이블
-			 case "TG" 		: TableName = "T_TOURISM_GUESTROOM"; break;				// 객실 테이블
-			 case "TT" 		: TableName = "T_TOURISM_THEME"; break;					// 테마 테이블
-			 case "TCM" 	: TableName = "T_TOURISM_COURSE_MAIN"; break;			// 코스 테이블
-			 case "TF"	 	: TableName = "T_TOURISM_FESTIVAL"; break;				// 축제 테이블
-			 case "TCH"	 	: TableName = "T_TOURISM_CULTURAL_HERITAGE"; break;		// 문화재 테이블
-			 case "TSF" 	: TableName = "T_TOURISM_SUKBAG_FOOD"; break;			// 숙박/음식 테이블
-			 case "TTC" 	: TableName = "T_TOURISM_THEME_COURSE"; break;			// 테마/코스 테이블
-			 
 			 //스킨 관리 관련
 			 case "PRS"     : TableName = "T_PAGE_RESEARCH_SKIN"; break;            // 페이지 평가 스킨 관리 테이블
 			 case "PRSH"    : TableName = "T_PAGE_RESEARCH_SKIN_HISTORY"; break;    // 페이지 평가 스킨 관리 히스토리 테이블
@@ -350,83 +335,6 @@ public class CommonServiceImpl extends EgovAbstractServiceImpl implements Common
 		return userInfo.get("UI_KEYNO").toString();
 	}
 
-
-
-	/**
-	 * 관광 카테고리 이름 가져오기
-	 * @param category
-	 * @return
-	 * @throws Exception
-	 */
-	@Override
-	public String getTourCategoryName(String category) throws Exception {
-		String categoryName = "";
-		switch (category) {
-		case SettingData.TOUR_COURSE:
-			categoryName = "course";
-			break;
-		case SettingData.TOUR_CULTURAL_HERITAGE:
-			categoryName = "culturalheritage";
-			break;
-		case SettingData.TOUR_DESTINATION:
-			categoryName = "destination";
-			break;
-		case SettingData.TOUR_FESTIVAL:
-			categoryName = "festival";
-			break;
-		case SettingData.TOUR_RESTAURANT:
-			categoryName = "restaurant";
-			break;
-		case SettingData.TOUR_LODGMENT:
-			categoryName = "lodgment";
-			break;
-		case SettingData.TOUR_THEME:
-			categoryName = "theme";
-			break;
-		default:
-			break;
-		}
-		
-		return categoryName;
-	}
-	
-	/**
-	 * 관광 카테고리 키 가져오기
-	 * @param category
-	 * @return
-	 * @throws Exception
-	 */
-	@Override
-	public String getTourCategoryKey(String categoryName) throws Exception {
-		String category = "";
-		switch (categoryName) {
-		case "course":
-			category = SettingData.TOUR_COURSE;
-			break;
-		case "culturalheritage":
-			category = SettingData.TOUR_CULTURAL_HERITAGE;
-			break;
-		case "destination":
-			category = SettingData.TOUR_DESTINATION;
-			break;
-		case "festival":
-			category = SettingData.TOUR_FESTIVAL;
-			break;
-		case "restaurant":
-			category = SettingData.TOUR_RESTAURANT;
-			break;
-		case "lodgment":
-			category = SettingData.TOUR_LODGMENT;
-			break;
-		case "theme":
-			category = SettingData.TOUR_THEME;
-			break;
-		default:
-			break;
-		}
-		
-		return category;
-	}
 	
 	/**
 	 * 넘어온 배열들의 길이가 같은지 확인한다.

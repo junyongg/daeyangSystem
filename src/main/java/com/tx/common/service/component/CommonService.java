@@ -92,22 +92,6 @@ public interface CommonService {
 
 	
 	/**
-	 * 관광 카테고리 이름 가져오기
-	 * @param category
-	 * @return
-	 * @throws Exception
-	 */
-	public String getTourCategoryName(String category) throws Exception;
-	
-	/**
-	 * 관광 카테고리 키 가져오기
-	 * @param category
-	 * @return
-	 * @throws Exception
-	 */
-	public String getTourCategoryKey(String categoryName) throws Exception;
-	
-	/**
 	 * 넘어온 배열들의 길이가 같은지 확인한다.
 	 * @param array
 	 * @return

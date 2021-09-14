@@ -94,7 +94,6 @@
 						WHEN 'SC_HFAIU' THEN '링크' 
 						WHEN 'SC_QXCFB' THEN '소메뉴' 
 						WHEN 'SC_VUWAQ' THEN '개발자페이지' 
-						WHEN 'SC_DEFGR' THEN '관광페이지'
 					  END  MN_PAGEDIV_NAME
 					, (SELECT COUNT(*) FROM S_MENU_MANAGER WHERE A.MN_KEYNO = MN_MAINKEY AND MN_DEL_YN = 'N' 
 						<if test='pageDivList != null'>
@@ -139,7 +138,6 @@
 						WHEN 'SC_HFAIU' THEN '링크' 
 						WHEN 'SC_QXCFB' THEN '소메뉴' 
 						WHEN 'SC_VUWAQ' THEN '개발자페이지' 
-						WHEN 'SC_DEFGR' THEN '관광페이지'
 					  END  MN_PAGEDIV_NAME
 					, (SELECT COUNT(*) FROM S_MENU_MANAGER 
 				

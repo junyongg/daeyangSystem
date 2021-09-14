@@ -146,27 +146,6 @@ form .error {color:red}
 							</div>
 						</div>
 					</fieldset>
-					<%-- <fieldset>
-						<legend>관광</legend>
-						<div class="form-group">	
-							<label class="col-md-2 control-label">출발지 이름</label>
-							<div class="col-md-6">
-								<input class="form-control" type="text" name="TOUR_START_TEXT" id="TOUR_START_TEXT" maxlength="50" value="${siteManager.TOUR_START_TEXT }">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-2 control-label">출발지 위도</label>
-							<div class="col-md-6">
-								<input class="form-control" type="number" name="TOUR_START_LAT" id="TOUR_START_LAT" max="9999" maxlength="30" value="${siteManager.TOUR_START_LAT }">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-2 control-label">출발지 경도</label>
-							<div class="col-md-6">
-								<input class="form-control" type="number" name="TOUR_START_LNG" id="TOUR_START_LNG" max="9999" maxlength="30" value="${siteManager.TOUR_START_LNG }">
-							</div>
-						</div>
-					</fieldset> --%>
 					<fieldset>
 						<legend>회원관리</legend>
 						<div class="row" style="margin-bottom: 15px;">

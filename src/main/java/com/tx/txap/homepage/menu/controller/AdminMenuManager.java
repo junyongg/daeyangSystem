@@ -486,8 +486,6 @@ public class AdminMenuManager {
 		mv.addObject("menuList",CodeService.getCodeListisUse("AF", true));
 		//게시판 타입 리스트
 		mv.addObject("boardTypeList",Component.getListNoParam("BoardType.BT_getList2"));
-		//관광정보 타입 리스트
-		mv.addObject("tourInfoList",CodeService.getCodeListisUse("CF", true));
 		
 		mv.addObject("length",Component.getData("Menu.AMN_getMenuCnt",Menu));
 		

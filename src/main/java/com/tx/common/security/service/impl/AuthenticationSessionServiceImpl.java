@@ -17,10 +17,10 @@ import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.security.service.AuthenticationSessionService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.homepage.menu.dto.Menu;
-import com.tx.txap.member.dto.UserDTO;
-import com.tx.txap.statistics.dto.CheckAgent;
-import com.tx.txap.statistics.dto.LogDTO;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.statistics.dto.CheckAgent;
+import com.tx.dyAdmin.statistics.dto.LogDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

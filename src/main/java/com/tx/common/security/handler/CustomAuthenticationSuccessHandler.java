@@ -27,8 +27,8 @@ import com.tx.common.security.rememberMe.CustomTokenBasedRememberMeServices;
 import com.tx.common.security.service.AuthenticationSessionService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.site.dto.SiteManagerDTO;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.admin.site.dto.SiteManagerDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 import lombok.Data;
 
@@ -124,7 +124,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 		
 		// 1. 최초 제품 설치시 비밀번호 초기화
-		if(checkPwdInit(map,URL)) return "/txap/login/init.do";
+		if(checkPwdInit(map,URL)) return "/dyAdmin/login/init.do";
 		
 		// 2. 비밀번호 변경주기 체크
 		if(vertifyPasswordCycle((String)map.get("UI_KEYNO"),URL)) return URL + "/member/pwdchange2.do"; 
@@ -229,7 +229,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		
 		String UI_PWD_INIT = (String)map.get("UI_PWD_INIT");
 		
-		return "Y".equals(UI_PWD_INIT) && "/txap".equals(URL);
+		return "Y".equals(UI_PWD_INIT) && "/dyAdmin".equals(URL);
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	 */
 	private boolean vertifyPasswordCycle(String UI_KEYNO, String URL) {
 		
-		if("/txap".equals(URL)) return false;
+		if("/dyAdmin".equals(URL)) return false;
 		
 		
 		SiteManagerDTO SiteManagerDTO =  Component.getData("SiteManager.getData",SiteProperties.getCmsUser());

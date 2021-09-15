@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.admin.board.dto.BoardType;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.admin.board.dto.BoardType;
 
 public interface ThumnailService {
 

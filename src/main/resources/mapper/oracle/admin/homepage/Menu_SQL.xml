@@ -798,7 +798,7 @@
 				, MN_PAGEDIV_C
 		FROM 	S_MENU_MANAGER
 		<if test='MN_HOMEDIV_C == "all"'>
-		WHERE 	MN_HOMEDIV_C not in (SELECT MN_HOMEDIV_C FROM S_MENU_MANAGER WHERE MN_URL = '/txap')
+		WHERE 	MN_HOMEDIV_C not in (SELECT MN_HOMEDIV_C FROM S_MENU_MANAGER WHERE MN_URL = '/dyAdmin')
 		</if>
 		<if test='MN_HOMEDIV_C != "all"'>
 		WHERE 	MN_HOMEDIV_C = #{MN_HOMEDIV_C}
@@ -1221,7 +1221,7 @@
 		FROM 	S_MENU_MANAGER 
 		WHERE	MN_HOMEDIV_C  != #{MN_HOMEDIV_C}
 		AND	 	MN_DEL_YN = 'N'
-		AND 	MN_URL  NOT LIKE '/txap/admin%'
+		AND 	MN_URL  NOT LIKE '/dyAdmin/admin%'
 	</select>
 	
 	<select id="MN_getMenuListByHomeDiv" resultType="String">
@@ -1238,7 +1238,7 @@
     	SELECT	*
     	FROM	S_MENU_MANAGER 
     	WHERE 	MN_DEL_YN	=	'N'
-    	AND		MN_URL LIKE '/txap/homepage%'
+    	AND		MN_URL LIKE '/dyAdmin/homepage%'
     </select>
 	
 </mapper>

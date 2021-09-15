@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-<%@ include file="/WEB-INF/jsp/txap/include/CodeMirror_Include.jsp" %>
+<%@ include file="/WEB-INF/jsp/dyAdmin/include/CodeMirror_Include.jsp" %>
 
 
 <style>

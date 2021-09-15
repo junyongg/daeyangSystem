@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.homepage.menu.dto.Menu;
-import com.tx.txap.homepage.menu.service.AdminMenuService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.homepage.menu.service.AdminMenuService;
 
 @Controller
 public class TempController {

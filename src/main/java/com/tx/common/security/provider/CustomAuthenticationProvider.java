@@ -27,7 +27,7 @@ import com.tx.common.security.exception.NotCertifiedCredentialException;
 import com.tx.common.security.exception.PasswordIncorrectException;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 import lombok.Data;
  

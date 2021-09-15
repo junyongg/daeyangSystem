@@ -6,15 +6,15 @@
 	<!-- 
 				ADMIN
 	 -->
-	<definition name="admin" template="/WEB-INF/jsp/layout/txap/layout.jsp">
-		<put-attribute name="script" value="/WEB-INF/jsp/layout/txap/script.jsp"/>
-		<put-attribute name="css" value="/WEB-INF/jsp/layout/txap/css.jsp"/>
-		<put-attribute name="header" value="/WEB-INF/jsp/layout/txap/header.jsp"/>
-		<put-attribute name="subTop" value="/WEB-INF/jsp/layout/txap/subTop.jsp"/>
-		<put-attribute name="leftmenu" value="/WEB-INF/jsp/layout/txap/leftmenu.jsp"/>
-		<put-attribute name="ribbon" value="/WEB-INF/jsp/layout/txap/ribbon.jsp"/>
+	<definition name="admin" template="/WEB-INF/jsp/layout/dyAdmin/layout.jsp">
+		<put-attribute name="script" value="/WEB-INF/jsp/layout/dyAdmin/script.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/jsp/layout/dyAdmin/css.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/dyAdmin/header.jsp"/>
+		<put-attribute name="subTop" value="/WEB-INF/jsp/layout/dyAdmin/subTop.jsp"/>
+		<put-attribute name="leftmenu" value="/WEB-INF/jsp/layout/dyAdmin/leftmenu.jsp"/>
+		<put-attribute name="ribbon" value="/WEB-INF/jsp/layout/dyAdmin/ribbon.jsp"/>
 		<put-attribute name="body" />
-		<put-attribute name="footer" value="/WEB-INF/jsp/layout/txap/footer.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/dyAdmin/footer.jsp"/>
 	</definition>
 	
 	<definition name="/*.adm" extends="admin">

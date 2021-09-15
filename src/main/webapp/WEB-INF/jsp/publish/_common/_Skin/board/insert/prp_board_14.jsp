@@ -404,7 +404,7 @@
 						        </p>
 						        <div class="formBox">
 
-								<%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%>
+								<%@ include file="/WEB-INF/jsp/dyAdmin/operation/file/pra_file_insertView.jsp"%>
 								
 								<c:if test="${action eq 'update' || action eq 'move'}">
 									<input type="hidden" name="fsSize" id="fsSize" value="${fn:length(FileSub) }">

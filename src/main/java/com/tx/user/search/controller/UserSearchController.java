@@ -26,10 +26,10 @@ import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.admin.keyword.service.impl.KeywordServiceImpl;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.admin.keyword.service.impl.KeywordServiceImpl;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 

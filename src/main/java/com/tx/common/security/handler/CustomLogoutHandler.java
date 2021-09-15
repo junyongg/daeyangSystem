@@ -15,9 +15,9 @@ import com.tx.common.config.session.CustomSessionRegistry;
 import com.tx.common.security.rememberMe.CustomTokenBasedRememberMeServices;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.member.dto.UserDTO;
-import com.tx.txap.statistics.dto.CheckAgent;
-import com.tx.txap.statistics.dto.LogDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.statistics.dto.CheckAgent;
+import com.tx.dyAdmin.statistics.dto.LogDTO;
 
 public class CustomLogoutHandler extends SecurityContextLogoutHandler {
 	

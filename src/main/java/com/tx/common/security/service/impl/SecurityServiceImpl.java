@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.tx.common.security.service.SecurityService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

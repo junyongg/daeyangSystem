@@ -1,11 +1,11 @@
 package com.tx.common.service.publish;
 
-import com.tx.txap.admin.board.dto.BoardMainMini;
-import com.tx.txap.admin.board.dto.BoardSkin;
-import com.tx.txap.homepage.menu.dto.MenuHeaderTemplate;
-import com.tx.txap.homepage.popup.dto.PopupSkinDTO;
-import com.tx.txap.homepage.popupzone.dto.PopupZoneCategoryDTO;
-import com.tx.txap.homepage.research.dto.ResearchSkinDTO;
+import com.tx.dyAdmin.admin.board.dto.BoardMainMini;
+import com.tx.dyAdmin.admin.board.dto.BoardSkin;
+import com.tx.dyAdmin.homepage.menu.dto.MenuHeaderTemplate;
+import com.tx.dyAdmin.homepage.popup.dto.PopupSkinDTO;
+import com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneCategoryDTO;
+import com.tx.dyAdmin.homepage.research.dto.ResearchSkinDTO;
 
 public interface CommonPublishService {
 

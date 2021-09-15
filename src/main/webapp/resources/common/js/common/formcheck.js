@@ -116,7 +116,7 @@ $.fn.formCheck = function (options){
 					var pwdConfirm = true;
 					$.ajax({
 						type: "POST",
-						url: "/txap/user/pwdCheckAjax.do",
+						url: "/dyAdmin/user/pwdCheckAjax.do",
 						data: "pwd="+pwd+"&encPwd="+encPwd,
 						async:false,
 						success : function(data){

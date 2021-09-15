@@ -4,7 +4,7 @@
 <div class="shadowBox"></div>
 	
 	<c:if test="${not empty popupList_B }">
-	<%@ include file="/WEB-INF/jsp/txap/operation/popup/popup_view_B.jsp" %>
+	<%@ include file="/WEB-INF/jsp/dyAdmin/operation/popup/popup_view_B.jsp" %>
 	</c:if>
 	
 	
@@ -35,7 +35,7 @@
 	            </c:if>
 	            <c:if test="${currentMenu.MN_RESEARCH eq 'Y' }">
 		            <div style="margin-top: 150px;">
-						<%@ include file="/WEB-INF/jsp/txap/operation/research/prc_page_research.jsp" %>                            
+						<%@ include file="/WEB-INF/jsp/dyAdmin/operation/research/prc_page_research.jsp" %>                            
 		            </div>
 	            </c:if>
 	        </div>

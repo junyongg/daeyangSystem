@@ -26,8 +26,8 @@ import com.tx.common.dto.SNS.SNSInfoBuilder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.publish.CommonPublishService;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,17 +54,12 @@ public class TemplateController {
 
 		//1호기 관련 데이터
 		map.put("inverter", "one");
-		mv.addObject("OneData",Component.getData("empc.ONE_getData",map));
 		map.put("inverter", "two");
 		
 		//2호기 간단한 데이터(오늘날짜) 합계
-		mv.addObject("TwoData",Component.getData("empc.ONE_getData",map));
 		
 		map.put("inverter", inverter);
 		map.put("type", "day");
-		mv.addObject("TodaySum",Component.getData("empc.ONE_sum_Today",map));
-		mv.addObject("PredaySum",Component.getData("empc.ONE_sum_Preday",map));
-		mv.addObject("MonSum",Component.getList("empc.ONE_sum_M",map));
 
 		if("user".equals(tiles)){
 			tiles = new TilesDTO().checkNull(null, req);

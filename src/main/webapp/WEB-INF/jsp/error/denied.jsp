@@ -55,10 +55,10 @@
                         	
                         	<c:choose>
                         		<c:when test="${not empty currentTiles  }">
-                        			<c:if test="${currentTiles eq 'txap' }">
-                        				<a href="/txap/logout.do" class="btn btnBlack btnErrorBack">로그인</a>
+                        			<c:if test="${currentTiles eq 'dyAdmin' }">
+                        				<a href="/dyAdmin/logout.do" class="btn btnBlack btnErrorBack">로그인</a>
                         			</c:if>
-		                        	<c:if test="${currentTiles ne 'txap' }">
+		                        	<c:if test="${currentTiles ne 'dyAdmin' }">
 			                        	<a href="/user/logout.do" class="btn btnBlack btnErrorBack">로그인</a>
 			                        	<a href="/${currentTiles}/index.do" class="btn btnBlack btnErrorBack">메인화면</a>
 		                        	</c:if>

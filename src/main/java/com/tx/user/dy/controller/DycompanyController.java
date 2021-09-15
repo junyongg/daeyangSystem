@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tx.common.dto.TilesDTO;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.publish.CommonPublishService;
-import com.tx.txap.admin.site.service.SiteService;
+import com.tx.dyAdmin.admin.site.service.SiteService;
 
 public class DycompanyController {
 

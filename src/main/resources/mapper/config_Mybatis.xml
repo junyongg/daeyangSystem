@@ -21,125 +21,125 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="FileSub" type="com.tx.common.file.dto.FileSub" />
 		
 		<!-- 코드관리 -->
-		<typeAlias alias="MainCode" type="com.tx.txap.admin.code.dto.MainCode" />
-		<typeAlias alias="SubCode" type="com.tx.txap.admin.code.dto.SubCode" />
+		<typeAlias alias="MainCode" type="com.tx.dyAdmin.admin.code.dto.MainCode" />
+		<typeAlias alias="SubCode" type="com.tx.dyAdmin.admin.code.dto.SubCode" />
 		
 		<!-- 회원관리 -->
-		<typeAlias alias="USER" type="com.tx.txap.member.dto.UserDTO" />
+		<typeAlias alias="USER" type="com.tx.dyAdmin.member.dto.UserDTO" />
 		
 		<!-- 사이트관리 셋팅-->
-		<typeAlias alias="SiteManager" type="com.tx.txap.admin.site.dto.SiteManagerDTO" />
+		<typeAlias alias="SiteManager" type="com.tx.dyAdmin.admin.site.dto.SiteManagerDTO" />
 		
 		<!-- 회원관리 셋팅-->
-		<typeAlias alias="USERSETTING" type="com.tx.txap.member.dto.UserSettingDTO" />
+		<typeAlias alias="USERSETTING" type="com.tx.dyAdmin.member.dto.UserSettingDTO" />
 		
 		<!-- 권한관리 -->
-		<typeAlias alias="Resource" type="com.tx.txap.admin.authority.dto.Resource" />
+		<typeAlias alias="Resource" type="com.tx.dyAdmin.admin.authority.dto.Resource" />
 		
-		<typeAlias alias="SecuredResource" type="com.tx.txap.admin.authority.dto.SecuredResource" />
+		<typeAlias alias="SecuredResource" type="com.tx.dyAdmin.admin.authority.dto.SecuredResource" />
 		
 		<!-- IP필터관리 -->
-		<typeAlias alias="IP" type="com.tx.txap.admin.ipfilter.dto.IP" />
+		<typeAlias alias="IP" type="com.tx.dyAdmin.admin.ipfilter.dto.IP" />
 		
 		<!-- 메뉴관리 : 메뉴 관리 -->
-    	<typeAlias alias="Menu" type="com.tx.txap.homepage.menu.dto.Menu" />
+    	<typeAlias alias="Menu" type="com.tx.dyAdmin.homepage.menu.dto.Menu" />
     
 		<!-- 메뉴관리 : 홈페이지 관리 -->
-   		<typeAlias alias="HomeManager" type="com.tx.txap.admin.domain.dto.HomeManager" />
+   		<typeAlias alias="HomeManager" type="com.tx.dyAdmin.admin.domain.dto.HomeManager" />
 
 		<!-- 메뉴관리 : 메뉴 관리 -->
-   		<typeAlias alias="HTMLViewData" type="com.tx.txap.homepage.page.dto.HTMLViewData" />
+   		<typeAlias alias="HTMLViewData" type="com.tx.dyAdmin.homepage.page.dto.HTMLViewData" />
     
 		<!-- 게시판 타입관리 -->
-		<typeAlias alias="BoardType" type="com.tx.txap.admin.board.dto.BoardType" />
+		<typeAlias alias="BoardType" type="com.tx.dyAdmin.admin.board.dto.BoardType" />
 		
 		<!-- 게시판 컬럼관리 -->
-		<typeAlias alias="BoardColumn" type="com.tx.txap.admin.board.dto.BoardColumn" />
+		<typeAlias alias="BoardColumn" type="com.tx.dyAdmin.admin.board.dto.BoardColumn" />
 
 		<!-- 게시판 컬럼데이터관리 -->
-		<typeAlias alias="BoardColumnData" type="com.tx.txap.admin.board.dto.BoardColumnData" />
+		<typeAlias alias="BoardColumnData" type="com.tx.dyAdmin.admin.board.dto.BoardColumnData" />
 		
 		<!-- 게시물 관리 -->
-		<typeAlias alias="BoardNotice" type="com.tx.txap.admin.board.dto.BoardNotice" />
+		<typeAlias alias="BoardNotice" type="com.tx.dyAdmin.admin.board.dto.BoardNotice" />
 
 		<!-- 게시판 댓글관리 -->
-		<typeAlias alias="BoardComment" type="com.tx.txap.admin.board.dto.BoardComment" />
+		<typeAlias alias="BoardComment" type="com.tx.dyAdmin.admin.board.dto.BoardComment" />
 		
 		<!-- 게시판HTML필요페이지 -->
-		<typeAlias alias="BoardHtml" type="com.tx.txap.admin.board.dto.BoardHtml" />
+		<typeAlias alias="BoardHtml" type="com.tx.dyAdmin.admin.board.dto.BoardHtml" />
 		
 		<!-- 팝업관리 -->
-		<typeAlias alias="PopupDTO" type="com.tx.txap.homepage.popup.dto.PopupDTO" />
+		<typeAlias alias="PopupDTO" type="com.tx.dyAdmin.homepage.popup.dto.PopupDTO" />
 		
 		<!-- 팝업관리 서브 -->
-        <typeAlias alias="Popup_subDTO" type="com.tx.txap.homepage.popup.dto.Popup_subDTO" />
+        <typeAlias alias="Popup_subDTO" type="com.tx.dyAdmin.homepage.popup.dto.Popup_subDTO" />
 				
 		<!-- 휴일 관리 -->
-		<typeAlias alias="Holiday" type="com.tx.txap.operation.holiday.dto.HolidayDTO" />
+		<typeAlias alias="Holiday" type="com.tx.dyAdmin.operation.holiday.dto.HolidayDTO" />
 		
 		<!-- 검색 키워드 -->
-		<typeAlias alias="keyword" type="com.tx.txap.admin.keyword.dto.KeywordDTO" />
+		<typeAlias alias="keyword" type="com.tx.dyAdmin.admin.keyword.dto.KeywordDTO" />
 		
 		<!-- 활동기록 -->
-		<typeAlias alias="Log" type="com.tx.txap.statistics.dto.LogDTO" />
+		<typeAlias alias="Log" type="com.tx.dyAdmin.statistics.dto.LogDTO" />
 		
 		<!-- QrCode 관리 -->
-		<typeAlias alias="QrCode" type="com.tx.txap.operation.qrcode.dto.QrCode" />
+		<typeAlias alias="QrCode" type="com.tx.dyAdmin.operation.qrcode.dto.QrCode" />
 		
 		<!-- 조직도 -->
-		<typeAlias alias="OrganDto" type="com.tx.txap.homepage.organization.dto.OrganDTO" />
-		<typeAlias alias="OrganTree" type="com.tx.txap.homepage.organization.dto.OrganTree" />
+		<typeAlias alias="OrganDto" type="com.tx.dyAdmin.homepage.organization.dto.OrganDTO" />
+		<typeAlias alias="OrganTree" type="com.tx.dyAdmin.homepage.organization.dto.OrganTree" />
 		
 		<!-- 장소 관리 -->
-		<typeAlias alias="PlaceDTO" type="com.tx.txap.program.application.dto.PlaceDTO" />
+		<typeAlias alias="PlaceDTO" type="com.tx.dyAdmin.program.application.dto.PlaceDTO" />
 		
 		<!-- 단체예약 관리 -->
-		<typeAlias alias="Group" type="com.tx.txap.program.group.dto.GroupDTO" />
+		<typeAlias alias="Group" type="com.tx.dyAdmin.program.group.dto.GroupDTO" />
 
 		<!-- 장소 좌석배치 관리 -->
-		<typeAlias alias="PlaceSeatDTO" type="com.tx.txap.program.application.dto.PlaceSeatDTO" />
+		<typeAlias alias="PlaceSeatDTO" type="com.tx.dyAdmin.program.application.dto.PlaceSeatDTO" />
 		
 		<!-- 프로그램 관리 -->
-		<typeAlias alias="ApplicationDTO" type="com.tx.txap.program.application.dto.ApplicationDTO" />
+		<typeAlias alias="ApplicationDTO" type="com.tx.dyAdmin.program.application.dto.ApplicationDTO" />
 		
 		<!-- 설문관리 -->
-		<typeAlias alias="SmDTO" type="com.tx.txap.operation.survey.dto.SmDTO"/>
+		<typeAlias alias="SmDTO" type="com.tx.dyAdmin.operation.survey.dto.SmDTO"/>
 		
 		<!-- 설문문항관리 -->
-		<typeAlias alias="SqDTO" type="com.tx.txap.operation.survey.dto.SqDTO"/>
+		<typeAlias alias="SqDTO" type="com.tx.dyAdmin.operation.survey.dto.SqDTO"/>
 		
 		<!-- 설문결과관리 -->
-		<typeAlias alias="SrmDTO" type="com.tx.txap.operation.survey.dto.SrmDTO"/>
+		<typeAlias alias="SrmDTO" type="com.tx.dyAdmin.operation.survey.dto.SrmDTO"/>
 		
 		<!-- CSS설정 -->
-		<typeAlias alias="Resources" type="com.tx.txap.homepage.resource.dto.ResourcesDTO"/>
+		<typeAlias alias="Resources" type="com.tx.dyAdmin.homepage.resource.dto.ResourcesDTO"/>
 		
 		<!-- 미니게시판 -->
-		<typeAlias alias="BoardMainMini" type="com.tx.txap.admin.board.dto.BoardMainMini"/>
+		<typeAlias alias="BoardMainMini" type="com.tx.dyAdmin.admin.board.dto.BoardMainMini"/>
 		
 		<!-- 팝업존 카테고리 관리 -->
-		<typeAlias alias="PopupZoneCategoryDTO" type="com.tx.txap.homepage.popupzone.dto.PopupZoneCategoryDTO"/>
+		<typeAlias alias="PopupZoneCategoryDTO" type="com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneCategoryDTO"/>
 		
 		<!-- 팝업존 리스트 관리 -->
-		<typeAlias alias="PopupZoneListDTO" type="com.tx.txap.homepage.popupzone.dto.PopupZoneListDTO"/>
+		<typeAlias alias="PopupZoneListDTO" type="com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneListDTO"/>
 		
 		<!-- 메뉴관리 : 메뉴 관리 -->
-    	<typeAlias alias="MenuHeaderTemplate" type="com.tx.txap.homepage.menu.dto.MenuHeaderTemplate" />
+    	<typeAlias alias="MenuHeaderTemplate" type="com.tx.dyAdmin.homepage.menu.dto.MenuHeaderTemplate" />
 		
 		<!-- 설문 스킨 관리 -->
-		<typeAlias alias="SsDTO" type="com.tx.txap.operation.survey.dto.SsDTO"/>
+		<typeAlias alias="SsDTO" type="com.tx.dyAdmin.operation.survey.dto.SsDTO"/>
 		
 		<!-- 페이지평가 스킨 관리 -->
-		<typeAlias alias="ResearchSkinDTO" type="com.tx.txap.homepage.research.dto.ResearchSkinDTO"/>
+		<typeAlias alias="ResearchSkinDTO" type="com.tx.dyAdmin.homepage.research.dto.ResearchSkinDTO"/>
 		
 		<!-- 팝업 스킨 관리 -->
-		<typeAlias alias="PopupSkinDTO" type="com.tx.txap.homepage.popup.dto.PopupSkinDTO"/>
+		<typeAlias alias="PopupSkinDTO" type="com.tx.dyAdmin.homepage.popup.dto.PopupSkinDTO"/>
 	
 		<!-- 게시판 스킨 관리 -->
-		<typeAlias alias="BoardSkin" type="com.tx.txap.admin.board.dto.BoardSkin"/>
+		<typeAlias alias="BoardSkin" type="com.tx.dyAdmin.admin.board.dto.BoardSkin"/>
 		
 		<!-- 통계 관리 -->
-		<typeAlias alias="StatisticsDTO" type="com.tx.txap.statistics.dto.StatisticsDTO"/>
+		<typeAlias alias="StatisticsDTO" type="com.tx.dyAdmin.statistics.dto.StatisticsDTO"/>
 		
 		<typeAlias alias="SerialDTO" type="com.tx.ems.dto.SerialDTO"/>
 	</typeAliases>

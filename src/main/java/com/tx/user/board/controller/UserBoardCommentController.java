@@ -21,9 +21,9 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
-import com.tx.txap.admin.board.dto.BoardComment;
-import com.tx.txap.admin.board.dto.BoardType;
-import com.tx.txap.admin.board.service.BoardCommonService;
+import com.tx.dyAdmin.admin.board.dto.BoardComment;
+import com.tx.dyAdmin.admin.board.dto.BoardType;
+import com.tx.dyAdmin.admin.board.service.BoardCommonService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 

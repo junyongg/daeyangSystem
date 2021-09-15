@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.program.application.dto.ApplicationDTO;
-import com.tx.txap.program.application.service.ApplicationService;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.program.application.service.ApplicationService;
 import com.tx.user.service.ClientProgramService;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;

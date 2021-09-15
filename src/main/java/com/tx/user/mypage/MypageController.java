@@ -23,8 +23,8 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**

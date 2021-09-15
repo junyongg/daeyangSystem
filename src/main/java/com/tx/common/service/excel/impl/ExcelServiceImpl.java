@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.excel.ExcelService;
-import com.tx.txap.homepage.organization.dto.OrganDTO;
+import com.tx.dyAdmin.homepage.organization.dto.OrganDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

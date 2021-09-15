@@ -27,12 +27,12 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.weakness.WeaknessService;
-import com.tx.txap.admin.board.dto.BoardColumn;
-import com.tx.txap.admin.board.dto.BoardColumnData;
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.admin.board.dto.BoardType;
-import com.tx.txap.admin.board.service.BoardCommonService;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.board.dto.BoardColumn;
+import com.tx.dyAdmin.admin.board.dto.BoardColumnData;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.admin.board.dto.BoardType;
+import com.tx.dyAdmin.admin.board.service.BoardCommonService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 @Controller
 public class UserBoardMoveController {

@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.VelocityContext;
 
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 public interface EmailService {
 	

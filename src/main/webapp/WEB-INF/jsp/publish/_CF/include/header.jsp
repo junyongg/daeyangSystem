@@ -38,7 +38,7 @@
 			
 			<sec:authorize access="isAuthenticated()">
 				<c:if test="${userInfo.isAdmin eq 'Y' }">
-					<button type="button" class="btn-logOut" onclick="location.href='/txap/index.do'">
+					<button type="button" class="btn-logOut" onclick="location.href='/dyAdmin/index.do'">
 						<span class="txt">관리자페이지</span>
 					</button>
 				</c:if>
@@ -63,7 +63,7 @@
 			
 			<sec:authorize access="isAuthenticated()">
 				<c:if test="${userInfo.isAdmin eq 'Y' }">
-					<li><a href="javascript:;" onclick="location.href='/txap/index.do'">Admin</a></li>
+					<li><a href="javascript:;" onclick="location.href='/dyAdmin/index.do'">Admin</a></li>
 				</c:if>
 					<li><a href="javascript:;" onclick="location.href='/user/logout.do'">LogOut</a></li>
 			</sec:authorize>

@@ -39,7 +39,7 @@ public class CommonSampleSkinController {
 		return CommonSkinServiceImpl.getSkin(type, value);
 	}
 
-	@RequestMapping(value="/txap/homepage/board/skin/boardSkin/getSkinAjax.do")
+	@RequestMapping(value="/dyAdmin/homepage/board/skin/boardSkin/getSkinAjax.do")
 	@ResponseBody
 	public String getBoardSkinAjax(HttpServletRequest req
 			,@RequestParam(value="type") String type

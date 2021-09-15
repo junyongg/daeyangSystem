@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.tx.common.security.exception.AuthenticationNotFoundException;
 import com.tx.common.security.exception.CustomUsernameNotFoundException;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 public class CustomUserDetailsService implements UserDetailsService {
     

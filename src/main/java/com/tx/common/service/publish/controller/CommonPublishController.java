@@ -22,10 +22,10 @@ import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.publish.CommonPublishService;
 import com.tx.common.storage.service.StorageSelectorService;
-import com.tx.txap.admin.board.dto.BoardColumn;
-import com.tx.txap.admin.board.dto.BoardMainMini;
-import com.tx.txap.homepage.menu.dto.MenuHeaderTemplate;
-import com.tx.txap.homepage.popupzone.dto.PopupZoneCategoryDTO;
+import com.tx.dyAdmin.admin.board.dto.BoardColumn;
+import com.tx.dyAdmin.admin.board.dto.BoardMainMini;
+import com.tx.dyAdmin.homepage.menu.dto.MenuHeaderTemplate;
+import com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneCategoryDTO;
 
 /**
  * 

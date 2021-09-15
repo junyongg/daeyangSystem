@@ -29,14 +29,14 @@ import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.storage.service.StorageSelectorService;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.homepage.menu.dto.Menu;
-import com.tx.txap.homepage.organization.dto.OrganDTO;
-import com.tx.txap.operation.holiday.dto.HolidayDTO;
-import com.tx.txap.operation.holiday.service.HolidayService;
-import com.tx.txap.program.application.dto.ApplicationDTO;
-import com.tx.txap.program.application.dto.PlaceDTO;
-import com.tx.txap.program.application.service.ApplicationService;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.homepage.organization.dto.OrganDTO;
+import com.tx.dyAdmin.operation.holiday.dto.HolidayDTO;
+import com.tx.dyAdmin.operation.holiday.service.HolidayService;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.program.application.dto.PlaceDTO;
+import com.tx.dyAdmin.program.application.service.ApplicationService;
 import com.tx.user.service.ClientProgramService;
 
 /**

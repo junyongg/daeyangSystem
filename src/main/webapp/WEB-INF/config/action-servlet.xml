@@ -19,11 +19,11 @@
         <mvc:interceptor>
             <mvc:mapping path="/*.do"/>
             <mvc:mapping path="/**/*.do"/>
-            <mvc:exclude-mapping path="/txap/admin/ipfilter/error.do"/>
-            <mvc:exclude-mapping path="/txap/admin/ipfilter/error.do"/>
-            <mvc:exclude-mapping path="/txap/admin/ipfilter.do"/>
-            <mvc:exclude-mapping path="/txap/admin/ipfilter/**/*.do"/>
-            <bean id="loggerInterceptor" class="com.tx.txap.admin.ipfilter.interceptor.IpFilterInterceptor"></bean>
+            <mvc:exclude-mapping path="/dyAdmin/admin/ipfilter/error.do"/>
+            <mvc:exclude-mapping path="/dyAdmin/admin/ipfilter/error.do"/>
+            <mvc:exclude-mapping path="/dyAdmin/admin/ipfilter.do"/>
+            <mvc:exclude-mapping path="/dyAdmin/admin/ipfilter/**/*.do"/>
+            <bean id="loggerInterceptor" class="com.tx.dyAdmin.admin.ipfilter.interceptor.IpFilterInterceptor"></bean>
         </mvc:interceptor>
       
         <mvc:interceptor>

@@ -32,10 +32,10 @@ import com.tx.common.security.rsa.service.RsaService;
 import com.tx.common.security.service.AuthenticationSessionService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.site.dto.SiteManagerDTO;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.member.dto.UserDTO;
-import com.tx.txap.member.dto.UserSettingDTO;
+import com.tx.dyAdmin.admin.site.dto.SiteManagerDTO;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserSettingDTO;
 
 /**
  * 

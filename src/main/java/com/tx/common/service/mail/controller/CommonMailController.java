@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.mail.EmailService;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 /**
  * 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.annotation.service.ActivityHistoryService;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

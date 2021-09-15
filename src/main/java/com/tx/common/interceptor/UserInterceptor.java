@@ -32,15 +32,15 @@ import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.storage.service.StorageSelectorService;
-import com.tx.txap.admin.domain.dto.HomeManager;
-import com.tx.txap.admin.keyword.service.KeywordService;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.homepage.menu.dto.Menu;
-import com.tx.txap.homepage.menu.service.AdminMenuService;
-import com.tx.txap.homepage.menu.service.AdminMenuSessionService;
-import com.tx.txap.statistics.dto.CheckAgent;
-import com.tx.txap.statistics.dto.LogDTO;
-import com.tx.txap.statistics.service.AdminStatisticsService;
+import com.tx.dyAdmin.admin.domain.dto.HomeManager;
+import com.tx.dyAdmin.admin.keyword.service.KeywordService;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.homepage.menu.service.AdminMenuService;
+import com.tx.dyAdmin.homepage.menu.service.AdminMenuSessionService;
+import com.tx.dyAdmin.statistics.dto.CheckAgent;
+import com.tx.dyAdmin.statistics.dto.LogDTO;
+import com.tx.dyAdmin.statistics.service.AdminStatisticsService;
 
 public class UserInterceptor extends HandlerInterceptorAdapter {
 
@@ -112,7 +112,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 						if(visiterMenu.getIMG_PATH() != null){
 							visiterMenu.setIMG_PATH(AES256Cipher.encode(visiterMenu.getIMG_PATH()));
 						}
-						if(URL.startsWith("/txap")){
+						if(URL.startsWith("/dyAdmin")){
 							adminSetting(request,response,handler,modelAndView,URL,visiterMenu);
 						}else{
 							userSetting(request,response,handler,modelAndView,URL,visiterMenu);

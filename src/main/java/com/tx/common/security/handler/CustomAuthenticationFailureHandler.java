@@ -35,8 +35,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     		tiles = URL.split("/")[1];
     	}
 		
-		String defaultFailureUrl = "/txap/user/login.do";
-		if(!"txap".equals(tiles)){
+		String defaultFailureUrl = "/dyAdmin/user/login.do";
+		if(!"dyAdmin".equals(tiles)){
 			defaultFailureUrl = "/user/member/login.do?tiles="+tiles;
 		}
 		

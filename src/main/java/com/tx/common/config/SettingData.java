@@ -22,7 +22,7 @@ public class SettingData {
 	public final static String HOMEDIV_JCIA = "MN_0000001158"; //홈페이지 코드  - JCIA
 	
 	
-	public final static String ADMINPAGE_HOMEPAGE_MANAGER_URL = "/txap/homepage"; //관리자페이지 - 홈페이지 관리 메뉴 url
+	public final static String ADMINPAGE_HOMEPAGE_MANAGER_URL = "/dyAdmin/homepage"; //관리자페이지 - 홈페이지 관리 메뉴 url
 	
 	public final static String PROGRAM_APPLY = "SC_0000000342"; 	//신청 프로그램
 	public final static String PROGRAM_LECTURE = "SC_0000000343";  //강좌 프로그램

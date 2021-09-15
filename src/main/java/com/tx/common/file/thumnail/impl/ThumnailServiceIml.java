@@ -40,9 +40,9 @@ import com.tx.common.file.thumnail.ThumnailService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.storage.service.StorageSelectorService;
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.admin.board.dto.BoardType;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.admin.board.dto.BoardType;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

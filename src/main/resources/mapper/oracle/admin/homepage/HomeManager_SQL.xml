@@ -57,7 +57,7 @@
 								, C.SC_CODENM HM_LANG
 								, A.HM_MENU_DEPTH
 								, CASE A.HM_TILES
-									WHEN 'adm' 	THEN '/txap/index.do'
+									WHEN 'adm' 	THEN '/dyAdmin/index.do'
 									ELSE '/' || A.HM_TILES || '/index.do'
 								END HM_TILES
 								, A.HM_SITE_PATH

@@ -33,13 +33,13 @@ import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.mail.EmailService;
 import com.tx.common.service.urlGet.UrlGetService;
 import com.tx.common.service.weakness.WeaknessService;
-import com.tx.txap.admin.site.dto.SiteManagerDTO;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.member.dto.JoinReqUserDTO;
-import com.tx.txap.member.dto.ModReqUserDTO;
-import com.tx.txap.member.dto.UserDTO;
-import com.tx.txap.member.dto.UserSettingDTO;
-import com.tx.txap.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.admin.site.dto.SiteManagerDTO;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.member.dto.JoinReqUserDTO;
+import com.tx.dyAdmin.member.dto.ModReqUserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserSettingDTO;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 /**
  * 
  * @FileName: MemberController.java

@@ -1089,7 +1089,7 @@ function cf_smallBoxConfirm(title, content, func, bgColor, icon){
 /* callbackParam2 : callback 함수에 들어갈 2번째 파라미터. 1번 파라미터는 서블릿 요청의 return 값 
 /* isAsync : 비동기 boolean. 기본값 true
  * 
- * 사용예시 ) htmlAppend('/txap/update.do', '.target_'+key, param, 'outer-change', true, success, '완료되었습니다', false );
+ * 사용예시 ) htmlAppend('/dyAdmin/update.do', '.target_'+key, param, 'outer-change', true, success, '완료되었습니다', false );
  */
 function htmlAppend(ajaxUrl, $targetClass, param, optionNo, isAnimate, callbackFunc, callbackParam2, isAsync ){
 	if( typeof isAsync == 'undefined' || typeof isAsync != 'boolean' ){ isAsync = true }
@@ -1106,7 +1106,7 @@ function htmlAppend(ajaxUrl, $targetClass, param, optionNo, isAnimate, callbackF
      error : function(xhr, status, error) {
        if( xhr.status == '8080' ){
          alert('로그인 세션이 만료되었습니다.\n해당 기능은 로그인이 필수입니다.');
-         //location.href = '/txap/user/login.do';
+         //location.href = '/dyAdmin/user/login.do';
        }else{
          alert("사용자 요청 처리에러\n해당 문제가 계속 발생시 관리자에게 문의해 주십시오.");
        }

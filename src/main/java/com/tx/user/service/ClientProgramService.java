@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
-import com.tx.txap.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 
 public interface ClientProgramService {
 	

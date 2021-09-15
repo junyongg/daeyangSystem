@@ -35,8 +35,8 @@ import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.storage.service.StorageSelectorService;
-import com.tx.txap.admin.board.dto.BoardPersonal;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.board.dto.BoardPersonal;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 import com.tx.user.service.hwpConvertService;
 
 /**

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tx.common.config.annotation.IdDupleChk;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 public class IdDupleChkValidator implements ConstraintValidator<IdDupleChk, String> {
 

@@ -403,7 +403,7 @@
 						        &lt;/p&gt;
 						        &lt;div class="formBox"&gt;
 
-								&lt;%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%&gt;
+								&lt;%@ include file="/WEB-INF/jsp/dyAdmin/operation/file/pra_file_insertView.jsp"%&gt;
 								
 								&lt;c:if test="${action eq 'update' || action eq 'move'}"&gt;
 									&lt;input type="hidden" name="fsSize" id="fsSize" value="${fn:length(FileSub) }"&gt;

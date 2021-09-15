@@ -149,7 +149,7 @@
  	
  	 
  	
-	<error-page> 
+	<!-- <error-page> 
 		<error-code>500</error-code>
 		<location>/error.do</location>
 	</error-page> 
@@ -169,6 +169,6 @@
 	<error-page>
     	<exception-type>java.lang.Throwable</exception-type>
     	<location>/error.do</location>
-	</error-page>
+	</error-page> -->
 
 </web-app>

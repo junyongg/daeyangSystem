@@ -21,10 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tx.common.config.annotation.CheckActivityHistory;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.operation.survey.dto.SmDTO;
-import com.tx.txap.operation.survey.dto.SqDTO;
-import com.tx.txap.operation.survey.dto.SrmDTO;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.operation.survey.dto.SmDTO;
+import com.tx.dyAdmin.operation.survey.dto.SqDTO;
+import com.tx.dyAdmin.operation.survey.dto.SrmDTO;
 
 @Controller
 public class SurveyUserController {

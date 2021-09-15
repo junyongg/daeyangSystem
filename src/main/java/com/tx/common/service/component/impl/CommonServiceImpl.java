@@ -21,9 +21,9 @@ import com.tx.common.config.SettingData;
 import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.domain.dto.HomeManager;
-import com.tx.txap.admin.site.service.SiteService;
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.admin.domain.dto.HomeManager;
+import com.tx.dyAdmin.admin.site.service.SiteService;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tx.txap.admin.domain.dto.HomeManager;
+import com.tx.dyAdmin.admin.domain.dto.HomeManager;
 
 
 /**

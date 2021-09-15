@@ -12,9 +12,9 @@ import com.tx.common.config.annotation.CheckActivityHistory;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.board.dto.BoardPersonal;
-import com.tx.txap.admin.board.dto.BoardType;
-import com.tx.txap.admin.board.service.PersonalfilterService;
+import com.tx.dyAdmin.admin.board.dto.BoardPersonal;
+import com.tx.dyAdmin.admin.board.dto.BoardType;
+import com.tx.dyAdmin.admin.board.service.PersonalfilterService;
 
 @Controller
 public class PersonalController {

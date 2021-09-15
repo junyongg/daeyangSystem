@@ -42,7 +42,7 @@
 				</div>
 
 				<div class="tbl-box" id="ajaxResult">
-					<jsp:include page="/WEB-INF/jsp/txap/include/search/pra_search_header_paging.jsp" flush="true">
+					<jsp:include page="/WEB-INF/jsp/dyAdmin/include/search/pra_search_header_paging.jsp" flush="true">
 								<jsp:param value="/loglistAjax.do" name="pagingDataUrl" />
 								<jsp:param value="/excelAjax.do" name="excelDataUrl" />
 					</jsp:include>

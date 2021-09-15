@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tx.txap.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.homepage.menu.dto.Menu;
 
 /**
  * 활동기록 서비스

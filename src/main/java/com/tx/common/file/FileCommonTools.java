@@ -1,7 +1,7 @@
 package com.tx.common.file;
 
 import com.tx.common.file.dto.FileSub;
-import com.tx.txap.admin.board.dto.BoardPersonal;
+import com.tx.dyAdmin.admin.board.dto.BoardPersonal;
 
 public interface FileCommonTools {
 

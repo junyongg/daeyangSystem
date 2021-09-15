@@ -768,7 +768,7 @@
     		SELECT	*
     		FROM	S_MENU_MANAGER
     		WHERE 	MN_DEL_YN	=	'N'
-    		AND		MN_URL LIKE '/txap/homepage%'
+    		AND		MN_URL LIKE '/dyAdmin/homepage%'
     	) A
     	LEFT JOIN  	U_USERINFO_AUTHORITY_ADMIN B
     	ON			A.MN_KEYNO 	= 	B.MN_KEYNO 

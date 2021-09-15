@@ -20,16 +20,16 @@ import com.tx.common.file.FileManageTools;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.publish.CommonPublishService;
-import com.tx.txap.admin.board.dto.BoardMainMini;
-import com.tx.txap.admin.board.dto.BoardSkin;
-import com.tx.txap.admin.domain.dto.HomeManager;
-import com.tx.txap.admin.site.dto.SiteManagerDTO;
-import com.tx.txap.homepage.menu.dto.MenuHeaderTemplate;
-import com.tx.txap.homepage.popup.dto.PopupSkinDTO;
-import com.tx.txap.homepage.popupzone.dto.PopupZoneCategoryDTO;
-import com.tx.txap.homepage.research.dto.ResearchSkinDTO;
-import com.tx.txap.homepage.resource.dto.ResourcesDTO;
-import com.tx.txap.operation.survey.dto.SsDTO;
+import com.tx.dyAdmin.admin.board.dto.BoardMainMini;
+import com.tx.dyAdmin.admin.board.dto.BoardSkin;
+import com.tx.dyAdmin.admin.domain.dto.HomeManager;
+import com.tx.dyAdmin.admin.site.dto.SiteManagerDTO;
+import com.tx.dyAdmin.homepage.menu.dto.MenuHeaderTemplate;
+import com.tx.dyAdmin.homepage.popup.dto.PopupSkinDTO;
+import com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneCategoryDTO;
+import com.tx.dyAdmin.homepage.research.dto.ResearchSkinDTO;
+import com.tx.dyAdmin.homepage.resource.dto.ResourcesDTO;
+import com.tx.dyAdmin.operation.survey.dto.SsDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

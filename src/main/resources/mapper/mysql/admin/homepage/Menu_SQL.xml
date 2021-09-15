@@ -546,12 +546,9 @@
 					SELECT 		mn1.*
 								, mn2.MN_NAME HIGH_MN_NAME
 								, (SELECT COUNT(*) FROM S_MENU_MANAGER WHERE mn1.MN_KEYNO = MN_MAINKEY AND MN_DEL_YN = 'N') MN_CHILD_CNT
-								, T.TC_TYPE MN_TOUR_CATEGORY
 					FROM 		S_MENU_MANAGER mn1
 					LEFT JOIN 	S_MENU_MANAGER mn2
 					ON			mn1.MN_MAINKEY			=		mn2.MN_KEYNO
-					LEFT JOIN	T_TOURISM_COMMON T
-					ON			mn1.MN_TOURKEY = T.TC_KEYNO
 					WHERE		mn1.MN_KEYNO 			=		#{MN_KEYNO}	
 			) A
 			LEFT JOIN T_DEPARTMENT_USER_MANAGER DU
@@ -771,7 +768,7 @@
 				, MN_PAGEDIV_C
 		FROM 	S_MENU_MANAGER
 		<if test='MN_HOMEDIV_C == "all"'>
-		WHERE 	MN_HOMEDIV_C not in (SELECT MN_HOMEDIV_C FROM S_MENU_MANAGER WHERE MN_URL = '/txap')
+		WHERE 	MN_HOMEDIV_C not in (SELECT MN_HOMEDIV_C FROM S_MENU_MANAGER WHERE MN_URL = '/dyAdmin')
 		</if>
 		<if test='MN_HOMEDIV_C != "all"'>
 		WHERE 	MN_HOMEDIV_C = #{MN_HOMEDIV_C}
@@ -1183,7 +1180,7 @@
 		FROM 	S_MENU_MANAGER 
 		WHERE	MN_HOMEDIV_C  != #{MN_HOMEDIV_C}
 		AND	 	MN_DEL_YN = 'N'
-		AND 	MN_URL  NOT LIKE '/txap/admin%'
+		AND 	MN_URL  NOT LIKE '/dyAdmin/admin%'
 	</select>
     
 	<select id="MN_getMenuListByHomeDiv" resultType="String">
@@ -1200,7 +1197,7 @@
     	SELECT	*
     	FROM	S_MENU_MANAGER 
     	WHERE 	MN_DEL_YN	=	'N'
-    	AND		MN_URL LIKE '/txap/homepage%'
+    	AND		MN_URL LIKE '/dyAdmin/homepage%'
     </select>
     
 	

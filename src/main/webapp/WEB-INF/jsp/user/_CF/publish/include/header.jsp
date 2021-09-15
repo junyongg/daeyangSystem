@@ -19,7 +19,7 @@
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 					<c:if test="${userInfo.isAdmin eq 'Y' }">
-					<li><a href="/txap/index.do" target="_blank" title="관리자페이지">관리자페이지</a></li>
+					<li><a href="/dyAdmin/index.do" target="_blank" title="관리자페이지">관리자페이지</a></li>
 					</c:if>
 					<li><a href="/cf/mypage/info.do" title="마이페이지">마이페이지</a></li>
 					<li><a href="/user/logout.do" title="로그아웃">로그아웃</a></li>
@@ -126,7 +126,7 @@
 				<sec:authorize access="isAuthenticated()">
 				<li><a href="/user/logout.do" title="로그아웃">로그아웃</a></li>
 				<c:if test="${userInfo.isAdmin eq 'Y' }">
-				<li><a href="/txap/index.do" title="관리자페이지">관리자페이지</a></li>
+				<li><a href="/dyAdmin/index.do" title="관리자페이지">관리자페이지</a></li>
 				</c:if>
 				<li><a href="/cf/mypage/info.do" title="마이페이지">마이페이지</a></li>
 				</sec:authorize>

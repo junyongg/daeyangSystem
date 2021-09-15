@@ -22,8 +22,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tx.common.config.SettingData;
 import com.tx.common.service.component.ComponentService;
-import com.tx.txap.admin.code.service.CodeService;
-import com.tx.txap.admin.site.dto.SiteManagerDTO;
+import com.tx.dyAdmin.admin.code.service.CodeService;
+import com.tx.dyAdmin.admin.site.dto.SiteManagerDTO;
 
 public class SiteProperties {
 	

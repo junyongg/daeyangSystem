@@ -21,8 +21,8 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.mail.EmailService;
-import com.tx.txap.admin.board.dto.BoardNotice;
-import com.tx.txap.member.dto.UserDTO;
+import com.tx.dyAdmin.admin.board.dto.BoardNotice;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 

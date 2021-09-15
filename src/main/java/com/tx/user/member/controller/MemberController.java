@@ -24,9 +24,9 @@ import com.tx.common.security.service.AuthenticationSessionService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.mail.EmailService;
-import com.tx.txap.member.dto.UserDTO;
-import com.tx.txap.member.dto.UserSettingDTO;
-import com.tx.txap.program.application.dto.ApplicationDTO;
+import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.member.dto.UserSettingDTO;
+import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 /**
  * 
  * @FileName: MemberController.java

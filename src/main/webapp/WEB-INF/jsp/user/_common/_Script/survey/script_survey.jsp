@@ -5,6 +5,18 @@
 
 var survey_sum = 0;
 
+//게시판 타입 등록 처리 및 입력 폼 체크
+function pf_surveyInsert(){
+	
+	if(valcheck()){
+		if(confirm("설문결과를  등록하시겠습니까?")){
+			success();
+		}else{
+			exit();
+		}
+	}
+}
+
 //성공 콜백 함수   
 function success() {
 	$("#Form").attr("action", "/cf/function/survey/insert.do");

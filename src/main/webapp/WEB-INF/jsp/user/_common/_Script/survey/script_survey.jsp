@@ -19,7 +19,7 @@ function pf_surveyInsert(){
 
 //성공 콜백 함수   
 function success() {
-	$("#Form").attr("action", "/cf/function/survey/insert.do");
+	$("#Form").attr("action", "/dy/function/survey/insert.do");
 	$("#Form").submit();
 }
 

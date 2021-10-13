@@ -45,12 +45,12 @@
   	
     <select id="Pw_getListCnt" resultType="int">
 		SELECT	COUNT(*)
-		<include  refid="UI_getListBody"/>
+		<include  refid="Pw_getListBody"/>
     </select>
     
     <select id="Pw_getList" resultMap="ResultMap.rownumHashMap">
     	SELECT	* 
-		<include  refid="UI_getListBody"/>
+		<include  refid="Pw_getListBody"/>
 		<choose>
 	 		<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
@@ -75,28 +75,59 @@
   	
   	
   	
-	<!-- 회원 등록 -->
-	<insert id="Pw_insert" parameterType="USER">
+	<!-- 발전소 등록 -->
+	<insert id="Pw_insert" parameterType="PowerDTO">
        	INSERT INTO dy_power_plant
 		(
 				  DPP_NAME
+				, DPP_VOLUM
+				, DPP_STATUS
 				, DPP_IMG
 				, DPP_X_LOCATION
 				, DPP_Y_LOCATION
+				, DPP_INVER
 				, DPP_INVER_COUNT
 				, DPP_AREA
+				, DPP_LOCATION
 		)
 		VALUES
 		(
 	              #{DPP_NAME}
+				, #{DPP_VOLUM}
+				, #{DPP_STATUS}
 				, #{DPP_IMG}
 				, #{DPP_X_LOCATION}
 				, #{DPP_Y_LOCATION}
+				, #{DPP_INVER}
 				, #{DPP_INVER_COUNT}
 				, #{DPP_AREA}
+				, #{DPP_LOCATION}
 		)
     </insert>
     
+	<!-- 발전소 수정 -->
+	<update id="Pw_update" parameterType="PowerDTO">
+       	UPDATE dy_power_plant
+       	SET 
+       		 DPP_NAME			= #{DPP_NAME}
+			, DPP_VOLUM 		= #{DPP_VOLUM}
+			, DPP_STATUS		= #{DPP_STATUS}
+			, DPP_IMG			= #{DPP_IMG}
+			, DPP_X_LOCATION	= #{DPP_X_LOCATION}
+			, DPP_Y_LOCATION	= #{DPP_Y_LOCATION}
+			, DPP_INVER			= #{DPP_INVER}
+			, DPP_INVER_COUNT	= #{DPP_INVER_COUNT}
+			, DPP_AREA			= #{DPP_AREA}
+			, DPP_LOCATION		= #{DPP_LOCATION}
+			
+		WHERE DPP_KEYNO 		= #{DPP_KEYNO}
+    </update>
+    
+    <select id="Pw_getData" parameterType="PowerDTO" resultType="PowerDTO">
+    	SELECT * 
+    	FROM dy_power_plant
+    	WHERE DPP_KEYNO = #{DPP_KEYNO}
+    </select>
     
 </mapper>
  

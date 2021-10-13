@@ -58,11 +58,11 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/member/regist.do")
+	@RequestMapping(value="/dy/member/regist.do")
 	@CheckActivityHistory(desc="회원가입 - 약관동의 페이지 방문")
 	public ModelAndView cfMemberRegist(HttpServletRequest req, Map<String,Object> commandMap
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/member/prc_regist_agree");
+		ModelAndView mv  = new ModelAndView("/user/dy/member/prc_regist_agree");
 		
 		mv.addObject("userInfoSetting", Component.getData("member.US_getData","cf"));
 		
@@ -76,21 +76,21 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/member/regist/info.do")
+	@RequestMapping(value="/dy/member/regist/info.do")
 	@CheckActivityHistory(desc="회원가입 - 회원정보 페이지 방문")
 	public ModelAndView cfMemberRegistInfo(HttpServletRequest req
 			, @RequestParam(value="data",defaultValue="") String data
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/member/prc_regist_info");
+		ModelAndView mv  = new ModelAndView("/user/dy/member/prc_regist_info");
 		
 		
 		if(!data.equals("data")){ //약관동의에서 넘어올때만 data에 값 들어옴
-			mv.setViewName("redirect:/cf/member/regist.do");
+			mv.setViewName("redirect:/dy/member/regist.do");
 			return mv;
 		}
 		
 		mv.addObject("userInfoSetting", Component.getData("member.US_getData","cf"));
-		mv.addObject("mirrorPage", "/cf/member/regist.do");
+		mv.addObject("mirrorPage", "/dy/member/regist.do");
 		return mv;
 	}
 	/**
@@ -100,14 +100,14 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/member/regist/result.do")
+	@RequestMapping(value="/dy/member/regist/result.do")
 	@Transactional
 	@CheckActivityHistory(desc="회원가입 - 가입완료 작업")
 	public ModelAndView cfMemberRegistSave(HttpServletRequest req
 			, UserDTO UserDTO
 			, @RequestParam(value="tiles") String tiles
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/member/prc_regist_result");
+		ModelAndView mv  = new ModelAndView("/user/dy/member/prc_regist_result");
 	
 		UserSettingDTO setting = Component.getData("member.US_getData",tiles);
 		
@@ -155,7 +155,7 @@ public class MemberController {
 			Component.createData("member.UI_setAuthority", map);
 		}
 		
-		mv.addObject("mirrorPage", "/cf/member/regist.do");
+		mv.addObject("mirrorPage", "/dy/member/regist.do");
 		mv.addObject("userInfo", UserDTO);
 		return mv;
 	}
@@ -168,10 +168,10 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/member/{type:find||dormancy}.do")
+	@RequestMapping(value="/dy/member/{type:find||dormancy}.do")
 	public ModelAndView cfMemberFind(HttpServletRequest req, Map<String,Object> commandMap, @PathVariable String type
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/member/prc_find");
+		ModelAndView mv  = new ModelAndView("/user/dy/member/prc_find");
 		mv.addObject("type", type);
 		return mv;
 	}
@@ -183,7 +183,7 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/member/find/confirm.do")
+	@RequestMapping(value="/dy/member/find/confirm.do")
 	@ResponseBody
 	public boolean cfMemberFindConfirm(HttpServletRequest req
 			, UserDTO UserDTO
@@ -214,11 +214,11 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/info.do")
+	@RequestMapping(value="/dy/mypage/info.do")
 	@CheckActivityHistory(desc="회원정보 수정 페이지 방문")
 	public ModelAndView cfMypageInfo(HttpServletRequest req, Map<String,Object> commandMap
 			,@RequestParam(value="msg",required= false) String msg) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_info");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_info");
 		
 		if(msg != null){
 			mv.addObject("msg", msg);
@@ -235,13 +235,13 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/info/update.do")
+	@RequestMapping(value="/dy/mypage/info/update.do")
 	@CheckActivityHistory(desc="회원정보 수정 작업")
 	public ModelAndView cfMypageInfoUpdate(HttpServletRequest req
 			, UserDTO UserDTO
 			, @RequestParam(value="UI_PASSWORD2",defaultValue="") String UI_PASSWORD2
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("redirect:/cf/mypage/info.do");
+		ModelAndView mv  = new ModelAndView("redirect:/dy/mypage/info.do");
 		Map<String, Object> user = CommonService.getUserInfo(req);
 		
 		UserDTO.setUI_KEYNO(user.get("UI_KEYNO")+"");
@@ -271,11 +271,11 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/withdraw.do")
+	@RequestMapping(value="/dy/mypage/withdraw.do")
 	@CheckActivityHistory(desc="회원탈퇴 페이지 방문")
 	public ModelAndView cfMypageWithdraw(HttpServletRequest req, Map<String,Object> commandMap
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_withdraw");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_withdraw");
 		
 		return mv;
 	}
@@ -286,7 +286,7 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/withdraw/action.do")
+	@RequestMapping(value="/dy/mypage/withdraw/action.do")
 	@ResponseBody
 	@CheckActivityHistory(desc="회원탈퇴 작업")
 	public boolean cfMypageWithdrawAction(HttpServletRequest req

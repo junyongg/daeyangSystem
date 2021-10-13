@@ -4,7 +4,7 @@
             <div class="inner clearfix">
                 <ul class="mainMenu clearfix">
                     <c:if test="${userInfo.isAdmin eq 'Y' }">
-                    	<li><a class="" href="javascript:;" onclick="pf_moveMenu('/cf/index.do','SC_VUWAQ','N','')" title="메인">종합현황</a></li>
+                    	<li><a class="" href="javascript:;" onclick="pf_moveMenu('/dy/index.do','SC_VUWAQ','N','')" title="메인">종합현황</a></li>
                     </c:if>
                     <c:forEach items="${ menuList}" var="model">
                         <c:set var="current" value=""/>

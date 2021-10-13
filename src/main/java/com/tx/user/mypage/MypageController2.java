@@ -59,13 +59,13 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/applycheck.do")
+	@RequestMapping(value="/dy/mypage/applycheck.do")
 	@CheckActivityHistory(desc="회원 예매/신청조회 페이지 방문")
 	public ModelAndView applycheck(
 			  HttpServletRequest req
 			) throws Exception {
 	
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_applycheck");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_applycheck");
 		
 		return mv;
 	}
@@ -76,7 +76,7 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/applycheck/program/iframe.do")
+	@RequestMapping(value="/dy/mypage/applycheck/program/iframe.do")
 	@CheckActivityHistory(desc="프로그램iframe")
 	public ModelAndView Programapplyiframe(
 			  HttpServletRequest req
@@ -87,9 +87,9 @@ public class MypageController2 {
 		
 		ModelAndView mv = new ModelAndView();
 		if("A".equals(type)) {
-			mv.setViewName("/user/cf/mypage/prc_applycheck_programiframe.notiles");	
+			mv.setViewName("/user/dy/mypage/prc_applycheck_programiframe.notiles");	
 		}else if("L".equals(type)) {
-			mv.setViewName("/user/cf/mypage/prc_applycheck_lectureiframe.notiles");
+			mv.setViewName("/user/dy/mypage/prc_applycheck_lectureiframe.notiles");
 		}
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
@@ -145,7 +145,7 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/ApplyUserListAjax.do")
+	@RequestMapping(value="/dy/mypage/ApplyUserListAjax.do")
 	@ResponseBody
 	public Map<String,Object> ApplyUserList(
 			HttpServletRequest req
@@ -169,14 +169,14 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/applycheck/tour/iframe.do")
+	@RequestMapping(value="/dy/mypage/applycheck/tour/iframe.do")
 	@CheckActivityHistory(desc="단체프로그램iframe")
 	public ModelAndView Touriframe(
 			HttpServletRequest req
 			, @RequestParam HashMap<String,Object> map
 			, GroupDTO GroupDTO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_applycheck_touriframe.notiles");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_applycheck_touriframe.notiles");
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
 		String REGNM = (String) user.get("UI_KEYNO");
@@ -207,7 +207,7 @@ public class MypageController2 {
 	 */
 	@ResponseBody
 	@Transactional
-	@RequestMapping(value="/cf/mypage/programApplyAjax.do")
+	@RequestMapping(value="/dy/mypage/programApplyAjax.do")
 	@CheckActivityHistory(desc="마이페이지 프로그램 결제  / 취소 작업")
 	public void programApply(
 			  HttpServletRequest req
@@ -267,14 +267,14 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/applycheck/applypopup.do")
+	@RequestMapping(value="/dy/mypage/applycheck/applypopup.do")
 	public ModelAndView applypopup(
 			HttpServletRequest req
 			, Map<String,Object> commandMap
 			,@RequestParam(value="GP_KEYNO",required= false) String GP_KEYNO
 			,@ModelAttribute GroupDTO GroupDTO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_applycheck_detail.notiles");			
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_applycheck_detail.notiles");			
 		mv.addObject("applyData", Component.getData("mypage.tour_apply_detail", GroupDTO));
 		
 		return mv;
@@ -288,14 +288,14 @@ public class MypageController2 {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/cf/mypage/applycheck/applyCancel.do")
+	@RequestMapping(value="/dy/mypage/applycheck/applyCancel.do")
 	@CheckActivityHistory(desc="마이페이지 회원 예매/신청 내역 삭제 작업")
 	public ModelAndView applyCancel(
 			HttpServletRequest req
 			, Map<String,Object> commandMap
 			, @RequestParam(value="GP_KEYNO",required= false) String GP_KEYNO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_applycheck_detail.notiles");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_applycheck_detail.notiles");
 		GroupDTO GroupDTO = new GroupDTO();
 		GroupDTO.setGP_KEYNO(GP_KEYNO);
 		Component.updateData("mypage.tour_apply_cancel", GroupDTO);
@@ -310,14 +310,14 @@ public class MypageController2 {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/mypage/applycheck/applyUpdate.do")
+	@RequestMapping(value="/dy/mypage/applycheck/applyUpdate.do")
 	public ModelAndView applyUpdate(
 			HttpServletRequest req
 			, Map<String,Object> commandMap
 			,@RequestParam(value="k",required= false) String GP_KEYNO
 			,@ModelAttribute GroupDTO GroupDTO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/mypage/prc_applycheck_update.notiles");
+		ModelAndView mv  = new ModelAndView("/user/dy/mypage/prc_applycheck_update.notiles");
 //		GroupDTO.setGP_GSS_KEYNO(CommonService.getKeyno(GP_GSS_KEYNO, "GSS"));
 		
 		HashMap<String, Object> applyData = Component.getData("mypage.tour_apply_detail", GroupDTO);

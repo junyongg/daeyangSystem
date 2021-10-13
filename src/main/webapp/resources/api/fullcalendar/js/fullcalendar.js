@@ -13301,7 +13301,7 @@ function EventManager() { // assumed to be a calendar
 		if (eventProps.allDay) {
 			eventProps.start.stripTime();
 			if (eventProps.end) {
-				// TODO: consider nextDayThreshold here? If so, will require a lot of testing and adjustment
+				// TODO: consider nextDayThreshold here? If so, will require a lot of monitering and adjustment
 				eventProps.end.stripTime();
 			}
 		}

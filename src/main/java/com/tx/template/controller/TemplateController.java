@@ -52,15 +52,6 @@ public class TemplateController {
 		ModelAndView mv = new ModelAndView();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		//1호기 관련 데이터
-		map.put("inverter", "one");
-		map.put("inverter", "two");
-		
-		//2호기 간단한 데이터(오늘날짜) 합계
-		
-		map.put("inverter", inverter);
-		map.put("type", "day");
-
 		if("user".equals(tiles)){
 			tiles = new TilesDTO().checkNull(null, req);
 			mv.setViewName("redirect:/"+tiles+"/index.do");
@@ -80,9 +71,9 @@ public class TemplateController {
 		
 		//관리자(개발자 계정)이 아니면 redirect
 		if(SettingData.AUTHORITY_ADMIN.equals(UIA_KEYNO)) {
-			mv.setViewName("/publish/"+sitePath+"/prc_main");
+			mv.setViewName("redirect:/"+tiles+"/moniter/overAll.do");
 		}else {
-			mv.setViewName("redirect:/"+tiles+"/device.do");
+			mv.setViewName("redirect:/"+tiles+"/moniter/general.do");
 		}
 		
 		if(!"".equals(msg)) {
@@ -92,54 +83,6 @@ public class TemplateController {
 		return mv;
 		
 	}
-	
-	
-	@RequestMapping(value="/{tiles}/indexEn.do")
-	public ModelAndView templateIndexEn(HttpServletRequest req
-			, @PathVariable String tiles
-			, @RequestParam(value = "msg", defaultValue = "") String msg
-			, @RequestParam(value="inverter", defaultValue="all")String inverter
-			) throws Exception {
-		ModelAndView mv = new ModelAndView();
-		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		//1호기 관련 데이터
-		map.put("inverter", "one");
-		mv.addObject("OneData",Component.getData("empc.ONE_getData",map));
-		map.put("inverter", "two");
-		//2호기 간단한 데이터(오늘날짜) 합계
-		mv.addObject("TwoData",Component.getData("empc.ONE_getData",map));
-		
-		map.put("inverter", inverter);
-
-//		mv.addObject("PredayData",Component.getListNoParam("empc.ONE_getList_Preday"));
-		map.put("type", "day");
-		mv.addObject("TodaySum",Component.getData("empc.ONE_sum_Today",map));
-		mv.addObject("PredaySum",Component.getData("empc.ONE_sum_Preday",map));
-		mv.addObject("MonSum",Component.getList("empc.ONE_sum_M",map));
-
-		if("user".equals(tiles)){
-			tiles = new TilesDTO().checkNull(null, req);
-			mv.setViewName("redirect:/"+tiles+"/index.do");
-			return mv;
-		}
-		
-		String sitePath = SiteService.getSitePath(tiles);
-		if(StringUtils.isEmpty(sitePath)){
-			mv.setViewName("");
-			return mv;
-		}
-		mv.setViewName("/user/"+sitePath+"/ems"+"/prc_main_en.en");
-		
-		if(!"".equals(msg)) {
-			mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지
-		}
-
-		return mv;
-		
-	}
-	
-	
 	
 	/**
 	 * 사용자 정의형 URL mapping

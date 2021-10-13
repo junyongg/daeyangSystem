@@ -31,9 +31,8 @@ $(document).ready(function(){
 		getCategoryListAjax('board',1);
 		getCategoryListAjax('member',2);
 		getCategoryListAjax('keyword',3);
-		getCategoryListAjax('satisfaction',4);
-		getCategoryListAjax('menuCount',5);
-		getCategoryListAjax('visitorCount',6);
+		getCategoryListAjax('menuCount',4);
+		getCategoryListAjax('visitorCount',5);
 	</c:if>
 });
 

@@ -141,7 +141,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- 통계 관리 -->
 		<typeAlias alias="StatisticsDTO" type="com.tx.dyAdmin.statistics.dto.StatisticsDTO"/>
 		
-		<typeAlias alias="SerialDTO" type="com.tx.ems.dto.SerialDTO"/>
+		<!-- 발전소 관리 -->
+		<typeAlias alias="PowerDTO" type="com.tx.dyAdmin.power.dto.PowerDTO"/>
 	</typeAliases>
 	
 	<typeHandlers>

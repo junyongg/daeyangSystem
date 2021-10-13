@@ -118,17 +118,6 @@ public class AdminController {
 		case "keyword":
 			mv.setViewName("/dyAdmin/main/pra_main_keyword");
 			break;
-		case "satisfaction":
-			mv.setViewName("/dyAdmin/main/pra_main_satisfaction");
-			HashMap<String, Object> map = new HashMap<>();
-			//권한별 메뉴 조회
-			Map<String,Object> user = CommonService.getUserInfo(req);
-			String userKeyno = ((String) user.get("UI_KEYNO"));
-			String UIA_KEYNO = Component.getData("Authority.UIA_getDataByUIKEYNO", userKeyno);
-			map.put("UIA_KEYNO", UIA_KEYNO);
-			map.put("MN_HOMEDIV_C", homeKey);
-			mv.addObject("satisfactionList",Component.getList("MainSQL.get_mainPageSatisfactionList", map));
-			break;
 		case "menuCount":
 			mv.setViewName("/dyAdmin/main/pra_main_menuCount");
 			break;

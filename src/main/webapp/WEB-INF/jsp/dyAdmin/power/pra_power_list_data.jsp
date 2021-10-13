@@ -53,86 +53,44 @@
 				<input type="text" class="form-control search-control" data-searchindex="1" placeholder="번호 검색" />
 			</th>
 			<th class="hasinput">
-				<input type="text" class="form-control search-control" data-searchindex="2" placeholder="ID 검색" />
+				<input type="text" class="form-control search-control" data-searchindex="2" placeholder="지역 검색" />
 			</th>
 			<th class="hasinput">
-				<input type="text" class="form-control search-control" data-searchindex="3" placeholder="이름 검색" />
+				<input type="text" class="form-control search-control" data-searchindex="3" placeholder="발전소 검색" />
 			</th>
-			<th class="hasinput">
-				<input type="text" class="form-control search-control" data-searchindex="4" placeholder="권한 검색" />
-			</th>
-			<!-- 이메일과 전화번호는 암호화로 인해 검색 불가 -->
-			<th class="hasinput"></th>
 			<th class="hasinput"></th>
 			<th class="hasinput">
-				<input type="text" class="form-control search-control" data-searchindex="5" placeholder="가입날짜 검색" />
+				<input type="text" class="form-control search-control" data-searchindex="4" placeholder="날짜 검색" />
 			</th>
-			<th class="hasinput">
-				<input type="text" class="form-control search-control" data-searchindex="6" placeholder="마지막 로그인 검색" />
-			</th>
-			<th class="hasinput">
-				<select class="form-control selectFilter search-control" data-searchindex="7" style="width:100%;" onchange="pf_LinkPage()">
-		            <option value="">전체</option>
-		            <option value="O">O</option>
-		            <option value="X">X</option>
-		            <option value="탈퇴">탈퇴회원</option>
-		         </select>
-			</th>
+			<th class="hasinput"></th>
+			<th class="hasinput"></th>
 		</tr>
 		<%-- 화살표 정렬 --%>
 		<tr>
 			<th class="arrow" data-index="1">번호</th>
-			<th class="arrow" data-index="2">ID</th>
-			<th class="arrow" data-index="3">이름</th>
-			<th class="arrow min200" data-index="4">권한</th>
-			<!-- 이메일과 전화번호는 암호화로 인해 검색 불가 -->
-			<th class="min200" style="width:15%;">이메일</th>
-			<th class="min200" style="width:15%;">전화번호</th>
-			<th class="arrow min200" data-index="5">가입날짜</th>
-			<th class="arrow min200" data-index="6">마지막 로그인</th>
-			<th class="arrow" data-index="7">인증여부</th>
+			<th class="arrow" data-index="2">지역</th>
+			<th class="arrow" data-index="3">발전소명</th>
+			<th class="arrow" data-index="4">인버터 갯수</th>
+			<th class="arrow" data-index="5">등록일</th>
+			<th class="arrow" data-index="6">x좌표</th>
+			<th class="arrow" data-index="7">y좌표</th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:if test="${empty resultList }">
 		<tr>
-			<td colspan="9">검색된 데이터가 없습니다.</td>
+			<td colspan="7">검색된 데이터가 없습니다.</td>
 		</tr>
 		</c:if>
 		<c:forEach items="${resultList }" var="model">
 		<tr>
 			<td>${model.COUNT}</td>
-			<td>
-				<c:choose>
-					<c:when test="${model.AUTH eq 'O' || model.AUTH eq 'X'}">
-					<c:set var="onclick" value="pf_openMemberInfoPopup('${model.UI_ID}')"/>		
-					</c:when>
-					<c:otherwise>
-					<c:set var="onclick" value="alert('탈퇴한 회원입니다.')"/>
-					</c:otherwise>
-				</c:choose>
-				<a href="javascript:;" onclick="${onclick}">${model.UI_ID }</a>
-			</td>
-			<td><c:out value="${model.UI_NAME}"/></td>
-			<td>${model.UIA_NAME}</td>
-			<td>${model.UI_EMAIL}</td>
-			<td>${model.UI_PHONE}</td>
-			<td>${model.UI_REGDT}</td>
-			<td>${model.UI_LASTLOGIN}</td>
-			<td>
-				<c:choose>
-					<c:when test="${model.AUTH eq 'O'}">
-					<c:set var="color" value="#29088A"/>		
-					</c:when>
-					<c:when test="${model.AUTH eq 'X' }">
-					<c:set var="color" value="#FF0040"/>		
-					</c:when>
-					<c:otherwise>
-					<c:set var="color" value="red"/>
-					</c:otherwise>
-				</c:choose>
-				<font color="${color }"><b>${model.AUTH}</b></font>
-			</td>
+			<td>${model.DPP_AREA}</td>
+			<td><a href="javascript:;" onclick="detailData('${model.DPP_KEYNO}')">${model.DPP_NAME}</a></td>
+			<td>${model.DPP_INVER_COUNT}</td>
+			<td>${model.DPP_DATE}</td>
+			<td>${model.DPP_X_LOCATION}</td>
+			<td>${model.DPP_Y_LOCATION}</td>
 		</tr>
 		</c:forEach>
 	</tbody>
@@ -156,13 +114,10 @@
 		</div>
     </c:if>
 </div>
-
 <script type="text/javascript">
 
 $(function(){
-
 	pf_defaultPagingSetting('${search.orderBy}','${search.sortDirect}');
-
 })
 
 </script>

@@ -17,7 +17,7 @@ public class SettingData {
 	public final static int SESSION_DURATION = 17000+30; 	//세션 유지 시간 (초단위) 오차범위 수정을 위해 30초 추가로 셋팅해둠
 	
 	
-	public final static String HOMEDIV_CF = "MN_0000000207"; //홈페이지 코드  - CF
+	public final static String HOMEDIV_DY = "MN_0000000207"; //홈페이지 코드  - CF
 	public final static String HOMEDIV_ADMIN = "MN_0000000999"; //홈페이지 코드  - ADMIN
 	public final static String HOMEDIV_JCIA = "MN_0000001158"; //홈페이지 코드  - JCIA
 	
@@ -100,12 +100,6 @@ public class SettingData {
 	public final static String AUTHORITY_SUB_BOARD = "SC_MYKFE";  			// 서브 권한 타입  - 게시판
 	public final static String AUTHORITY_SUB_ETC = "SC_TZGGA";  			// 서브 권한 타입  - 기타
 	
-	public final static String TOUR_HOTEL = "";  							// 숙박 타입  - 호텔
-	public final static String TOUR_MOTEL = "";  							// 숙박 타입  - 모텔
-	
-	public final static String TOUR_RESTAURANT_MODEL = "";  				// 식당 타입  - 모범음식점
-	public final static String TOUR_RESTAURANT_HYGIENIC = "";  				// 식당 타입  - 위생등급
-	
 	
 	public final static String JSPDATA = "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%>\n" + 
 										 "<%@ include file=\"/WEB-INF/jsp/taglib/taglib.jspf\"%>\n";
@@ -115,4 +109,8 @@ public class SettingData {
 	public final static String EMAIL_REGEX = "^[_0-9a-zA-Z-]+@[0-9a-zA-Z-]+(.[_0-9a-zA-Z-]{2,3}+)*$";  											// 이메일 정규식
 //	public final static String EMAIL_REGEX = "^[0-9a-zA-Z]([-_\\\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\\\.]?[0-9a-zA-Z])*\\\\.[a-zA-Z]{2,3}$/i";  	// 이메일 정규식
 	public final static String TILES = "cf";  	// Validation 타일즈
+	public final static String defaultX_Location = "35.12438600722675";
+	public final static String defaultY_Location = "126.76849308672915";
+			
+	
 }

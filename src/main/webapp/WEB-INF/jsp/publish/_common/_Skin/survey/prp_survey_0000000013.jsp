@@ -99,7 +99,7 @@
 	<button class="btn btn-sm btn-primary surveyBtn" id="Board_Edit" type="button" onclick="pf_surveyInsert()">
 		 설문 결과 전송
 	</button>
-	<button class="btn btn-sm btn-default surveyBtn" id="Board_Delete" type="button" onclick="cf_back('/cf/function/survey.do')">
+	<button class="btn btn-sm btn-default surveyBtn" id="Board_Delete" type="button" onclick="cf_back('/dy/function/survey.do')">
 		 설문 작성 취소
 	</button>
 

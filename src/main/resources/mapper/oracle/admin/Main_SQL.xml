@@ -109,57 +109,6 @@
 	
     </select>
   	
-  	 <!-- 관리자페이지 메인에서 평가 5개 -->
-	<select id="get_mainPageSatisfactionList" resultMap="ResultMap.rownumHashMap" parameterType="hashmap">
-	SELECT * FROM
-		(
-				SELECT	*
-				FROM (
-					SELECT 	  	
-								(RANK() OVER(ORDER BY TPR.TPS_REGDT DESC)) COUNT
-								, SUBSTR(TPR.TPS_REGDT, 1, 10) AS TPS_REGDT
-				   				, TPS_IP
-				   				, TO_CHAR(TPS_COMMENT) AS TPS_COMMENT
-				   				, TPS_SCORE_NAME
-				   				, TPS_MN_KEYNO
-				   				, TMM.MN_NAME AS MN_NAME
-				   				,(SELECT COUNT(*) 
-				   				FROM T_PAGE_RESEARCH_MANAGER TPR
-							   				LEFT JOIN S_MENU_MANAGER TMM
-						            ON		TPR.TPS_MN_KEYNO = TMM.MN_KEYNO
-						            <if test="UIA_KEYNO != 'UIA_ASDFG'">
-						       		LEFT JOIN U_USERINFO_AUTHORITY_ROLL UAR
-						       		ON		UAR.MN_KEYNO = TPR.TPS_MN_KEYNO
-						       		</if>
-						        WHERE MN_NAME IS NOT NULL
-						         <if test="UIA_KEYNO != 'UIA_ASDFG'">
-						        AND		UAR.UIA_KEYNO		=	#{UIA_KEYNO}
-						        </if>
-						        AND DBMS_LOB.GETLENGTH(TPS_COMMENT) != 0
-						        AND TMM.MN_HOMEDIV_C = #{MN_HOMEDIV_C}
-				   				) TPR_TOTAL
-			        FROM 		T_PAGE_RESEARCH_MANAGER TPR
-						LEFT JOIN S_MENU_MANAGER TMM
-			            ON		TPR.TPS_MN_KEYNO = TMM.MN_KEYNO
-			            <if test="UIA_KEYNO != 'UIA_ASDFG'">
-			       		LEFT JOIN U_USERINFO_AUTHORITY_ROLL UAR
-			       		ON		UAR.MN_KEYNO = TPR.TPS_MN_KEYNO
-			       		</if>
-			        WHERE MN_NAME IS NOT NULL
-			         <if test="UIA_KEYNO != 'UIA_ASDFG'">
-			        AND		UAR.UIA_KEYNO		=	#{UIA_KEYNO}
-			        </if>
-			        AND DBMS_LOB.GETLENGTH(TPS_COMMENT) != 0
-			        AND TMM.MN_HOMEDIV_C = #{MN_HOMEDIV_C}
-			             ORDER BY 	TPS_REGDT DESC
-				) AB
-			)AA
-			WHERE 1=1
-			AND COUNT BETWEEN 0 AND 25  
-	 		ORDER BY 	COUNT
-	
-	</select>  	
-  	
 	<!--메뉴 카운팅 조회  관리자메인 페이지에서 -->
 	<select id="get_mainPageMenuCount" parameterType="Log" resultType="Log">
 	SELECT * FROM

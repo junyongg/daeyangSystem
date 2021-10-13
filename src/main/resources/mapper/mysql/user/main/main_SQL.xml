@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main"> 
+	
+	<!-- 메인 기본 Sql (메인에서 최신 데이터 추출) -->
+	<sql id="main_setting">
+		FROM(	
+			SELECT *
+			FROM(
+				SELECT * FROM dy_inverter_data_main 
+				WHERE DATE_FORMAT(DDM_DATE,'%Y-%m-%d') =  DATE_FORMAT(now(),'%Y-%m-%d')
+				ORDER BY DDM_DATE DESC
+				LIMIT 9999
+			)A
+			GROUP BY A.DDM_DPP_KEYNO
+		)B
+		RIGHT JOIN dy_power_plant C
+		ON B.DDM_DPP_KEYNO = C.DPP_KEYNO
+	</sql>
+	
+	<!-- 종합현황 카운팅 -->
+	<select id="select_Main_cnt" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		FROM(
+			SELECT	* , IFNULL(B.DDM_STATUS,'미개통') as status 
+			<include  refid="main_setting"/>
+		)D
+		WHERE status = #{value}
+	</select>
+	
+	<!-- 현장리스트 -->
+	<select id="select_MainData" resultType="hashmap" parameterType="hashmap">
+		SELECT	*
+		<include  refid="main_setting"/>
+		WHERE 1=1
+		<if test="type != null and type != ' '">
+			AND C.DPP_KEYNO = #{type}
+		</if>
+		<if test="region != null and region != '' and !region.equals('all')">
+			AND C.DPP_AREA = #{region}
+		</if>
+		<if test="status != null and status != '' and !status.equals('status') ">
+			<choose>
+				<when test="status.equals('정상')">AND B.DDM_STATUS = '정상'</when>
+				<when test="status.equals('장애')">AND B.DDM_STATUS = '장애'</when>
+				<otherwise>AND B.DDM_STATUS IS NULL</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<!-- 전체 발전량 데이터 추출 -->
+	<select id="select_MainSum" resultType="hashmap">
+		SELECT	SUM(B.DDM_ACTIVE_P) AS ACTIVE , SUM(B.DDM_D_DATA) AS DALIY, SUM(B.DDM_P_DATA) AS PREDATA , SUM(C.DPP_VOLUM) AS VOLUM, SUM(B.DDM_CUL_DATA) AS CUMULATIVE
+		<include  refid="main_setting"/>
+	</select>
+
+	<!-- 금월, 금년 데이터 출력 이전 데이터와 취합하기-->
+	<select id="select_MainSum_MY" resultType="hashmap" parameterType="hashmap">
+		SELECT SUM(C.DDM_D_DATA) AS DATA , COUNT(*) AS CNT
+		FROM(
+			SELECT *
+			FROM dy_inverter_data_main A
+			RIGHT JOIN dy_power_plant B
+			ON A.DDM_DPP_KEYNO = B.DPP_KEYNO
+			<![CDATA[
+				WHERE DATE_FORMAT(DDM_DATE,'%Y-%m-%d') <  DATE_FORMAT(now(),'%Y-%m-%d')
+			]]>
+			AND A.DDM_DPP_KEYNO = #{type}
+			ORDER BY DDM_DATE DESC
+		)C
+		WHERE 1=1 
+		<choose>
+			<when test="date.equals('month')">
+				AND  DATE_FORMAT(C.DDM_DATE,'%Y-%m') =  DATE_FORMAT(now(),'%Y-%m')
+			</when>
+			<when test="date.equals('year')">
+				AND  DATE_FORMAT(C.DDM_DATE,'%Y') =  DATE_FORMAT(now(),'%Y')
+			</when>
+		</choose>
+	</select>
+
+
+	<!-- 에러 알림 테이블 -->
+	<select id="select_errorData" resultType="hashmap" parameterType="string">
+		SELECT C.*
+		FROM (
+			SELECT * FROM dy_inverter_error A
+			LEFT JOIN dy_power_plant B
+			ON A.DIE_DPP_KEYNO = B.DPP_KEYNO
+			WHERE A.DIE_DPP_KEYNO = #{keyno}
+			ORDER BY DIE_DATE DESC
+			LIMIT 1000  
+		)C
+		GROUP BY C.DIE_DSP_ERROR, C.DIE_DSP_S_ERROR
+	</select>
+
+</mapper>

@@ -364,20 +364,6 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 		modelAndView.addObject("currentPath",homeManager.getHM_SITE_PATH());
 		modelAndView.addObject("tilesUrl",tilesUrl);
 		
-		//현재 시간
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat format2 = new SimpleDateFormat ( "yyyy-MM-dd");
-		SimpleDateFormat format3 = new SimpleDateFormat ( "HH:mm:ss");
-				
-		Date time = new Date();
-				
-		String time1 = format1.format(time);
-		String time2 = format2.format(time);
-		String time3 = format3.format(time);
-				
-		modelAndView.addObject("time2",time2);
-		modelAndView.addObject("time3",time3);
-		
 		request.getSession().setAttribute("currentTiles", tiles);
 		
 		setMainMenuList(visiterMenu);

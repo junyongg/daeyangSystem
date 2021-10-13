@@ -19,13 +19,10 @@ var pageLoadingCheck = true;
 var searchParamList = [];
 
 $(function(){
-	console.log('aaa')
 	datepickerOption.onSelect = function(selectedDate) {
-	console.log('aaasss')
 		$('#searchEndDate').datepicker('option', 'minDate', selectedDate);
 	} 
 	$('#searchBeginDate').datepicker(datepickerOption)
-	console.log('aaassdddds')
 	datepickerOption.onSelect = function(selectedDate) {
 		$('#searchBeginDate').datepicker('option', 'maxDate', selectedDate);
 	}

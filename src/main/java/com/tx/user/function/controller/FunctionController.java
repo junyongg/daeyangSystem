@@ -90,13 +90,13 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/program.do")
+	@RequestMapping(value="/dy/function/program.do")
 	@CheckActivityHistory(desc="신청프로그램 페이지 방문")
 	public ModelAndView functionProgram(
 			  HttpServletRequest req
 			, ApplicationDTO ApplicationDTO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/program/prc_program");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/program/prc_program");
 		
 		programPageView(mv,ApplicationDTO,SettingData.PROGRAM_APPLY);
 		
@@ -110,13 +110,13 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/ProgramLecture.do")
+	@RequestMapping(value="/dy/function/ProgramLecture.do")
 	@CheckActivityHistory(desc="강좌 프로그램 페이지 방문")
 	public ModelAndView Lectureprogram(
 			  HttpServletRequest req
 			, ApplicationDTO ApplicationDTO
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/program/prc_program");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/program/prc_program");
 
 		programPageView(mv,ApplicationDTO,SettingData.PROGRAM_LECTURE);
 		
@@ -149,7 +149,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("static-access")
-	@RequestMapping(value="/cf/function/program/iframe.do")
+	@RequestMapping(value="/dy/function/program/iframe.do")
 	public ModelAndView functionProgramiframe(
 			  HttpServletRequest req
 			, @RequestParam HashMap<String,Object> map
@@ -183,11 +183,11 @@ public class FunctionController {
 		
 		if(type.equals(SettingData.PROGRAM_APPLY)) {
 			mv.addObject("userData", Component.getData("Application.APU_getList", ApplicationDTO));
-			mv.setViewName("/user/cf/function/program/prc_program_iframe.notiles");
+			mv.setViewName("/user/dy/function/program/prc_program_iframe.notiles");
 		}else if(type.equals(SettingData.PROGRAM_LECTURE)) {
 			mv.addObject("nowYear", year);	//현제 년도로 나이비교
 			mv.addObject("userList", Component.getList("Application.APU_getList", ApplicationDTO));
-			mv.setViewName("/user/cf/function/program/prc_program_lecturepopup.notiles");
+			mv.setViewName("/user/dy/function/program/prc_program_lecturepopup.notiles");
 		}
 		return mv;
 	}
@@ -198,7 +198,7 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/program/ticketCnt.do")
+	@RequestMapping(value="/dy/function/program/ticketCnt.do")
 	@ResponseBody
 	public Map<String,Object> ticketCnt(
 			HttpServletRequest req
@@ -216,7 +216,7 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/programApplyAjax.do")
+	@RequestMapping(value="/dy/function/programApplyAjax.do")
 	@ResponseBody
 	public Map<String,Object> functionProgramApplyAjax(
 			  HttpServletRequest req
@@ -337,7 +337,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value="/cf/function/programTimeAjax.do")
+	@RequestMapping(value="/dy/function/programTimeAjax.do")
 	@ResponseBody
 	public List functionProgramTimeAjax(
 			HttpServletRequest req
@@ -442,7 +442,7 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/programChargeAjax.do")
+	@RequestMapping(value="/dy/function/programChargeAjax.do")
 	@ResponseBody
 	public Map<String,Object> functionProgramChargeAjax(
 			HttpServletRequest req
@@ -468,7 +468,7 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/program/SaleComentAjax.do")
+	@RequestMapping(value="/dy/function/program/SaleComentAjax.do")
 	@ResponseBody
 	public String SaleComentAjax(
 			HttpServletRequest req
@@ -491,7 +491,7 @@ public class FunctionController {
 	 */
 	@ResponseBody
 	@Transactional
-	@RequestMapping(value="/cf/function/programInsert.do")
+	@RequestMapping(value="/dy/function/programInsert.do")
 	@CheckActivityHistory(desc="신청 프로그램 등록 작업")
 	public String ProgramInsert(
 				  HttpServletRequest req
@@ -551,7 +551,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/cf/function/userInsertAjax.do")
+	@RequestMapping(value="/dy/function/userInsertAjax.do")
 	@Transactional
 	@CheckActivityHistory(desc="수강대상자 등록 작업")
 	public ApplicationDTO UserInsertAjax(
@@ -573,7 +573,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/cf/function/userUpdateAjax.do")
+	@RequestMapping(value="/dy/function/userUpdateAjax.do")
 	@Transactional
 	@CheckActivityHistory(desc="수강대상자  수정 작업")
 	public void UserUpdateAjax(
@@ -593,7 +593,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/cf/function/userDeleteAjax.do")
+	@RequestMapping(value="/dy/function/userDeleteAjax.do")
 	@Transactional
 	@CheckActivityHistory(desc="수강대상자 삭제 작업")
 	public String UserDeleteAjax(
@@ -609,9 +609,9 @@ public class FunctionController {
 	
 	
 	
-/*	@RequestMapping(value="/cf/function/program/popup.do")
+/*	@RequestMapping(value="/dy/function/program/popup.do")
 	public ModelAndView functionProgrampopup() throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/program/prc_program_popup");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/program/prc_program_popup");
 		return mv;
 	}*/
 
@@ -624,12 +624,12 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/department.do")
+	@RequestMapping(value="/dy/function/department.do")
 	@CheckActivityHistory(desc="부서 안내 페이지 방문")
 	public ModelAndView cfIntroDepartmemt(HttpServletRequest req, Map<String,Object> commandMap
 			, OrganDTO OrganDto
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/prc_department");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/prc_department");
 		
 		OrganDto.setDN_HOMEDIV_C(SiteProperties.getString("HOMEPAGE_REP"));
 		mv.addObject("orgList",Component.getList("Organization.DN_getList",OrganDto));
@@ -643,7 +643,7 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/group.do")
+	@RequestMapping(value="/dy/function/group.do")
 	@CheckActivityHistory(desc="단체예약 페이지 방문")
 	public ModelAndView group(
 				  HttpServletRequest req
@@ -651,7 +651,7 @@ public class FunctionController {
 				, ApplicationDTO ApplicationDTO
 				, PlaceDTO place
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/group/prc_group");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/group/prc_group");
 	
 		List<HashMap<String, Object>> GroupList = Component.getList("Group.GM_Select", ApplicationDTO);
 		mv.addObject("GroupList", GroupList);
@@ -672,7 +672,7 @@ public class FunctionController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/cf/function/groupAjax.do")
+	@RequestMapping(value="/dy/function/groupAjax.do")
 	public Map<String, Object> groupAjax(
 			HttpServletRequest req
 			, ApplicationDTO ApplicationDTO
@@ -687,7 +687,7 @@ public class FunctionController {
 	 * 단체예약 스케줄 ajax로 가져오기 
 	 *  캘린더형에서 사용중
 	 */
-	@RequestMapping(value="/cf/function/groupViewAjax.do")
+	@RequestMapping(value="/dy/function/groupViewAjax.do")
 	@ResponseBody
 	public Map<String,Object> groupViewAjax(
 			 HttpServletRequest req
@@ -834,7 +834,7 @@ public class FunctionController {
 	 */
 	@ResponseBody
 	@Transactional
-	@RequestMapping(value="/cf/function/Group/TourInsert.do")
+	@RequestMapping(value="/dy/function/Group/TourInsert.do")
 	@CheckActivityHistory(desc="투어 예약 등록 작업")
 	public String TourInsert(
 				  HttpServletRequest req
@@ -878,15 +878,15 @@ public class FunctionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/cf/function/chat.do")
+	@RequestMapping(value="/dy/function/chat.do")
 	public ModelAndView cfFunctionChat() throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/function/prc_chat");
+		ModelAndView mv  = new ModelAndView("/user/dy/function/prc_chat");
 		
 		return mv;
 	}
 	
 	//달력 기념일 이벤트
-	@RequestMapping(value="/cf/function/holidayAjax.do")
+	@RequestMapping(value="/dy/function/holidayAjax.do")
 	@ResponseBody
 	public Map<String,Object> BoardListViewAjax(HttpServletRequest req
 			 ,@RequestParam HashMap<String,Object> map

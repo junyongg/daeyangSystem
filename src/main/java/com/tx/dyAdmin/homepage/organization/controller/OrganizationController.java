@@ -191,9 +191,9 @@ public class OrganizationController {
 		return result;
 	}
 
-	@RequestMapping(value = "/cf/temp.do")
+	@RequestMapping(value = "/dy/temp.do")
 	public ModelAndView adminOp111erationOrgDataAjax(HttpServletRequest req) throws Exception {
-		ModelAndView mv = new ModelAndView("/cf/temp/temp");
+		ModelAndView mv = new ModelAndView("/dy/temp/temp");
 		return mv;
 	}
 

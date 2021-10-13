@@ -38,7 +38,7 @@
 							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 비밀번호를 입력하세요.</b> </label>
 						<div class="error_message" style="color:red;">${customExceptionmsg }</div>
 						<div class="note">
-							<a href="/cf/member/find.do">비밀번호 찾기</a>
+							<a href="/dy/member/find.do">비밀번호 찾기</a>
 						</div>
 					</section>
 

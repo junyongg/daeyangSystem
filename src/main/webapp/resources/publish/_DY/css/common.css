@@ -1,0 +1,393 @@
+@charset "utf-8";
+
+/********************* Login *********************/
+#Login_wrap{background: #EFF1F7; width: 100%; min-height: 100vh; position: relative; padding: 20px; overflow: hidden;}
+#Login_wrap .bg{position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: url('/resources/img/sub/bg_login.jpg') no-repeat center center / cover; z-index: 1;}
+#Login_wrap .in_login{position: absolute; right: 10%; top: 15%; z-index: 5; background-color: #fff; border-radius: 10px; width: 572px; padding: 90px 50px 50px; box-shadow: 2px 2px 3px rgba(50, 50, 50, .2);}
+#Login_wrap .in_login h1 a{display: block; line-height: 1;}
+#Login_wrap .in_login h2{font-family: 'Montserrat','Roboto','Noto Sans KR'; font-weight: 400; color: #444; padding-bottom: 17px; border-bottom: 1px dashed #eee; line-height: 1; margin-bottom: 55px;}
+#Login_wrap .in_login h2 b{font-weight: 400; color: #203980; font-family: 'Montserrat';}
+#Login_wrap .in_login h3{font-size: 24px; font-weight: 600; color: #2F62AD;}
+#Login_wrap .in_login h4{font-size: 17px; font-weight: 400; color: #444; margin-bottom: 20px;}
+#Login_wrap .in_login .log{width: 100%; margin: 10px 0;}
+#Login_wrap .in_login .log:last-of-type{margin-bottom: 20px;}
+#Login_wrap .in_login .log ~ label{font-size: 16px; color: #333; margin-top: 20px; vertical-align: middle;}
+#Login_wrap .in_login .log ~ input{vertical-align: middle;}
+
+.log_txt{width: 100%; height: 63px; border: 1px solid #ccc; padding: 10px 20px 10px 50px; font-size: 16px; color: #333; background-repeat: no-repeat; background-position: left 17px top 52%;}
+.log_txt::placeholder{color: #666; font-size: 16px;}
+.log_txt.id{background-image: url('/resources/img/sub/ic_login_id.png');}
+.log_txt.pwd{background-image: url('/resources/img/sub/ic_login_pwd.png');}
+
+.btn_login{width: 100%; height: 63px; color: #fff; background-color: #2F62AD; transition: all .25s ease; font-size: 19px; margin-top: 28px;}
+.btn_login:hover{background-color: #2972e0;}
+
+
+@media screen and (max-width: 700px) {
+	#Login_wrap{background: #EFF1F7; width: 100%; min-height: 100vh;}
+	#Login_wrap .bg{width: 100%; height: 30%; background-position: left top;}
+	#Login_wrap .in_login{position: relative; right: auto; top: auto;  width: 100%; padding: 60px 20px 30px; margin-top: 150px;}
+	#Login_wrap .in_login h1 a{}
+	#Login_wrap .in_login h1 a img{width: 120px;}
+	#Login_wrap .in_login h2{ padding-bottom: 10px; margin-bottom: 30px; font-size: 15px;}
+	#Login_wrap .in_login h3{font-size: 18px;}
+	#Login_wrap .in_login h4{font-size: 15px; margin: 5px 0 15px; word-break: keep-all; line-height: 1.5;}
+	#Login_wrap .in_login .log:last-of-type{margin-bottom: 15px;}
+	#Login_wrap .in_login .log ~ label{font-size: 14px;}
+
+	.log_txt{height: 45px; padding: 10px 20px 10px 45px; font-size: 14px; background-position: left 15px top 52%; background-size: 12px;}
+	.log_txt::placeholder{font-size: 14px;}
+
+	.btn_login{height: 45px; font-size: 14px; margin-top: 15px;}
+
+}
+
+/********************* Login END *********************/
+
+
+
+
+
+
+
+
+
+/********************* Layout *********************/
+#wrap{background-color: #EEF1F8; width: 100%; min-height: 100vh; overflow: hidden;}
+
+/* header */
+#wrap > header{width: 100%; height: 63px; background-color: #fff; display: flex; align-items: center; position: relative; padding: 10px 35px; z-index: 1000;}
+#wrap > header h1{display: block; margin-right: 200px;}
+#wrap > header h1 > a{display: block; line-height: 0;}
+
+#wrap > header .rb{margin-left: auto; display: flex; align-items: center;}
+#wrap > header .rb > dl{display: inline-flex; align-items: center; margin-right: 20px;}
+#wrap > header .rb > dl dt{font-size: 15px; color: #333; margin-right: 12px; vertical-align: bottom; margin-top: 1px;}
+#wrap > header .rb > dl dt.user{padding-left: 18px; background: url('/resources/img/sub/ic_top_user.png') no-repeat left center;}
+#wrap > header .rb > dl dd{font-size: 14px; vertical-align: top; margin-top: 0px;}
+#wrap > header .rb > dl dd b{font-size: 16px; color: #222; padding-right: 3px; font-weight: 500;}
+#wrap > header .btn_logout{vertical-align: middle; height: 36px; color: #fff; padding: 0 16px 0 35px; background: #3061AD url('/resources/img/sub/ic_lock.png') no-repeat left 15px top 50%; border-radius: 30px; font-size: 14px; transition: all .25s ease;}
+#wrap > header .btn_logout:hover{background-color: #0b52bd;}
+
+#wrap > header .menu_bar{position: absolute; left: 0; bottom: -2px; display: block; height: 4px; width: 0; background-color: #2F62AD; transition: all .4s ease-in-out;}
+
+#gnb{}
+#gnb > ul{display: flex;}
+#gnb > ul > li{}
+#gnb > ul > li.mobile{display: none;}
+#gnb > ul > li > a{display: block; line-height: 63px; padding: 0 30px; font-size: 20px; color: #333333; transition: all .25s ease; min-width: 133px; text-align: center;}
+#gnb > ul > li > a:hover{color: #2F62AD; font-weight: 500;}
+#gnb > ul > li.on > a{color: #2F62AD; font-weight: 500;}
+
+#wrap > header .mo_menu{display: none;}
+
+
+/* contents */
+#container{width: 100%; position: relative; padding: 25px;}
+#container.heightFix{height: calc(100vh - 63px); min-height: 850px;}
+
+
+
+@media screen and (max-width: 1450px) {
+	/* header */
+	#wrap > header h1{margin-right: 100px;}
+}
+
+
+@media screen and (max-width: 1400px) {
+	/* container */
+	#container{padding: 20px;}
+	#container.heightFix{height: auto; min-height: auto;}
+}
+
+
+@media screen and (max-width: 1300px) {
+	/* header */
+	#wrap > header h1{margin-right: 50px;}
+	#wrap > header h1 img{width: 130px;}
+	#gnb > ul > li > a{padding: 0 10px; font-size: 16px; min-width: 100px;}
+	#wrap > header .rb > dl dt{display: none;}
+}
+
+
+@media screen and (max-width: 1000px) {
+	/* header */
+	#wrap > header{height: 60px; padding: 10px 20px;}
+	#wrap > header h1{margin-right: 10px;}
+	#wrap > header h1 > a img{width: 95px;}
+	
+	#wrap > header .rb > dl{margin-right: 10px;}
+	#wrap > header .rb > dl dd{font-size: 12px;}
+	#wrap > header .rb > dl dd b{font-size: 14px;}
+	#wrap > header .btn_logout{display: none;}
+	#wrap > header .btn_logout:hover{background-color: #0b52bd;}
+	
+	#wrap > header .menu_bar{display: none;}
+	
+	#wrap > header .mo_menu{display: block; padding-top: 5px;}
+	#wrap > header .mo_menu span{font-size: 30px; color: #222;}
+	#wrap > header .mo_menu span.close,
+	#wrap > header .mo_menu.on span.hamber{display: none;}
+	#wrap > header .mo_menu.on span.close{display: block;}
+	
+	#gnb{ position: absolute; left: 100%; top: 100%; width: 100%; height: calc(100vh - 60px); background-color: rgba(0, 0, 0, .2); transition: all .5s ease; opacity: 0; overflow-y: auto;}
+	#gnb.on{left: 0; opacity: 1;}
+	#gnb > ul{display: block; background-color: #fff; border-top: 1px solid #eee; box-shadow: 1px 3px 5px rgba(0, 0, 0, .1);}
+	#gnb > ul > li{border-bottom: 1px solid #eee;}
+	#gnb > ul > li.mobile{display: block;}
+	#gnb > ul > li > a{line-height: 1.5; padding: 15px 70px 15px 40px; font-size: 15px; color: #555; transition: all .25s ease; min-width: 133px; text-align: left; position: relative;}
+	#gnb > ul > li > a::after{font-family: xeicon; content: "\e940"; position: absolute; right: 25px; top: 15px;}
+	#gnb > ul > li > a i{font-size: 20px; vertical-align: middle;}
+	#gnb > ul > li > a.logout{color: #777;}
+	#gnb > ul > li > a.logout::after{content: "\e972"; font-size: 1.2em; color: #aaa;}
+	#gnb > ul > li > a:hover{color: #fff; background-color: #0b52bd;}
+	#gnb > ul > li > a.on{color: #fff; background-color: #0b52bd;}
+
+	/* cont */
+	#container{padding: 20px;}
+
+}
+
+/********************* Layout END *********************/
+
+
+
+
+
+
+
+
+
+/********************* Common *********************/
+.flex_wrapper{width: 100%; height: 100%;  min-height: 810px; display: flex; justify-content: space-between;}
+
+/* CONTENTS */
+article.artBoard{background-color: #fff; border-radius: 8px; box-shadow: 2px 2px 3px rgba(68, 68, 68, .2); padding: 20px 25px 10px; position: relative; overflow-y: auto;}
+
+article.artBoard h2{font-size: 18px; font-weight: 500; color: #333; margin-bottom: 20px; background-repeat: no-repeat; background-position: 0 7px; padding: 2px 0 2px 25px;}
+article.artBoard h2.mgSm{margin-bottom: 10px;}
+article.artBoard h2.circle{background-image: url('/resources/img/sub/ic_bullet_01.png');}
+article.artBoard h2.location{background-image: url('/resources/img/sub/ic_loaction_1.png');}
+
+article.artBoard .r_c{position: absolute; right: 25px; top: 20px;}
+
+.con_h{width:100%; max-height: calc(100% - 60px); overflow-y: auto;}
+
+
+
+
+/* FORM */
+.sel_nor{min-width: 120px; height: 35px; line-height: 33px; font-size: 14px; border: 1px solid #ddd; padding: 0px 25px 10px 15px; font-weight: 400; background: #fff url('/resources/img/sub/ic_select_arr.png') no-repeat right 7px center; color: #58595b;}
+select.sel_nor {-webkit-appearance:none; -moz-appearance:none; appearance:none}
+select.sel_nor::-ms-expand {display:none}
+
+
+
+/* WITH */
+.wAuto{}
+
+
+
+
+
+/* TABELE */
+.table_wrapper{width: 100%; overflow: auto;}
+.table_wrapper.mgT{margin-top: 20px;}
+
+.tbl_normal{width: 100%; border-collapse: separate; border-top: 1px solid #222; position: relative;}
+.tbl_normal th{text-align: center; font-size: 15px; font-weight: 500; color:#222; padding: 10px 5px; background-color: #F6F7F9; border-left: 1px solid #ddd; border-bottom: 1px solid #ddd;}
+.tbl_normal th:first-of-type{border-left: none;}
+.tbl_normal td{font-size: 14px; font-weight: 400; color:#444; padding: 10px 5px; border-left: 1px solid #ddd; text-align: center; border-bottom: 1px solid #ddd;}
+.tbl_normal td:first-of-type{border-left: none;}
+.tbl_normal .txtL{text-align: left;}
+.tbl_normal .txtR{text-align: right;}
+.tbl_normal .txtC{text-align: center;}
+
+.tbl_normal.sm th{font-size: 14px; padding: 3px 10px;}
+.tbl_normal.sm td{font-size: 14px; padding: 3px 10px;}
+
+.tbl_normal.fixed{border-top: none; table-layout: fixed;}
+.tbl_normal.fixed th{position: sticky; top: 0px;}
+.tbl_normal.fixed th::before{width: 100%; height: 1px; content: ""; display: block; background-color: #222; position: absolute; left: 0; top: 0;}
+
+
+
+
+
+
+@media screen and (max-width: 1400px) {
+	.flex_wrapper{height: auto;  min-height: 820px; flex-wrap: wrap;}
+
+	article.artBoard{padding: 20px; overflow-y: inherit;}
+	
+	.con_h{max-height: 400px;}
+
+	.tbl_normal td{word-break: keep-all;}
+}
+
+@media screen and (max-width: 1000px) {
+	
+	.flex_wrapper{min-height: auto;}
+
+	.table_wrapper.mgT{margin-top: 15px;}
+
+	
+	article.artBoard .r_c{position: relative; right: 0; top: 0; margin: 10px 0;}
+	
+	article.artBoard{padding: 15px;}
+	article.artBoard h2{font-size: 15px; margin-bottom: 15px; background-position: 0 50%; padding: 2px 0 2px 20px;}
+	article.artBoard h2.circle{background-size: 13px;}
+	article.artBoard h2.location{background-size: 10px;}
+	
+	.sel_nor{min-width: 90px; height: 32px; line-height: 30px; font-size: 13px;}
+	
+	.con_h{max-height: 300px;}
+	
+	
+	.tbl_normal th{font-size: 14px;}
+	.tbl_normal td{font-size: 13px;}
+	
+	.tbl_normal.sm th{font-size: 13px;}
+	.tbl_normal.sm td{font-size: 12px;}
+	
+}
+
+
+@media screen and (max-width: 500px) {
+	.table_wrapper.lg table{width: 600px;}
+	.table_wrapper.md table{width: 500px;}
+}
+
+
+/********************* Common END *********************/
+
+
+
+
+
+
+
+
+
+
+
+
+/********************* Sub *********************/
+
+/* 종합현황 */
+.flex_wrapper .one_row{display: flex; flex-direction: column; justify-content: space-between;}
+
+.flex_wrapper .one_row.left{width: 33%;}
+.flex_wrapper .one_row.right{width: 66%;}
+
+.flex_wrapper .one_row .top{height: 170px;}
+.flex_wrapper .one_row .bott{height: calc(100% - 190px);}
+
+.flex_wrapper .one_row .wb{}
+.flex_wrapper .one_row .wb::after{content: ""; display: block; clear: both;}
+.flex_wrapper .one_row .wb .lb{float: left; width: 40%; height: 100%;}
+.flex_wrapper .one_row .wb .rb{float: right; width: 58%; height: 49%; margin-bottom: 1%;}
+.flex_wrapper .one_row .wb .rb:last-of-type{margin-bottom: 0;}
+
+
+.map_box_c{width: 100%; height: calc(100% - 60px); border: 1px solid #ddd; overflow-y: hidden;}
+.map_box_c > img{width: 100%; min-height: 100%;}
+
+.all_status{width: 100%;}
+.all_status > ul{display: flex;}
+.all_status > ul > li{flex-grow: 1; flex-basis: 1px; border-left: 1px solid #ddd; padding: 0px 5px; text-align: center;}
+.all_status > ul > li:first-child{border-left: none;}
+.all_status > ul > li p{word-break: break-all;}
+.all_status > ul > li .cate{font-size: 16px; color: #555; font-weight: 400; margin-bottom: 6px;}
+.all_status > ul > li .num{font-size: 35px; font-weight: 500;}
+.all_status > ul > li .num.navy{color: #203A80;}
+.all_status > ul > li .num.sky{color: #1E9DD8;}
+.all_status > ul > li .num.red{color: #ED1C24;}
+.all_status > ul > li .num.black{color: #444444;}
+.all_status > ul > li .number{font-size: 20px; font-weight: 500; color: #444;}
+.all_status > ul > li .number b{font-size: 32px; padding-right: 5px;}
+
+.circle_statue{display: inline-block; width: 14px; height: 14px; border-radius: 50%; background-color: #aaa;}
+.circle_statue.green{background-color: #87FD07;}
+.circle_statue.red{background-color: #ED1C24;}
+.circle_statue.blue{background-color: #1E9DD8;}
+.circle_statue.black{background-color: #444;}
+
+
+/* 기상정보 */
+.weather_infomation{width: 100%; display: flex; justify-content: space-between; align-items: center;}
+.weather_infomation > .icons{width: 113px;}
+.weather_infomation > .dgree{margin: 0 10px; text-align: center;}
+.weather_infomation > .dgree p.number{font-size: 47px; font-weight: 400; color: #333; margin-bottom: 3px;}
+.weather_infomation > .dgree p.number b{font-size: 1.2em; font-weight: 600;}
+.weather_infomation > .dgree span{display: inline-block; line-height: 21px; background-position: left 50%; background-repeat: no-repeat; font-size: 16px; font-weight: 500; margin: 0 5px; padding-left: 25px;}
+.weather_infomation > .dgree span.rain{background-image: url('/resources/img/sub/ic_wea_precipitation.png');}
+.weather_infomation > .dgree span.rain_per{background-image: url('/resources/img/sub/ic_wea_Humidity.png');}
+.weather_infomation > .infos{padding-right: 10px; padding-top: 10px;}
+.weather_infomation > .infos > ul{}
+.weather_infomation > .infos > ul > li{margin-top: 9px; font-size: 16px; font-weight: 400; line-height: 24px; text-align: left; background-repeat: no-repeat; background-position: left center; padding-left: 32px;}
+.weather_infomation > .infos > ul > li:first-child{margin-top: 0;}
+.weather_infomation > .infos > ul > li.sunrise{background-image: url('/resources/img/sub/ic_wea_sunrise.png');}
+.weather_infomation > .infos > ul > li.sunset{background-image: url('/resources/img/sub/ic_wea_sunset.png');}
+.weather_infomation > .infos > ul > li.wind{background-image: url('/resources/img/sub/ic_wea_wind.png');}
+
+
+
+
+
+@media screen and (max-width: 1400px) {
+	.flex_wrapper .one_row{display: block;}
+	
+	.flex_wrapper .one_row.left{width: 100%;}
+	.flex_wrapper .one_row.right{width: 100%; margin-top: 20px;}
+	
+	.flex_wrapper .one_row .top{height: auto;}
+	.flex_wrapper .one_row .bott{height: auto; margin-top: 20px;}
+	
+	.flex_wrapper .one_row .wb{}
+	.flex_wrapper .one_row .wb .lb{width: 40%; height: auto;}
+	.flex_wrapper .one_row .wb .rb{width: 58%; height: auto;}
+	
+	.map_box_c{height: 250px;}
+	.all_status > ul > li .number b{font-size: 1.4em;}
+
+}
+
+@media screen and (max-width: 1000px) {
+	.flex_wrapper .one_row .bott{margin-top: 15px;}
+	.flex_wrapper .one_row.right{margin-top: 15px;}
+
+	.flex_wrapper .one_row .wb{width: 100%;}
+	.flex_wrapper .one_row .wb .lb{width: 100%;}
+	.flex_wrapper .one_row .wb .rb{width: 100%; margin: 15px 0 0;}
+
+	.all_status > ul{flex-wrap: wrap; justify-content: space-between;}
+	.all_status > ul > li{margin: 5px 0;}
+	.all_status > ul > li .cate{font-size: 14px; margin-bottom: 5px;}
+	.all_status > ul > li .num{font-size: 28px;}
+	.all_status > ul > li .number{font-size: 15px;}
+	.all_status > ul > li .number b{font-size: 1.3em; padding-right: 3px;}
+
+	.circle_statue{display: inline-block; width: 14px; height: 14px; border-radius: 50%; background-color: #aaa;}
+	.circle_statue.green{background-color: #87FD07;}
+	.circle_statue.red{background-color: #ED1C24;}
+	.circle_statue.blue{background-color: #1E9DD8;}
+	.circle_statue.black{background-color: #444;}
+
+
+	/* 기상정보 */
+	.weather_infomation > .dgree{margin: 0 10px;}
+	.weather_infomation > .dgree p.number{font-size: 28px; margin-bottom: 3px;}
+	.weather_infomation > .dgree span{line-height: 17px; font-size: 14px; margin: 2px 5px; padding-left: 20px;}
+	.weather_infomation > .dgree span.rain{background-size: 13px;}
+	.weather_infomation > .dgree span.rain_per{background-size: 13px;}
+	.weather_infomation > .infos{padding-right: 0px; padding-top: 5px;}
+	.weather_infomation > .infos > ul{}
+	.weather_infomation > .infos > ul > li{margin-top: 9px; font-size: 14px; line-height: 24px; text-align: left; padding-left: 20px; background-size: 15px;}
+}
+
+
+
+
+
+/********************* Sub END *********************/

@@ -2353,12 +2353,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       behavesOk: function behavesOk(evt) {
         if (_this14.isNativeEvent(evt)) {
-          $(document) // Simply unbinds the testing handler
+          $(document) // Simply unbinds the monitering handler
           .off('input.inputevent', evt.data.selector, _this14.behavesOk).off('change.inputevent', evt.data.selector, _this14.misbehaves);
         }
       },
 
-      // Bind the testing handlers
+      // Bind the monitering handlers
       install: function install() {
         if (globals.inputEventPatched) {
           return;

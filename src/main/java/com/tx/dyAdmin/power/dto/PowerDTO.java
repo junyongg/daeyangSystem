@@ -13,12 +13,16 @@ public class PowerDTO implements Serializable  {
 	private String  
 					DPP_KEYNO,
 					DPP_NAME,
+					DPP_STATUS,
+					DPP_VOLUM,
 					DPP_IMG,
 					DPP_X_LOCATION,
 					DPP_Y_LOCATION,
 					DPP_DATE,
 					DPP_DEL_YN,
+					DPP_INVER,
 					DPP_INVER_COUNT,
-					DPP_AREA
+					DPP_AREA,
+					DPP_LOCATION
 					;
 }

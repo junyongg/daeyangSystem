@@ -28,7 +28,7 @@ public class TempController {
 	@RequestMapping(value="/common/test.do")
 	public ModelAndView main2(HttpServletRequest req, Map<String,Object> commandMap
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/sub/temp/temp");
+		ModelAndView mv  = new ModelAndView("/user/dy/sub/temp/temp");
 		
 		SiteProperties.refresh();
 		System.out.println(SiteProperties.getString("HOMEPAGE_NAME"));
@@ -39,20 +39,20 @@ public class TempController {
 	}
 	
 	
-/*	@RequestMapping(value="/cf/temp.do")
+/*	@RequestMapping(value="/dy/temp.do")
 	public ModelAndView main(HttpServletRequest req, Map<String,Object> commandMap
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/sub/temp/temp");
+		ModelAndView mv  = new ModelAndView("/user/dy/sub/temp/temp");
 		
 		return mv;
 	}
 	
 
-	@RequestMapping(value="/cf/temp/ajax.do")
+	@RequestMapping(value="/dy/temp/ajax.do")
 	@ResponseBody
 	public ModelAndView mainajax(HttpServletRequest req, Map<String,Object> commandMap
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/cf/sub/temp/temp2");
+		ModelAndView mv  = new ModelAndView("/user/dy/sub/temp/temp2");
 		
 		
 		return mv;

@@ -28,7 +28,7 @@
 	<div id="form_li_data_A">&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
 &lt;%
 response.setStatus(301);
-response.setHeader( "Location", "/cf/index.do" );
+response.setHeader( "Location", "/dy/index.do" );
 response.setHeader( "Connection", "close" );
 %&gt;
 </div>

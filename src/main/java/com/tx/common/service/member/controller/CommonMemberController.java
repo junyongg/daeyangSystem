@@ -68,6 +68,8 @@ public class CommonMemberController {
 			) throws Exception {
 		String tiles = TilesDTO.getTiles(req);
 		
+		if(tiles == null) tiles = "dy";
+		
 		ModelAndView mv  = new ModelAndView("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
 		
 		

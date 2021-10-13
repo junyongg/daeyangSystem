@@ -81,7 +81,7 @@ public class SurveyUserController {
 		// 설문지 보기 목록 불러오기
 		List<SqDTO> sqoList = Component.getList("survey.SQO_getListBySqkey", SmDTO);
 		mv.addObject("sqo_list", sqoList);
-		mv.addObject("mirrorPage", "/cf/function/survey.do"); 
+		mv.addObject("mirrorPage", "/dy/function/survey.do"); 
 		return mv;
 	}
 	

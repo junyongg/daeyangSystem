@@ -6,11 +6,10 @@
 <html lang="${homeData.HM_LANG }">
 
 <head>
-
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <tiles:insertAttribute name="meta" />
     <tiles:insertAttribute name="css" />
     <tiles:insertAttribute name="script" />
-
 </head>
 
 <body>

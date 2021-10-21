@@ -140,6 +140,15 @@
 	            <col style="width: 30%;">
 	            <col style="width: 25%;">
 	        </colgroup>
+            <thead>
+                <tr>
+                    <th>현장명</th>
+                    <th>시간</th>
+                    <th>인버터</th>
+                    <th>DSP 에러</th>
+                    <th>DSP 에러 <br>(Slave)</th>
+                </tr>
+            </thead>
 	        <tr>
 	            <tbody>
 	            	<c:forEach items="${ResultList }" var="list">
@@ -175,8 +184,9 @@ function pf_setMap(){
 		center: new kakao.maps.LatLng(lat, lng),
 		level: 3
 	};
-
 	map = new daum.maps.Map(container, options);
+	
+	map.setMapTypeId(kakao.maps.MapTypeId.HYBRID); 
 	
 	marker = new daum.maps.Marker({ 
 	    // 지도 중심좌표에 마커를 생성합니다 

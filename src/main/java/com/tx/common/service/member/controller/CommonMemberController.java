@@ -77,7 +77,8 @@ public class CommonMemberController {
 		mv.addObject("SiteManager", SiteManagerDTO);
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
-		//로그인한 상태라면 메인화면으로 리다이렉트
+		
+		//로그인한 상태라면 메인화면으로 리다이렉트 (관리자와 회원 구분)
 		if(user != null){
 			mv.setViewName("redirect:/"+tiles+"/index.do");
 			return mv;

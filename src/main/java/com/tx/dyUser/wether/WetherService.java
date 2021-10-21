@@ -217,11 +217,15 @@ public class WetherService {
 	}
 	
 	
-	public ArrayList<String> AjaxDate() throws Exception{
+	//일일 데이터 가져오기 (저장하지않고 바로 등록)
+	public ArrayList<String> AjaxDate(String region) throws Exception{
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.HOUR, -1);
 		String futureDate = format2.format(cal.getTime());
+		
+		String nx = "" , ny ="";
+		if(region.equals("나주")) nx="59"; ny="69";
 		
 		String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst?"
 				+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
@@ -229,7 +233,7 @@ public class WetherService {
 				+ "&dataType=JSON"
 				+ "&base_date=" + dates
 				+ "&base_time="+futureDate
-				+ "&nx=59&ny=79&";
+				+ "&nx="+nx+"&ny="+ny+"&";
 		
 		JSONObject json = readJsonFromUrl(url);
 		JSONArray jsonList = (((json.getJSONObject("response")).getJSONObject("body")).getJSONObject("items")).getJSONArray("item");

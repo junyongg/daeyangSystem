@@ -33,15 +33,11 @@
 	    </property>
 	</bean>
 	
-	<bean id="BoardNormalRenderer" class="com.tx.common.service.page.BoardNormalPagination"/>
-	<bean id="TourNormalRenderer" class="com.tx.common.service.page.TourNormalPagination"/>
 	<bean id="NormalRenderer" class="com.tx.common.service.page.NormalPagination"/>
 	
 	<bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
 		<property name="rendererType">
 			<map>
-				<entry key="normal_board" value-ref="BoardNormalRenderer"/>
-				<entry key="normal_tour" value-ref="TourNormalRenderer"/>
 				<entry key="normal" value-ref="NormalRenderer"/>
 			</map>
 		</property> 

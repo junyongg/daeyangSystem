@@ -92,12 +92,10 @@ function pf_formCheck(){
 		}
 	}
 	if(isAdmin == 'Y'){
-		
-		if(!cf_radio_check_val("BN_IMPORTANT")){
+		/* if(!cf_radio_check_val("BN_IMPORTANT")){
 			alert("공지사용을 선택해주세요");
 			return false;
-		}
-		
+		} */
 	}
 	
 		if($("select#BN_CATEGORY_NAME").val()=="전체"){

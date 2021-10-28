@@ -14,16 +14,14 @@
 		) 
 	</insert>
 	
-	<insert id="Daily_WeatherData">
+	<insert id="Daily_WeatherData" parameterType="hashmap">
 		INSERT INTO dy_wether_data
 		(
-			DWD_PTV, DWD_REH, DWD_RN1, DWD_T1H, DWD_UUU, DWD_VEC, DWD_VVV, DWD_WSD, DWD_REGION ,DWD_SUNRISE, DWD_SUNSET
+			DWD_DATE, DWD_PTV, DWD_RN1, DWD_SKY, DWD_T1H, DWD_REH, DWD_WSD, DWD_REGION, DWD_SUNRISE, DWD_SUNSET
 		)
-		VALUES
-		<foreach separator="," item="item" collection="list" open="(" close=")">
-			#{item}
-		</foreach>
-	
+		VALUES(
+			#{date}, #{weather}, #{rn1}, #{sky}, #{t1h}, #{reh}, #{wsd}, #{region}, #{sunrise}, #{sunset}
+		)
 	</insert>
 	
 	<delete id="Daily_WeatherDelete">
@@ -35,6 +33,7 @@
 		SELECT * 
 		FROM dy_wether_data
 		WHERE DWD_REGION = #{area}
+		ORDER BY DWD_DATE ASC
 	</select>
 	
 </mapper>

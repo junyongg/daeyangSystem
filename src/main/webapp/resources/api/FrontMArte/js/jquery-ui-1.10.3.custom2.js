@@ -5867,7 +5867,7 @@ $.widget( "ui.autocomplete", {
 		this.isNewMenu = true;
 
 		this.element
-			.addClass( "ui-autocomplete-input" )
+			.addClass( "ui-autocomplete-input2" )
 			.attr( "autocomplete", "off" );
 
 		this._on( this.element, {

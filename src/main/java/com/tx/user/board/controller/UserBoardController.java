@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,9 +89,29 @@ public class UserBoardController {
 			, @PathVariable String keyno
 			, @RequestParam(value = "msg", required = false) String msg
 			, @RequestParam(value = "category", required = false) Integer category
-			, Common search) throws Exception {
+			, Common search
+			, HttpSession session
+			, @RequestParam(value = "BN_PLANT_NAME", required = false) String BN_PLANT_NAME
+			) throws Exception {
 		ModelAndView mv = CommonService.setCommonJspPath(tiles, "/user/_common/_Board/data/prc_board_data_listView");
 
+		HashMap<String,Object> type = new HashMap<String, Object>();
+		String key = "";
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+ 	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    
+ 	    if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	    }
+ 	    if(key == null || StringUtils.isEmpty(key)) {
+		   key = Component.getData("main.Power_SelectKEY",type);
+ 	    }
+ 	    List<HashMap<String,Object>> list = Component.getList("main.Power_SelectKEYs",type);
+ 	    mv.addObject("plantKey",list);
+ 	    session.setAttribute("DPP_KEYNO", key);
+		
+		
 		String MN_KEYNO = CommonService.getKeyno(keyno, "MN");
 
 		Menu menu = Menu.builder().MN_KEYNO(MN_KEYNO).build();
@@ -103,6 +124,11 @@ public class UserBoardController {
 		BoardNotice.setBN_CATEGORY_NAME(BoardType.getCategoryName(category));
 
 		Map<String, Object> map = CommonService.ConverObjectToMap(BoardNotice);
+		
+		map.put("BN_PLANT_NAME",key);
+		map.put("plantList",list);
+		map.put("DPPKEY",BN_PLANT_NAME);
+		
 		map.put("NumberingType", BoardType.getBT_NUMBERING_TYPE());
 		map.put("BT_DEL_COMMENT_YN", BoardType.getBT_DEL_COMMENT_YN());
 		map.put("BT_REPLY_YN", BoardType.getBT_REPLY_YN());
@@ -121,7 +147,7 @@ public class UserBoardController {
 		map.put("BoardColumnList", BoardColumnList);
 
 		if ("Y".equals(BoardType.getBT_SHOW_MINE_YN())) {
-			Map<String, Object> user = CommonService.getUserInfo(req);
+			user = CommonService.getUserInfo(req);
 			if (user != null) {
 				String isAdmin = (String) user.get("isAdmin");
 				String UI_KEYNO = user.get("UI_KEYNO") + "";
@@ -144,6 +170,7 @@ public class UserBoardController {
 		//키워드 등록
 		if (StringUtils.isNotEmpty(BoardNotice.getSearchKeyword())) KeywordService.checkKeyword(BoardNotice.getSearchKeyword(), req);
 
+		mv.addObject("BN_PLANT_NAME", BN_PLANT_NAME);
 		mv.addObject("paginationInfo", pageInfo);
 		mv.addObject("BoardNoticeDataList", BoardNoticeDataList);
 		mv.addObject("BoardColumnList", BoardColumnList);
@@ -350,9 +377,25 @@ public class UserBoardController {
 			@ModelAttribute BoardColumn BoardColumn, @ModelAttribute BoardNotice BoardNotice, @ModelAttribute Menu Menu,
 			@RequestParam(value = "category", required = false) Integer category,
 			@RequestParam(value = "actionView", required = false) String actionView, HttpServletRequest req,
-			@PathVariable String tiles) throws Exception {
+			@PathVariable String tiles,
+			HttpSession session) throws Exception {
 		ModelAndView mv = CommonService.setCommonJspPath(tiles, "/user/_common/_Board/data/prc_board_data_insertView");
-
+		
+		HashMap<String,Object> type = new HashMap<String, Object>();
+		String key = "";
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+ 	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    
+ 	    if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	    }
+ 	    if(key == null) {
+		   key = Component.getData("main.Power_SelectKEY",type);
+ 	    }
+ 	    session.setAttribute("DPP_KEYNO", key);
+ 	    mv.addObject("Plant_List", Component.getList("main.select_MainData",type));
+		
 		String action = "insert";
 		boolean replyCk = false;
 

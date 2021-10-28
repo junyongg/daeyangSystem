@@ -46,6 +46,12 @@
 				<otherwise>AND B.DDM_STATUS IS NULL</otherwise>
 			</choose>
 		</if>
+		<if test = "UI_KEYNO != null and UI_KEYNO != ''">
+			<if test="!UI_KEYNO.equals('UI_SFMHO')">
+				AND DPP_USER = #{UI_KEYNO}
+			</if>
+		</if>
+		ORDER BY DPP_NAME ASC
 	</select>
 	
 	<!-- 전체 발전량 데이터 추출 -->
@@ -124,6 +130,7 @@
 			FROM dy_inverter_data
 			WHERE DP_KEYNO = #{type}
 			AND DI_NAME = #{name}
+			AND DATE_FORMAT(Conn_date,'%Y-%m-%d') =  DATE_FORMAT(now(),'%Y-%m-%d')
 			ORDER BY Conn_date DESC
 			LIMIT 1000
 		)A
@@ -181,6 +188,7 @@
 				</if>
 			FROM dy_inverter_data
 			WHERE DP_KEYNO = #{type}
+			AND CAST(Active_Power as DECIMAL(10,6)) > 0
 	 		AND	DATE_FORMAT(Conn_date,'%Y-%m-%d') 	=	DATE_FORMAT(now(),'%Y-%m-%d')
 			ORDER BY Conn_date DESC
 		)
@@ -369,5 +377,52 @@
 			 	GROUP BY DATE_FORMAT(DDM_DATE,'%Y-%m-%d')
 		 	)B
 	</select>
+	
+	<select id="Power_SelectKEY" resultType="String">
+		SELECT DPP_KEYNO
+		FROM dy_power_plant 
+		WHERE 1=1 
+		<if test="!UI_KEYNO.equals('UI_SFMHO')">
+		AND DPP_USER = #{UI_KEYNO}
+		</if>
+		ORDER BY DPP_NAME ASC
+		limit 1
+	</select>
+	
+	<select id="Power_SelectKEYs" resultType="hashmap">
+		SELECT DPP_KEYNO, DPP_NAME
+		FROM dy_power_plant 
+		WHERE 1=1 
+		<if test="!UI_KEYNO.equals('UI_SFMHO')">
+		AND DPP_USER = #{UI_KEYNO}
+		</if>
+		ORDER BY DPP_NAME ASC
+	</select>
+
+	<select id="PowerBoard_select" resultType="hashmap">
+		SELECT @rownum:=@rownum+1 as COUNT, BN_KEYNO , BN_REGDT ,BN_TITLE 
+		FROM b_board_notice
+		,(SELECT @rownum:=0)TMP
+		WHERE BN_PLANT_NAME = #{type}
+		AND BN_DEL_YN ='N'
+		AND BN_CATEGORY_NAME = #{category}
+		LIMIT 6
+	</select>
+	
+	<update id="SettingUpdate" parameterType="USER">
+		UPDATE U_USERINFO
+    	SET		  UI_NAME		=	#{UI_NAME}
+		<if test='UI_PASSWORD != null and UI_PASSWORD != ""'>
+		          ,UI_PASSWORD	=	#{UI_PASSWORD}
+		</if>
+		<if test='UI_EMAIL != null and UI_EMAIL != ""'>
+    	         ,UI_EMAIL	    =	#{UI_EMAIL}
+ 	    </if>
+ 	    <if test='UI_PHONE != null and UI_PHONE != ""'>
+    	         ,UI_PHONE	    =	#{UI_PHONE}
+    	</if>
+		WHERE	UI_KEYNO		=	#{UI_KEYNO}
+	</update>
+	
 	
 </mapper>

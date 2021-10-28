@@ -18,12 +18,12 @@ public class NormalPagination extends AbstractPaginationRenderer implements Serv
 	} 
 	
 	public void initVariables(){
-		firstPageLabel    = "<li class=\"pageAllPrev\"><button type=\"button\" class=\"btn-page\" onclick=\"{0}({1});return false;\"><span class=\"icon prevAll\"></span></button></li>"; 
-        previousPageLabel = "<li class=\"pagePrev\"><button type=\"button\" class=\"btn-page\" onclick=\"{0}({1});return false;\"><span class=\"icon prev\"></span></button></li>";
-        currentPageLabel  = "<li class=\"active\"><a href=\"javascript:;\"><span class=\"num\">{0}</span></a></li>";
-        otherPageLabel    = "<li><a href=\"?pageIndex={1}\" onclick=\"{0}({1});return false; \"><span class=\"num\">{2}</span></a></li>";
-        nextPageLabel     = "<li class=\"pageNext\"><button type=\"button\" class=\"btn-page\" onclick=\"{0}({1});return false;\"><span class=\"icon next\"></span></button></li>";
-        lastPageLabel     = "<li class=\"pageAllNext\"><button type=\"button\" class=\"btn-page\" onclick=\"{0}({1});return false;\"><span class=\"icon nextAll\"></span></button></li>";
+		firstPageLabel    = "<a class=\"btn first\" href=\"javascript:;\" onclick=\"{0}({1});return false;\"></a>"; 
+        previousPageLabel = "<a class=\"btn prev\" href=\"javascript:;\" onclick=\"{0}({1});return false;\"></a>";
+        currentPageLabel  = "<a class=\"active\" href=\"javascript:;\">{0}</a>";
+        otherPageLabel    = "<a class=\"on\" href=\"?pageIndex={1}\" onclick=\"{0}({1});return false; \">{2}</a>";
+        nextPageLabel     = "<a class=\"btn next\" href=\"javascript:;\" onclick=\"{0}({1});return false;\"></a>";
+        lastPageLabel     = "<a class=\"btn last\" href=\"javascript:;\" onclick=\"{0}({1});return false;\"></a>";
 	} 
 	
 	public void setServletContext(ServletContext servletContext){

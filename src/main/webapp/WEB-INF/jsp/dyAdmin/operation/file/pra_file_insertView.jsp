@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
 
-#uploadFileDiv .row {border: 1px solid black;margin: 0;padding: 15px;margin-bottom:20px;}
+#uploadFileDiv .row {border: 1px solid #dddd;margin: 0;padding: 15px;margin-bottom:20px;}
 .txtDefault {
     min-height: 32px;
     padding: 3px 5px;
@@ -33,7 +33,7 @@ input[type=text], input[type=number], input[type=password] {
 	    <div class="row">
 			<section class="col col-9">
 				<div id="BN_UPLOAD"> 
-					<div id="previewupload">Upload</div>
+					<div id="previewupload" style="color: #606060c2">업로드</div>
 	<!--        			<div id="extrabutton" class="ajax-file-upload-green">Start Upload</div> -->
 					<input type="hidden" name="FM_KEYNO" id="FM_KEYNO" /> 
 					<input type="hidden" name="FM_WHERE_KEYS" id="FM_WHERE_KEYS" /> 
@@ -45,34 +45,6 @@ input[type=text], input[type=number], input[type=password] {
 		</div>	 
 	</div>
 </fieldset>
-
-<!-- 개인정보 보안 dialog -->
-<div id="PersonalConfirm_attachment" title="개인정보 보안">
-	<div class="widget-body ">
-		<fieldset>
-			<div class="form-horizontal">
-				<fieldset>
-					<div class="form-group">
-						<label class="col-md-2 control-label"><h6 style="color: red; font-size:15px; font-weight: 500; "> 경고 :: </h6></label>
-						
-						<div class="col-md-10 tps_comment" style="margin-top: 13px">
-							 게시판 작성 내용중 <strong>개인정보</strong>가 포함되어 있는 것으로 판단되어 글 등록이 보류되었습니다.<br>
-						개인정보 보호를 위하여 <strong>주민번호, 핸드폰 번호</strong> 등 입력은 <strong >금지</strong>하여 주시기 바랍니다
-						</div>
-					</div>
-					
-					<div class="form-group" style="margin-top: 13px; ">
-						<label class="col-md-2 control-label"><h6 style="color: red; font-size:15px; font-weight: 500;"> 발견된 정보  :: </h6></label>
-						<div class="col-md-10 Detected_info" style="margin-top: 13px"></div>
-					</div>
-					
-					
-				</fieldset>
-			</div>
-		</fieldset>
-	</div>
-</div>
-
 
 <script>
 var fileUpload;

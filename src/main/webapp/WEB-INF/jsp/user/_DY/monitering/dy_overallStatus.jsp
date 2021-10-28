@@ -101,7 +101,7 @@
 		                                <tr>
 		                                    <td><a href="javascript:;" onclick="detailInverter('${model.DPP_KEYNO}')"> [ ${model.DPP_AREA } ] ${model.DPP_NAME }</a></td>
 		                                    <td><fmt:formatNumber value="${model.DDM_D_DATA }" pattern="0.00"/>(<fmt:formatNumber value="${model.DDM_D_DATA/model.DPP_VOLUM }" pattern="0.00"/>)</td>
-		                                    <td>${model.DDM_P_DATA }(<fmt:formatNumber value="${model.DDM_P_DATA/model.DPP_VOLUM }" pattern="0.00"/>)</td>
+		                                    <td><fmt:formatNumber value="${model.DDM_P_DATA }" pattern="0.00"/>(<fmt:formatNumber value="${model.DDM_P_DATA/model.DPP_VOLUM }" pattern="0.00"/>)</td>
 		                                    <td><span class="${status }"></span></td>
 		                                </tr>
                                 </c:forEach>

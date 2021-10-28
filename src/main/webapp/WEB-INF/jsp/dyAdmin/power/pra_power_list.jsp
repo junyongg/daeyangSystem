@@ -110,6 +110,18 @@ form .error {color:red}
 															<input type="text" class="form-control DPP_VOLUM" id="DPP_VOLUM" name="DPP_VOLUM"  value="">
 														</div>
 													</div>
+													
+													<div class="form-group">
+														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 유저선택</label>
+														<div class="col-md-6">
+															<select class="form-control DPP_USERS" id="DPP_USER" name="DPP_USER">
+																<c:forEach items="${member }" var="member">
+																	<option value="${member.UI_KEYNO }">${member.UI_ID }</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+													
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 상태</label>
 														<div class="col-md-6">
@@ -212,6 +224,7 @@ $(document).ready(function() {
 function validation(){
 	if($("#DPP_NAME").val() == ''){alert("발전소 이름을 입력하세요!"); return false}
 	if($("#DPP_STATUS").val() == ''){alert("발전소 개통 상태를 확인하세요!"); return false}
+	if($("#DPP_USER").val() == ''){alert("유저를 등록해주세요!"); return false}
 	if($("#DPP_VOLUM").val() == ''){alert("발전소 용량을 입력하세요!"); return false}
 	if($("#DPP_AREA").val() == ''){alert("발전소 지역을 입력하세요!"); return false}
 	if($("#DPP_LOCATION").val() == ''){alert("발전소 주소를 검색해주세요!"); return false}
@@ -364,6 +377,7 @@ function detailData(keyno){
 			$("#DPP_NAME").val(data.DPP_NAME)
 			$("#DPP_AREA").val(data.DPP_AREA)
 			$("#DPP_STATUS").val(data.DPP_STATUS)
+			$("#DPP_USER").val(data.DPP_USER)
 			$("#DPP_VOLUM").val(data.DPP_VOLUM)
 			$("#DPP_LOCATION").val(data.DPP_LOCATION)
 			$("#DPP_X_LOCATION").val(data.DPP_X_LOCATION)
@@ -386,6 +400,7 @@ function cancle(){
 	$("#DPP_NAME").val('')
 	$("#DPP_AREA").val('')
 	$("#DPP_STATUS").val('')
+	$("#DPP_USER").val('')
 	$("#DPP_VOLUM").val('')
 	$("#DPP_LOCATION").val('')
 	$("#DPP_X_LOCATION").val('')

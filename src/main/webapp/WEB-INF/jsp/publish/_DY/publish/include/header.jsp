@@ -33,7 +33,7 @@
         <div class="headerLogoWrap">
         	<div class="inner clearfix">
                 <div class="logoBox">
-                    <a href="/"><img src="/resources/img/logo/logo.png" alt="트로닉스 로고"></a>
+                    <a href="/"><img src="/resources/img/logo/logo.png" alt=""></a>
                 </div>
                 <div class="mobileMenuBtnBox viewMobile">
                   <div class="hamburger hamburger--slider-r">

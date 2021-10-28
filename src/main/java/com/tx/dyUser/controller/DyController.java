@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
+import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyUser.wether.WetherService;
 
 
@@ -32,7 +37,8 @@ public class DyController {
 	/** 페이지 처리 출 */
 	@Autowired private PageAccess PageAccess;
 	
-	
+	/** 암호화 */
+	@Autowired MyPasswordEncoder passwordEncoder;
    /**
     * @return 관리자 종합현황 페이지 
     */
@@ -42,6 +48,10 @@ public class DyController {
 	   HashMap<String,Object> cntM = new HashMap<String, Object>();
 	   HashMap<String,Object> type = new HashMap<String, Object>();
 	   
+	   Map<String, Object> user = CommonService.getUserInfo(req);
+	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   
+	   //종합현황은 관리자만 출입가능
 	   type.put("type",null);
 	   
 	   cntM.put("a",Component.getCount("main.select_Main_cnt","정상"));
@@ -66,8 +76,11 @@ public class DyController {
 		   ) throws Exception {
 	   //날씨 데이터, 용량, 현재발전, 금일, 전일 ,전월 ,금년, 누적 !
 	   ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_overallStatus_ajax");
-
+	   
 	   HashMap<String,Object> type = new HashMap<String, Object>();
+	   
+	   Map<String, Object> user = CommonService.getUserInfo(req);
+	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
 	   
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
@@ -76,7 +89,9 @@ public class DyController {
 	   String area = ob.get("DPP_AREA").toString(); //지역
 	   
 	   mv.addObject("detail_Data",ob);
-	   mv.addObject("Weather",Component.getData("Weather.select_Weather",area));
+	   
+	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
+	   mv.addObject("Weather",weather.get(0));
 	   
 	   type.put("date","month");//금월
 	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
@@ -103,6 +118,9 @@ public class DyController {
 	   ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_overallStatus_ajax2");
 	   
 	   HashMap<String,Object> type = new HashMap<String, Object>();
+	   
+	   Map<String, Object> user = CommonService.getUserInfo(req);
+	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
 	   type.put("type",null);
 	   type.put("region",region);
 	   type.put("status",status);
@@ -117,23 +135,57 @@ public class DyController {
    */
    @RequestMapping("/dy/moniter/general.do")
    public ModelAndView general(HttpServletRequest req,
-		   @RequestParam(value="keyno",defaultValue="1")String defaultKey,
- 		   @RequestParam(value="name",defaultValue="인버터 1호")String name
+		   @RequestParam(value="keyno",defaultValue="0")String key,
+ 		   @RequestParam(value="name",defaultValue="인버터 1호")String name,
+ 		   HttpSession session
 		   ) throws Exception{
 	   ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_generalStatus");
 	   //회원별 발전소 키를 가지고 정보 확인 일단 기본키
 	   HashMap<String,Object> type = new HashMap<String, Object>();
-	   type.put("type",defaultKey);
+	   
+	   //아이디 세션에 있는값 저장
+	   Map<String, Object> user = CommonService.getUserInfo(req);
+	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   
+	   if(key.equals("0")) {
+		 //1. 세션에 키값 저장확인
+		   key = (String) session.getAttribute("DPP_KEYNO");
+	   }
+	   //2. 세션에 키값 없다면 
+	   if(key == null || StringUtils.isEmpty(key)) {
+		   key = Component.getData("main.Power_SelectKEY",type);
+		   //선택된 키값 세션 저장(초기 제일 상위 KEY값 저장)
+	   }
+	   session.setAttribute("DPP_KEYNO", key);
+	   List<HashMap<String,Object>> m_list = Component.getList("main.select_MainData",type);
+	   
+	   if(m_list.size() == 0 ) {
+		   mv = new ModelAndView("/user/_DY/monitering/dy_none");
+		   mv.addObject("none","none");
+		   return mv;
+	   }
+	   
+	   mv.addObject("list", Component.getList("main.select_MainData",type));
+	   
+	   type.put("type",key);
 	   type.put("name",name);
+	   
 	   //인버터 데이터
 	   HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
 	   type.put("group","group");
 	   
+	   	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	   	Date d = new Date();
+	   	String now = format.format(d);
+	   	
+	   	type.put("searchBeginDate",now);
+	   	type.put("searchEndDate",now);
+	   
 	   List<HashMap<String,Object>> dataList =  Component.getList("main.select_inverterData",type);
 	   
 	   String area = ob.get("DPP_AREA").toString(); //지역
-	   WetherService w = new WetherService();
-	   ArrayList<String> weather = w.AjaxDate(area);
+
+	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   
 	   type.put("date","month");//금월
 	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
@@ -143,10 +195,16 @@ public class DyController {
 	   type.put("date","all");//누적
 	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
 	   
-	   
-	   System.out.println(weather);
+	   type.put("category","안전관리");//안전관리
+	   mv.addObject("boardList_A", Component.getList("main.PowerBoard_select", type));
+
+	   type.put("category","유지관리");//유지관리
+	   mv.addObject("boardList_B", Component.getList("main.PowerBoard_select", type));
+
+	   mv.addObject("DPP_KEYNO", key);
+	   mv.addObject("InverterNum", name);
 	   mv.addObject("invertDataList", dataList);
-	   mv.addObject("weatherToday",Component.getData("Weather.select_Weather",area));
+	   mv.addObject("weatherToday",weather.get(0));
 	   mv.addObject("weather",weather);
 	   mv.addObject("ob",ob);
 	   return mv;
@@ -158,19 +216,27 @@ public class DyController {
     @RequestMapping("/dy/moniter/generalAjax.do")
     @ResponseBody
     public HashMap<String,Object> generalAjax(HttpServletRequest req,
- 		   @RequestParam(value="keyno",defaultValue="1")String defaultKey,
- 		   @RequestParam(value="name",defaultValue="인버터 1호")String name		   
+ 		   @RequestParam(value="keyno",defaultValue="0")String key,
+ 		   @RequestParam(value="name",defaultValue="인버터 1호")String name	,
+ 		   HttpSession session
  		   ) throws Exception{
  	   HashMap<String,Object> map = new HashMap<String, Object>();
 	   
  	   HashMap<String,Object> type = new HashMap<String, Object>();
-	   type.put("type",defaultKey);
+ 	  
+ 	   if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+	    }
+ 	   session.setAttribute("DPP_KEYNO", key);
+ 	   
+	   type.put("type",key);
 	   type.put("name",name);
  	   
 	   //개별데이터
 	   HashMap<String,Object> data =  Component.getData("main.select_inverterData_ONE",type);
 	   
 	   map.put("invertData", data);
+	   map.put("name", name);
 	   //AllPower , Active
  	   return map;
     }
@@ -180,14 +246,31 @@ public class DyController {
      */
     @RequestMapping("/dy/moniter/stastics.do")
     public ModelAndView stastics(HttpServletRequest req,
-    		@RequestParam(value="keyno",defaultValue="1")String defaultKey
+    		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key,
+    		HttpSession session
     		) throws Exception{
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics");
     	HashMap<String,Object> type = new HashMap<String, Object>();
- 	   type.put("type",defaultKey);
+    	
+    	Map<String, Object> user = CommonService.getUserInfo(req);
+ 	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    
+ 	    if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	    }
+ 	    if(key == null || StringUtils.isEmpty(key)) {
+		   key = Component.getData("main.Power_SelectKEY",type);
+ 	    }
+ 	    session.setAttribute("DPP_KEYNO", key);
+ 	    mv.addObject("list", Component.getList("main.select_MainData",type));
+ 	    
+ 	    type.put("type",key);
     	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
     	
     	mv.addObject("ob",ob);
+    	mv.addObject("DPP_KEYNO", key);
+    	
+    	
  	   return mv;
     }
 
@@ -197,7 +280,7 @@ public class DyController {
     @RequestMapping("/dy/moniter/stasticsAjax.do")
     @ResponseBody
     public ModelAndView stasticsAjax(HttpServletRequest req,
-    		@RequestParam(value="keyno",defaultValue="1")String defaultKey,
+    		@RequestParam(value="keyno",defaultValue="1")String keyno,
     		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
     		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
@@ -206,7 +289,7 @@ public class DyController {
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
-    	type.put("type",defaultKey);
+    	type.put("type",keyno);
     	
     	
     	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -263,8 +346,6 @@ public class DyController {
         	mv.addObject("maxdata",Component.getData("main.select_inverterData_other_MINMAX", type));
         	//avg,sum
         	mv.addObject("avgdata",Component.getData("main.select_inverterData_other_AVGSUM", type));
-        	
-        	
     	}
     	
     	mv.addObject("MainList",MainList);
@@ -278,23 +359,195 @@ public class DyController {
     	return mv;
     }
     
-   
-   
-   
+    /**
+     * @return 설정 등록 
+     */
+    @RequestMapping("/dy/moniter/setting.do")
+    public ModelAndView setting(HttpServletRequest req) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_setting");
+    	
+    	UserDTO userDTO = new UserDTO();
+    	Map<String, Object> user = CommonService.getUserInfo(req);
+    	
+    	userDTO.setUI_ID(user.get("UI_ID").toString());
+    	
+    	userDTO = Component.getData("member.UI_IdCheck", userDTO);
+    	
+    	userDTO.decode();
+    	
+ 	    mv.addObject("user",userDTO);
+    	
+    	return mv;
+    }
+
+    /**
+     * @return 회원 수정 등록
+     */
+    @RequestMapping("/dy/moniter/settingAction.do")
+    public ModelAndView settingUpdate(HttpServletRequest req,
+    		UserDTO userDTO
+    		) throws Exception{
+    	ModelAndView mv = new ModelAndView("redirect:/dy/moniter/setting.do");
+    	userDTO.setUI_PASSWORD(passwordEncoder.encode(userDTO.getPassword()));
+    	userDTO.encode();
+    	Component.updateData("main.SettingUpdate", userDTO);
+    	
+    	
+    	return mv;
+    }
+
+    
+    /**
+     * @return 모바일 부분
+     */
+    @RequestMapping("/dy/mobile.do")
+    public ModelAndView MobileView(HttpServletRequest req,
+		   @RequestParam(value="keyno",defaultValue="0")String key,
+ 		   @RequestParam(value="name",defaultValue="인버터 1호")String name,
+ 		   @RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+ 		   @RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+ 		   @RequestParam(value="searchEndDate",required=false)String searchEndDate,
+ 		   @RequestParam(value="InverterType",defaultValue="0")String InverterType,
+ 		   HttpSession session) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/mobile/dy_mobile");
+    	
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+ 	   
+ 	   //아이디 세션에 있는값 저장
+ 	   Map<String, Object> user = CommonService.getUserInfo(req);
+ 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	   
+ 	   if(key.equals("0")) {
+ 		 //1. 세션에 키값 저장확인
+ 		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	   }
+ 	   //2. 세션에 키값 없다면 
+ 	   if(key == null || StringUtils.isEmpty(key)) {
+ 		   key = Component.getData("main.Power_SelectKEY",type);
+ 		   //선택된 키값 세션 저장(초기 제일 상위 KEY값 저장)
+ 	   }
+ 	   session.setAttribute("DPP_KEYNO", key);
+ 	   List<HashMap<String,Object>> m_list = Component.getList("main.select_MainData",type);
+ 	   
+ 	   if(m_list.size() == 0 ) {
+ 		   mv = new ModelAndView("/user/_DY/monitering/dy_none");
+ 		   mv.addObject("none","none");
+ 		   return mv;
+ 	   }
+ 	   
+	   DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	   Date d = new Date();
+	   String now = format.format(d);
+	   	
+	   
+	   if(searchBeginDate == null) {
+	   		searchBeginDate = now;
+	   }
+	   if(searchEndDate == null) {
+		   searchEndDate = now;
+	   }
+	   	
+	   type.put("searchBeginDate",searchBeginDate);
+	   type.put("searchEndDate",searchEndDate);
+	   type.put("InverterType",InverterType);
+ 	   
+ 	   
+ 	   mv.addObject("list", Component.getList("main.select_MainData",type));
+ 	   
+ 	   type.put("type",key);
+ 	   type.put("name",name);
+ 	   
+ 	   //인버터 데이터
+ 	   HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+       mv.addObject("ob",ob);
+       
+       //당일일때만 오늘날짜 데이터 뽑는것 
+	   type.put("minmax","min");
+	   mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
+	   type.put("minmax","max");
+	   mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
+	   	
+	   List<List<String>> MainList = new ArrayList<List<String>>();
+	   if(DaliyType.equals("1")) {
+	   		//당일일때만 오늘날짜 데이터 뽑는것 
+	       	type.put("minmax","min");
+	       	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
+	       	type.put("minmax","max");
+	       	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
+	       	
+	       	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
+	       	
+	       	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
+	       	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+	       	if(InverterType.equals("0")) {
+	       		for(int i=1;i<=numbering;i++) {
+	           		type.put("inverterNum",i);
+	           		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+	           		MainList.add(subList);
+	           	}
+	       	}else {
+	       		type.put("inverterNum", InverterType);
+	       		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+	       		MainList.add(subList);
+	       	}
+   		}
+       
+       String area = ob.get("DPP_AREA").toString(); //지역
+  	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
+  	   
+  	   mv.addObject("InverterType",InverterType);
+  	   mv.addObject("MainList",MainList);
+  	   mv.addObject("weatherToday",weather.get(0));
+	   mv.addObject("weather",weather);
+	   
+       return mv;
+    }
+    
+    
    /**
     * @return 날씨 등록 테스트
     */
    @RequestMapping("/wether.do")
    public ModelAndView wether(HttpServletRequest req) throws Exception{
 	   ModelAndView mv = new ModelAndView("");
-		WetherService w = new WetherService();
-		ArrayList<String> list = w.Daily_Wether("나주");
-		list.addAll(w.Sunrise_setData("나주"));
-		
-		Component.deleteData("Weather.Daily_WeatherDelete");
-		Component.createData("Weather.Daily_WeatherData", list);
+	   
+	   WetherService w = new WetherService();
+	   ArrayList<String> list = w.Daily_Wether("나주");
+	   list.addAll(w.Sunrise_setData("나주"));
+	   WeatherOrganize(list);
+	   
 	   return mv;
    }
    
+   public void WeatherOrganize(ArrayList<String> weatherList) {
+	   Component.deleteData("Weather.Daily_WeatherDelete");
+	   //혹시모를 갯수 체크
+	   int count = Integer.parseInt(weatherList.get(weatherList.size()-4));
+	   
+	   for(int i=0;i<count;i++) {
+		   HashMap<String,Object> map = new HashMap<String,Object>();
+		   //시간 0
+		   map.put("date",weatherList.get(i).toString());
+		   //날씨 0+5 * 1
+		   map.put("weather",weatherList.get(i+count*1).toString());
+		   //강수 0+5 * 2
+		   map.put("rn1",weatherList.get(i+count*2).toString());
+		   //강수 0+5 * 3
+		   map.put("sky",weatherList.get(i+count*3).toString());
+		   //온도 0+5 * 4
+		   map.put("t1h",weatherList.get(i+count*4).toString());
+		   //습도 0+5 * 5
+		   map.put("reh",weatherList.get(i+count*5).toString());
+		   //풍속 0+5 * 6
+		   map.put("wsd",weatherList.get(i+count*6).toString());
+		   //지역
+		   map.put("region",weatherList.get((weatherList.size()-3)).toString());
+		   //일출
+		   map.put("sunrise",weatherList.get((weatherList.size()-2)).toString());
+		   //일몰
+		   map.put("sunset",weatherList.get((weatherList.size()-1)).toString());
+		   Component.createData("Weather.Daily_WeatherData", map);
+	   }
+   }
    
 }

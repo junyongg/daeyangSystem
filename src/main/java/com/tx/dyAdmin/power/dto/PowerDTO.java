@@ -14,6 +14,7 @@ public class PowerDTO implements Serializable  {
 					DPP_KEYNO,
 					DPP_NAME,
 					DPP_STATUS,
+					DPP_USER,
 					DPP_VOLUM,
 					DPP_IMG,
 					DPP_X_LOCATION,

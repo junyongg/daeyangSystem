@@ -582,6 +582,11 @@
 	 ]]>
     </update>
   
-    
+    <select id="UI_USER_SELECT" resultType="HashMap">
+    	SELECT UI_KEYNO , UI_ID, UI_NAME 
+		FROM u_userinfo
+		WHERE UI_DELYN = 'N'
+		AND UI_NAME != '개발자'
+    </select>
 </mapper>
  

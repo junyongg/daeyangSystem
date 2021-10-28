@@ -204,5 +204,8 @@ public class BoardNotice extends Common{
 	
 	//게시물 에디터 타입
 	private String BN_HTMLMAKER_PLUS_TYPE;
+
+	//게시물 발전소 타입 
+	private String BN_PLANT_NAME;
     
 }

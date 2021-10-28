@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-
+<form:form action="/dy/moniter/stastics.do" method="POST" id="Form">
 <input type="hidden" value="${ob.DPP_KEYNO }" id="n_keyno" name="n_keyno">
+
 <div id="container" class="heightFix">
     <div class="flex_wrapper">
         <section class="one_row left2">
@@ -12,8 +13,10 @@
                 <p class="power_tit">[${ob.DPP_AREA }] ${ob.DPP_NAME }</p>
 
 				<div class="power_select">
-                    <select class="select_nor sm3 w100">
-                        <option value="">발전소 선택</option> 
+                    <select class="select_nor sm3 w100" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax();">
+                        <c:forEach items="${list }" var="list">
+                        	<option value="${list.DPP_KEYNO }" ${list.DPP_KEYNO eq DPP_KEYNO ? 'selected' : '' } >${list.DPP_NAME }</option>
+                        </c:forEach>
                     </select>
                 </div>
 				
@@ -60,6 +63,7 @@
     </div>
     
 </div>
+</form:form>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript">
@@ -68,6 +72,10 @@ $(function(){
 	pf_setMap();
 	statics_ajax();
 });
+
+function DPPDataAjax(){
+	$("#Form").submit();
+}
 
    
 function pf_setMap(){

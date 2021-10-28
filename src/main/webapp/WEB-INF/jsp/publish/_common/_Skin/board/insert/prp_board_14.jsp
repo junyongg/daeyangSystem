@@ -486,7 +486,7 @@
 						<label class="col-md-2 control-label"><h6> 경고 :: </h6></label>
 						
 						<div class="col-md-10 tps_comment" style="margin-top: 13px">
-							 게시판 작성 내용중 <strong>개인정보</strong>가 포함되어 있는 것으로 판단되어 글 등록이 보류되었습니다.<br>
+							 게시판 작성 내용중 <strong>개인정보</strong>가 포함되어 있는 것으로34 판단되어 글 등록이 보류되었습니다.<br>
 						개인정보 보호를 위하여 <strong>주민번호, 핸드폰 번호</strong> 등 입력은 <strong>금지</strong>하여 주시기 바랍니다
 						</div>
 					</div>

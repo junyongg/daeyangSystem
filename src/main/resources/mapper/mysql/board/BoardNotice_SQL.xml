@@ -322,6 +322,7 @@
 				BN_CATEGORY_NAME,
 				BN_INSERT_IP,
                 BN_CONTENTS_SEARCH,
+                BN_PLANT_NAME,
                 BN_HTMLMAKER_PLUS_TYPE
 			]]>
 				<if test="BN_IMPORTANT_DATE != null and BN_IMPORTANT_DATE != '' ">
@@ -352,6 +353,7 @@
 				#{BN_CATEGORY_NAME},
 				#{BN_INSERT_IP},
                 #{BN_CONTENTS_SEARCH},
+                #{BN_PLANT_NAME},
                 #{BN_HTMLMAKER_PLUS_TYPE}
 			]]>
 				<if test="BN_IMPORTANT_DATE != null and BN_IMPORTANT_DATE != '' ">
@@ -379,7 +381,8 @@
 				BN_IMPORTANT		= #{BN_IMPORTANT},
 				BN_CATEGORY_NAME 	= #{BN_CATEGORY_NAME},
 				BN_UPDATE_IP        = #{BN_UPDATE_IP},
-                BN_CONTENTS_SEARCH    = #{BN_CONTENTS_SEARCH}
+                BN_CONTENTS_SEARCH  = #{BN_CONTENTS_SEARCH},
+                BN_PLANT_NAME   	= #{BN_PLANT_NAME}
 		]]>
 		<if test="BN_IMPORTANT_DATE != null and BN_IMPORTANT_DATE != '' ">
 			<![CDATA[
@@ -454,6 +457,13 @@
 					<if test="BN_CATEGORY_NAME != null and BN_CATEGORY_NAME !=''" >
 				    AND       	BN.BN_CATEGORY_NAME = #{BN_CATEGORY_NAME}
 				    </if>
+					<if test="DPPKEY != null and DPPKEY !=''" >
+				    AND       	BN.BN_PLANT_NAME = #{DPPKEY}
+				    </if>
+				    AND
+				    <foreach collection="plantList" item="plant" open="(" close=")" separator="OR" >
+								BN.BN_PLANT_NAME = ${plant.DPP_KEYNO}
+					</foreach>
 					AND			(
 								BN.BN_IMPORTANT 		= 	'N' 
 								OR			
@@ -485,7 +495,13 @@
 				<if test="BN_CATEGORY_NAME != null and BN_CATEGORY_NAME !=''" >
 				AND       	BN.BN_CATEGORY_NAME = #{BN_CATEGORY_NAME}
 				</if>
-				
+				<if test="DPPKEY != null and DPPKEY !=''" >
+			    AND       	BN.BN_PLANT_NAME = #{DPPKEY}
+			    </if>
+				AND
+			    <foreach collection="plantList" item="plant" open="(" close=")" separator="OR" >
+							BN.BN_PLANT_NAME = ${plant.DPP_KEYNO}
+				</foreach>
 				AND			(
 								BN.BN_IMPORTANT 		= 	'N' 
 								OR			
@@ -591,6 +607,7 @@
 								</otherwise>
 							</choose>
 							</foreach>
+							, P.DPP_NAME
 					FROM (
 						SELECT * FROM (
 							SELECT		'NOTICE' BOARD_TYPE
@@ -599,6 +616,7 @@
 										, '' BN_MAINKEY
 										, '' BN_SEQ
 										, '' BN_HITS
+										, '' BN_PLANT_NAME
 							FROM		B_BOARD_NOTICE BN
 							WHERE		BN.BN_MN_KEYNO 			= 	#{BN_MN_KEYNO}
 							AND			BN.BN_USE_YN   			= 	'Y'
@@ -624,6 +642,7 @@
 											, BN.BN_MAINKEY
 											, BN.BN_SEQ
 											, BN.BN_HITS
+											, BN.BN_PLANT_NAME
 									FROM 	  	(SELECT @rownum:=0) TMP, B_BOARD_NOTICE BN
 								LEFT JOIN 	U_USERINFO U
 								ON			BN.BN_REGNM	=	U.UI_KEYNO					WHERE     	BN.BN_MN_KEYNO 	= 	#{BN_MN_KEYNO}
@@ -640,6 +659,13 @@
 								<if test="BN_CATEGORY_NAME != null and BN_CATEGORY_NAME !=''" >
 						        AND       	BN.BN_CATEGORY_NAME = #{BN_CATEGORY_NAME}
 						        </if>
+						        <if test="DPPKEY != null and DPPKEY !=''" >
+							    AND       	BN.BN_PLANT_NAME = #{DPPKEY}
+							    </if>
+						        AND
+							    <foreach collection="plantList" item="plant" open="(" close=")" separator="OR" >
+											BN.BN_PLANT_NAME = ${plant.DPP_KEYNO}
+								</foreach>
 								AND			(
 												BN.BN_IMPORTANT 		= 	'N' 
 												OR			
@@ -661,6 +687,8 @@
 					) A
 					LEFT JOIN B_BOARD_NOTICE BN 
 					ON A.BN_KEYNO = BN.BN_KEYNO
+					LEFT JOIN dy_power_plant P 
+					ON A.BN_PLANT_NAME = P.DPP_KEYNO
 					LEFT JOIN U_USERINFO U
 					ON BN.BN_REGNM = U.UI_KEYNO
 					LEFT JOIN S_COMMON_FILE_SUB FS
@@ -738,6 +766,7 @@
 							</otherwise>
 						</choose>
 						</foreach>
+						, P.DPP_NAME
 				FROM (
 					SELECT * FROM (
 						SELECT		'NOTICE' BOARD_TYPE
@@ -746,6 +775,7 @@
 									, '' BN_MAINKEY
 									, '' BN_SEQ
 									, '' BN_HITS
+									, '' BN_PLANT_NAME
 						FROM		B_BOARD_NOTICE BN
 						WHERE		BN.BN_MN_KEYNO 			= 	#{BN_MN_KEYNO}
 						AND			BN.BN_USE_YN   			= 	'Y'
@@ -771,6 +801,7 @@
 										, BN.BN_MAINKEY
 										, BN.BN_SEQ
 										, BN.BN_HITS
+										, BN.BN_PLANT_NAME 
 								FROM 	  	(SELECT @rownum:=0) TMP, B_BOARD_NOTICE BN
 							LEFT JOIN 	U_USERINFO U
 							ON			BN.BN_REGNM	=	U.UI_KEYNO					WHERE     	BN.BN_MN_KEYNO 	= 	#{BN_MN_KEYNO}
@@ -787,6 +818,13 @@
 							<if test="BN_CATEGORY_NAME != null and BN_CATEGORY_NAME !=''" >
 					        AND       	BN.BN_CATEGORY_NAME = #{BN_CATEGORY_NAME}
 					        </if>
+					        <if test="DPPKEY != null and DPPKEY !=''" >
+						    AND       	BN.BN_PLANT_NAME = #{DPPKEY}
+						    </if>
+					        AND
+						    <foreach collection="plantList" item="plant" open="(" close=")" separator="OR" >
+										BN.BN_PLANT_NAME = ${plant.DPP_KEYNO}
+							</foreach>
 							AND			(
 											BN.BN_IMPORTANT 		= 	'N' 
 											OR			
@@ -848,6 +886,8 @@
 				) A
 				LEFT JOIN B_BOARD_NOTICE BN 
 				ON A.BN_KEYNO = BN.BN_KEYNO
+				LEFT JOIN dy_power_plant P 
+				ON A.BN_PLANT_NAME = P.DPP_KEYNO 
 				LEFT JOIN U_USERINFO U
 				ON BN.BN_REGNM = U.UI_KEYNO
 				LEFT JOIN S_COMMON_FILE_SUB FS

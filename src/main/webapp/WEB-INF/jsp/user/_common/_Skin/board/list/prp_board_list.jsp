@@ -37,7 +37,7 @@
 .tblBoardBox td.boardSubject {min-width:350px;}
 
 </style>
-<p class="board_count">총 게시물 <span class="colorR"><fmt:formatNumber value="${paginationInfo.totalRecordCount }" pattern="#,###" /> 건</span> ${paginationInfo.currentPageNo } 페이지</p>    
+<p class="board_count">총 게시물<span class="colorR"><fmt:formatNumber value="${paginationInfo.totalRecordCount }" pattern="#,###" /> 건</span> ${paginationInfo.currentPageNo } 페이지</p>    
 
 <div class="tblBoardBox">
 	<table class="tbl_Board_01 tbl_Board_notice">

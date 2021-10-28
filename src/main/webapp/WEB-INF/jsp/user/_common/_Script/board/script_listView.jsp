@@ -359,4 +359,9 @@ function getEvents(options){
 	});
 	return events;
 }
+
+function selectBoardList(keyno){
+	pf_LinkPage(1)
+}
+
 </script>

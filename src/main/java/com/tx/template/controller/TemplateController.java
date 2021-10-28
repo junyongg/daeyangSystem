@@ -69,12 +69,17 @@ public class TemplateController {
 		String userKeyno = ((String) user.get("UI_KEYNO"));
 		String UIA_KEYNO = Component.getData("Authority.UIA_getDataByUIKEYNO", userKeyno);
 		
-		//관리자(개발자 계정)이 아니면 redirect
-		if(SettingData.AUTHORITY_ADMIN.equals(UIA_KEYNO)) {
-			mv.setViewName("redirect:/"+tiles+"/moniter/overAll.do");
-		}else {
+		//모바일 부분 체크 이후 url 변경
+		String userAgent = req.getHeader("user-agent");
+		boolean mobile1 = userAgent.matches( ".*(iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
+		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*"); 
+
+		if (mobile1 || mobile2) {
+			mv.setViewName("redirect:/"+tiles+"/mobile.do");
+		} else {
 			mv.setViewName("redirect:/"+tiles+"/moniter/general.do");
 		}
+		
 		
 		if(!"".equals(msg)) {
 			mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지

@@ -7,8 +7,10 @@ $(function(){
 
         menuBar();
     })
-
-    menuBar();
+    if (!Mobile()){// 모바일일 경우
+    	 menuBar();
+    }
+   
 
     function menuBar(){
         var gnbLiWidth, gnbLipos, number;
@@ -37,7 +39,8 @@ $(function(){
 })
 
 
-
+function Mobile(){
+	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
 
 
 

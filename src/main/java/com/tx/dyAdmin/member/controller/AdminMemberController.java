@@ -447,16 +447,6 @@ public class AdminMemberController {
 				Component.createData("member.UI_setAuthority", map);
 			}
 			
-			ApplicationDTO ApplicationDTO = new ApplicationDTO();
-			ApplicationDTO.setAPU_UI_KEYNO(UserDTO.getUI_KEYNO());
-			ApplicationDTO.setAPU_NAME(UserDTO.getUI_NAME());
-			ApplicationDTO.setAPU_RELATION("본인");
-			ApplicationDTO.setAPU_BIRTH(UserDTO.getUI_BIRTH());
-			ApplicationDTO.setAPU_GENDER(UserDTO.getUI_ZENDER());
-			ApplicationDTO.setAPU_PHONE(UserDTO.getUI_PHONE());
-			ApplicationDTO.setAPU_SELFYN("Y");
-			Component.createData("Application.APU_Insert", ApplicationDTO);
-			
 			UserDTO.encode();
 			Component.createData("member.UI_insert", UserDTO);
 		}

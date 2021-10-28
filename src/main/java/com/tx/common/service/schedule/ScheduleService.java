@@ -30,14 +30,10 @@ public class ScheduleService {
 	//날씨 데이터 매시 31분마다 
 	@Scheduled(cron="0 31 * * * ?")  
 	public void test() throws Exception{
-	
-	WetherService w = new WetherService();
-	ArrayList<String> list = w.Daily_Wether("나주");
-	list.addAll(w.Sunrise_setData("나주"));
-	
-	Component.deleteData("Weather.Daily_WeatherDelete");
-	Component.createData("Weather.Daily_WeatherData", list);
-		
+		WetherService w = new WetherService();
+		ArrayList<String> list = w.Daily_Wether("나주");
+		list.addAll(w.Sunrise_setData("나주"));
+		WeatherOrganize(list);
     }
 	
 	//06시부터 - 20시까지  30초 마다 실제값 테이블에 등록
@@ -57,5 +53,36 @@ public class ScheduleService {
 		//발전소 인버터 별 데이터 초기화
 	}
 
+	
+	   public void WeatherOrganize(ArrayList<String> weatherList) {
+		   Component.deleteData("Weather.Daily_WeatherDelete");
+		   //혹시모를 갯수 체크
+		   int count = Integer.parseInt(weatherList.get(weatherList.size()-4));
+		   
+		   for(int i=0;i<count;i++) {
+			   HashMap<String,Object> map = new HashMap<String,Object>();
+			   //시간 0
+			   map.put("date",weatherList.get(i).toString());
+			   //날씨 0+5 * 1
+			   map.put("weather",weatherList.get(i+count*1).toString());
+			   //강수 0+5 * 2
+			   map.put("rn1",weatherList.get(i+count*2).toString());
+			   //강수 0+5 * 3
+			   map.put("sky",weatherList.get(i+count*3).toString());
+			   //온도 0+5 * 4
+			   map.put("t1h",weatherList.get(i+count*4).toString());
+			   //온도 0+5 * 5
+			   map.put("reh",weatherList.get(i+count*5).toString());
+			   //온도 0+5 * 6
+			   map.put("wsd",weatherList.get(i+count*6).toString());
+			   //지역
+			   map.put("region",weatherList.get((weatherList.size()-3)).toString());
+			   //일출
+			   map.put("sunrise",weatherList.get((weatherList.size()-2)).toString());
+			   //일몰
+			   map.put("sunset",weatherList.get((weatherList.size()-1)).toString());
+			   Component.createData("Weather.Daily_WeatherData", map);
+		   }
+	   }
 	
 }

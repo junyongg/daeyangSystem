@@ -64,6 +64,9 @@ public class AdminPowerController {
 			,@ModelAttribute UserDTO UserDTO
 			) throws Exception {
 		ModelAndView mv  = new ModelAndView("/dyAdmin/power/pra_power_list.adm");
+		
+		mv.addObject("member",Component.getListNoParam("member.UI_USER_SELECT"));
+		
 		return mv;
 	}
 	

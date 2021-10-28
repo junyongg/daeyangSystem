@@ -29,13 +29,13 @@
                                	<c:when test="${DaliyType eq '1' }">
                                		<tr>
 	                                   <th class="txtL" style="width: 50%;">발전 출력</th>
-	                                   <td class="txtR" style="width: 50%;"><b>${mindata.Active_Power }</b>W</td>
+	                                   <td class="txtR" style="width: 50%;"><b>${empty mindata.Active_Power ? 0 : mindata.Active_Power}</b>W</td>
 	                               </tr>	
                                	</c:when>
                                	<c:otherwise>
            							<tr>
 	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><b><fmt:formatNumber value="${mindata.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
+	                                   <td class="txtR" style="width: 50%;"><b><fmt:formatNumber value="${empty mindata.DDM_D_DATA ? 0 : mindata.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
 	                                </tr> 
                                		<tr>
         	                           <th class="txtL" style="width: 50%;">발전시간</th>
@@ -66,13 +66,13 @@
                                	<c:when test="${DaliyType eq '1' }">
 	                          		<tr>
 	                                   <th class="txtL" style="width: 50%;">발전 출력</th>
-	                                   <td class="txtR" style="width: 50%;"><b>${maxdata.Active_Power }</b>W</td>
+	                                   <td class="txtR" style="width: 50%;"><b>${empty maxdata.Active_Power? 0: maxdata.Active_Power}</b>W</td>
 	                               </tr>	
                                	</c:when>
                                	<c:otherwise>
            							<tr>
 	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><b><fmt:formatNumber value="${maxdata.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
+	                                   <td class="txtR" style="width: 50%;"><b><fmt:formatNumber value="${empty maxdata.DDM_D_DATA ? 0: maxdata.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
 	                                </tr> 
                                		<tr>
         	                           <th class="txtL" style="width: 50%;">발전시간</th>
@@ -97,7 +97,7 @@
 	                           <tbody>
 	                               <tr>
 	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${ob.DDM_D_DATA }" pattern="0.00"/>KWh</td>
+	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${empty ob.DDM_D_DATA ? 0 : ob.DDM_D_DATA }" pattern="0.00"/>KWh</td>
 	                               </tr>
 	                               <tr>
 	                                   <th class="txtL" style="width: 50%;">발전시간</th>
@@ -117,7 +117,7 @@
 	                           <tbody>
 	                               <tr>
 	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${ob.DDM_CUL_DATA }" pattern="0.00"/>KWh</td>
+	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${empty ob.DDM_CUL_DATA ? 0 : ob.DDM_CUL_DATA}" pattern="0.00"/>KWh</td>
 	                               </tr>
 	                               <tr>
 	                                   <th class="txtL" style="width: 50%;">발전시간</th>
@@ -133,7 +133,6 @@
 	          	 <dl class="st_dl">
 	               <dt>평균</dt>
 	               <dd>
-	<%--                    <p class="gb_txt"><fmt:formatNumber value="${ob.DDM_D_DATA }" pattern="0.00"/>KWh</p> --%>
 	                   <div class="table_wrapper auto">
 	                       <table class="tbl_normal auto">
 	                           <tbody>
@@ -240,22 +239,13 @@
                     <th>일시</th>
                     <th>이름</th>
                     <th>발전량(kWh)</th>
-                    <th>누적발전량(kWh)</th>
-                    <th>현재 출력</th>
-                    <th>발전시간</th>
+                    <th>누적발전량(KW)</th>
+                    <th>현재 출력(W)</th>
+                    <th>발전시간(h)</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${result}" var="result">
-                	<%-- <c:choose>
-                		<c:when test="${result.Work_Mode eq 'Fault' || result.Work_Mode eq 'Permanent Fault'}">
-                			<c:set var="state" value="장애"/>
-                		</c:when>
-                		<c:when test="${result.Work_Mode eq 'Normal' || result.Work_Mode eq 'Wati'}">
-                			<c:set var="state" value="정상"/>
-                		</c:when>
-                		<c:otherwise><c:set var="state" value="기타"/></c:otherwise>
-                	</c:choose> --%>
 	                <tr>
 	                <c:choose>
 	                	<c:when test="${DaliyType eq '1' }">
@@ -272,7 +262,7 @@
 		                    <td><fmt:formatNumber value="${result.DDM_D_DATA }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/></td>
-		                    <td><fmt:formatNumber value="${result.DDM_D_DATA/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+		                    <td><fmt:formatNumber value="${result.DDM_T_HOUR  }" pattern="0.00"/></td>
 	                	</c:otherwise>
 	                </c:choose>
 	               </tr>
@@ -335,17 +325,31 @@ $(function(){
 		
 		var datelist = new Array();
 		var datalist = new Array();
+		var hourlist = new Array();
 		<c:forEach items="${result}" var="result">
 			datelist.push("${result.FORMATDATE}")
-			datalist.push("${result.DDM_D_DATA}")
+			var data = "${result.DDM_D_DATA}";
+			datalist.push(parseFloat(data).toFixed(2))
+			var hour = "${result.DDM_T_HOUR}";
+			hourlist.push(parseFloat(hour).toFixed(2))
 		</c:forEach>
 		
 		var aJson = new Object();
 		aJson.name = "발전량";
 		aJson.type = "line";
-		aJson.stack = "a"+i;
+		aJson.stack = "a1";
 		aJson.data = datalist;
+		
 		aJsonArray.push(aJson);
+		
+		var aJson2 = new Object();
+		aJson2.name = "발전시간";
+		aJson2.type = "line";
+		aJson2.stack = "a2";
+		aJson2.data = hourlist;
+		
+		
+		aJsonArray.push(aJson2);
 		
 		chartGraph2(datelist,aJsonArray);
 	}

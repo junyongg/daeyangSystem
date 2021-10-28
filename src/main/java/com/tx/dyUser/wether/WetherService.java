@@ -219,6 +219,9 @@ public class WetherService {
 	
 	//일일 데이터 가져오기 (저장하지않고 바로 등록)
 	public ArrayList<String> AjaxDate(String region) throws Exception{
+		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list_temp = new ArrayList<>();
+		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.HOUR, -1);
@@ -229,34 +232,36 @@ public class WetherService {
 		
 		String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst?"
 				+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
-				+ "&pageNo=1&numOfRows=100"
+				+ "&pageNo=1&numOfRows=25"
 				+ "&dataType=JSON"
 				+ "&base_date=" + dates
 				+ "&base_time="+futureDate
-				+ "&nx="+nx+"&ny="+ny+"&";
+				+ "&nx="+nx+"&ny="+ny;
+		System.out.println(url);
 		
-		JSONObject json = readJsonFromUrl(url);
-		JSONArray jsonList = (((json.getJSONObject("response")).getJSONObject("body")).getJSONObject("items")).getJSONArray("item");
-		
-		
-		ArrayList<String> list = new ArrayList<>();
-		ArrayList<String> list_temp = new ArrayList<>();
-		
-		for(int i=0; i<jsonList.length();i++) {
-			JSONObject j = jsonList.getJSONObject(i);
+		try {
+			JSONObject json = readJsonFromUrl(url);
+			JSONArray jsonList = (((json.getJSONObject("response")).getJSONObject("body")).getJSONObject("items")).getJSONArray("item");
 			
-			if(j.getString("category").equals("PTY")) {
-				list.add(j.getString("fcstTime"));
-				list_temp.add(j.getString("fcstValue"));
+			for(int i=0; i<jsonList.length();i++) {
+				JSONObject j = jsonList.getJSONObject(i);
+				
+				if(j.getString("category").equals("PTY")) {
+					list.add(j.getString("fcstTime"));
+					list_temp.add(j.getString("fcstValue"));
+				}
+				if(j.getString("category").equals("T1H")) {
+					list.add(j.getString("fcstValue"));
+				}
+				if(j.getString("category").equals("SKY")) {
+					list.add(j.getString("fcstValue"));
+				}
 			}
-			if(j.getString("category").equals("T1H")) {
-				list.add(j.getString("fcstValue"));
-			}
-			if(j.getString("category").equals("SKY")) {
-				list.add(j.getString("fcstValue"));
-			}
+			list.addAll(list_temp);
+		}catch (Exception e) {
+			System.out.println("날씨데이터 API 에러");
 		}
-		list.addAll(list_temp);
+		
 		return list;
 	}
 	
@@ -318,17 +323,18 @@ public class WetherService {
 		   
 		   ArrayList<String> list = new ArrayList<String>();
 		   
+		   Calendar cal = Calendar.getInstance();
+		   cal.setTime(date);
+		   cal.add(Calendar.HOUR, -1);
+		   String time = format2.format(cal.getTime());
+		   
 		   String nx = "" , ny ="";
 		   if(region.equals("나주")) nx="59"; ny="69";
 		   
-		   	Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			String time = format2.format(cal.getTime());
-			
-			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?"
+			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
 					+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
 					+ "&pageNo=1"
-					+ "&numOfRows=10"
+					+ "&numOfRows=60"
 					+ "&dataType=JSON"
 					+ "&base_date="+dates+"&base_time="+time
 					+ "&nx="+nx+"&ny="+ny;
@@ -344,47 +350,61 @@ public class WetherService {
 				System.out.println("json데이터 에러");
 				jsonList = null;
 			}
+			 int count = 0;
 			 
 			 if(jsonList != null) {
 				 for(int i=0; i<jsonList.length();i++) {
 					   JSONObject j = jsonList.getJSONObject(i);
-					   String value = j.getString("obsrValue");
+					   String value = j.getString("fcstValue");
 					   
+					   //날짜 등록
+					   if(j.getString("category").equals("LGT")) {
+						   value = j.getString("fcstTime");
+						   list.add(value);
+					   }
+					   //날씨
 					   if(j.getString("category").equals("PTY")) {
-						   if(j.getString("obsrValue").equals("1"))  		value = "비"; 
-						   else if(j.getString("obsrValue").equals("2"))  	value = "비/눈";
-						   else if(j.getString("obsrValue").equals("3"))  	value = "눈";
-						   else if(j.getString("obsrValue").equals("4")) 	value = "소나기";
-						   else if(j.getString("obsrValue").equals("5")) 	value = "빗방울";
-						   else if(j.getString("obsrValue").equals("6")) 	value = "빗방울/눈날림";
-						   else if(j.getString("obsrValue").equals("7")) 	value = "눈날림";
+						   if(j.getString("fcstValue").equals("1"))  		value = "비"; 
+						   else if(j.getString("fcstValue").equals("2"))  	value = "비/눈";
+						   else if(j.getString("fcstValue").equals("3"))  	value = "눈";
+						   else if(j.getString("fcstValue").equals("4")) 	value = "소나기";
+						   else if(j.getString("fcstValue").equals("5")) 	value = "빗방울";
+						   else if(j.getString("fcstValue").equals("6")) 	value = "빗방울/눈날림";
+						   else if(j.getString("fcstValue").equals("7")) 	value = "눈날림";
 						   else value = "맑음";
+						   count += 1;
+						   list.add(value);
 					   }
-					   
-					   if(j.getString("category").equals("VEC")) {
-						   int I_value = Integer.parseInt(j.getString("obsrValue"));
-						   if(I_value >= 0 && I_value < 45)  value = "N-NE";
-						   else if(I_value >= 45 && I_value < 90) value = "NE-E"; 
-						   else if(I_value >= 90 && I_value < 135) value = "E-SE"; 
-						   else if(I_value >= 135 && I_value < 180) value = "SE-S"; 
-						   else if(I_value >= 180 && I_value < 225) value = "S-SW"; 
-						   else if(I_value >= 225 && I_value < 270) value = "SW-W"; 
-						   else if(I_value >= 270 && I_value < 315) value = "W-NW"; 
-						   else if(I_value >= 315 && I_value < 360) value = "NW-N"; 
+					   //시간당 강수량
+					   if(j.getString("category").equals("RN1")) {
+						   list.add(value);
 					   }
-					   
-					   if(j.getString("category").equals("REH")) {
-						   int I_value = Integer.parseInt(j.getString("obsrValue"));
-						   if(I_value > 70) {
-							   list.set(0,"흐림");
-						   }else if(I_value > 40) {
-							   list.set(0,"구름많음");
-						   }else if(I_value > 20) {
-							   list.set(0,"구름조금");
+					   //하늘 상태
+					   if(j.getString("category").equals("SKY")) {
+						   if(j.getString("fcstValue").equals("3")){
+							   value = "구름많음";
+						   }else if(j.getString("fcstValue").equals("4")) {
+							   value = "흐림";
+						   }else {
+							   value = "맑음";
 						   }
+						   list.add(value);
 					   }
-					   list.add(value);
+					   //온도
+					   if(j.getString("category").equals("T1H")) {
+						   list.add(value);
+					   }
+					   //습도
+					   if(j.getString("category").equals("REH")) {
+						   list.add(value);
+					   }
+					   //풍향
+					   if(j.getString("category").equals("WSD")) {
+						   list.add(value);
+					   }
 				 }
+				 
+				 list.add(Integer.toString(count)); //갯수 혹시모르니깐..
 				 list.add(region);
 				 
 			 }

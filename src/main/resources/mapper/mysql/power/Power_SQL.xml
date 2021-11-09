@@ -90,6 +90,7 @@
 				, DPP_INVER_COUNT
 				, DPP_AREA
 				, DPP_LOCATION
+				, DPP_SN
 		)
 		VALUES
 		(
@@ -104,6 +105,7 @@
 				, #{DPP_INVER_COUNT}
 				, #{DPP_AREA}
 				, #{DPP_LOCATION}
+				, #{DPP_SN}
 		)
     </insert>
     
@@ -122,7 +124,14 @@
 			, DPP_INVER_COUNT	= #{DPP_INVER_COUNT}
 			, DPP_AREA			= #{DPP_AREA}
 			, DPP_LOCATION		= #{DPP_LOCATION}
-			
+			, DPP_SN			= #{DPP_SN}			
+		WHERE DPP_KEYNO 		= #{DPP_KEYNO}
+    </update>
+
+	<!-- 발전소 추가 수정 sn_num -->
+	<update id="Pw_SN_update" parameterType="PowerDTO">
+       	UPDATE dy_power_plant
+       	SET 	DPP_SN_NUM			= #{DPP_SN_NUM}			
 		WHERE DPP_KEYNO 		= #{DPP_KEYNO}
     </update>
     

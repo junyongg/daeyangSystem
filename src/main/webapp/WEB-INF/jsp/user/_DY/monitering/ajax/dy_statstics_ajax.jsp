@@ -227,12 +227,12 @@
    <div class="table_wrapper md con_h n02">
        <table class="tbl_normal fixed">
            <colgroup>
-               <col style="width: 15%;">
                <col style="width: 10%;">
                <col style="width: 15%;">
-               <col style="width: 15%;">
-               <col style="width: 25%;">
                <col style="width: 20%;">
+               <col style="width: 20%;">
+               <col style="width: 15%;">
+               <col style="width: 15%;">
             </colgroup>
             <thead>
                 <tr>
@@ -240,8 +240,8 @@
                     <th>이름</th>
                     <th>발전량(kWh)</th>
                     <th>누적발전량(KW)</th>
-                    <th>현재 출력(W)</th>
                     <th>발전시간(h)</th>
+                    <th>현재 출력(W)</th>
                 </tr>
             </thead>
             <tbody>
@@ -253,16 +253,19 @@
 		                    <td>${result.DI_NAME }</td>
 		                    <td>${result.Daily_Generation }</td>
 		                    <td>${result.Cumulative_Generation }</td>
-		                    <td>${result.Active_Power }</td>
 		                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+		                    <td>${result.Active_Power }</td>
 	                	</c:when>
 	                	<c:otherwise>
 	                		<td><fmt:formatDate value="${result.DDM_DATE }" pattern="yyyy-MM-dd"/></td>
 		                    <td>${result.DPP_NAME }</td>
 		                    <td><fmt:formatNumber value="${result.DDM_D_DATA }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
-		                    <td><fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_T_HOUR  }" pattern="0.00"/></td>
+		                    <td>
+									X
+<%-- 		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
+		                    </td>
 	                	</c:otherwise>
 	                </c:choose>
 	               </tr>

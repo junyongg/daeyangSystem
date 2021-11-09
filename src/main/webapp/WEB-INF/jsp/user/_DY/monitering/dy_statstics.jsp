@@ -33,9 +33,22 @@
                         <p class="lb battery">발전소 설비용량</p>
                         <p class="rb"><span class="num">${ob.DPP_VOLUM }</span>kW</p>
                     </li>
+                    
+                    <c:choose>
+               			<c:when test="${ob.DDM_STATUS eq '정상' }">
+               				<c:set var="statusT" value="green"/>
+               			</c:when>
+               			<c:when test="${ob.DDM_STATUS eq '장애' }">
+               				<c:set var="statusT" value="red"/>
+               			</c:when>
+               			<c:otherwise>
+               				<c:set var="statusT" value="black"/>
+               			</c:otherwise>
+               		</c:choose>
+                    
                     <li>
                         <p class="lb invert">인버터상태</p>
-                        <p class="rb"><span class="check_c green"></span> ${ob.DDM_STATUS }</p>
+                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '기타':ob.DDM_STATUS }</p>
                     </li>
                     <li>
                         <p class="lb time">발전소등록 날짜 / 시간</p>
@@ -46,7 +59,7 @@
                     <li>
                         <p class="lb time">최종수신 날짜 / 시간</p>
                         <p class="rb w100">
-                            <span class="gb_txt" id="Conndate">${ob.DDM_DATE }</span>
+                            <span class="gb_txt" id="Conndate">${empty ob.DDM_DATE? '현재 통신 없음': ob.DDM_DATE }</span>
                         </p>
                     </li>
                 </ul>

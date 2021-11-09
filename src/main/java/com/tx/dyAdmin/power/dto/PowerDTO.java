@@ -24,6 +24,8 @@ public class PowerDTO implements Serializable  {
 					DPP_INVER,
 					DPP_INVER_COUNT,
 					DPP_AREA,
-					DPP_LOCATION
+					DPP_LOCATION,
+					DPP_SN,
+					DPP_SN_NUM
 					;
 }

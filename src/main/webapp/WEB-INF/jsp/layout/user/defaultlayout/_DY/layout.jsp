@@ -27,7 +27,10 @@
 		</c:if>
 	</c:if>
 	<c:if test="${currentMenu.MN_DATA1 eq 'mobile' }">
-		<tiles:insertAttribute name="body" />
+		<div id="wrap">
+		    <tiles:insertAttribute name="header" />
+			<tiles:insertAttribute name="body" />
+		</div>
 	</c:if>
 </body>
 

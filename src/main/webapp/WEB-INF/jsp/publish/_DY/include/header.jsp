@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf" %>
 
 <header>
-        <h1><a href="/" title="대양기업 로고"><img src="/resources/img/sub/logo.png" alt="DAEYANG"></a></h1>
+        <h1><a href="" title="대양기업 로고"><img src="/resources/img/sub/logo.png" alt="DAEYANG"></a></h1>
         
         <nav id="gnb">
             <ul>
@@ -31,8 +31,15 @@
         
         <span class="menu_bar" style="width: 554px;"></span>
 
-        <button type="button" class="mo_menu" title="모바일메뉴">
+        <!--
+			<button type="button" class="mo_menu" title="모바일메뉴">
             <span class="hamber"><i class="xi-bars"></i></span>
             <span class="close"><i class="xi-close"></i></span>
         </button>
+		-->
     </header>
+ <section class="mobile_title">
+     <button type="button" class="btn_moArr prev" onclick="location.href='/dy/mobile.do'" title="이전"></button>
+     <button type="button" class="btn_moArr next" onclick="location.href='/dy/moniter/safe.do'" title="다음"></button>
+   <p class="tit">${currentMenu.MN_NAME}</p>
+  </section>

@@ -108,7 +108,7 @@ public class SettingData {
 	public final static String ID_REGEX = "^[A-Za-z0-9_-]{4,16}$";  																			// 아이디 정규식
 	public final static String EMAIL_REGEX = "^[_0-9a-zA-Z-]+@[0-9a-zA-Z-]+(.[_0-9a-zA-Z-]{2,3}+)*$";  											// 이메일 정규식
 //	public final static String EMAIL_REGEX = "^[0-9a-zA-Z]([-_\\\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\\\.]?[0-9a-zA-Z])*\\\\.[a-zA-Z]{2,3}$/i";  	// 이메일 정규식
-	public final static String TILES = "cf";  	// Validation 타일즈
+	public final static String TILES = "dy";  	// Validation 타일즈
 	public final static String defaultX_Location = "35.12438600722675";
 	public final static String defaultY_Location = "126.76849308672915";
 			

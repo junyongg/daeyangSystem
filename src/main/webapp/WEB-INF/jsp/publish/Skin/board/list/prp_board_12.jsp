@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-
 <div class="board_wrap">
    <div class="top">
-	   	<select name="BN_PLANT_NAME" id="BN_PLANT_NAME" onchange="selectBoardList(this.value);" style="float:right;height: 30px;width: 12%;text-align: center;">
+	   	<select name="BN_PLANT_NAME" id="BN_PLANT_NAME" onchange="selectBoardList(this.value);" style="float:right;height: 30px;width: 12%;text-align: center;margin-bottom: 6px;width: 21%;font-size: 13px;">
 			<option value="">전체</option>
 			<c:forEach items="${plantKey }" var="list">
 				<option value="${list.DPP_KEYNO }" ${list.DPP_KEYNO eq BN_PLANT_NAME? 'selected':'' }>${list.DPP_NAME }</option>
@@ -33,7 +32,7 @@
 		          <c:if test="${'Y'eq BoardType.BT_CATEGORY_YN }">
 		      		  <th class = "category"><span>카테고리 구분</span></th>
 		    	  </c:if> 
-				  <th class="name"><span>발전소 명칭</span></th>
+				  <th class="names"><span>발전소 명칭</span></th>
 		          <c:forEach items="${BoardColumnList }" var="model">
 				     <th class="${model.BL_TYPE eq sp:getData('BOARD_COLUMN_TYPE_TITLE') ? 'sbj txtL':'' }">
 				       <span>${model.BL_COLUMN_NAME }</span>
@@ -83,7 +82,7 @@
 				      <c:if test="${'Y'eq BoardType.BT_CATEGORY_YN }">
 				      	<td class = "category"><span>${model.BN_CATEGORY_NAME }</span></td>
 				      </c:if> 
-				      <td class="name"><c:out value="${model.DPP_NAME}"></c:out></td>
+				      <td class="names"><c:out value="${model.DPP_NAME}"></c:out></td>
 				      
 				      <c:forEach items="${BoardColumnList }" var="column">
 				      <c:set var="tempName">BD_DATA_${column.KEYNO}</c:set>
@@ -148,9 +147,11 @@
     </div>
 </div>
 
+<c:if test="${userInfo.isAdmin eq 'Y'}">
 <div class="board_btn_b rb">
     <button type="button" class="btn_nor md2 g_line" id="btn_wr" onclick="pf_RegistMove()" title="글쓰기">글쓰기</button>
 </div>
+</c:if>
 
 <div class="pagination">
 	<ui:pagination paginationInfo="${paginationInfo }" type="normal" jsFunction="pf_LinkPage" />

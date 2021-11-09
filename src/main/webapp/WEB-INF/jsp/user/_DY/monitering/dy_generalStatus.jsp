@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-
 <form:form action="/dy/moniter/general.do" method="POST" id="Form">
 <input type="hidden" name="keyno" value="${DPP_KEYNO }" id="keyno">
 <!-- COMTAINER -->
@@ -31,8 +30,12 @@
                     </select>
                 </div>
                 
+                <c:if test="${DPP_KEYNO eq '2' }">
+                	<button type="button" style="height: 36px;background-color: #3061ad;color: #fff;border-radius: 30px;font-size: 14px;float: right;width: 30%;" onclick="showCCTV('${ob.DPP_IP}');">현장확인</button>
+                </c:if>
+                
                 <h2 class="location">발전소 현장정보</h2>
-
+				
                 <div class="power_preview">
                     <div class="imgs" id="map" style="height: 200px"></div> <!-- 카카오맵 -->
                 </div>
@@ -220,23 +223,24 @@
                     <h2 class="circle mgSm">기상정보</h2>
 
                     <div class="weather_infomation">
-  						
-  						<c:if test="${weatherToday.DWD_PTV eq '맑음'}">
-  							<c:choose>
-				        		<c:when test="${weatherToday.DWD_PTV eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
-				        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-			        		</c:choose>
-  						</c:if>
-  						
-  						<c:if test="${weatherToday.DWD_PTV ne '맑음'}">
-  							<c:choose>
-				        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
-				        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-				        	</c:choose>
-  						</c:if>
+
+  						<c:choose>
+  							<c:when test="${weatherToday.DWD_PTV eq '맑음'}">
+  								<c:choose>
+					        		<c:when test="${weatherToday.DWD_SKY eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_SKY eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
+					        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+				        		</c:choose>
+  							</c:when>
+  							<c:otherwise>
+  								<c:choose>
+					        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
+					        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+					        	</c:choose>
+  							</c:otherwise>
+  						</c:choose>
   						     	
                         <div class="icons"><img src="${weatherIMG }" alt=""></div>
                         <div class="dgree">
@@ -256,29 +260,47 @@
                     <div class="weather_information2">
                         <div class="lb">
 <%--                             <p class="now">${fn:substring(weatherToday.DWD_DATE,0,2) }시 현재</p> --%>
-                            <p class="cate">${weatherToday.DWD_PTV}</p>
+                           <c:choose>
+								<c:when test="${weatherToday.DWD_PTV eq '맑음'}">
+									<c:choose>
+						        		<c:when test="${weatherToday.DWD_SKY eq '흐림'}"><c:set var="wea_status" value="${weatherToday.DWD_SKY}"/></c:when>
+						        		<c:when test="${weatherToday.DWD_SKY eq '구름많음'}"><c:set var="wea_status" value="${weatherToday.DWD_SKY}"/></c:when>
+						        		<c:otherwise><c:set var="wea_status" value="맑음"/></c:otherwise>
+					        		</c:choose>
+								</c:when>
+								<c:otherwise>
+									<c:choose>
+						        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="wea_status" value="${weatherToday.DWD_PTV }"/></c:when>
+						        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="wea_status" value="${weatherToday.DWD_PTV }"/></c:when>
+						        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="wea_status" value="눈"/></c:when>
+						        		<c:otherwise><c:set var="wea_status" value="맑음"/></c:otherwise>
+						        	</c:choose>
+								</c:otherwise>
+							</c:choose>
+                            
+                            <p class="cate">${wea_status}</p>
                         </div>
                         <ul class="list">
                             <c:forEach begin="1" end="${fn:length(weather)-1 }" var="i">
 								
-								<c:if test="${weather[i].DWD_PTV eq '맑음'}">
-		  							<c:choose>
-						        		<c:when test="${weather[i].DWD_PTV eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
-						        		<c:when test="${weather[i].DWD_PTV eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
-						        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-					        		</c:choose>
-		  						</c:if>
+								<c:choose>
+									<c:when test="${weather[i].DWD_PTV eq '맑음'}">
+										<c:choose>
+							        		<c:when test="${weather[i].DWD_SKY eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
+							        		<c:when test="${weather[i].DWD_SKY eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
+							        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+						        		</c:choose>
+									</c:when>
+									<c:otherwise>
+										<c:choose>
+							        		<c:when test="${weather[i].DWD_PTV eq '빗방울/눈날림' || weather[i].DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
+							        		<c:when test="${weather[i].DWD_PTV eq '비' || weather[i].DWD_PTV eq '소나기' || weather[i].DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
+							        		<c:when test="${weather[i].DWD_PTV eq '눈' || weather[i].DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
+							        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+							        	</c:choose>
+									</c:otherwise>
+								</c:choose>
 		  						
-		  						<c:if test="${weatherToday.DWD_PTV ne '맑음'}">
-		  							<c:choose>
-						        		<c:when test="${weather[i].DWD_PTV eq '빗방울/눈날림' || weather[i].DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
-						        		<c:when test="${weather[i].DWD_PTV eq '비' || weather[i].DWD_PTV eq '소나기' || weather[i].DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
-						        		<c:when test="${weather[i].DWD_PTV eq '눈' || weather[i].DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
-						        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-						        	</c:choose>
-		  						</c:if>
-								
-								
 								<li>
 	                                <p class="time">${fn:substring(weather[i].DWD_DATE,0,2) }시</p>
 	                                <div class="icon"><img src="${weatherIMG }" alt=""></div>
@@ -498,7 +520,15 @@
                                 <ul class="info">
                                     <li>
                                         <span class="sbj">발전시간(평균)</span>
-                                        <span class="num"><b><fmt:formatNumber value="${((month.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/month.CNT }" pattern="0.00"/></b>h</span>
+                                        <span class="num"><b>
+                                        	<c:if test="${month.CNT ne '0'}">
+                                        		<fmt:formatNumber value="${((month.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/month.CNT }" pattern="0.00"/>
+                                        	</c:if>
+                                        	<c:if test="${month.CNT eq '0'}">
+                                        		<fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
+                                        	</c:if>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
@@ -511,7 +541,15 @@
                                 <ul class="info">
                                     <li>
                                         <span class="sbj">발전시간(평균)</span>
-                                        <span class="num"><b><fmt:formatNumber value="${((year.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/year.CNT }" pattern="0.00"/></b>h</span>
+                                        <span class="num"><b>
+                                        		<c:if test="${year.CNT ne '0'}">
+                                        			<fmt:formatNumber value="${((year.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/year.CNT }" pattern="0.00"/>
+                                        		</c:if>
+                                        		<c:if test="${year.CNT eq '0'}">
+                                        			<fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
+                                        		</c:if>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
@@ -524,7 +562,15 @@
                                 <ul class="info">
                                     <li>
                                         <span class="sbj">발전시간(평균)</span>
-                                        <span class="num"><b><fmt:formatNumber value="${((all.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/all.CNT }" pattern="0.00"/></b>h</span>
+                                        <span class="num"><b>
+                                        	<c:if test="${all.CNT ne '0'}">
+                                       			<fmt:formatNumber value="${((all.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/all.CNT }" pattern="0.00"/>
+                                       		</c:if>
+                                       		<c:if test="${all.CNT eq '0'}">
+                                       			<fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
+                                       		</c:if>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
@@ -548,6 +594,7 @@
 </form:form>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 <script>
 $(function(){
 	pf_setMap();
@@ -630,11 +677,11 @@ function calculation(){
 	var rec = $("#rec1").val();
 	var plus = $("#plus").text();
 	
-	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원");
-	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
+	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",") + "원");
+	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
+	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
+	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
+	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
 }
 
 function plusValue(value){
@@ -649,5 +696,13 @@ function plusValue(value){
 function clean(){
 	$("#rec1").val("");
 	$("#smp1").val("");
+}
+
+function showCCTV(ip){
+	var url = "http://"+ip+":8081/";
+	var win = window.open(url, "PopupWin", "width=500,height=600");
+
+// 	win.document.write("<p>새창에 표시될 내용 입니다.</p>");
+
 }
 </script>

@@ -1,5 +1,6 @@
 package com.tx.dyAdmin.power.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,6 +158,7 @@ public class AdminPowerController {
 	@ResponseBody
 	public void IveterInsert(HttpServletRequest req, PowerDTO pwdto) throws Exception {
 		Component.createData("power.Pw_insert", pwdto);
+		ChangeSN(pwdto);
 	}
 	
 	/**
@@ -167,6 +170,7 @@ public class AdminPowerController {
 	@ResponseBody
 	public void IveterUpdate(HttpServletRequest req, PowerDTO pwdto) throws Exception {
 		Component.updateData("power.Pw_update", pwdto);
+		ChangeSN(pwdto);
 	}
 	
 	/**
@@ -176,10 +180,51 @@ public class AdminPowerController {
 	@RequestMapping(value="/dyAdmin/powerPlant/Inverter_data.do")
 	@ResponseBody
 	public PowerDTO IveterDetail(HttpServletRequest req, PowerDTO pwdto) throws Exception {
-		pwdto = Component.getData("power.Pw_getData", pwdto);
 		
+		pwdto = Component.getData("power.Pw_getData", pwdto);
 		return pwdto;
 	}
 	
+	
+	public void ChangeSN( PowerDTO power) throws Exception {
+		
+		if(power != null) {
+			if(power.getDPP_SN() != null) {
+				String[] list = power.getDPP_SN().toString().split(",");
+				int firstNum = 23;
+				String str = "";
+				ArrayList<String> Stringlist = new ArrayList<String>();
+				
+				for(int j=0;j<list.length;j++) {
+					String finall = "AA55807F000111";
+					String l = list[j];
+					String temp = "";
+					
+					/*if(j == 0) {
+						firstNum = Integer.parseInt((l.substring(l.length()-4,l.length())),16);
+						firstNum = Integer.parseInt(Integer.toString(firstNum),16);
+					}*/
+					
+					int num = 0;
+					for(int i = 0;i<l.length();i++) {
+						if(Character.isDigit(l.charAt(i))) { 		//숫자부분
+							temp += "3"+String.valueOf(l.charAt(i)); 
+							if(i>4) {
+								num += Integer.parseInt(String.valueOf(l.charAt(i)));
+							}
+						}else { 									//알파벳부분
+							temp += Integer.toHexString((int)l.charAt(i));
+						}
+					}
+					finall += temp + "0"+ (j+1) + "05";
+					finall += Integer.toHexString(210+num+(j+1) - firstNum);
+					Stringlist.add(finall);
+				}
+				str = StringUtils.join(Stringlist, ",");
+				power.setDPP_SN_NUM(str);
+				Component.getData("power.Pw_SN_update", power);
+			}
+		}
+	}
 	
 }

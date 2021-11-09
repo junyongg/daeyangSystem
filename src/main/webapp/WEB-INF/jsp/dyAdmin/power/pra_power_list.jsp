@@ -184,15 +184,22 @@ form .error {color:red}
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 인버터 갯수</label>
 														<div class="col-md-6">
-															<input type="number" class="form-control DPP_INVER_COUNT" id="DPP_INVER_COUNT" name="DPP_INVER_COUNT"  value="">
+															<input type="number" class="form-control DPP_INVER_COUNT" id="DPP_INVER_COUNT" name="DPP_INVER_COUNT"  value="1" onchange="SerialNumber(this.value)" min="1" max="10">
 														</div>
 													</div>
+													
 													<div class="form-group">
+														<label class="col-md-3 control-label"><span class="nessSpan">*</span> S/N</label>
+														<div class="col-md-6" id="sn_insert">
+														</div>
+													</div>
+													
+													<!-- <div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 발전소 이미지</label>
 														<div class="col-md-6">
 															<input type="text" class="form-control " id="" name=""  value="">
 														</div>
-													</div>
+													</div> -->
 												</fieldset>
 											</div>
 										</fieldset>
@@ -218,7 +225,7 @@ var map;
 
 $(document).ready(function() {
 	pf_setMap('${resultData.DDP_X_LOCATION}','${resultData.DDP_Y_LOCATION}');
-	
+	SerialNumber("1");
 });
 
 function validation(){
@@ -230,6 +237,7 @@ function validation(){
 	if($("#DPP_LOCATION").val() == ''){alert("발전소 주소를 검색해주세요!"); return false}
 	if($("#DPP_X_LOCATION").val() == ''){alert("지도에서 주소 위로 이동을 클릭해주세요!"); return false}
 	if($("#INVER_COUNTN").val() == ''){alert("인버터 갯수를 입력하세요!"); return false}
+	if($("input[name='DPP_SN']").val() == ''){alert("인버터 s/n를 입력하세요!"); return false}
 	
 	return true;
 	}
@@ -296,7 +304,8 @@ function Inver_Update(){
 }
 
 function pf_setMap(lat,lng){
-	 var isDefault = !(lat && lng);
+	$("#DDP_Map").html("")
+	var isDefault = !(lat && lng);
 	
 	lat = lat || "${sp:getData('defaultX_Location')}";
 	lng = lng || "${sp:getData('defaultY_Location')}";
@@ -308,6 +317,8 @@ function pf_setMap(lat,lng){
 	};
 
 	map = new daum.maps.Map(container, options);
+	
+	map.setMapTypeId(kakao.maps.MapTypeId.HYBRID); 
 	
 	marker = new daum.maps.Marker({ 
 	    // 지도 중심좌표에 마커를 생성합니다 
@@ -373,6 +384,9 @@ function detailData(keyno){
 			DPP_KEYNO : keyno
 		},
 		success : function(data){
+			
+			SN_Detail(data.DPP_INVER_COUNT,data.DPP_SN)
+			
 			$("#DPP_KEYNO").val(data.DPP_KEYNO)
 			$("#DPP_NAME").val(data.DPP_NAME)
 			$("#DPP_AREA").val(data.DPP_AREA)
@@ -384,8 +398,10 @@ function detailData(keyno){
 			$("#DPP_Y_LOCATION").val(data.DPP_Y_LOCATION)
 			$("#DPP_INVER").val(data.DPP_INVER)
 			$("#DPP_INVER_COUNT").val(data.DPP_INVER_COUNT)
-			var coords = new daum.maps.LatLng(data.DPP_Y_LOCATION, data.DPP_X_LOCATION);
-			pf_moveMap();
+			
+						
+// 			var coords = new daum.maps.LatLng(data.DPP_Y_LOCATION, data.DPP_X_LOCATION);
+			pf_setMap(data.DPP_X_LOCATION,data.DPP_Y_LOCATION );
 			
 			$("#insertButton").text("수정");
 			$("#insertButton").attr("onclick","Inver_Update()");
@@ -407,7 +423,31 @@ function cancle(){
 	$("#DPP_Y_LOCATION").val('')
 	$("#DPP_INVER").val('')
 	$("#DPP_INVER_COUNT").val('')
+	$("input[name='DPP_SN']").val('')
 }
 
+function SerialNumber(number,snlist){
+	var num = Number(number)
+	input = ''
+	if(num > 0){
+		for(var i=1;i<=num;i++){
+			if(snlist !=null ){
+				input += '<input type="text" class="form-control Serial_num" name="DPP_SN"  value="'+snlist[i-1]+'" placeholder="'+i+'호" style="margin-bottom: 5px;">'
+			}else{
+				input += '<input type="text" class="form-control Serial_num" name="DPP_SN"  value="" placeholder="'+i+'호" style="margin-bottom: 5px;">'
+			}
+		}	
+	}
+	
+	$("#sn_insert").html(input)
+}
+
+function SN_Detail(num,list){
+	var snlist = []
+	if(list != null){
+    	snlist = list.split(",")	
+    }
+    SerialNumber(num,snlist)
+}
 
 </script>

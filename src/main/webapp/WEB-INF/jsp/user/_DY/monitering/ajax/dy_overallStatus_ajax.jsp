@@ -9,22 +9,30 @@
 
     <div class="weather_infomation">
         <div class="icons">
-        
-        	<c:if test="${weatherToday.DWD_PTV eq '맑음'}">
-				<c:choose>
-	        		<c:when test="${weatherToday.DWD_PTV eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
-	        		<c:when test="${weatherToday.DWD_PTV eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
-	        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-	       		</c:choose>
+        	
+        	<c:choose>
+        		<c:when test="${Weather.DWD_PTV eq '맑음'}">
+        			<c:choose>
+		        		<c:when test="${Weather.DWD_SKY eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
+		        		<c:when test="${Weather.DWD_SKY eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
+		        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+		       		</c:choose>
+        		</c:when>
+        		<c:otherwise>
+        			<c:choose>
+		        		<c:when test="${Weather.DWD_PTV eq '빗방울/눈날림' || Weather.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
+		        		<c:when test="${Weather.DWD_PTV eq '비' || Weather.DWD_PTV eq '소나기' || Weather.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
+		        		<c:when test="${Weather.DWD_PTV eq '눈' || Weather.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
+		        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+		        	</c:choose>
+        		</c:otherwise>
+        	</c:choose>
+        	<c:if test="">
+				
 			</c:if>
 					
-			<c:if test="${weatherToday.DWD_PTV ne '맑음'}">
-				<c:choose>
-	        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
-	        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
-	        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
-	        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-	        	</c:choose>
+			<c:if test="${Weather.DWD_PTV ne '맑음'}">
+				
 			</c:if>
         
         	<img src="${weatherIMG }" alt="">
@@ -108,19 +116,41 @@
                     <th class="txtL">금월</th>
                     <td class="txtR"><b><fmt:formatNumber value="${month.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
                     <th class="txtL" style="font-size:11px;">발전시간(평균)</th>
-                    <td class="txtR"><b><fmt:formatNumber value="${((month.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/month.CNT }" pattern="0.00"/></b>h</td>
+                    <td class="txtR"><b>
+                    	<c:if test="${month.CNT ne '0'}">
+                    		<fmt:formatNumber value="${((month.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/month.CNT }" pattern="0.00"/>
+                    	</c:if>
+                    	<c:if test="${month.CNT eq '0'}">
+                       		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
+                       	</c:if>
+                    </b>h</td>
                 </tr>
                 <tr>
                     <th class="txtL">금년</th>
                     <td class="txtR"><b><fmt:formatNumber value="${year.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
                     <th class="txtL"></th>
-                    <td class="txtR"><b><fmt:formatNumber value="${((year.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/year.CNT }" pattern="0.00"/></b>h</td>
+                    <td class="txtR"><b>
+                    	<c:if test="${year.CNT ne '0'}">
+                    		<fmt:formatNumber value="${((year.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/year.CNT }" pattern="0.00"/>
+                    	</c:if>
+                    	<c:if test="${year.CNT eq '0'}">
+                       		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
+                       	</c:if>
+                    	</b>h</td>
                 </tr>
                 <tr>
                     <th class="txtL">누적</th>
                     <td class="txtR"><b><fmt:formatNumber value="${all.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
                     <th class="txtL"></th>
-                    <td class="txtR"><b><fmt:formatNumber value="${((all.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/all.CNT }" pattern="0.00"/></b>h</td>
+                    <td class="txtR"><b>
+                    	<c:if test="${all.CNT ne '0'}">
+                    		<fmt:formatNumber value="${((all.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/all.CNT }" pattern="0.00"/>
+                    	</c:if>
+                    	<c:if test="${year.CNT eq '0'}">
+                       		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
+                       	</c:if>
+                    	</b>h
+                    </td>
                 </tr>
             </tbody>
         </table>

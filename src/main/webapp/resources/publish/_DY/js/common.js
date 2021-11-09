@@ -4,14 +4,18 @@ $(function(){
     $('#gnb ul > li').on('click', function(){
         $('#gnb ul > li').removeClass('on');
         $(this).addClass('on');
-
-        menuBar();
+       if (!Mobile()){
+          menuBar();
+       	}
     })
-    if (!Mobile()){// 모바일일 경우
+	
+  if (!Mobile()){// 모바일일 경우
     	 menuBar();
     }
-   
-
+	
+    function Mobile(){
+		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
+  
     function menuBar(){
         var gnbLiWidth, gnbLipos, number;
 
@@ -39,8 +43,7 @@ $(function(){
 })
 
 
-function Mobile(){
-	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
+
 
 
 

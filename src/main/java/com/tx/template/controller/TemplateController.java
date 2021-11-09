@@ -65,9 +65,11 @@ public class TemplateController {
 		}
 		
 		//관리자 체크해서 권한없을시  redirect 시킨다.
-		Map<String, Object> user = CommonService.getUserInfo(req);
-		String userKeyno = ((String) user.get("UI_KEYNO"));
-		String UIA_KEYNO = Component.getData("Authority.UIA_getDataByUIKEYNO", userKeyno);
+//		Map<String, Object> user = CommonService.getUserInfo(req);
+		/*String userKeyno = ((String) user.get("UI_KEYNO"));
+		if(userKeyno != null) {
+			String UIA_KEYNO = Component.getData("Authority.UIA_getDataByUIKEYNO", userKeyno);
+		}*/
 		
 		//모바일 부분 체크 이후 url 변경
 		String userAgent = req.getHeader("user-agent");

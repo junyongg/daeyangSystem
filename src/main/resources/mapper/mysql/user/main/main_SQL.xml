@@ -62,7 +62,7 @@
 
 	<!-- 금월, 금년 데이터 출력 이전 데이터와 취합하기-->
 	<select id="select_MainSum_MY" resultType="hashmap" parameterType="hashmap">
-		SELECT SUM(C.DDM_D_DATA) AS DATA , COUNT(*) AS CNT
+		SELECT IFNULL(SUM(C.DDM_D_DATA),0) AS DATA , COUNT(*) AS CNT
 		FROM(
 			SELECT *
 			FROM dy_inverter_data_main A

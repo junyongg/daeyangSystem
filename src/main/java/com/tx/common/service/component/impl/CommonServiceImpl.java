@@ -450,7 +450,7 @@ public class CommonServiceImpl extends EgovAbstractServiceImpl implements Common
 	public HashMap<String,Object> getSiteMap(String tiles){
 		
 		if(StringUtils.isBlank(tiles)){
-			tiles = "cf";
+			tiles = "dy";
 		}
 		
 		HashMap<String, Object> map = new HashMap<>();

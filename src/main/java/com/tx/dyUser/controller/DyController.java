@@ -34,8 +34,6 @@ public class DyController {
 	/** 페이지 처리 출 */
 	
 	@Autowired CommonService CommonService;
-	/** 페이지 처리 출 */
-	@Autowired private PageAccess PageAccess;
 	
 	/** 암호화 */
 	@Autowired MyPasswordEncoder passwordEncoder;
@@ -204,8 +202,10 @@ public class DyController {
 	   mv.addObject("DPP_KEYNO", key);
 	   mv.addObject("InverterNum", name);
 	   mv.addObject("invertDataList", dataList);
-	   mv.addObject("weatherToday",weather.get(0));
-	   mv.addObject("weather",weather);
+	   if(weather != null) {
+		   mv.addObject("weatherToday",weather.get(0));
+		   mv.addObject("weather",weather);
+	   }
 	   mv.addObject("ob",ob);
 	   return mv;
    }
@@ -502,6 +502,27 @@ public class DyController {
 	   
        return mv;
     }
+    
+    /**
+     * @return 모바일 부분
+     */
+    @RequestMapping("/dy/mobileBoard.do")
+    public ModelAndView MobileView2(HttpServletRequest req,
+    		@RequestParam(value="keyno",defaultValue="0")String key,
+    		@RequestParam(value="name",defaultValue="인버터 1호")String name,
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+    		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
+    		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
+    		HttpSession session) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/mobile/dy_mobile_board");
+    	
+    	
+    	return mv;
+    }
+    
+    
+    
     
     
    /**

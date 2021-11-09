@@ -7,24 +7,6 @@
 <input type="hidden" id="InverterType" name="InverterType" value="${not empty InverterType? InverterType:'0' }">
 <input type="hidden" id="keyno" name="keyno" value="${ob.DDM_DPP_KEYNO }">
 
-<div id="wrap">
-    
-    <!-- HEADER -->
-    <header>
-        <h1 class="mo_logo"><a href="/" title="대양산업 로고"><img src="/resources/img/sub/mo_logo_top.png" alt="DAEYANG"></a></h1>
-    </header>
-    <!-- HEADER END -->
-
-    <!-- Mobile Title -->
-    
-    <!-- <section class="mobile_title">
-        <button type="button" class="btn_moArr prev" title="이전"></button>
-        <button type="button" class="btn_moArr next" title="다음"></button>
-        <p class="tit">종합현황</p>
-    </section> -->
-    
-    <!-- Mobile Title END -->
-
     
     <!-- COMTAINER -->
     <div id="container">
@@ -141,22 +123,23 @@
 
             <div class="weather_infomation">
   						
-  						<c:if test="${weatherToday.DWD_PTV eq '맑음'}">
-  							<c:choose>
-				        		<c:when test="${weatherToday.DWD_PTV eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
-				        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-			        		</c:choose>
-  						</c:if>
-  						
-  						<c:if test="${weatherToday.DWD_PTV ne '맑음'}">
-  							<c:choose>
-				        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
-				        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
-				        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
-				        	</c:choose>
-  						</c:if>
+  						<c:choose>
+  							<c:when test="${weatherToday.DWD_PTV eq '맑음'}">
+  								<c:choose>
+					        		<c:when test="${weatherToday.DWD_SKY eq '흐림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_5.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_SKY eq '구름많음'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_4.png"/></c:when>
+					        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+				        		</c:choose>
+  							</c:when>
+  							<c:otherwise>
+  								<c:choose>
+					        		<c:when test="${weatherToday.DWD_PTV eq '빗방울/눈날림' || weatherToday.DWD_PTV eq '비/눈'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_2.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_PTV eq '비' || weatherToday.DWD_PTV eq '소나기' || weatherToday.DWD_PTV eq '빗방울'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_6.png"/></c:when>
+					        		<c:when test="${weatherToday.DWD_PTV eq '눈' || weatherToday.DWD_PTV eq '눈날림'}"><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_7.png"/></c:when>
+					        		<c:otherwise><c:set var="weatherIMG" value="/resources/img/sub/ic_weather_1.png"/></c:otherwise>
+					        	</c:choose>
+  							</c:otherwise>
+  						</c:choose>
   						     	
                         <div class="icons"><img src="${weatherIMG }" alt=""></div>
                         <div class="dgree">
@@ -299,7 +282,6 @@
     </div>
     <!-- COMTAINER END -->
 
-</div>
 </form:form>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -395,6 +377,7 @@ function ajaxData(){
         	$("#inverterName").text("<"+result.name+">")
         	
         	var volum = "${ob.DPP_VOLUM}";
+        	var count = "${ob.DPP_INVER_COUNT}";
         	
         	if(result.invertData == null){
         		$("#AllPower").text("0KW / 0h")
@@ -402,7 +385,7 @@ function ajaxData(){
         		$("#Active").text("0")
             	$("#Active_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
         	}else{
-        		var hour = result.invertData.Daily_Generation / volum;
+        		var hour = result.invertData.Daily_Generation / (volum/count);
         		
         		$("#AllPower").text(result.invertData.Daily_Generation+"KW / " + hour.toFixed(2) +"h")
             	var aDeg = result.invertData.Daily_Generation*0.2

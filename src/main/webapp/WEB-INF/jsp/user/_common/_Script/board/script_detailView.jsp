@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 
+<script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript">
 var isAdmin = '${userInfo.isAdmin}';
 $(function(){
@@ -255,6 +256,25 @@ function fileAjax(fskey,obj){
 				test.find('.inputBox').append(temp);
 	       }
 	   });
+}
+
+function sendLinkCustom() {
+	
+	$.ajax({
+		type : "post",
+		url : "/allimTalkAjax.do",
+		data: {
+			"key" : "${BoardNotice.BN_PLANT_NAME}",
+			"title" : "${BoardNotice.BN_TITLE}"
+		},
+		success: function(data){
+			alert(data)			
+		},
+		error: function(){
+			alert("전송 에러");
+		}
+	});
+	
 }
 
 </script>

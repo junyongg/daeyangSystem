@@ -113,4 +113,9 @@ public class SettingData {
 	public final static String defaultY_Location = "126.76849308672915";
 			
 	
+	//RequestAPI Setting값
+	public final static String Apikey = "qcp255q389pcsb3ddunfcb7ys93kbnli";
+	public final static String Userid = "daeyang";
+	public final static String Senderkey = "150329633d7b950290bfb0e577375705c0678a7f";
+	
 }

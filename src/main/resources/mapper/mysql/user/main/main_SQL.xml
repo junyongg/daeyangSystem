@@ -47,7 +47,7 @@
 			</choose>
 		</if>
 		<if test = "UI_KEYNO != null and UI_KEYNO != ''">
-			<if test="!UI_KEYNO.equals('UI_SFMHO')">
+			<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
 				AND DPP_USER = #{UI_KEYNO}
 			</if>
 		</if>
@@ -382,7 +382,7 @@
 		SELECT DPP_KEYNO
 		FROM dy_power_plant 
 		WHERE 1=1 
-		<if test="!UI_KEYNO.equals('UI_SFMHO')">
+		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
 		AND DPP_USER = #{UI_KEYNO}
 		</if>
 		ORDER BY DPP_NAME ASC
@@ -393,7 +393,7 @@
 		SELECT DPP_KEYNO, DPP_NAME
 		FROM dy_power_plant 
 		WHERE 1=1 
-		<if test="!UI_KEYNO.equals('UI_SFMHO')">
+		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
 		AND DPP_USER = #{UI_KEYNO}
 		</if>
 		ORDER BY DPP_NAME ASC
@@ -423,6 +423,24 @@
     	</if>
 		WHERE	UI_KEYNO		=	#{UI_KEYNO}
 	</update>
+	
+	<!-- 발전소 정보 확인 -->
+	<select id="PowerOneSelect" parameterType="String" resultType="HashMap">
+		SELECT * 
+		FROM dy_power_plant
+		WHERE DPP_KEYNO = #{DPP_KEYNO}
+	</select>
+	
+	<!-- 일반관리자 제외한 번호 정보 출력 -->
+	<select id="NotUserData" resultType="USER">
+		SELECT UI_PHONE
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO != 'UIA_LHAPK'
+	</select>
 	
 	
 </mapper>

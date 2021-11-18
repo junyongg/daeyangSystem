@@ -79,6 +79,9 @@
 					<button class="btn_list" type="button" onclick="pf_deleteMove('${BoardNotice.BN_KEYNO}')">
 						삭제
 					</button>
+					<button class="btn_list" type="button" onclick="sendLinkCustom()">
+						확인
+					</button>
 				</c:if>
 				<c:if test="${BoardType.BT_REPLY_YN eq 'Y' && BoardNotice.BN_IMPORTANT ne 'Y' }">
 					<button class="btn_list" type="button" onclick="pf_replyWrite('${BoardNotice.BN_KEYNO}')">

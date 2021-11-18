@@ -435,4 +435,21 @@ function thumnail_delete(key){
 	
 }
 
+/* function allimtalk(){
+	$.ajax({
+		type : "post",
+		url : "/allimTalkAjax.do",
+		data: {
+			"" : key
+		},
+		success: function(data){
+			$('#thumbnail_img').attr('src','');
+			$('#BN_THUMBNAIL').val('');
+		},
+		error: function(){
+			alert("삭제 중 에러");
+		}
+	});
+}
+ */
 </script>

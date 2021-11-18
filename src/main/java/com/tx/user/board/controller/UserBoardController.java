@@ -100,6 +100,7 @@ public class UserBoardController {
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
  	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");
@@ -386,6 +387,7 @@ public class UserBoardController {
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
  	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");

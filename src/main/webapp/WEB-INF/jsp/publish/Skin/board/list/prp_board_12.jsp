@@ -147,7 +147,7 @@
     </div>
 </div>
 
-<c:if test="${userInfo.isAdmin eq 'Y'}">
+<c:if test="${userInfo.isAdmin eq 'Y' || userInfo.UIA_NAME eq '안전관리자' || userInfo.UIA_NAME eq '유지관리자' }">
 <div class="board_btn_b rb">
     <button type="button" class="btn_nor md2 g_line" id="btn_wr" onclick="pf_RegistMove()" title="글쓰기">글쓰기</button>
 </div>

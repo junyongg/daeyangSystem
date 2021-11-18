@@ -33,7 +33,7 @@
         <property name="logFormatter">
             <bean class="com.tx.common.config.logger.Log4JdbcCustomFormatter">
                 <property name="loggingType" value="MULTI_LINE" />
-                <!-- <property name="loggingType" value="DISABLED" /> -->
+<!--                 <property name="loggingType" value="DISABLED" /> -->
                 <property name="logOff" value="true" />
                 <property name="slowQueryLogTime" value="${slowlog.time}" />
                 <property name="slowQueryLogPath" value="${slowlog.path}" />

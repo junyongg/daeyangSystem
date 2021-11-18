@@ -1,5 +1,6 @@
 package com.tx.dyUser.controller;
 
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonParser;
+import com.tx.common.config.SettingData;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
-import com.tx.common.service.page.PageAccess;
+import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyUser.wether.WetherService;
 
@@ -37,6 +42,9 @@ public class DyController {
 	
 	/** 암호화 */
 	@Autowired MyPasswordEncoder passwordEncoder;
+	
+	@Autowired requestAPIservice requestAPI;
+	
    /**
     * @return 관리자 종합현황 페이지 
     */
@@ -48,6 +56,7 @@ public class DyController {
 	   
 	   Map<String, Object> user = CommonService.getUserInfo(req);
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
 	   
 	   //종합현황은 관리자만 출입가능
 	   type.put("type",null);
@@ -79,6 +88,7 @@ public class DyController {
 	   
 	   Map<String, Object> user = CommonService.getUserInfo(req);
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
 	   
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
@@ -119,6 +129,7 @@ public class DyController {
 	   
 	   Map<String, Object> user = CommonService.getUserInfo(req);
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
 	   type.put("type",null);
 	   type.put("region",region);
 	   type.put("status",status);
@@ -144,6 +155,7 @@ public class DyController {
 	   //아이디 세션에 있는값 저장
 	   Map<String, Object> user = CommonService.getUserInfo(req);
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
 	   
 	   if(key.equals("0")) {
 		 //1. 세션에 키값 저장확인
@@ -254,6 +266,7 @@ public class DyController {
     	
     	Map<String, Object> user = CommonService.getUserInfo(req);
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
  	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");
@@ -416,7 +429,8 @@ public class DyController {
  	   //아이디 세션에 있는값 저장
  	   Map<String, Object> user = CommonService.getUserInfo(req);
  	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
- 	   
+ 	  type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	  
  	   if(key.equals("0")) {
  		 //1. 세션에 키값 저장확인
  		   key = (String) session.getAttribute("DPP_KEYNO");
@@ -523,9 +537,71 @@ public class DyController {
     
     
     
+    /**
+     * @return 알림톡  - 안전관리자 게시물 등록시 전송
+     */
+    @RequestMapping("/allimTalkSend.do")
+    @ResponseBody
+    public String allimTalkSend(HttpServletRequest req) throws Exception{
+    	
+    	String msg = "성공";
+    	
+    	//토큰받기
+    	String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+    	tocken = URLEncoder.encode(tocken, "UTF-8");
+    	
+    	//리스트 뽑기 - 현재 게시물 알림은 index=1
+    	JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+    	JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+    	jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
+    	
+    	//받은 토큰으로 알림톡 전송		
+//    	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
+    	
+    	return msg;
+    }
+    
+    /**
+     * @return 알림톡  - 안전관리자 게시물 등록확인 (관리자그룹에 전송)
+     */
+    @RequestMapping("/allimTalkAjax.do")
+    @ResponseBody
+    public String allimTalk(HttpServletRequest req,
+    		@RequestParam(value="key",required=false)String DPP_KEYNO,
+    		@RequestParam(value="title",required=false)String title
+    		) throws Exception{
+		
+    	String msg = "성공";
+    	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",DPP_KEYNO);
+    	
+    	String contents = map.get("DPP_NAME").toString()+"의 "+title+"을 \n확인하였습니다.";
+    	
+    	//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+    	
+		//리스트 뽑기 - 현재 게시물 알림은 index=1
+		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+		jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
+
+    	
+    	//전송할 회원 리스트 
+    	List<UserDTO> list = Component.getListNoParam("main.NotUserData");
+		
+		for(UserDTO l : list) {
+    		l.decode();
+    		String phone = l.getUI_PHONE().toString().replace("-", "");
+    		//받은 토큰으로 알림톡 전송		
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
+    	}
+		return msg;
+    }
     
     
-   /**
+
+
+/**
     * @return 날씨 등록 테스트
     */
    @RequestMapping("/wether.do")

@@ -13,6 +13,11 @@
 </head>
 
 <body>
+
+	<c:if test="${not empty popupList_B }">
+      <jsp:include page="${popupBannerPath}"/>
+    </c:if>
+
 	<c:if test="${currentMenu.MN_DATA1 ne 'mobile' }">
 		<c:if test="${currentMenu.MN_URL eq '/dy/member/login.do' }">
 	        <tiles:insertAttribute name="body" />
@@ -32,6 +37,14 @@
 			<tiles:insertAttribute name="body" />
 		</div>
 	</c:if>
+	<c:if test="${not empty popupList_W }">
+       <jsp:include page="${popupLayoutPath}"/>
+    </c:if>
+	
+	<div class="loading_box">
+        <div class="bg"></div>
+        <img src="/resources/img/loading/loading.gif" title="Loading.." alt="로딩중" />
+    </div>
 </body>
 
 </html>

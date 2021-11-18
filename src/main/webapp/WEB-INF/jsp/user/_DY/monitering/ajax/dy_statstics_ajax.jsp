@@ -18,7 +18,7 @@
 	               <dt>최저: ${mindata.Conn_date }</dt>
 	              </c:when>
 	              <c:otherwise>
-	              	<dt>최저: ${mindata.DDM_DATE }</dt>
+	              	<dt>최저: ${fn:substring(mindata.DDM_DATE,0,11)} </dt>
 	              </c:otherwise>
 	           </c:choose>
                <dd>
@@ -55,7 +55,7 @@
                <dt>최고: ${maxdata.Conn_date }</dt>
               </c:when>
               <c:otherwise>
-              	<dt>최고: ${maxdata.DDM_DATE }</dt>
+              	<dt>최고: ${fn:substring(maxdata.DDM_DATE,0,11)}</dt>
               </c:otherwise>
              </c:choose>
                <dd>

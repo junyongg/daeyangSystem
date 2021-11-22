@@ -433,7 +433,7 @@
 	</select>
 	
 	<!-- 슈퍼개발자 및 알림전송 그룹 번호 추출 -->
-	<select id="NotUserData" resultType="USER" parameterType="String">
+	<select id="NotUserData" resultType="USER" parameterType="HashMap">
 		SELECT *
 		FROM u_userinfo A
 		LEFT JOIN u_userinfo_member_authority B

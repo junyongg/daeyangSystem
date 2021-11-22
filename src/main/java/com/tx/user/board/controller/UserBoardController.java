@@ -937,7 +937,7 @@ public class UserBoardController {
 		jsonObj = (JSONObject) jsonObj_a.get(4); //발전소 게시물 확인
 
     	//전송할 회원 리스트 
-    	List<UserDTO> list = Component.getList("main.NotUserData",map.get("DPP_USER").toString());
+    	List<UserDTO> list = Component.getList("main.NotUserData",map);
 		
 		for(UserDTO l : list) {
     		l.decode();

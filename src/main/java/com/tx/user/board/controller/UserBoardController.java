@@ -1,5 +1,6 @@
 package com.tx.user.board.controller;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +41,7 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
+import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
 import com.tx.common.storage.service.StorageSelectorService;
 import com.tx.common.utils.RemoveTag;
@@ -49,6 +53,7 @@ import com.tx.dyAdmin.admin.board.dto.BoardType;
 import com.tx.dyAdmin.admin.board.service.BoardCommonService;
 import com.tx.dyAdmin.admin.keyword.service.KeywordService;
 import com.tx.dyAdmin.homepage.menu.dto.Menu;
+import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyAdmin.operation.holiday.service.HolidayService;
 import com.tx.dyAdmin.statistics.service.AdminStatisticsService;
 import com.tx.user.service.hwpConvertService;
@@ -74,6 +79,9 @@ public class UserBoardController {
 	/** 활동기록 서비스 */
 	/** statistics **/
 	@Autowired private AdminStatisticsService AdminStatisticsService;
+	/** 알림톡 **/
+	@Autowired requestAPIservice requestAPI;
+	
 	
 	@Autowired private ActivityHistoryService ActivityHistoryService;
 	@Autowired private BoardCommonService BoardCommonService;
@@ -215,12 +223,13 @@ public class UserBoardController {
 		
 		ModelAndView mv = CommonService.setCommonJspPath(tiles, "/user/_common/_Board/data/prc_board_data_detailView");
 
-		String UI_KEYNO = "", ANONYMOUS = "Y", isAdmin = "N";
+		String UI_KEYNO = "", ANONYMOUS = "Y", isAdmin = "N", NowUser ="";
 		Map<String, Object> user = CommonService.getUserInfo(req);
 		if (user != null) {
 			isAdmin = (String) user.get("isAdmin");
 			UI_KEYNO = (String) user.get("UI_KEYNO");
 			ANONYMOUS = "N";
+			NowUser = user.get("UI_NAME").toString();
 		}
 
 		BoardType BoardType = Component.getData("BoardType.BT_getData_pramBoardkey", keyno);
@@ -270,6 +279,11 @@ public class UserBoardController {
 		mv.addObject("mirrorPage", Menu.getMN_URL());
 		// Page Data
 		mv.addObject("BoardNotice", noticeMap);
+		
+		noticeMap.put("UI_KEYNO",UI_KEYNO);
+		mv.addObject("ownerCheck", Component.getCount("main.PlantOwnerCnt",noticeMap));
+		mv.addObject("NowUser",NowUser);
+		
 		mv.addObject("BoardType", BoardType);
 
 		mv.addObject("BoardColumnList", Component.getList("BoardColumn.BL_getviewList", MN_KEYNO));
@@ -534,6 +548,11 @@ public class UserBoardController {
 		} else {
 			BoardNotice.setBN_INSERT_IP(CommonService.getClientIP(req));
 			Component.createData("BoardNotice.BN_insert", BoardNotice);
+			//알림 전송 부분 User가 안전관리자 체크 BN_REGNM
+			HashMap<String,Object> checking = Component.getData("main.SendUserCheck", BoardNotice.getBN_REGNM());
+			if(checking != null) {
+				alimTalkSendMethod(BoardNotice,checking);
+			}
 		}
 
 		// 이메일
@@ -901,4 +920,31 @@ public class UserBoardController {
 
 	    return fileList;
 	}
+	
+	
+    public void alimTalkSendMethod(BoardNotice notice, HashMap<String, Object> check) throws Exception {
+    	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",notice.getBN_PLANT_NAME());
+
+    	String contents = check.get("UI_NAME").toString() +" (이)가\n발전소 : "+ map.get("DPP_NAME").toString()+"의 \n게시물 : "+notice.getBN_TITLE()+" (를)을 \n등록했습니다.";
+    	
+    	//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+    	
+		//리스트 뽑기 - 현재 게시물 알림은 index=1
+		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+		jsonObj = (JSONObject) jsonObj_a.get(4); //발전소 게시물 확인
+
+    	//전송할 회원 리스트 
+    	List<UserDTO> list = Component.getList("main.NotUserData",map.get("DPP_USER").toString());
+		
+		for(UserDTO l : list) {
+    		l.decode();
+    		String phone = l.getUI_PHONE().toString().replace("-", "");
+    		//받은 토큰으로 알림톡 전송		
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
+    	}
+    }
+	
 }

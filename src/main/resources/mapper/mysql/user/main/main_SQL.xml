@@ -120,6 +120,7 @@
 			LIMIT 1000  
 		)C
 		GROUP BY C.DIE_DSP_ERROR, C.DIE_DSP_S_ERROR
+		ORDER BY DIE_DATE DESC
 	</select>
 	
 	<!-- 인버터 개별데이터 한개 -->
@@ -431,16 +432,47 @@
 		WHERE DPP_KEYNO = #{DPP_KEYNO}
 	</select>
 	
-	<!-- 일반관리자 제외한 번호 정보 출력 -->
-	<select id="NotUserData" resultType="USER">
-		SELECT UI_PHONE
+	<!-- 슈퍼개발자 및 알림전송 그룹 번호 추출 -->
+	<select id="NotUserData" resultType="USER" parameterType="String">
+		SELECT *
 		FROM u_userinfo A
 		LEFT JOIN u_userinfo_member_authority B
 		ON A.UI_KEYNO = B.UI_KEYNO
 		LEFT JOIN u_userinfo_authority C
 		ON C.UIA_KEYNO = B.UIA_KEYNO 
-		WHERE C.UIA_KEYNO != 'UIA_LHAPK'
+		WHERE C.UIA_KEYNO = 'UIA_ASDFG'
+		OR C.UIA_KEYNO = 'UIA_CQNSZ'
+		<if test="DPP_USER != NULL and DPP_USER != ''">
+			OR B.UI_KEYNO = #{DPP_USER}
+		</if>
 	</select>
 	
+	<!-- 유저키 가지고 안전관리자 확인 -->
+	<select id="SendUserCheck" parameterType="String" resultType="hashmap">
+		SELECT *
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = 'UIA_EWXHE'
+		AND A.UI_KEYNO = #{userKey}
+	</select>
 	
+	<!-- 현재 발전소 사업주 정보 출력 -->
+	<select id="PlantOwnerCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(B.UI_KEYNO)
+		FROM dy_power_plant A
+		LEFT JOIN u_userinfo B
+		ON A.DPP_USER = B.UI_KEYNO
+		WHERE DPP_KEYNO = #{BN_PLANT_NAME}
+		AND  DPP_USER = #{UI_KEYNO}
+	</select>
+	
+	<!-- 알림톡 전송 이후 bn check update -->
+	<update id="UpdateBNcheck" parameterType="String">
+		UPDATE b_board_notice
+		SET BN_SEND_CHECK = 'Y'
+		WHERE BN_KEYNO = #{BN_KEYNO}
+	</update>
 </mapper>

@@ -264,14 +264,17 @@ function sendLinkCustom() {
 		type : "post",
 		url : "/allimTalkAjax.do",
 		data: {
+			"bnkey" : "${BoardNotice.BN_KEYNO}",
 			"key" : "${BoardNotice.BN_PLANT_NAME}",
-			"title" : "${BoardNotice.BN_TITLE}"
+			"title" : "${BoardNotice.BN_TITLE}",
+			"name" : "${NowUser}"
 		},
 		success: function(data){
-			alert(data)			
+// 			alert(data)
+			location.reload();
 		},
 		error: function(){
-			alert("전송 에러");
+			alert("전송 에러! 관리자에 문의해주세요.");
 		}
 	});
 	

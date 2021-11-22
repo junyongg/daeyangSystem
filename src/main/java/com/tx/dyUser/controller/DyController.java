@@ -536,45 +536,55 @@ public class DyController {
     }
     
     
-    
-    /**
-     * @return 알림톡  - 안전관리자 게시물 등록시 전송
-     */
-    @RequestMapping("/allimTalkSend.do")
-    @ResponseBody
-    public String allimTalkSend(HttpServletRequest req) throws Exception{
-    	
-    	String msg = "성공";
-    	
-    	//토큰받기
-    	String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-    	tocken = URLEncoder.encode(tocken, "UTF-8");
-    	
-    	//리스트 뽑기 - 현재 게시물 알림은 index=1
-    	JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
-    	JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
-    	jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
-    	
-    	//받은 토큰으로 알림톡 전송		
-//    	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
-    	
-    	return msg;
-    }
-    
     /**
      * @return 알림톡  - 안전관리자 게시물 등록확인 (관리자그룹에 전송)
      */
     @RequestMapping("/allimTalkAjax.do")
     @ResponseBody
     public String allimTalk(HttpServletRequest req,
+    		@RequestParam(value="bnkey",required=false)String BN_KEYNO,
     		@RequestParam(value="key",required=false)String DPP_KEYNO,
-    		@RequestParam(value="title",required=false)String title
+    		@RequestParam(value="title",required=false)String title,
+    		@RequestParam(value="name",required=false)String name
     		) throws Exception{
 		
     	String msg = "성공";
     	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",DPP_KEYNO);
     	
-    	String contents = map.get("DPP_NAME").toString()+"의 "+title+"을 \n확인하였습니다.";
+    	String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+    	//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+    	
+		//리스트 뽑기 - 현재 게시물 알림은 index=1
+		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+		jsonObj = (JSONObject) jsonObj_a.get(3); //발전소 게시물 확인
+
+    	//전송할 회원 리스트 
+    	List<UserDTO> list = Component.getListNoParam("main.NotUserData");
+		
+		for(UserDTO l : list) {
+    		l.decode();
+    		String phone = l.getUI_PHONE().toString().replace("-", "");
+    		//받은 토큰으로 알림톡 전송		
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
+    	}
+		
+		Component.updateData("main.UpdateBNcheck", BN_KEYNO);
+		
+		return msg;
+    }
+    
+    
+
+    public void alimTalkSendMethod(
+    		HttpServletRequest req,
+    		@RequestParam(value="key",required=false)String DPP_KEYNO,
+    		@RequestParam(value="contents",required=false)String contents
+    		) throws Exception {
+    	
+    	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",DPP_KEYNO);
     	
     	//토큰받기
 		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
@@ -595,13 +605,11 @@ public class DyController {
     		//받은 토큰으로 알림톡 전송		
     		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
     	}
-		return msg;
     }
     
     
 
-
-/**
+    /**
     * @return 날씨 등록 테스트
     */
    @RequestMapping("/wether.do")
@@ -646,5 +654,29 @@ public class DyController {
 		   Component.createData("Weather.Daily_WeatherData", map);
 	   }
    }
+   
+   
+   
+/*   
+   @RequestMapping("/allimTalkSend.do")
+   @ResponseBody
+   public String allimTalkSend(HttpServletRequest req) throws Exception{
+   	
+   	String msg = "성공";
+   	
+   	//토큰받기
+   	String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+   	tocken = URLEncoder.encode(tocken, "UTF-8");
+   	
+   	//리스트 뽑기 - 현재 게시물 알림은 index=1
+   	JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+   	JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+   	jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
+   	
+   	//받은 토큰으로 알림톡 전송		
+//   	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
+   	
+   	return msg;
+   }*/
    
 }

@@ -114,41 +114,51 @@
                 </tr>
                 <tr>
                     <th class="txtL">금월</th>
-                    <td class="txtR"><b><fmt:formatNumber value="${month.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
+                    <td class="txtR"><b><fmt:formatNumber value="${month1 }" pattern="0.00"/></b>kWh</td>
                     <th class="txtL" style="font-size:11px;">발전시간(평균)</th>
-                    <td class="txtR"><b>
+                    <%-- <td class="txtR"><b>
                     	<c:if test="${month.CNT ne '0'}">
                     		<fmt:formatNumber value="${((month.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/month.CNT }" pattern="0.00"/>
                     	</c:if>
                     	<c:if test="${month.CNT eq '0'}">
                        		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
                        	</c:if>
+                    </b>h</td> --%>
+                    <td class="txtR"><b>
+                    	<c:if test="${month1Cnt ne '0'}">
+                    		<fmt:formatNumber value="${(month1/detail_Data.DPP_VOLUM)/month1Cnt }" pattern="0.00"/>
+                    	</c:if>
+                    	<c:if test="${month1Cnt eq '0'}">
+                       		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
+                       	</c:if>
                     </b>h</td>
                 </tr>
                 <tr>
                     <th class="txtL">금년</th>
-                    <td class="txtR"><b><fmt:formatNumber value="${year.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
-                    <th class="txtL"></th>
+                    <td class="txtR"><b><fmt:formatNumber value="${year1 }" pattern="0.00"/></b>kWh</td>
+                    <th class="txtL">발전시간</th>
                     <td class="txtR"><b>
-                    	<c:if test="${year.CNT ne '0'}">
+                    	<%-- <c:if test="${year.CNT ne '0'}">
                     		<fmt:formatNumber value="${((year.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/year.CNT }" pattern="0.00"/>
                     	</c:if>
                     	<c:if test="${year.CNT eq '0'}">
                        		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
-                       	</c:if>
+                       	</c:if> --%>
+                    	<fmt:formatNumber value="${year1/detail_Data.DPP_VOLUM }" pattern="0.00"/>
                     	</b>h</td>
                 </tr>
                 <tr>
                     <th class="txtL">누적</th>
-                    <td class="txtR"><b><fmt:formatNumber value="${all.DATA + detail_Data.DDM_D_DATA }" pattern="0.00"/></b>kWh</td>
-                    <th class="txtL"></th>
+                    <td class="txtR"><b><fmt:formatNumber value="${detail_Data.DDM_CUL_DATA }" pattern="0.00"/></b>kWh</td>
+                    <th class="txtL">발전시간</th>
                     <td class="txtR"><b>
-                    	<c:if test="${all.CNT ne '0'}">
+                    	<%-- <c:if test="${all.CNT ne '0'}">
                     		<fmt:formatNumber value="${((all.DATA/detail_Data.DPP_VOLUM) + detail_Data.DDM_T_HOUR)/all.CNT }" pattern="0.00"/>
                     	</c:if>
                     	<c:if test="${year.CNT eq '0'}">
                        		<fmt:formatNumber value="${empty detail_Data.DDM_T_HOUR ? 0 : detail_Data.DDM_T_HOUR  }" pattern="0.00"/>
-                       	</c:if>
+                       	</c:if> --%>
+                       	<fmt:formatNumber value="${detail_Data.DDM_CUL_DATA/detail_Data.DPP_VOLUM }" pattern="0.00"/>
                     	</b>h
                     </td>
                 </tr>

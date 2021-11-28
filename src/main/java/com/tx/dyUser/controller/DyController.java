@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,12 +102,34 @@ public class DyController {
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   mv.addObject("Weather",weather.get(0));
 	   
+	   
+	   
+	   float TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());	   
+	   float Temp = 0;
+	   
 	   type.put("date","month");//금월
-	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
+	   Temp = Component.getData("main.select_Sum_MY",type);
+	   // 이번달 날짜 count 
+	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+	   Calendar c1 = Calendar.getInstance(); 
+	   Date Today = c1.getTime();
+	   c1.set(Calendar.DAY_OF_MONTH,1);
+	   Date Fmon = c1.getTime();
+	   long diffDay = (Today.getTime() - Fmon.getTime()) / (24*60*60*1000);
+
+	   mv.addObject("month1",TodayCum-Temp);
+	   mv.addObject("month1Cnt",diffDay);
+	   
 	   type.put("date","year");//금년
-	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
+	   Temp = Component.getData("main.select_Sum_MY",type);
+	   mv.addObject("year1",TodayCum-Temp);
+	   
+	   type.put("date","month");//금월
+//	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
+	   type.put("date","year");//금년
+//	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
 	   type.put("date","all");//누적
-	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
+//	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
 	   
 	   //알림테이블 부분
 	   mv.addObject("ResultList",Component.getList("main.select_errorData", keyno));
@@ -197,13 +220,36 @@ public class DyController {
 
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   
+	   float TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());	   
+	   float Temp = 0;
+	   
 	   type.put("date","month");//금월
-	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
+	   
 	   mv.addObject("Prmonth",Component.getData("main.select_MainSum_Pre_M",type)); //전월
+	   
+	   Temp = Component.getData("main.select_Sum_MY",type);
+	   // 이번달 날짜 count 
+	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+	   Calendar c1 = Calendar.getInstance(); 
+	   Date Today = c1.getTime();
+	   c1.set(Calendar.DAY_OF_MONTH,1);
+	   Date Fmon = c1.getTime();
+	   long diffDay = (Today.getTime() - Fmon.getTime()) / (24*60*60*1000);
+
+	   mv.addObject("month1",TodayCum-Temp);
+	   mv.addObject("month1Cnt",diffDay);
+	   
 	   type.put("date","year");//금년
-	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
-	   type.put("date","all");//누적
-	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
+	   Temp = Component.getData("main.select_Sum_MY",type);
+	   mv.addObject("year1",TodayCum-Temp);
+	   
+//	   type.put("date","month");//금월
+//	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
+//	   mv.addObject("Prmonth",Component.getData("main.select_MainSum_Pre_M",type)); //전월
+//	   type.put("date","year");//금년
+//	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
+//	   type.put("date","all");//누적
+//	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
 	   
 	   type.put("category","안전관리");//안전관리
 	   mv.addObject("boardList_A", Component.getList("main.PowerBoard_select", type));
@@ -609,6 +655,7 @@ public class DyController {
     
     
 
+    
     /**
     * @return 날씨 등록 테스트
     */

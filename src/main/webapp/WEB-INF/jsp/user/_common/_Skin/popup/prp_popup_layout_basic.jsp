@@ -4,7 +4,7 @@
 <style type="text/css">
 /* 팝업 레이아웃 */
 .popUpWrap_01 {position:fixed; top:calc(50% - 185px); left:calc(50% - 150px); z-index:30000; width:300px; background-color: #fff;} 
-.popUpWrap_01 .contentsBox {padding:20px; height:300px; overflow-y:auto; overflow-x:hidden;}
+.popUpWrap_01 .contentsBox {padding:20px; height:300px; overflow-y:auto; overflow-x:hidden;border: black 1px solid;}
 .popUpWrap_01 .contentsBox > a {text-decoration: none;}
 .popUpWrap_01 .bottomBox {padding:5px 15px 5px 20px; display:table; width:100%;position:absolute;bottom:0} 
 .popUpWrap_01 .bottomBox:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;} 
@@ -96,7 +96,7 @@
 		        </div>
 		        <div class="bottomBox">
 		        	<div class="logoBox">
-		            	<img src="/resources/img/logo/logo.png" alt="logo">
+<!-- 		            	<img src="/resources/img/logo/logo.png" alt="logo"> -->
 		            </div>
 		            <div class="checkBox">
 		            	<label>오늘 하루동안 보지 않기 <input type="checkbox" name="chkbox${numberType}" value="checkbox"></label>

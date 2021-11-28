@@ -205,6 +205,7 @@
         <dl>
             <dt>조회기간</dt>
             <dd>
+               <a href="javascript:;" onclick="searchDate('99')" class="a_box_line">사용자설정</a>
                <a href="javascript:;" onclick="searchDate('0')" class="a_box_line">전일</a>
                <a href="javascript:;" onclick="searchDate('1')" class="a_box_line active">당일</a>
                <a href="javascript:;" onclick="searchDate('2')" class="a_box_line">1주일</a>
@@ -360,7 +361,12 @@ $(function(){
 
 function searchDate(value){
 	$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a").removeClass("active")
-	$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child("+(parseInt(value)+1)+")").addClass("active")
+	if(value == '99'){
+		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child(1)").addClass("active")
+	}else{
+		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child("+(parseInt(value)+2)+")").addClass("active")
+	}
+	
 	
 	$("#DaliyType").val(value)
 	select("1")

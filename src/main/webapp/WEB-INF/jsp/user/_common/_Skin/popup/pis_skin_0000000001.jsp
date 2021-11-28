@@ -25,7 +25,7 @@
         </div>
         <div class="bottomBox">
         	<div class="logoBox">
-            	<img src="/resources/img/logo/logo.png" alt="logo">
+<!--             	<img src="/resources/img/logo/logo.png" alt="logo"> -->
             </div>
             <div class="checkBox">
             	<label>오늘 하루동안 보지 않기 <input type="checkbox" name="chkbox${numberType}" value="checkbox"></label>

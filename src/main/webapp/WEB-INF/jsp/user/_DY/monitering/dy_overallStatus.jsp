@@ -162,6 +162,11 @@
 <script>
 $(function(){
  	detailInverter("${fristKeyno}");
+ 	
+ 	/* setInterval(function() {
+ 	   location.reload();
+ 	}, 6000);
+ 	 */
 });
 
 function detailInverter(keyno){

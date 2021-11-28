@@ -112,26 +112,31 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 	//알림톡 전송
 	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone ) throws Exception{
 		
+		String json = "";
 		JSONArray button = (JSONArray) jsonObj.get("buttons");
+		if (button.size() > 0 ) {
+			button = (JSONArray) jsonObj.get("buttons");
+			
+			JSONObject jsonObj_s = (JSONObject) button.get(0);
+			
+			HashMap<String,Object> buttonMain = new HashMap<String,Object>();
+			
+			JSONObject buttonInfo = new JSONObject();
+			
+			buttonInfo.put("name", jsonObj_s.get("name").toString());
+			buttonInfo.put("linkType", jsonObj_s.get("linkType").toString());
+			buttonInfo.put("linkTypeName", jsonObj_s.get("linkTypeName").toString());
+			buttonInfo.put("linkM", jsonObj_s.get("linkMo").toString());
+			buttonInfo.put("linkP", jsonObj_s.get("linkPc").toString());
+			
+			JSONArray buttonar = new JSONArray();
+			buttonar.add(buttonInfo);
+			
+			buttonMain.put("button",buttonar);
+			ObjectMapper mapper = new ObjectMapper(); 
+			json = mapper.writeValueAsString(buttonMain);
+		}
 		
-		JSONObject jsonObj_s = (JSONObject) button.get(0);
-		
-		HashMap<String,Object> buttonMain = new HashMap<String,Object>();
-		
-		JSONObject buttonInfo = new JSONObject();
-		
-		buttonInfo.put("name", jsonObj_s.get("name").toString());
-		buttonInfo.put("linkType", jsonObj_s.get("linkType").toString());
-		buttonInfo.put("linkTypeName", jsonObj_s.get("linkTypeName").toString());
-		buttonInfo.put("linkM", jsonObj_s.get("linkMo").toString());
-		buttonInfo.put("linkP", jsonObj_s.get("linkPc").toString());
-		
-		JSONArray buttonar = new JSONArray();
-		buttonar.add(buttonInfo);
-		
-		buttonMain.put("button",buttonar);
-		ObjectMapper mapper = new ObjectMapper(); 
-		String json = mapper.writeValueAsString(buttonMain);
 		
 		
 		String url = "https://kakaoapi.aligo.in/akv10/alimtalk/send/";
@@ -153,7 +158,6 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
         sb.append("subject_1").append("=").append("게시판확인알림").append("&"); //제목		
         sb.append("message_1").append("=").append(URLEncoder.encode(contents, "UTF-8")).append("&"); //내용		
         sb.append("button_1").append("=").append(json.toString()); //버튼	
-//        sb.append("button_1").append("=").append(""); //버튼	
         
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
 		wr.write(sb.toString()); 

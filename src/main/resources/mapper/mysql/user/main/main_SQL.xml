@@ -85,6 +85,33 @@
 		</choose>
 	</select>
 	
+	<select id="select_Sum_MY" resultType="float" parameterType="hashmap">
+		SELECT IFNULL(SUM(B.Cumulative_Generation),0) AS DATA
+		FROM(
+			SELECT A.*
+			FROM (
+				SELECT *  
+				FROM dy_inverter_data
+				WHERE DP_KEYNO = #{type}
+				<choose>
+					<when test="date.equals('month')">
+						<![CDATA[
+							AND DATE_FORMAT(Conn_date,'%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 MONTH),'%Y-%m')
+							ORDER BY Conn_date DESC
+							LIMIT 1000
+						]]>
+					</when>
+					<when test="date.equals('year')">
+						AND DATE_FORMAT(Conn_date,'%Y') = DATE_FORMAT(NOW(),'%Y')
+					</when>
+				</choose>
+			)A
+			GROUP BY A.DI_NAME
+		)B
+	</select>
+	
+	
+	
 	<!-- 전월 등 날짜 조정 하여 데이터 뽑을때 사용하기 -->
 	<select id="select_MainSum_Pre_M" resultType="hashmap" parameterType="hashmap">
 		SELECT SUM(C.DDM_D_DATA) AS DATA , COUNT(*) AS CNT
@@ -432,7 +459,7 @@
 		WHERE DPP_KEYNO = #{DPP_KEYNO}
 	</select>
 	
-	<!-- 슈퍼개발자 및 알림전송 그룹 번호 추출 -->
+	<!-- 슈퍼개발자 및 알림전송 그룹 및 사업주 번호 추출 -->
 	<select id="NotUserData" resultType="USER" parameterType="HashMap">
 		SELECT *
 		FROM u_userinfo A
@@ -445,6 +472,17 @@
 		<if test="DPP_USER != NULL and DPP_USER != ''">
 			OR B.UI_KEYNO = #{DPP_USER}
 		</if>
+	</select>
+
+	<!-- 슈퍼개발자만 -->
+	<select id="NotUserData_Admin" resultType="USER" parameterType="HashMap">
+		SELECT *
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = 'UIA_ASDFG'
 	</select>
 	
 	<!-- 유저키 가지고 안전관리자 확인 -->
@@ -475,4 +513,18 @@
 		SET BN_SEND_CHECK = 'Y'
 		WHERE BN_KEYNO = #{BN_KEYNO}
 	</update>
+	
+	<!--  -->
+	<select id="PowerConCheck" resultType="hashmap">
+		SELECT A.DPP_NAME , A.DPP_KEYNO , IFNULL(B.Daily_Generation,'N') AS checking
+		FROM dy_power_plant A
+		LEFT JOIN (
+			SELECT *
+			FROM dy_inverter_data B 
+			WHERE DATE_FORMAT(B.Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+			) B
+		ON A.DPP_KEYNO = B.DP_KEYNO
+		GROUP BY A.DPP_NAME
+	</select>
+	
 </mapper>

@@ -187,7 +187,7 @@
                             <ul class="mid">
                                 <li>
                                     <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${year.DATA+ob.DDM_D_DATA}" pattern="0.00"/></b>kWh</span>
+                                    <span class="number"><b><fmt:formatNumber value="${year1}" pattern="0.00"/></b>kWh</span>
                                 </li>
                             </ul>
                             <div class="result">
@@ -200,7 +200,7 @@
                             <ul class="mid">
                                 <li>
                                     <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${all.DATA + ob.DDM_D_DATA }" pattern="0.00"/></b>kWh</span>
+                                    <span class="number"><b><fmt:formatNumber value="${ob.DDM_CUL_DATA }" pattern="0.00"/></b>kWh</span>
                                 </li>
                             </ul>
                             <div class="result">
@@ -518,7 +518,7 @@
                             <li>
                                 <span class="state green">금월</span>
                                 <ul class="info">
-                                    <li>
+                                    <%-- <li>
                                         <span class="sbj">발전시간(평균)</span>
                                         <span class="num"><b>
                                         	<c:if test="${month.CNT ne '0'}">
@@ -529,17 +529,29 @@
                                         	</c:if>
                                         	</b>h
                                         </span>
+                                    </li> --%>
+                                    <li>
+                                        <span class="sbj">발전시간(평균)</span>
+                                        <span class="num"><b>
+                                        	<c:if test="${month1Cnt ne '0'}">
+                                        		<fmt:formatNumber value="${(month1/ob.DPP_VOLUM)/month1Cnt }" pattern="0.00"/>
+                                        	</c:if>
+                                        	<c:if test="${month1Cnt eq '0'}">
+                                        		<fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
+                                        	</c:if>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
-                                        <span class="num"><b><fmt:formatNumber value="${month.DATA + ob.DDM_D_DATA }" pattern="0.00"/></b>kWh</span>
+                                        <span class="num"><b><fmt:formatNumber value="${month1 }" pattern="0.00"/></b>kWh</span>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <span class="state orange">금년</span>
                                 <ul class="info">
-                                    <li>
+                                    <%-- <li>
                                         <span class="sbj">발전시간(평균)</span>
                                         <span class="num"><b>
                                         		<c:if test="${year.CNT ne '0'}">
@@ -550,17 +562,24 @@
                                         		</c:if>
                                         	</b>h
                                         </span>
+                                    </li> --%>
+                                    <li>
+                                        <span class="sbj">발전시간</span>
+                                        <span class="num"><b>
+                                        	<fmt:formatNumber value="${year1/ob.DPP_VOLUM }" pattern="0.00"/>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
-                                        <span class="num"><b><fmt:formatNumber value="${year.DATA + ob.DDM_D_DATA }" pattern="0.00"/></b>kWh</span>
+                                        <span class="num"><b><fmt:formatNumber value="${year1 }" pattern="0.00"/></b>kWh</span>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <span class="state gray">누적</span>
                                 <ul class="info">
-                                    <li>
+                                    <%-- <li>
                                         <span class="sbj">발전시간(평균)</span>
                                         <span class="num"><b>
                                         	<c:if test="${all.CNT ne '0'}">
@@ -571,10 +590,17 @@
                                        		</c:if>
                                         	</b>h
                                         </span>
+                                    </li> --%>
+                                    <li>
+                                        <span class="sbj">발전시간</span>
+                                        <span class="num"><b>
+                                        	<fmt:formatNumber value="${ob.DDM_CUL_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
+                                        	</b>h
+                                        </span>
                                     </li>
                                     <li>
                                         <span class="sbj">발전량</span>
-                                        <span class="num"><b><fmt:formatNumber value="${all.DATA + ob.DDM_D_DATA }" pattern="0.00"/></b>kWh</span>
+                                        <span class="num"><b><fmt:formatNumber value="${ob.DDM_CUL_DATA }" pattern="0.00"/></b>kWh</span>
                                     </li>
                                 </ul>
                             </li>
@@ -599,6 +625,12 @@
 $(function(){
 	pf_setMap();
  	ajaxData();
+ 	
+ 	//5분마다 F5
+ 	setInterval(function() {
+	   location.reload();
+	}, 300000);
+ 	
 });
 
 function DPPDataAjax(keyno){
@@ -667,12 +699,15 @@ function pf_setMap(){
 
 function calculation(){
 	$('.calculation_result').addClass('on')
+// 	var Dm_val = "${month.DATA+ob.DDM_D_DATA}";	//금월
+// 	var y_val = "${year.DATA+ob.DDM_D_DATA}";	//금년
+// 	var n_val = "${all.DATA+ob.DDM_D_DATA}";	//누적
 	var val = "${ob.DDM_D_DATA}";	//금일
-	var Dm_val = "${month.DATA+ob.DDM_D_DATA}";	//금월
+	var Dm_val = "${month1}";	//금월
 	var P_val = "${ob.DDM_P_DATA}";	//전일
 	var Pm_val = "${Prmonth.DATA}";//전월
-	var y_val = "${year.DATA+ob.DDM_D_DATA}";	//금년
-	var n_val = "${all.DATA+ob.DDM_D_DATA}";	//누적
+	var y_val = "${year1}";	//금년
+	var n_val = "${ob.DDM_CUL_DATA}";	//누적
 	var smp = $("#smp1").val();	
 	var rec = $("#rec1").val();
 	var plus = $("#plus").text();

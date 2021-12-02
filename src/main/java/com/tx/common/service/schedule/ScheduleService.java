@@ -38,14 +38,21 @@ public class ScheduleService {
 	//날씨 데이터 매시 35분마다 
 	@Scheduled(cron="0 35 * * * ?")  
 	public void test() throws Exception{
-		WetherService w = new WetherService();
-		ArrayList<String> list = w.Daily_Wether("나주");
-		list.addAll(w.Sunrise_setData("나주"));
-		WeatherOrganize(list);
+       WetherService w = new WetherService();
+		
+	   String[] regionL = {"나주","광주"};
+	   
+	   Component.deleteData("Weather.Daily_WeatherDelete");
+	   
+	   for (String r : regionL) {
+		   ArrayList<String> list = w.Daily_Wether(r);
+		   list.addAll(w.Sunrise_setData(r));
+		   WeatherOrganize(list);
+	   }
     }
 	
 	//오전 8시 30분에 통신 체크 한번
-	@Scheduled(cron="0 30 8 * * ?")  
+	@Scheduled(cron="0 0 9 * * ?")  
 	public void InverterDataSend() throws Exception {
 		List<HashMap<String,Object>> list = Component.getListNoParam("main.PowerConCheck");
 		
@@ -99,7 +106,6 @@ public class ScheduleService {
 
 	
    public void WeatherOrganize(ArrayList<String> weatherList) {
-	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   //혹시모를 갯수 체크
 	   int count = Integer.parseInt(weatherList.get(weatherList.size()-4));
 	   

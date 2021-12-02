@@ -47,8 +47,8 @@ public class DyController {
 	@Autowired requestAPIservice requestAPI;
 	
    /**
-    * @return 관리자 종합현황 페이지 
-    */
+    *@return 관리자 종합현황 페이지 
+   */
    @RequestMapping("/dy/moniter/overAll.do")
    public ModelAndView overAll(HttpServletRequest req) throws Exception {
 	   ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_overallStatus");
@@ -102,9 +102,10 @@ public class DyController {
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   mv.addObject("Weather",weather.get(0));
 	   
-	   
-	   
-	   float TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());	   
+	   float TodayCum = 0;
+	   if(ob.get("DDM_CUL_DATA") != null) {
+		   TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());
+	   }
 	   float Temp = 0;
 	   
 	   type.put("date","month");//금월
@@ -137,7 +138,7 @@ public class DyController {
 	   return mv;
    }
    
-   /**
+  /**
     * @return 현장리스트 검색
     */
    @RequestMapping("/dy/moniter/overAll_Ajax2.do")
@@ -220,7 +221,11 @@ public class DyController {
 
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   
-	   float TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());	   
+	   
+	   float TodayCum = 0;
+	   if(ob.get("DDM_CUL_DATA") != null) {
+		   TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());
+	   }
 	   float Temp = 0;
 	   
 	   type.put("date","month");//금월
@@ -305,9 +310,13 @@ public class DyController {
     @RequestMapping("/dy/moniter/stastics.do")
     public ModelAndView stastics(HttpServletRequest req,
     		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key,
-    		HttpSession session
+    		HttpSession session,
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+    		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
+    		@RequestParam(value="InverterType",defaultValue="0")String InverterType
     		) throws Exception{
-    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics");
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics2");
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	
     	Map<String, Object> user = CommonService.getUserInfo(req);
@@ -329,6 +338,10 @@ public class DyController {
     	mv.addObject("ob",ob);
     	mv.addObject("DPP_KEYNO", key);
     	
+    	mv.addObject("InverterType",InverterType);
+    	mv.addObject("DaliyType",DaliyType);
+    	mv.addObject("searchBeginDate",searchBeginDate);
+    	mv.addObject("searchEndDate",searchEndDate);
     	
  	   return mv;
     }
@@ -345,7 +358,7 @@ public class DyController {
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
     		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType
     		) throws Exception{
-    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax2");
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	type.put("type",keyno);
@@ -456,7 +469,7 @@ public class DyController {
     }
 
     
-    /**
+   /**
      * @return 모바일 부분
      */
     @RequestMapping("/dy/mobile.do")
@@ -500,10 +513,10 @@ public class DyController {
 	   String now = format.format(d);
 	   	
 	   
-	   if(searchBeginDate == null) {
+	   if(searchBeginDate == null || StringUtils.isEmpty(searchBeginDate)) {
 	   		searchBeginDate = now;
 	   }
-	   if(searchEndDate == null) {
+	   if(searchEndDate == null || StringUtils.isEmpty(searchEndDate)) {
 		   searchEndDate = now;
 	   }
 	   	
@@ -662,17 +675,20 @@ public class DyController {
    @RequestMapping("/wether.do")
    public ModelAndView wether(HttpServletRequest req) throws Exception{
 	   ModelAndView mv = new ModelAndView("");
-	   
 	   WetherService w = new WetherService();
-	   ArrayList<String> list = w.Daily_Wether("나주");
-	   list.addAll(w.Sunrise_setData("나주"));
-	   WeatherOrganize(list);
+	   String[] regionL = {"나주","광주"};
+	   Component.deleteData("Weather.Daily_WeatherDelete");
+	   
+	   for (String r : regionL) {
+		   ArrayList<String> list = w.Daily_Wether(r);
+		   list.addAll(w.Sunrise_setData(r));
+		   WeatherOrganize(list);
+	   }
 	   
 	   return mv;
    }
    
    public void WeatherOrganize(ArrayList<String> weatherList) {
-	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   //혹시모를 갯수 체크
 	   int count = Integer.parseInt(weatherList.get(weatherList.size()-4));
 	   
@@ -704,7 +720,7 @@ public class DyController {
    
    
    
-/*   
+   
    @RequestMapping("/allimTalkSend.do")
    @ResponseBody
    public String allimTalkSend(HttpServletRequest req) throws Exception{
@@ -724,6 +740,6 @@ public class DyController {
 //   	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
    	
    	return msg;
-   }*/
+   }
    
 }

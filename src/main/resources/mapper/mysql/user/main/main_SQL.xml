@@ -514,7 +514,7 @@
 		WHERE BN_KEYNO = #{BN_KEYNO}
 	</update>
 	
-	<!--  -->
+	<!-- 8시30분 데이터 안들어온거 알림 확인-->
 	<select id="PowerConCheck" resultType="hashmap">
 		SELECT A.DPP_NAME , A.DPP_KEYNO , IFNULL(B.Daily_Generation,'N') AS checking
 		FROM dy_power_plant A
@@ -524,7 +524,47 @@
 			WHERE DATE_FORMAT(B.Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
 			) B
 		ON A.DPP_KEYNO = B.DP_KEYNO
+		WHERE A.DPP_STATUS = 'Y'
 		GROUP BY A.DPP_NAME
+	</select>
+	
+	<!-- 안전관리자 확인 부분 -->
+	<select id="Statics_Two" resultType="hashmap" parameterType="String">
+		SELECT *
+		FROM(
+			SELECT DI_NAME, Daily_Generation, Conn_date , date_format(Conn_date,'%H:00:00') as subDate 
+			FROM dy_inverter_data
+			WHERE DP_KEYNO = #{type}
+			AND DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d') 
+			ORDER BY Conn_date DESC
+			LIMIT 1000
+		)A
+		GROUP BY A.subDate, A.DI_NAME
+	</select>
+	
+	<!-- 안전관리자 확인 부분 -->
+	<select id="Statics_Two2" resultType="hashmap" parameterType="String">
+		SELECT * , IFNULL(d.Daily_Generation,0) 
+		FROM chartdate C
+		LEFT JOIN (
+			SELECT *
+			FROM(
+				SELECT DI_NAME, Daily_Generation, Conn_date , date_format(Conn_date,'%H:00:00') as subDate 
+				FROM dy_inverter_data
+				WHERE DP_KEYNO = #{type}
+				AND DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d') 
+				ORDER BY Conn_date DESC
+				LIMIT 1000
+			)A
+			GROUP BY A.subDate, A.DI_NAME
+		) D
+		ON C.date = D.subDate
+	</select>
+	
+	
+	<select id="Statics_date" resultType="String">
+		SELECT date  
+		FROM chartdate
 	</select>
 	
 </mapper>

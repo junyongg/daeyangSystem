@@ -118,7 +118,11 @@ function statics_ajax(){
         url: '/dy/moniter/stasticsAjax.do',
         type: 'POST',
         data: {
-        	keyno : $("#n_keyno").val()
+        	keyno : $("#n_keyno").val(),
+        	DaliyType : "${DaliyType}",
+        	InverterType : "${InverterType}",
+        	searchBeginDate : "${searchBeginDate}",
+        	searchEndDate : "${searchEndDate}"
         },
         async: false,  
         success: function(result) {

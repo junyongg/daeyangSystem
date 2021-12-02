@@ -228,7 +228,8 @@ public class WetherService {
 		String futureDate = format2.format(cal.getTime());
 		
 		String nx = "" , ny ="";
-		if(region.equals("나주")) nx="59"; ny="69";
+		if(region.equals("나주")) {nx="59"; ny="69";}
+		else if(region.equals("광주")) {nx="57"; ny="73";}
 		
 		String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst?"
 				+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
@@ -329,7 +330,8 @@ public class WetherService {
 		   String time = format2.format(cal.getTime());
 		   
 		   String nx = "" , ny ="";
-		   if(region.equals("나주")) nx="59"; ny="69";
+		   if(region.equals("나주")) {nx="59"; ny="69";}
+		   else if(region.equals("광주")) {nx="59"; ny="69";}
 		   
 			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
 					+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
@@ -420,6 +422,7 @@ public class WetherService {
 		   
 		   String area = "";
 		   if(region.equals("나주")) area = URLEncoder.encode("광주", "utf-8");
+		   if(region.equals("광주")) area = URLEncoder.encode("광주", "utf-8");
 
 		   String urlstr = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo?serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D&locdate="+dates+"&location="+area;
 		   

@@ -316,7 +316,7 @@ public class DyController {
     		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType
     		) throws Exception{
-    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics2");
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics");
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	
     	Map<String, Object> user = CommonService.getUserInfo(req);
@@ -358,7 +358,7 @@ public class DyController {
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
     		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType
     		) throws Exception{
-    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax2");
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	type.put("type",keyno);
@@ -591,6 +591,165 @@ public class DyController {
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/mobile/dy_mobile_board");
     	
     	
+    	return mv;
+    }
+    
+    /**
+     * 안전관리자 부분 
+     */
+    @RequestMapping("/dy/moniter/stastics2.do")
+    public ModelAndView stastics2(HttpServletRequest req,
+    		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key,
+    		HttpSession session,
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+    		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
+    		@RequestParam(value="InverterType",defaultValue="0")String InverterType
+    		) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_statstics2");
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+    	
+    	Map<String, Object> user = CommonService.getUserInfo(req);
+ 	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	    
+ 	    if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	    }
+ 	    if(key == null || StringUtils.isEmpty(key)) {
+		   key = Component.getData("main.Power_SelectKEY",type);
+ 	    }
+ 	    session.setAttribute("DPP_KEYNO", key);
+ 	    mv.addObject("list", Component.getList("main.select_MainData",type));
+ 	    
+ 	    type.put("type",key);
+    	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	
+    	mv.addObject("ob",ob);
+    	mv.addObject("DPP_KEYNO", key);
+    	
+    	mv.addObject("InverterType",InverterType);
+    	mv.addObject("DaliyType",DaliyType);
+    	mv.addObject("searchBeginDate",searchBeginDate);
+    	mv.addObject("searchEndDate",searchEndDate);
+    	
+ 	   return mv;
+    }
+
+    /**
+     * @return 통계 분석 ajax
+     */
+    @RequestMapping("/dy/moniter/stasticsAjax2.do")
+    @ResponseBody
+    public ModelAndView stasticsAjax2(HttpServletRequest req,
+    		@RequestParam(value="keyno",defaultValue="1")String keyno,
+    		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+    		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
+    		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType
+    		) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax2");
+    	
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+    	type.put("type",keyno);
+    	
+    	
+    	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	Date d = new Date();
+    	String now = format.format(d);
+    	
+    	if(searchBeginDate == null || StringUtils.isEmpty(searchBeginDate)) {
+    		searchBeginDate = now;
+    	}
+    	if(searchEndDate == null || StringUtils.isEmpty(searchEndDate)) {
+    		searchEndDate = now;
+    	}
+    	
+    	type.put("searchBeginDate",searchBeginDate);
+    	type.put("searchEndDate",searchEndDate);
+    	type.put("InverterType",InverterType);
+    	
+    	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	
+    	
+    	List<HashMap<String,Object>> result =  Component.getList("main.select_inverterData",type);
+    	
+    	List<HashMap<String,Object>> charList = Component.getList("main.Statics_Two",type);
+    	
+    	HashMap<String, Object> tempList = new HashMap<String, Object>();
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	List<String> dates = Component.getListNoParam("main.Statics_date");
+    	int tempNum = 0;
+    	int tempSd = 0;
+   		
+    	for(int i = tempNum; i < charList.size(); i++) {
+    		
+    		String sd = charList.get(i).get("subDate").toString();
+    		String name = charList.get(i).get("DI_NAME").toString();
+    		
+    		if(!map.containsKey(name)) {
+    			tempSd = 0;
+    		}  
+    		
+    		float f = 0;
+			float n = Float.parseFloat(charList.get(i).get("Daily_Generation").toString());
+			
+    		for(int j = tempSd; j < dates.size(); j++) {
+    			
+    			String dd = dates.get(j).toString(); 
+    			
+     			if(sd.equals(dd)) {
+    				if(map.containsKey(name)) {
+						f = n - Float.parseFloat(tempList.get(name).toString());
+						tempList.put(name, n);
+						String ii = map.get(name).toString();
+						ii = ii+","+f;
+						map.put(name,ii);
+					}else {
+						f = n;
+						tempList.put(name,f);
+						map.put(name,f);
+					}
+    				if((i+1) != charList.size()) {
+    					if(name.equals(charList.get(i+1).get("DI_NAME").toString())) {
+        					tempNum = i+1;
+            				tempSd = j+1;
+            				break;	
+        				}
+    				}
+    			}else {
+    				if(map.containsKey(name)) {
+						f = 0;
+						tempList.put(name, n);
+						String ii = map.get(name).toString();
+						ii = ii+","+f;
+						map.put(name,ii);
+					}else {
+						f = 0;
+						tempList.put(name,f);
+						map.put(name,f);
+					}
+    			}
+    		}
+    	}
+    	
+    	List<String[]> MainList = new ArrayList<String[]>();
+
+    	for(int i = 0; i < map.size(); i++) {
+    		String m = map.get("인버터 "+(i+1)+"호").toString();
+    		String[] ml = m.split(",");
+    		MainList.add(ml);
+    	}
+    	
+    	mv.addObject("MainList",MainList);
+    	
+    	mv.addObject("InverterType",InverterType);
+    	mv.addObject("DaliyType",DaliyType);
+    	mv.addObject("searchBeginDate",searchBeginDate);
+    	mv.addObject("searchEndDate",searchEndDate);
+    	mv.addObject("ob",ob);              
+    	mv.addObject("result",result);
     	return mv;
     }
     

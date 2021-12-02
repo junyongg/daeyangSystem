@@ -539,7 +539,7 @@
 			ORDER BY Conn_date DESC
 			LIMIT 1000
 		)A
-		GROUP BY A.subDate, A.DI_NAME
+		GROUP BY A.DI_NAME , A.subDate
 	</select>
 	
 	<!-- 안전관리자 확인 부분 -->

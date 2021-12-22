@@ -23,37 +23,10 @@
     <h2 class="circle">통계분석</h2>
 
     <div class="statis_cate_box">
-        <dl>
-            <dt>조회범위</dt>
-            <dd>
-                <a href="javascript:;" onclick="select('1')" class="a_box_line active">인버터 합산</a>
-                <a href="javascript:;" onclick="select('2')" class="a_box_line"  >인버터별</a>
-                <select class="a_box_line" disabled id="selectInverter" onchange="inputInverterNum(this.value)">
-                   	<c:forEach varStatus="status" begin="1" end="${ob.DPP_INVER_COUNT }">
-                    	<option value="${status.count }" ${InverterType eq status.count?'selected':''} >인버터 ${status.count }호</option>
-                    </c:forEach>
-                </select>
-            </dd>
-        </dl>
-
-        <dl>
-            <dt>조회기간</dt>
-            <dd>
-               <a href="javascript:;" onclick="searchDate('99')" class="a_box_line">사용자설정</a>
-               <a href="javascript:;" onclick="searchDate('0')" class="a_box_line">전일</a>
-               <a href="javascript:;" onclick="searchDate('1')" class="a_box_line active">당일</a>
-               <a href="javascript:;" onclick="searchDate('2')" class="a_box_line">1주일</a>
-               <a href="javascript:;" onclick="searchDate('3')" class="a_box_line">1개월</a>
-               <a href="javascript:;" onclick="searchDate('4')" class="a_box_line">1년</a>
-           </dd>
-       </dl>
-
        <dl>
            <dt>기간설정</dt>
            <dd>
                <input type="text" class="a_box_line" name="searchBeginDate" id="searchBeginDate" value="${searchBeginDate }">
-               	~ 
-               <input type="text" class="a_box_line" name="searchEndDate" id="searchEndDate" value="${searchEndDate }">
                <a href="javascript:;" class="search_a" onclick="searching()">검색</a>
            </dd>
        </dl>

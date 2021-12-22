@@ -51,7 +51,7 @@
 				AND DPP_USER = #{UI_KEYNO}
 			</if>
 		</if>
-		ORDER BY DPP_NAME ASC
+		ORDER BY DPP_DATE ASC
 	</select>
 	
 	<!-- 전체 발전량 데이터 추출 -->

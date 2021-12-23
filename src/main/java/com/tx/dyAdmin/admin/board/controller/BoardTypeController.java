@@ -150,7 +150,7 @@ public class BoardTypeController {
 		ModelAndView mv  = new ModelAndView("/dyAdmin/homepage/board/type/pra_board_type_insertView.adm");
 		
 		//코드 AC 게시판 형태 ex)리스트형, 갤러리형
-		mv.addObject("MainCodeList", Component.getListNoParam("Code.AMC_GetList"));
+//		mv.addObject("MainCodeList", Component.getListNoParam("Code.AMC_GetList"));
 		if(action != null && action.equals("updateView")){
 			mv.addObject("BoardType",Component.getData("BoardType.BT_getData", BoardType.getBT_KEYNO()));
 			mv.addObject("BoardColumnList",Component.getList("BoardColumn.BL_getList", BoardType.getBT_KEYNO()));

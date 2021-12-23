@@ -68,6 +68,8 @@ public class DyController {
 	   
 	   mv.addObject("cntM",cntM);
 	   
+	   
+	   
 	   mv.addObject("list", Component.getList("main.select_MainData",type));
 	   mv.addObject("listSum", Component.getData("main.select_MainSum"));
       return mv;
@@ -100,7 +102,7 @@ public class DyController {
 	   mv.addObject("detail_Data",ob);
 	   
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
-	   mv.addObject("Weather",weather.get(0));
+	   mv.addObject("Weather",weather.get(1));
 	   
 	   float TodayCum = 0;
 	   if(ob.get("DDM_CUL_DATA") != null) {
@@ -266,7 +268,7 @@ public class DyController {
 	   mv.addObject("InverterNum", name);
 	   mv.addObject("invertDataList", dataList);
 	   if(weather != null) {
-		   mv.addObject("weatherToday",weather.get(0));
+		   mv.addObject("weatherToday",weather.get(1));
 		   mv.addObject("weather",weather);
 	   }
 	   mv.addObject("ob",ob);
@@ -779,8 +781,8 @@ public class DyController {
 		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
 		jsonObj = (JSONObject) jsonObj_a.get(3); //발전소 게시물 확인
 
-    	//전송할 회원 리스트 
-    	List<UserDTO> list = Component.getListNoParam("main.NotUserData");
+    	//확인 눌렀을때 현재 - 슈퍼관리자한테만
+    	List<UserDTO> list = Component.getListNoParam("main.NotUserData_Admin");
 		
 		for(UserDTO l : list) {
     		l.decode();
@@ -796,38 +798,6 @@ public class DyController {
     
     
 
-    public void alimTalkSendMethod(
-    		HttpServletRequest req,
-    		@RequestParam(value="key",required=false)String DPP_KEYNO,
-    		@RequestParam(value="contents",required=false)String contents
-    		) throws Exception {
-    	
-    	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",DPP_KEYNO);
-    	
-    	//토큰받기
-		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-		tocken = URLEncoder.encode(tocken, "UTF-8");
-    	
-		//리스트 뽑기 - 현재 게시물 알림은 index=1
-		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
-		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
-		jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
-
-    	
-    	//전송할 회원 리스트 
-    	List<UserDTO> list = Component.getListNoParam("main.NotUserData");
-		
-		for(UserDTO l : list) {
-    		l.decode();
-    		String phone = l.getUI_PHONE().toString().replace("-", "");
-    		//받은 토큰으로 알림톡 전송		
-    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
-    	}
-    }
-    
-    
-
-    
     /**
     * @return 날씨 등록 테스트
     */
@@ -880,7 +850,7 @@ public class DyController {
    
    
    
-   @RequestMapping("/allimTalkSend.do")
+  /* @RequestMapping("/allimTalkSend.do")
    @ResponseBody
    public String allimTalkSend(HttpServletRequest req) throws Exception{
    	
@@ -899,6 +869,6 @@ public class DyController {
 //   	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
    	
    	return msg;
-   }
+   }*/
    
 }

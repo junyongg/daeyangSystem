@@ -548,7 +548,7 @@ public class UserBoardController {
 		} else {
 			BoardNotice.setBN_INSERT_IP(CommonService.getClientIP(req));
 			Component.createData("BoardNotice.BN_insert", BoardNotice);
-			//알림 전송 부분 User가 안전관리자 체크 BN_REGNM
+			//현재 유저가 안전관리자 인지 체크하기 ( 안전관리자일때만 알림톡 전송 ) 
 			HashMap<String,Object> checking = Component.getData("main.SendUserCheck", BoardNotice.getBN_REGNM());
 			if(checking != null) {
 				alimTalkSendMethod(BoardNotice,checking);
@@ -936,8 +936,8 @@ public class UserBoardController {
 		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
 		jsonObj = (JSONObject) jsonObj_a.get(4); //발전소 게시물 확인
 
-    	//전송할 회원 리스트 
-    	List<UserDTO> list = Component.getList("main.NotUserData",map);
+    	//전송할 회원 리스트 ( 슈퍼개발자만 일단 )
+    	List<UserDTO> list = Component.getList("main.NotUserData_Admin",map);
 		
 		for(UserDTO l : list) {
     		l.decode();

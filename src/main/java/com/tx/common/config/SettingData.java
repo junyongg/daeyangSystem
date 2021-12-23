@@ -24,16 +24,7 @@ public class SettingData {
 	
 	public final static String ADMINPAGE_HOMEPAGE_MANAGER_URL = "/dyAdmin/homepage"; //관리자페이지 - 홈페이지 관리 메뉴 url
 	
-	public final static String PROGRAM_APPLY = "SC_0000000342"; 	//신청 프로그램
-	public final static String PROGRAM_LECTURE = "SC_0000000343";  //강좌 프로그램
-	
-	public final static String APPLY_WAITING = "SC_0000000344";  //결제대기
-	public final static String APPLY_COMPLETE = "SC_0000000345";  //신청완료(결제완료)
-	public final static String APPLY_CANCEL = "SC_0000000346";  //신청취소(결제취소)
-	public final static String APPLY_RESERVE = "SC_0000000347";  //대기자 신청
-	public final static String APPLY_EXPIRED = "SC_0000000348";  //결제만료
-	public final static String APPLY_PREVIEW = "SC_0000000349";  //관람완료
-	
+
 	public final static int DEFAULT_IMG_RESIZE_WIDTH = 460;
 	public final static int DEFAULT_IMG_RESIZE_HEIGHT = 0;
 	public final static int DEFAULT_IMG_THUMBNAIL_RESIZE_WIDTH = 200;

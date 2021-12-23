@@ -35,8 +35,8 @@ public class ScheduleService {
 	@Autowired
 	requestAPIservice requestAPI;
 	
-	//날씨 데이터 매시 35분마다 
-	@Scheduled(cron="0 35 * * * ?")  
+	//날씨 데이터 매시 57분마다 
+	@Scheduled(cron="0 57 * * * ?")  
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
@@ -95,7 +95,7 @@ public class ScheduleService {
 	
 	
 	//22시에 데이터 합치기   
-	@Scheduled(cron="0 0 22 * * ?")  
+//	@Scheduled(cron="0 0 22 * * ?")  
 	public void scheduleTest() throws Exception {
 		//날씨 종합데이터 저장 (am - 온도/날씨 , pm - 온도/날씨)
 		WetherService w = new WetherService();

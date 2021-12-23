@@ -459,7 +459,7 @@
 		WHERE DPP_KEYNO = #{DPP_KEYNO}
 	</select>
 	
-	<!-- 슈퍼개발자 및 알림전송 그룹 및 사업주 번호 추출 -->
+	<!-- 게시물 등록알림 (개발자, 알림전송, 사업주 번호 추출)-->
 	<select id="NotUserData" resultType="USER" parameterType="HashMap">
 		SELECT *
 		FROM u_userinfo A

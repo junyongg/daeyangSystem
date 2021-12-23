@@ -52,6 +52,7 @@
                     <div class="r_c">
                         <select class="sel_nor wAuto" id="region" name="region" >
                             <option value="all">전체</option>
+                            <option value="광주">광주</option>
                             <option value="나주">나주</option>
                         </select>
                         

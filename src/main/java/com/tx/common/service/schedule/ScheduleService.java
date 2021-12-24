@@ -4,15 +4,16 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tx.common.config.SettingData;
 import com.tx.common.service.component.ComponentService;
@@ -36,7 +37,8 @@ public class ScheduleService {
 	requestAPIservice requestAPI;
 	
 	//날씨 데이터 매시 57분마다 
-	@Scheduled(cron="0 57 * * * ?")  
+	@Scheduled(cron="0 57 * * * ?")
+	@Transactional
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
@@ -47,6 +49,7 @@ public class ScheduleService {
 	   for (String r : regionL) {
 		   ArrayList<String> list = w.Daily_Wether(r);
 		   list.addAll(w.Sunrise_setData(r));
+		   
 		   WeatherOrganize(list);
 	   }
     }

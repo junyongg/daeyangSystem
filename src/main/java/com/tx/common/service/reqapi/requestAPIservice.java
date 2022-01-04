@@ -11,5 +11,5 @@ public interface requestAPIservice {
 	public JSONObject KakaoAllimTalkList(String apikey, String userid,  String sendkey ,String token ) throws Exception;
 	
 	//알림톡 전송
-	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone ) throws Exception;
+	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone,String Sendurl ) throws Exception;
 }

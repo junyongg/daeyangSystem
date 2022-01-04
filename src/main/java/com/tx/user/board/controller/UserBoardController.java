@@ -548,11 +548,17 @@ public class UserBoardController {
 		} else {
 			BoardNotice.setBN_INSERT_IP(CommonService.getClientIP(req));
 			Component.createData("BoardNotice.BN_insert", BoardNotice);
+			
+			
 			//현재 유저가 안전관리자 인지 체크하기 ( 안전관리자일때만 알림톡 전송 ) 
 			HashMap<String,Object> checking = Component.getData("main.SendUserCheck", BoardNotice.getBN_REGNM());
-			if(checking != null) {
-				alimTalkSendMethod(BoardNotice,checking);
+			
+			if(checking.get("UIA_KEYNO").equals("UIA_EWXHE")) {
+				alimTalkSendMethod(BoardNotice,checking,4);
+			}else if(checking.get("UIA_KEYNO").equals("UIA_ASDFG")) {
+				alimTalkSendMethod(BoardNotice,checking,5);
 			}
+			
 		}
 
 		// 이메일
@@ -922,10 +928,15 @@ public class UserBoardController {
 	}
 	
 	
-    public void alimTalkSendMethod(BoardNotice notice, HashMap<String, Object> check) throws Exception {
+    public void alimTalkSendMethod(BoardNotice notice, HashMap<String, Object> check,int cnt) throws Exception {
     	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",notice.getBN_PLANT_NAME());
 
     	String contents = check.get("UI_NAME").toString() +" (이)가\n발전소 : "+ map.get("DPP_NAME").toString()+"의 \n게시물 : "+notice.getBN_TITLE()+" (를)을 \n등록했습니다.";
+    	String url = "http://dymonitering.co.kr/";
+    	if(cnt == 5) {
+    		contents = map.get("DPP_NAME").toString()+"에 새로운 게시물이 등록되었습니다. 확인해주세요.";
+    		url = "http://dymonitering.co.kr/dy/Board/"+notice.getBN_KEYNO().toString()+"/detailView.do?pageIndex=1";
+    	}
     	
     	//토큰받기
 		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
@@ -934,7 +945,7 @@ public class UserBoardController {
 		//리스트 뽑기 - 현재 게시물 알림은 index=1
 		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
-		jsonObj = (JSONObject) jsonObj_a.get(4); //발전소 게시물 확인
+		jsonObj = (JSONObject) jsonObj_a.get(cnt); //발전소 게시물 확인
 
     	//전송할 회원 리스트 ( 슈퍼개발자만 일단 )
     	List<UserDTO> list = Component.getList("main.NotUserData_Admin",map);
@@ -943,7 +954,7 @@ public class UserBoardController {
     		l.decode();
     		String phone = l.getUI_PHONE().toString().replace("-", "");
     		//받은 토큰으로 알림톡 전송		
-    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone,url);
     	}
     }
 	

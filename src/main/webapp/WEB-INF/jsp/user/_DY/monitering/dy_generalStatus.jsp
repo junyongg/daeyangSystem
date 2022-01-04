@@ -161,7 +161,7 @@
                             <ul class="mid">
                                 <li>
                                     <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${Prmonth.DATA}" pattern="0.00"/></b>kWh</span>
+                                    <span class="number"><b><fmt:formatNumber value="${Prmonth}" pattern="0.00"/></b>kWh</span>
                                 </li>
                             </ul>
                             <div class="result">
@@ -218,12 +218,12 @@
         <section class="one_row right3">
 
             <div class="col n01">
-
+				
                 <article class="artBoard top">
                     <h2 class="circle mgSm">기상정보</h2>
 
                     <div class="weather_infomation">
-
+						<c:if test="${fn:length(weather) > 0 }">
   						<c:choose>
   							<c:when test="${weatherToday.DWD_PTV eq '맑음'}">
   								<c:choose>
@@ -255,9 +255,11 @@
                                 <li class="wind">${weatherToday.DWD_WSD }m/s</li>
                             </ul>
                         </div>
+                        </c:if>
                     </div>
 
                     <div class="weather_information2">
+                        <c:if test="${fn:length(weather) > 0 }">
                         <div class="lb">
 <%--                             <p class="now">${fn:substring(weatherToday.DWD_DATE,0,2) }시 현재</p> --%>
                            <c:choose>
@@ -308,9 +310,11 @@
 	                            </li>                            
                             </c:forEach>
                         </ul>
+                        </c:if>
                     </div>
                 </article>  
-
+				
+				
                 <article class="artBoard bott">
                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
 
@@ -380,16 +384,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-<%--                             	<c:forEach items="${invertDataList }" var="model" varStatus="status"> --%>
-                            	<c:forEach begin="0" end="${ob.DPP_INVER_COUNT-1 }" var="cnt">
+                            	<c:forEach items="${invertDataList }" var="model" varStatus="status">
+<%--                             	<c:forEach begin="0" end="${ob.DPP_INVER_COUNT-1 }" var="cnt"> --%>
                             		<c:choose>
-                            			<c:when test="${invertDataList[cnt].Work_Mode eq 'Normal'}">
+                            			<c:when test="${model.Work_Mode eq 'Normal'}">
                             				<c:set var="type" value="green"/>
                             			</c:when>
-                            			<c:when test="${invertDataList[cnt].Work_Mode eq 'Fault'}">
+                            			<c:when test="${model.Work_Mode eq 'Fault'}">
                             				<c:set var="type" value="red"/>
                             			</c:when>
-                            			<c:when test="${invertDataList[cnt].Work_Mode eq 'Wati'}">
+                            			<c:when test="${model.Work_Mode eq 'Wait'}">
                             				<c:set var="type" value="blue"/>
                             			</c:when>
                             			<c:otherwise>
@@ -397,8 +401,8 @@
                             			</c:otherwise>
                             		</c:choose>
                             		<tr>
-    	                                <td>[${ob.DPP_AREA }] ${ob.DPP_NAME } | 인버터 ${cnt+1 }호</td>
-        	                            <td>${not empty invertDataList[cnt].Active_Power?invertDataList[cnt].Active_Power:0 }</td>
+    	                                <td>[${ob.DPP_AREA }] ${ob.DPP_NAME } | ${model.DI_NAME }</td>
+        	                            <td>${not empty model.Active_Power?model.Active_Power:0 }</td>
             	                        <td><span class="check_c ${type }"></span></td>
 	                                </tr>
                             	</c:forEach>
@@ -705,7 +709,7 @@ function calculation(){
 	var val = "${ob.DDM_D_DATA}";	//금일
 	var Dm_val = "${month1}";	//금월
 	var P_val = "${ob.DDM_P_DATA}";	//전일
-	var Pm_val = "${Prmonth.DATA}";//전월
+	var Pm_val = "${Prmonth}";//전월
 	var y_val = "${year1}";	//금년
 	var n_val = "${ob.DDM_CUL_DATA}";	//누적
 	var smp = $("#smp1").val();	

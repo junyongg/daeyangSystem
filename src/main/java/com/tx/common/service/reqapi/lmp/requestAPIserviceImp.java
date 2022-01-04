@@ -110,7 +110,7 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 	}
 	
 	//알림톡 전송
-	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone ) throws Exception{
+	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone,String Sendurl ) throws Exception{
 		
 		String json = "";
 		JSONArray button = (JSONArray) jsonObj.get("buttons");
@@ -126,8 +126,8 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 			buttonInfo.put("name", jsonObj_s.get("name").toString());
 			buttonInfo.put("linkType", jsonObj_s.get("linkType").toString());
 			buttonInfo.put("linkTypeName", jsonObj_s.get("linkTypeName").toString());
-			buttonInfo.put("linkM", jsonObj_s.get("linkMo").toString());
-			buttonInfo.put("linkP", jsonObj_s.get("linkPc").toString());
+			buttonInfo.put("linkM", Sendurl);
+			buttonInfo.put("linkP", Sendurl);
 			
 			JSONArray buttonar = new JSONArray();
 			buttonar.add(buttonInfo);
@@ -155,7 +155,7 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
         sb.append("tpl_code").append("=").append(jsonObj.get("templtCode")).append("&");
         sb.append("sender").append("=").append("01098601540").append("&"); //발신자 내번호 고정
         sb.append("receiver_1").append("=").append(phone).append("&"); //수신자		
-        sb.append("subject_1").append("=").append("게시판확인알림").append("&"); //제목		
+        sb.append("subject_1").append("=").append("알림").append("&"); //제목		
         sb.append("message_1").append("=").append(URLEncoder.encode(contents, "UTF-8")).append("&"); //내용		
         sb.append("button_1").append("=").append(json.toString()); //버튼	
         

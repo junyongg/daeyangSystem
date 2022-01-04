@@ -60,31 +60,6 @@
 		<include  refid="main_setting"/>
 	</select>
 
-	<!-- 금월, 금년 데이터 출력 이전 데이터와 취합하기-->
-	<select id="select_MainSum_MY" resultType="hashmap" parameterType="hashmap">
-		SELECT IFNULL(SUM(C.DDM_D_DATA),0) AS DATA , COUNT(*) AS CNT
-		FROM(
-			SELECT *
-			FROM dy_inverter_data_main A
-			RIGHT JOIN dy_power_plant B
-			ON A.DDM_DPP_KEYNO = B.DPP_KEYNO
-			<![CDATA[
-				WHERE DATE_FORMAT(DDM_DATE,'%Y-%m-%d') <  DATE_FORMAT(now(),'%Y-%m-%d')
-			]]>
-			AND A.DDM_DPP_KEYNO = #{type}
-			ORDER BY DDM_DATE DESC
-		)C
-		WHERE 1=1 
-		<choose>
-			<when test="date.equals('month')">
-				AND  DATE_FORMAT(C.DDM_DATE,'%Y-%m') =  DATE_FORMAT(now(),'%Y-%m')
-			</when>
-			<when test="date.equals('year')">
-				AND  DATE_FORMAT(C.DDM_DATE,'%Y') =  DATE_FORMAT(now(),'%Y')
-			</when>
-		</choose>
-	</select>
-	
 	<select id="select_Sum_MY" resultType="float" parameterType="hashmap">
 		SELECT IFNULL(SUM(B.Cumulative_Generation),0) AS DATA
 		FROM(
@@ -94,9 +69,16 @@
 				FROM dy_inverter_data
 				WHERE DP_KEYNO = #{type}
 				<choose>
-					<when test="date.equals('month')">
+					<when test="date.equals('Premonth')">
 						<![CDATA[
 							AND DATE_FORMAT(Conn_date,'%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 MONTH),'%Y-%m')
+							ORDER BY Conn_date DESC
+							LIMIT 1000
+						]]>
+					</when>
+					<when test="date.equals('month')">
+						<![CDATA[
+							AND DATE_FORMAT(Conn_date,'%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 0 MONTH),'%Y-%m')
 							ORDER BY Conn_date DESC
 							LIMIT 1000
 						]]>
@@ -128,7 +110,7 @@
 		)C
 		WHERE 1=1 
 		<choose>
-			<when test="date.equals('month')">
+			<when test="date.equals('Premonth')">
 				AND  DATE_FORMAT(C.DDM_DATE,'%Y-%m') =  DATE_FORMAT(date_sub(now(),interval 1 month),'%Y-%m')
 			</when>
 		</choose>
@@ -485,16 +467,15 @@
 		WHERE C.UIA_KEYNO = 'UIA_ASDFG'
 	</select>
 	
-	<!-- 유저키 가지고 안전관리자 확인 -->
+	<!-- 카카오 알림전송전 권한키 확인 -->
 	<select id="SendUserCheck" parameterType="String" resultType="hashmap">
-		SELECT *
-		FROM u_userinfo A
+		SELECT A.UIA_KEYNO,C.UI_NAME
+		FROM u_userinfo_authority A
 		LEFT JOIN u_userinfo_member_authority B
-		ON A.UI_KEYNO = B.UI_KEYNO
-		LEFT JOIN u_userinfo_authority C
-		ON C.UIA_KEYNO = B.UIA_KEYNO 
-		WHERE C.UIA_KEYNO = 'UIA_EWXHE'
-		AND A.UI_KEYNO = #{userKey}
+		ON A.UIA_KEYNO = B.UIA_KEYNO
+		LEFT JOIN u_userinfo C
+		ON C.UI_KEYNO = B.UI_KEYNO
+		WHERE C.UI_KEYNO = #{userKey}
 	</select>
 	
 	<!-- 현재 발전소 사업주 정보 출력 -->
@@ -566,5 +547,37 @@
 		SELECT date  
 		FROM chartdate
 	</select>
+	
+	<select id="recent_sum" resultType="float">
+		  SELECT IFNULL(SUM(D.Cumulative_Generation),0)
+	      FROM	( 
+			SELECT *
+		    FROM(
+				SELECT B.DI_NAME, A.DP_KEYNO, A.Conn_date , A.Cumulative_Generation 
+			    FROM (
+				    SELECT DI_NAME 
+				    FROM dy_inverter_data 
+				    WHERE DP_KEYNO = #{type} 
+				    AND DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d') group by DI_NAME
+			 ) B
+		   	 LEFT JOIN dy_inverter_data A
+			 ON A.DI_NAME = B.DI_NAME
+			 WHERE A.DP_KEYNO = #{type}
+			 <choose>
+				<when test="date.equals('year')">
+					AND DATE_FORMAT(Conn_date,'%Y') = #{Conn_date}
+				</when>
+				<otherwise>
+					AND DATE_FORMAT(Conn_date,'%Y-%m') = #{Conn_date}
+				</otherwise>
+			</choose>
+			 
+			 ORDER BY Conn_date DESC
+			 LIMIT 1111
+			 ) C
+			 GROUP BY C.DI_NAME 
+		  )D
+	</select>
+	
 	
 </mapper>

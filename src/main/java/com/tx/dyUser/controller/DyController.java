@@ -102,37 +102,53 @@ public class DyController {
 	   mv.addObject("detail_Data",ob);
 	   
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
-	   mv.addObject("Weather",weather.get(1));
 	   
-	   float TodayCum = 0;
-	   if(ob.get("DDM_CUL_DATA") != null) {
-		   TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());
+	   if(weather.size() > 0) {
+		   mv.addObject("Weather",weather.get(1));
 	   }
-	   float Temp = 0;
 	   
-	   type.put("date","month");//금월
-	   Temp = Component.getData("main.select_Sum_MY",type);
+	   
+	   DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	   DateFormat format2 = new SimpleDateFormat("yyyy");
+	   Date d = new Date();
+	   String now = format.format(d);
+	   
 	   // 이번달 날짜 count 
-	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
 	   Calendar c1 = Calendar.getInstance(); 
 	   Date Today = c1.getTime();
 	   c1.set(Calendar.DAY_OF_MONTH,1);
 	   Date Fmon = c1.getTime();
 	   long diffDay = (Today.getTime() - Fmon.getTime()) / (24*60*60*1000);
-
-	   mv.addObject("month1",TodayCum-Temp);
 	   mv.addObject("month1Cnt",diffDay);
+
+	   format = new SimpleDateFormat("yyyy-MM");
+	   String nowd = format.format(c1.getTime()); 
+	   c1.add(Calendar.MONTH, -1); 
+	   String pred = format.format(c1.getTime()); 
+	   c1.add(Calendar.MONTH, -1); 
+	   String ppred = format.format(c1.getTime());
 	   
-	   type.put("date","year");//금년
-	   Temp = Component.getData("main.select_Sum_MY",type);
-	   mv.addObject("year1",TodayCum-Temp);
+	   Calendar c2 = Calendar.getInstance(); 
+	   c2.add(Calendar.YEAR, -1); 
+	   String nowY = format2.format(c2.getTime()); //작년
+
+	   type.put("date","day");
+	   //전월 누적치 차액(전달 - 전에전달) 
+	   type.put("Conn_date",pred);
+	   float preC = Component.getData("main.recent_sum",type);
 	   
-	   type.put("date","month");//금월
-//	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
-	   type.put("date","year");//금년
-//	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
-	   type.put("date","all");//누적
-//	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
+	   type.put("Conn_date",ppred);
+	   float ppreC = Component.getData("main.recent_sum",type);
+	   mv.addObject("Prmonth",preC-ppreC);
+	   
+	   type.put("Conn_date",nowd);//금월
+	   float TodayCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("month1",TodayCum-preC);
+	   
+	   type.put("date","year");
+	   type.put("Conn_date",nowY);
+	   float YearCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("year1",TodayCum-YearCum);
 	   
 	   //알림테이블 부분
 	   mv.addObject("ResultList",Component.getList("main.select_errorData", keyno));
@@ -211,6 +227,7 @@ public class DyController {
 	   type.put("group","group");
 	   
 	   	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	   	DateFormat format2 = new SimpleDateFormat("yyyy");
 	   	Date d = new Date();
 	   	String now = format.format(d);
 	   	
@@ -223,40 +240,46 @@ public class DyController {
 
 	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
 	   
-	   
-	   float TodayCum = 0;
-	   if(ob.get("DDM_CUL_DATA") != null) {
-		   TodayCum =  Float.parseFloat(ob.get("DDM_CUL_DATA").toString());
-	   }
-	   float Temp = 0;
-	   
-	   type.put("date","month");//금월
-	   
-	   mv.addObject("Prmonth",Component.getData("main.select_MainSum_Pre_M",type)); //전월
-	   
-	   Temp = Component.getData("main.select_Sum_MY",type);
 	   // 이번달 날짜 count 
-	   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
 	   Calendar c1 = Calendar.getInstance(); 
 	   Date Today = c1.getTime();
 	   c1.set(Calendar.DAY_OF_MONTH,1);
 	   Date Fmon = c1.getTime();
 	   long diffDay = (Today.getTime() - Fmon.getTime()) / (24*60*60*1000);
-
-	   mv.addObject("month1",TodayCum-Temp);
 	   mv.addObject("month1Cnt",diffDay);
 	   
-	   type.put("date","year");//금년
-	   Temp = Component.getData("main.select_Sum_MY",type);
-	   mv.addObject("year1",TodayCum-Temp);
 	   
-//	   type.put("date","month");//금월
-//	   mv.addObject("month",Component.getData("main.select_MainSum_MY",type));
-//	   mv.addObject("Prmonth",Component.getData("main.select_MainSum_Pre_M",type)); //전월
-//	   type.put("date","year");//금년
-//	   mv.addObject("year",Component.getData("main.select_MainSum_MY",type));
-//	   type.put("date","all");//누적
-//	   mv.addObject("all",Component.getData("main.select_MainSum_MY",type));
+	   format = new SimpleDateFormat("yyyy-MM");
+	   
+	   String nowd = format.format(c1.getTime()); 
+	   
+	   c1.add(Calendar.MONTH, -1); 
+	   String pred = format.format(c1.getTime()); 
+	   c1.add(Calendar.MONTH, -1); 
+	   String ppred = format.format(c1.getTime());
+	   
+	   Calendar c2 = Calendar.getInstance(); 
+	   c2.add(Calendar.YEAR, -1); 
+	   String nowY = format2.format(c2.getTime()); //작년
+	   
+	   type.put("date","day");
+	   //전월 누적치 차액(전달 - 전에전달) 
+	   type.put("Conn_date",pred);
+	   float preC = Component.getData("main.recent_sum",type);
+	   
+	   type.put("Conn_date",ppred);
+	   float ppreC = Component.getData("main.recent_sum",type);
+	   mv.addObject("Prmonth",preC-ppreC);
+	   
+	   
+	   type.put("Conn_date",nowd);//금월
+	   float TodayCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("month1",TodayCum-preC);
+	   
+	   type.put("date","year");
+	   type.put("Conn_date",nowY);
+	   float YearCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("year1",TodayCum-YearCum);
 	   
 	   type.put("category","안전관리");//안전관리
 	   mv.addObject("boardList_A", Component.getList("main.PowerBoard_select", type));
@@ -267,7 +290,7 @@ public class DyController {
 	   mv.addObject("DPP_KEYNO", key);
 	   mv.addObject("InverterNum", name);
 	   mv.addObject("invertDataList", dataList);
-	   if(weather != null) {
+	   if(weather.size() > 0) {
 		   mv.addObject("weatherToday",weather.get(1));
 		   mv.addObject("weather",weather);
 	   }
@@ -370,10 +393,10 @@ public class DyController {
     	Date d = new Date();
     	String now = format.format(d);
     	
-    	if(searchBeginDate == null) {
+    	if(searchBeginDate == null || searchBeginDate.equals("") ) {
     		searchBeginDate = now;
     	}
-    	if(searchEndDate == null) {
+    	if(searchEndDate == null || searchEndDate.equals("")) {
     		searchEndDate = now;
     	}
     	
@@ -783,12 +806,12 @@ public class DyController {
 
     	//확인 눌렀을때 현재 - 슈퍼관리자한테만
     	List<UserDTO> list = Component.getListNoParam("main.NotUserData_Admin");
-		
+    	String Sendurl  = "http://dymonitering.co.kr/"; 
 		for(UserDTO l : list) {
     		l.decode();
     		String phone = l.getUI_PHONE().toString().replace("-", "");
     		//받은 토큰으로 알림톡 전송		
-    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone);
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone,Sendurl);
     	}
 		
 		Component.updateData("main.UpdateBNcheck", BN_KEYNO);

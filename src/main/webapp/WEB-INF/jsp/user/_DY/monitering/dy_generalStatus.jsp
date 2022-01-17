@@ -522,18 +522,6 @@
                             <li>
                                 <span class="state green">금월</span>
                                 <ul class="info">
-                                    <%-- <li>
-                                        <span class="sbj">발전시간(평균)</span>
-                                        <span class="num"><b>
-                                        	<c:if test="${month.CNT ne '0'}">
-                                        		<fmt:formatNumber value="${((month.DATA/ob.DPP_VOLUM) + ob.DDM_T_HOUR)/month.CNT }" pattern="0.00"/>
-                                        	</c:if>
-                                        	<c:if test="${month.CNT eq '0'}">
-                                        		<fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>
-                                        	</c:if>
-                                        	</b>h
-                                        </span>
-                                    </li> --%>
                                     <li>
                                         <span class="sbj">발전시간(평균)</span>
                                         <span class="num"><b>

@@ -109,4 +109,8 @@ public class SettingData {
 	public final static String Userid = "daeyang";
 	public final static String Senderkey = "150329633d7b950290bfb0e577375705c0678a7f";
 	
+	
+	//개별 관리자 그룹
+	public final static String samwhan = "UIA_PXIMI";
+	
 }

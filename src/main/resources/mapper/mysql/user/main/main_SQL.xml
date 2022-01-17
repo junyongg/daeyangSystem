@@ -19,13 +19,16 @@
 	</sql>
 	
 	<!-- 종합현황 카운팅 -->
-	<select id="select_Main_cnt" resultType="int" parameterType="String">
+	<select id="select_Main_cnt" resultType="int">
 		SELECT COUNT(*)
 		FROM(
 			SELECT	* , IFNULL(B.DDM_STATUS,'미개통') as status 
 			<include  refid="main_setting"/>
 		)D
 		WHERE status = #{value}
+     	<if test="UI_KEYNO.equals('UI_RTAKX') ">
+			AND D.DPP_ADMIN = #{UI_KEYNO}
+		</if>
 	</select>
 	
 	<!-- 현장리스트 -->
@@ -58,6 +61,10 @@
 	<select id="select_MainSum" resultType="hashmap">
 		SELECT	SUM(B.DDM_ACTIVE_P) AS ACTIVE , SUM(B.DDM_D_DATA) AS DALIY, SUM(B.DDM_P_DATA) AS PREDATA , SUM(C.DPP_VOLUM) AS VOLUM, SUM(B.DDM_CUL_DATA) AS CUMULATIVE
 		<include  refid="main_setting"/>
+		WHERE 1=1
+		<if test="UI_KEYNO.equals('UI_RTAKX') ">
+			AND C.DPP_ADMIN = #{UI_KEYNO}
+		</if>
 	</select>
 
 	<select id="select_Sum_MY" resultType="float" parameterType="hashmap">
@@ -579,5 +586,43 @@
 		  )D
 	</select>
 	
+	
+	<select id="select_MainData_Ad" resultType="hashmap" parameterType="hashmap">
+		SELECT	*
+		<include  refid="main_setting"/>
+		WHERE 1=1
+		<if test="type != null and type != ' '">
+			AND C.DPP_KEYNO = #{type}
+		</if>
+		<if test="region != null and region != '' and !region.equals('all')">
+			AND C.DPP_AREA = #{region}
+		</if>
+		<if test="status != null and status != '' and !status.equals('status') ">
+			<choose>
+				<when test="status.equals('정상')">AND B.DDM_STATUS = '정상'</when>
+				<when test="status.equals('장애')">AND B.DDM_STATUS = '장애'</when>
+				<otherwise>AND B.DDM_STATUS IS NULL</otherwise>
+			</choose>
+		</if>
+		<if test = "UI_KEYNO != null and UI_KEYNO != ''">
+			AND DPP_ADMIN = #{UI_KEYNO}
+		</if>
+		ORDER BY DPP_DATE ASC
+	</select>
+	
+	<select id="Power_SelectKEY_Ad" resultType="String">
+		SELECT DPP_KEYNO
+		FROM dy_power_plant 
+		WHERE DPP_ADMIN = #{UI_KEYNO}
+		ORDER BY DPP_NAME ASC
+		limit 1
+	</select>
+	
+	<select id="Power_SelectKEYs_Ad" resultType="hashmap">
+		SELECT DPP_KEYNO, DPP_NAME
+		FROM dy_power_plant 
+		WHERE DPP_ADMIN = #{UI_KEYNO}
+		ORDER BY DPP_NAME ASC
+	</select>
 	
 </mapper>

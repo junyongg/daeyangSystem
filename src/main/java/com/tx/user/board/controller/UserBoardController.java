@@ -110,13 +110,21 @@ public class UserBoardController {
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
  	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
  	    
+	    String sql2 = "main.Power_SelectKEY";
+	    String sql3 = "main.Power_SelectKEYs";
+	    //삼환관리자 처리부분
+	    if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		    sql2 = "main.Power_SelectKEY_Ad";
+		    sql3 = "main.Power_SelectKEYs_Ad";
+	    }
+ 	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");
  	    }
  	    if(key == null || StringUtils.isEmpty(key)) {
-		   key = Component.getData("main.Power_SelectKEY",type);
+		   key = Component.getData(sql2,type);
  	    }
- 	    List<HashMap<String,Object>> list = Component.getList("main.Power_SelectKEYs",type);
+ 	    List<HashMap<String,Object>> list = Component.getList(sql3,type);
  	    mv.addObject("plantKey",list);
  	    session.setAttribute("DPP_KEYNO", key);
 		
@@ -403,14 +411,22 @@ public class UserBoardController {
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
  	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
  	    
+ 	    String sql = "main.select_MainData";
+	    String sql2 = "main.Power_SelectKEY";
+	    //삼환관리자 처리부분
+	    if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		    sql = "main.select_MainData_Ad";
+		    sql2 = "main.Power_SelectKEY_Ad";
+	    }
+ 	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");
  	    }
  	    if(key == null) {
-		   key = Component.getData("main.Power_SelectKEY",type);
+		   key = Component.getData(sql2,type);
  	    }
  	    session.setAttribute("DPP_KEYNO", key);
- 	    mv.addObject("Plant_List", Component.getList("main.select_MainData",type));
+ 	    mv.addObject("Plant_List", Component.getList(sql,type));
 		
 		String action = "insert";
 		boolean replyCk = false;

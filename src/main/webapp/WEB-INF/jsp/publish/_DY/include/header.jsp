@@ -6,8 +6,8 @@
         
         <nav id="gnb">
             <ul>
-              	<c:if test="${userInfo.isAdmin eq 'Y' }">
-                <li class="${currentMenu.MN_NAME  eq '종합 현황' ? 'on':''}"><a href="/dy/moniter/overAll.do">종합현황</a></li>
+              	<c:if test="${userInfo.isAdmin eq 'Y' || userInfo.UI_ID eq 'samwhan' }">
+                	<li class="${currentMenu.MN_NAME  eq '종합 현황' ? 'on':''}"><a href="/dy/moniter/overAll.do">종합현황</a></li>
               	</c:if>
                 <li class="${currentMenu.MN_NAME eq '발전 현황' ? 'on':''}"><a href="/dy/moniter/general.do">발전현황</a></li>
                 <li class="${currentMenu.MN_NAME eq '통계 분석' ? 'on':''}"><a href="/dy/moniter/stastics.do">통계분석</a></li>

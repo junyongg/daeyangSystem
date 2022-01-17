@@ -61,17 +61,22 @@ public class DyController {
 	   
 	   //종합현황은 관리자만 출입가능
 	   type.put("type",null);
-	   
-	   cntM.put("a",Component.getCount("main.select_Main_cnt","정상"));
-	   cntM.put("b",Component.getCount("main.select_Main_cnt","장애"));
-	   cntM.put("c",Component.getCount("main.select_Main_cnt","미개통"));
+	   type.put("value","정상");
+	   cntM.put("a",Component.getCount("main.select_Main_cnt",type));
+	   type.put("value","장애");
+	   cntM.put("b",Component.getCount("main.select_Main_cnt",type));
+	   type.put("value","미개통");
+	   cntM.put("c",Component.getCount("main.select_Main_cnt",type));
 	   
 	   mv.addObject("cntM",cntM);
 	   
-	   
-	   
-	   mv.addObject("list", Component.getList("main.select_MainData",type));
-	   mv.addObject("listSum", Component.getData("main.select_MainSum"));
+	   String sql = "main.select_MainData";
+	   //삼환관리자 처리부분
+	   if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		   sql = "main.select_MainData_Ad";
+	   }
+	   mv.addObject("list", Component.getList(sql,type));
+	   mv.addObject("listSum", Component.getData("main.select_MainSum",type));
       return mv;
    }
    
@@ -96,7 +101,13 @@ public class DyController {
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
 	   
-	   HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+	   String sql = "main.select_MainData";
+	   //삼환관리자 처리부분
+	   if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		   sql = "main.select_MainData_Ad";
+	   }
+	   
+	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   String area = ob.get("DPP_AREA").toString(); //지역
 	   
 	   mv.addObject("detail_Data",ob);
@@ -176,7 +187,11 @@ public class DyController {
 	   type.put("region",region);
 	   type.put("status",status);
 	   
-	   mv.addObject("list", Component.getList("main.select_MainData",type));
+	   String sql = "main.select_MainData";
+	   if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		   sql = "main.select_MainData_Ad";
+	   }
+	   mv.addObject("list", Component.getList(sql,type));
 	   
 	   return mv;
    }
@@ -199,17 +214,25 @@ public class DyController {
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
 	   
+	   String sql = "main.select_MainData";
+	   String sql2 = "main.Power_SelectKEY";
+	   
+	   if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		   sql = "main.select_MainData_Ad";
+		   sql2 = "main.Power_SelectKEY_Ad";
+	   }
+
 	   if(key.equals("0")) {
 		 //1. 세션에 키값 저장확인
 		   key = (String) session.getAttribute("DPP_KEYNO");
 	   }
 	   //2. 세션에 키값 없다면 
 	   if(key == null || StringUtils.isEmpty(key)) {
-		   key = Component.getData("main.Power_SelectKEY",type);
+		   key = Component.getData(sql2,type);
 		   //선택된 키값 세션 저장(초기 제일 상위 KEY값 저장)
 	   }
 	   session.setAttribute("DPP_KEYNO", key);
-	   List<HashMap<String,Object>> m_list = Component.getList("main.select_MainData",type);
+	   List<HashMap<String,Object>> m_list = Component.getList(sql,type);
 	   
 	   if(m_list.size() == 0 ) {
 		   mv = new ModelAndView("/user/_DY/monitering/dy_none");
@@ -217,13 +240,13 @@ public class DyController {
 		   return mv;
 	   }
 	   
-	   mv.addObject("list", Component.getList("main.select_MainData",type));
+	   mv.addObject("list", Component.getList(sql,type));
 	   
 	   type.put("type",key);
 	   type.put("name",name);
 	   
 	   //인버터 데이터
-	   HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   type.put("group","group");
 	   
 	   	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -346,22 +369,30 @@ public class DyController {
     	
     	Map<String, Object> user = CommonService.getUserInfo(req);
  	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
- 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	    
+ 	    String sql = "main.select_MainData";
+	    String sql2 = "main.Power_SelectKEY";
+	    //삼환관리자 처리부분
+	    if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		    sql = "main.select_MainData_Ad";
+		    sql2 = "main.Power_SelectKEY_Ad";
+	    }
  	    
  	    if(key.equals("0")) {
 		   key = (String) session.getAttribute("DPP_KEYNO");
  	    }
  	    if(key == null || StringUtils.isEmpty(key)) {
-		   key = Component.getData("main.Power_SelectKEY",type);
+		   key = Component.getData(sql2,type);
  	    }
  	    session.setAttribute("DPP_KEYNO", key);
- 	    mv.addObject("list", Component.getList("main.select_MainData",type));
+ 	    mv.addObject("list", Component.getList(sql,type));
  	    
  	    type.put("type",key);
-    	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	HashMap<String,Object> ob =  Component.getData(sql,type);
     	
     	mv.addObject("ob",ob);
-    	mv.addObject("DPP_KEYNO", key);
+//    	mv.addObject("DPP_KEYNO", key);
     	
     	mv.addObject("InverterType",InverterType);
     	mv.addObject("DaliyType",DaliyType);
@@ -386,6 +417,9 @@ public class DyController {
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
+    	List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
+    	List<List<String>> MainList = new ArrayList<List<String>>();
+    	
     	type.put("type",keyno);
     	
     	
@@ -393,10 +427,10 @@ public class DyController {
     	Date d = new Date();
     	String now = format.format(d);
     	
-    	if(searchBeginDate == null || searchBeginDate.equals("") ) {
+    	if(searchBeginDate == null || searchBeginDate.equals("") || DaliyType.equals("1") ) {
     		searchBeginDate = now;
     	}
-    	if(searchEndDate == null || searchEndDate.equals("")) {
+    	if(searchEndDate == null || searchEndDate.equals("") || DaliyType.equals("1")) {
     		searchEndDate = now;
     	}
     	
@@ -406,14 +440,12 @@ public class DyController {
     	
     	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
     	
-    	
-    	List<HashMap<String,Object>> result =  Component.getList("main.select_inverterData",type);
-    	
     	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
     	
-    	List<List<String>> MainList = new ArrayList<List<String>>();
-    	
     	if(DaliyType.equals("1")) {
+    		
+    		result =  Component.getList("main.select_inverterData",type);
+    		
     		//당일일때만 오늘날짜 데이터 뽑는것 
         	type.put("minmax","min");
         	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
@@ -513,7 +545,15 @@ public class DyController {
  	   //아이디 세션에 있는값 저장
  	   Map<String, Object> user = CommonService.getUserInfo(req);
  	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
- 	  type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	  
+ 	   String sql = "main.select_MainData";
+ 	   String sql2 = "main.Power_SelectKEY";
+	   //삼환관리자 처리부분
+	   if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		   sql = "main.select_MainData_Ad";
+		   sql2 = "main.Power_SelectKEY_Ad";
+	   }
  	  
  	   if(key.equals("0")) {
  		 //1. 세션에 키값 저장확인
@@ -521,11 +561,11 @@ public class DyController {
  	   }
  	   //2. 세션에 키값 없다면 
  	   if(key == null || StringUtils.isEmpty(key)) {
- 		   key = Component.getData("main.Power_SelectKEY",type);
+ 		   key = Component.getData(sql2,type);
  		   //선택된 키값 세션 저장(초기 제일 상위 KEY값 저장)
  	   }
  	   session.setAttribute("DPP_KEYNO", key);
- 	   List<HashMap<String,Object>> m_list = Component.getList("main.select_MainData",type);
+ 	   List<HashMap<String,Object>> m_list = Component.getList(sql,type);
  	   
  	   if(m_list.size() == 0 ) {
  		   mv = new ModelAndView("/user/_DY/monitering/dy_none");
@@ -550,13 +590,13 @@ public class DyController {
 	   type.put("InverterType",InverterType);
  	   
  	   
- 	   mv.addObject("list", Component.getList("main.select_MainData",type));
+ 	   mv.addObject("list", Component.getList(sql,type));
  	   
  	   type.put("type",key);
  	   type.put("name",name);
  	   
  	   //인버터 데이터
- 	   HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+ 	   HashMap<String,Object> ob =  Component.getData(sql,type);
        mv.addObject("ob",ob);
        
        //당일일때만 오늘날짜 데이터 뽑는것 

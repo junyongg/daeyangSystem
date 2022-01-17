@@ -5,7 +5,7 @@
 
 <input type="hidden" id="DaliyType" name="DaliyType" value="${not empty DaliyType? DaliyType:'1' }">
 <input type="hidden" id="InverterType" name="InverterType" value="${not empty InverterType? InverterType:'0' }">
-<input type="hidden" id="keyno" name="keyno" value="${ob.DDM_DPP_KEYNO }">
+<%-- <input type="hidden" id="keyno" name="keyno" value="${ob.DDM_DPP_KEYNO }"> --%>
 
 <div class="top_row">
    <article class="artBoard one">
@@ -243,6 +243,10 @@
                     <th>누적발전량(KW)</th>
                     <th>발전시간(h)</th>
                     <th>현재 출력(W)</th>
+                    <c:if test="${DaliyType eq '1' }">
+	                    <th>현재 전압(V)</th>
+	                    <th>현재 전류(A)</th>
+                    </c:if>
                 </tr>
             </thead>
             <tbody>
@@ -466,7 +470,7 @@ function searching(){
         url: '/dy/moniter/stasticsAjax.do',
         type: 'POST',
         data: {
-        	keyno : $("#keyno").val(),
+        	keyno : $("#n_keyno").val(),
         	InverterType : $("#InverterType").val(),
         	DaliyType : $("#DaliyType").val(),
         	searchBeginDate : $("#searchBeginDate").val(),

@@ -88,8 +88,9 @@ public class ScheduleService {
 				for(UserDTO ll : ls) {
 					ll.decode();
 		    		String phone = ll.getUI_PHONE().toString().replace("-", "");
+		    		String url = "http://dymonitering.co.kr/";
 		    		//받은 토큰으로 알림톡 전송		
-		    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,Contents,phone);
+		    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,Contents,phone,url);
 		    	}
 			}
 		}

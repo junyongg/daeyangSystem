@@ -625,4 +625,50 @@
 		ORDER BY DPP_NAME ASC
 	</select>
 	
+	
+	
+	
+	<!-- 발전소 키값 추출 -->
+	<select id="selectPower" resultType="hashmap">
+		SELECT DPP_KEYNO FROM dy_power_plant 
+		WHERE DPP_STATUS = 'Y'
+	</select>
+	
+	<!-- 최신 날짜  조회 -->
+	<select id="recent_date" resultType="String"> 
+		SELECT Conn_date FROM( 
+			SELECT * FROM dy_inverter_data 
+			WHERE DATE_FORMAT(Conn_date, '%Y-%m-%d') = DATE_FORMAT(now() ,'%Y-%m-%d') 
+			and DP_KEYNO = #{keyno} 
+			ORDER BY Conn_date DESC LIMIT 100
+		)A
+		GROUP BY A.DI_NAME
+	</select>
+	
+	
+	<!-- 일일 삭제 -->
+	<select id="deleteToday" resultType="hashmap">
+		DELETE
+ 		FROM dy_inverter_data
+	    WHERE Conn_date not in 
+	    <foreach item="l" index="index" collection="list" open="(" separator="," close=")">
+			#{l}	    
+	    </foreach>
+	    AND DATE_FORMAT(Conn_date, '%Y-%m-%d') = DATE_FORMAT(now() ,'%Y-%m-%d')
+	    AND DP_KEYNO = #{keyno}
+	</select>
+	
+	<!-- 메인삭제 -->
+	<delete id="deleteMain">
+		<![CDATA[
+			DELETE  FROM dy_inverter_data_main 
+				WHERE DDM_DATE < (SELECT DDM_DATE FROM dy_inverter_data_main WHERE date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now(),'%Y-%m-%d') 
+				AND DDM_DPP_KEYNO = #{keyno} 
+				ORDER BY DDM_DATE DESC LIMIT 1 ) 
+			AND date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now(),'%Y-%m-%d') 
+			AND DDM_DPP_KEYNO = #{keyno} 
+		]]>
+	</delete>
+	
+	
 </mapper>

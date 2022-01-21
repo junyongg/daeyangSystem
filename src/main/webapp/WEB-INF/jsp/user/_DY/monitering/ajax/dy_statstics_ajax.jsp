@@ -186,8 +186,13 @@
 </div>
 
 <article class="artBoard bott_r">
-    <h2 class="circle">통계분석</h2>
-
+    <h2 class="circle" style="float: left;">통계분석</h2>
+	<button type="button" 
+			class="a_box_line" 
+			onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}')"
+			style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
+		<i class="fa fa-file-excel-o"></i> 엑셀
+	</button>
     <div class="statis_cate_box">
         <dl>
             <dt>조회범위</dt>
@@ -223,6 +228,8 @@
                <a href="javascript:;" class="search_a" onclick="searching()">검색</a>
            </dd>
        </dl>
+       
+       
    </div>
 
    <div class="table_wrapper md con_h n02">
@@ -240,13 +247,13 @@
                     <th>일시</th>
                     <th>이름</th>
                     <th>발전량(kWh)</th>
-                    <th>누적발전량(KW)</th>
+                    <th>누적발전량(KWh)</th>
                     <th>발전시간(h)</th>
-                    <th>현재 출력(W)</th>
-                    <c:if test="${DaliyType eq '1' }">
+                    <th>현재 출력(KW)</th>
+                    <%-- <c:if test="${DaliyType eq '1' }">
 	                    <th>현재 전압(V)</th>
 	                    <th>현재 전류(A)</th>
-                    </c:if>
+                    </c:if> --%>
                 </tr>
             </thead>
             <tbody>

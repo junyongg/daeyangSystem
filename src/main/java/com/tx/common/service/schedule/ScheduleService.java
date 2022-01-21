@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -99,13 +100,28 @@ public class ScheduleService {
 	
 	
 	//22시에 데이터 합치기   
-//	@Scheduled(cron="0 0 22 * * ?")  
+	@Scheduled(cron="0 0 22 * * ?")
 	public void scheduleTest() throws Exception {
-		//날씨 종합데이터 저장 (am - 온도/날씨 , pm - 온도/날씨)
-		WetherService w = new WetherService();
-		HashMap<String, Object> map = w.All_Date("나주");
-		Component.createData("Weather.WeatherData_Day", map);
-		//발전소 인버터 별 데이터 초기화
+		
+		
+		List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+		
+		for(HashMap<String,Object> l : list) {
+			
+			
+			HashMap<String,Object> map = new HashMap<String, Object>();
+			
+			String keyno = l.get("DPP_KEYNO").toString();
+			
+			Component.deleteData("main.deleteMain",keyno);
+			
+			List<String> slist = Component.getList("main.recent_date", keyno);
+			
+			map.put("list", slist);
+			map.put("keyno", keyno);
+			
+			Component.deleteData("main.deleteToday", map);
+		}
 	}
 
 	

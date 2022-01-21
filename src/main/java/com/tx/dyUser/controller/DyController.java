@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +32,7 @@ import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.statistics.dto.LogDTO;
 import com.tx.dyUser.wether.WetherService;
 
 
@@ -408,11 +411,13 @@ public class DyController {
     @RequestMapping("/dy/moniter/stasticsAjax.do")
     @ResponseBody
     public ModelAndView stasticsAjax(HttpServletRequest req,
+    		HttpServletResponse res,
     		@RequestParam(value="keyno",defaultValue="1")String keyno,
     		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
     		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
-    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    		@RequestParam(value="excel", required=false) String excel
     		) throws Exception{
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
     	
@@ -485,6 +490,18 @@ public class DyController {
     	mv.addObject("searchEndDate",searchEndDate);
     	mv.addObject("ob",ob);
     	mv.addObject("result",result);
+    	
+		if(excel != null){
+			mv.setViewName("/user/_DY/monitering/excel/dy_statstic_excel");
+			
+			try {
+				Cookie cookie = new Cookie("fileDownload", "true");
+		        cookie.setPath("/");
+		        res.addCookie(cookie);
+	        } catch (Exception e) {
+	            System.out.println("쿠키 에러 :: "+e.getMessage());
+	        }
+		}
     	return mv;
     }
     
@@ -909,9 +926,6 @@ public class DyController {
 		   Component.createData("Weather.Daily_WeatherData", map);
 	   }
    }
-   
-   
-   
    
   /* @RequestMapping("/allimTalkSend.do")
    @ResponseBody

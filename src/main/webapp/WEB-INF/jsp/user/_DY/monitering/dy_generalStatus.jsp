@@ -317,7 +317,7 @@
 				
                 <article class="artBoard bott">
                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
-
+						
                     <div class="graph_b_gaue">
 
                         <div class="g_gauge totalEP">
@@ -330,11 +330,11 @@
                             </div>
 
                             <div class="guage_txt">
-                                <span>총 금일 발전량</span>
+                                <span>총 금일 발전량(%)</span>
                                 <p><b id="AllPower">0KW / 0h</b></p>
                             </div>
                         </div>
-
+						<p style="float: right;margin-right: 35px;margin-top: 12px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
                     </div>
                     
 
@@ -354,8 +354,8 @@
                             </div>
 
                             <div class="guage_txt">
-                                <span>발전 전력</span>
-                                <p><b id="Active">0</b>W</p>
+                                <span>발전 전력(%)</span>
+                                <p><b id="Active">0</b>KW</p>
                             </div>
                         </div>
 
@@ -654,9 +654,10 @@ function ajaxData(){
         	}else{
         		var hour = result.invertData.Daily_Generation / (volum/count);
         		$("#AllPower").text(result.invertData.Daily_Generation+"KW / " + hour.toFixed(2) +"h")
-            	var aDeg = result.invertData.Daily_Generation*0.2
+        		var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*180
             	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate("+aDeg+"deg);")
-            	var bDeg = result.invertData.Active_Power*1.8
+            	
+            	var bDeg = (result.invertData.Active_Power/(volum/count))*180
             	$("#Active").text(result.invertData.Active_Power)
             	$("#Active_g").attr("style","background-color: #ff7d53; transform: rotate("+bDeg+"deg);")	
         	}
@@ -704,11 +705,11 @@ function calculation(){
 	var rec = $("#rec1").val();
 	var plus = $("#plus").text();
 	
-	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",") + "원");
-	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
-	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
-	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
-	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace("/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g", ",")+"원");
+	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원");
+	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
+	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
+	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
+	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
 }
 
 function plusValue(value){

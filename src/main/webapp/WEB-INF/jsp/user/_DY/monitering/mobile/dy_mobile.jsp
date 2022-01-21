@@ -86,11 +86,11 @@
                     </div>
 
                     <div class="guage_txt">
-                        <span>총 금일 발전량</span>
+                        <span>총 금일 발전량(%)</span>
                         <p><b id="AllPower">0KW / 0h</b></p>
                     </div>
                 </div>
-
+				<p style="float: right;margin-right: 35px;margin-top: 12px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
             </div>
             
 
@@ -110,8 +110,8 @@
                     </div>
 
                     <div class="guage_txt">
-                        <span>발전 전력</span>
-                        <p><b id="Active">0</b>W</p>
+                        <span>발전 전력(%)</span>
+                        <p><b id="Active">0</b>KW</p>
                     </div>
                 </div>
 
@@ -388,9 +388,10 @@ function ajaxData(){
         		var hour = result.invertData.Daily_Generation / (volum/count);
         		
         		$("#AllPower").text(result.invertData.Daily_Generation+"KW / " + hour.toFixed(2) +"h")
-            	var aDeg = result.invertData.Daily_Generation*0.2
+            	var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*180
             	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate("+aDeg+"deg);")
-            	var bDeg = result.invertData.Active_Power*1.8
+            	
+            	var bDeg = (result.invertData.Active_Power/(volum/count))*180
             	$("#Active").text(result.invertData.Active_Power)
             	$("#Active_g").attr("style","background-color: #ff7d53; transform: rotate("+bDeg+"deg);")	
         	}

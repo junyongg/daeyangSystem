@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-<form:form action="/dy/moniter/stastics.do" method="POST" id="Form">
+<form:form action="" method="POST" id="Form">
 <input type="hidden" value="${ob.DPP_KEYNO }" id="n_keyno" name="n_keyno">
 
 <div id="container" class="heightFix">
@@ -87,6 +87,7 @@ $(function(){
 });
 
 function DPPDataAjax(){
+	$('#Form').attr('action','/dy/moniter/stastics.do');
 	$("#Form").submit();
 }
 
@@ -132,5 +133,12 @@ function statics_ajax(){
         	alert("에러 관리자에 문의해주세요.");
         }
 	});
+}
+
+
+//엑셀 버튼
+function pf_excel(url){
+	$('#Form').attr('action',url);
+	$('#Form').submit();
 }
 </script>

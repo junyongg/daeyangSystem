@@ -315,12 +315,16 @@
                 </article>  
 				
 				
-                <article class="artBoard bott">
+                <%-- <article class="artBoard bott">
                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
 						
                     <div class="graph_b_gaue">
-
-                        <div class="g_gauge totalEP">
+						<div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
+						<div class="guage_txt">
+                            <span>총 금일 발전량(%)</span>
+                            <p><b id="AllPower">0KW / 0h</b></p>
+                        </div>
+                        <!-- <div class="g_gauge totalEP">
                             <div class="guage_area">
                                 <div class="guage_container">
                                     <div class="gauge-a"></div>
@@ -333,7 +337,7 @@
                                 <span>총 금일 발전량(%)</span>
                                 <p><b id="AllPower">0KW / 0h</b></p>
                             </div>
-                        </div>
+                        </div> -->
 						<p style="float: right;margin-right: 35px;margin-top: 12px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
                     </div>
                     
@@ -360,7 +364,29 @@
                         </div>
 
                     </div>
-                </article>  
+                </article> --%>  
+                <article class="artBoard bott">
+                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
+                    
+                     <div class="graph_b_gaue">
+                         <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
+                         <div class="guage_txt" style="padding-bottom: 0px;">
+                             <span>총 금일 발전량(%)</span>
+                             <p><b id="AllPower">0.0KW / 0h</b></p>
+                             <p style="float: right;margin-right: 35px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
+                         </div>
+                     </div>
+                     
+                     <h2 class="circle mgSm">현재 발전량</h2>
+                     
+                     <div class="graph_b_gaue">
+                         <div id="gauge_2" style="display: inline-block; width: 300px; height: 300px;"></div>
+                         <div class="guage_txt">
+                             <span>발전 전력</span>
+                             <p><b id="Active">0.0</b></p>
+                         </div>
+                     </div>
+                 </article>  
             </div>
 
             <div class="col n02">
@@ -647,19 +673,23 @@ function ajaxData(){
         	var count = "${ob.DPP_INVER_COUNT}";
         	
         	if(result.invertData == null){
-        		$("#AllPower").text("0KW / 0h")
-            	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
-        		$("#Active").text("0")
-            	$("#Active_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
+        		$("#AllPower").text("0.0KW / 0.00h")
+//             	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
+        		$("#Active").text("0.0KW")
+//             	$("#Active_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
+        		chartOption(0.0,0.0,volum/count);
         	}else{
         		var hour = result.invertData.Daily_Generation / (volum/count);
         		$("#AllPower").text(result.invertData.Daily_Generation+"KW / " + hour.toFixed(2) +"h")
-        		var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*180
-            	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate("+aDeg+"deg);")
+            	$("#Active").text(result.invertData.Active_Power+"KW")
+        		
+            	var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*100
+             	/*$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate("+aDeg+"deg);")
             	
-            	var bDeg = (result.invertData.Active_Power/(volum/count))*180
-            	$("#Active").text(result.invertData.Active_Power)
-            	$("#Active_g").attr("style","background-color: #ff7d53; transform: rotate("+bDeg+"deg);")	
+            	var bDeg = (result.invertData.Active_Power/(volum/count))*100
+             	$("#Active_g").attr("style","background-color: #ff7d53; transform: rotate("+bDeg+"deg);") */
+
+             	chartOption(aDeg,result.invertData.Active_Power,volum/count);
         	}
         },
         error: function(){
@@ -731,6 +761,168 @@ function showCCTV(ip){
 	var win = window.open(url, "PopupWin", "width=500,height=600");
 
 // 	win.document.write("<p>새창에 표시될 내용 입니다.</p>");
-
 }
+
+function chartOption(v1, v2, s1){
+	  var chartDom = document.getElementById('gauge_1');
+	  var myChart = echarts.init(chartDom);
+	  var chartDom2 = document.getElementById('gauge_2');
+	  var myChart2 = echarts.init(chartDom2);
+	  
+	  var option;
+	  var option2;
+	
+	option = {
+		       series: [
+		           {
+		               type: 'gauge',
+		               center: ['50%', '50%'],
+		               startAngle: 180,
+		               endAngle: 0,
+		               min: 0,
+		               max: 100,
+		               splitNumber: 10,
+		               itemStyle: {
+		                   color: '#f13a3a'
+		               },
+		               progress: {
+		                   show: true,
+		                   width: 30
+		               },
+		               pointer: {
+		                   show: false
+		               },
+		               axisLine: {
+		                   lineStyle: {
+		                       width: 30
+		                   }
+		               },
+		               axisTick: {
+		                   distance: -40,
+		                   splitNumber: 3,
+		                   lineStyle: {
+		                       width: 1,
+		                       color: '#eee'
+		                   }
+		               },
+		               splitLine: {
+		                   distance: -43,
+		                   length: 5,
+		                   lineStyle: {
+		                       width: 1,
+		                       color: '#eee'
+		                   }
+		               },
+		               axisLabel: {
+		                   distance: 7,
+		                   color: '#ddd',
+		                   fontSize: 11
+		               },
+		               anchor: {
+		                   show: false
+		               },
+		               title: {
+		                   show: false
+		               },
+		               detail: {
+		                   valueAnimation: true,
+		                   width: '100%',
+		                   lineHeight: 40,
+		                   borderRadius: 8,
+		                   offsetCenter: [0, '-15%'],
+		                   fontSize: 0,
+		                   fontWeight: 'bolder',
+		                   formatter: '{value} kW',
+		                   color: 'auto',
+		                   show : 'false'
+		               },
+		               data: [
+		                   {
+		                       value: v1
+		                       
+		                   }
+		               ]
+		           }
+		       ]
+		   };
+		   
+		   option2 = {
+		       series: [
+		           {
+		               type: 'gauge',
+		               center: ['50%', '50%'],
+		               startAngle: 180,
+		               endAngle: 0,
+		               min: 0,
+		               max: s1,
+		               splitNumber: 10,
+		               itemStyle: {
+		                   color: '#ff7d53'
+		               },
+		               progress: {
+		                   show: true,
+		                   width: 30
+		               },
+		               pointer: {
+		                   show: false
+		               },
+		               axisLine: {
+		                   lineStyle: {
+		                       width: 30
+		                   }
+		               },
+		               axisTick: {
+		                   distance: -40,
+		                   splitNumber: 3,
+		                   lineStyle: {
+		                       width: 1,
+		                       color: '#eee'
+		                   }
+		               },
+		               splitLine: {
+		                   distance: -43,
+		                   length: 5,
+		                   lineStyle: {
+		                       width: 1,
+		                       color: '#eee'
+		                   }
+		               },
+		               axisLabel: {
+		                   distance: 7,
+		                   color: '#ddd',
+		                   fontSize: 11
+		               },
+		               anchor: {
+		                   show: false
+		               },
+		               title: {
+		                   show: false
+		               },
+		               detail: {
+		                   valueAnimation: true,
+		                   width: '60%',
+		                   lineHeight: 40,
+		                   borderRadius: 8,
+		                   offsetCenter: [0, '-15%'],
+		                   fontSize: 0,
+		                   fontWeight: 'bolder',
+		                   formatter: '{value} kW',
+		                   color: 'auto',
+		                   show : 'false'
+		               },
+		               data: [
+		                   {
+		                       value: v2
+		                   }
+		               ]
+		           }
+		       ]
+		   };
+
+		   option && myChart.setOption(option);
+		   option2 && myChart2.setOption(option2);
+		 	
+}
+
+
 </script>

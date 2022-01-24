@@ -791,10 +791,13 @@ input.a_box_line{width: 120px;}
 	.btn_nor.round{min-width: 90px; height: 40px; font-size: 14px;}
 	.btn_nor.lg2{min-width: 100px;}
 	.btn_nor.round2{height: 40px; font-size: 14px;}
-}/********************* Form Layout END *********************/
+}
+/********************* Form Layout END *********************/
+
 /*---------------------------------------------------------------------------------------------------------------------------
  *  gauge Graph
  *--------------------------------------------------------------------------------------------------------------------------*/
+
  .g_gauge {position:relative;background:url(/resources/img/sub/graph_bg.png) no-repeat center 0; height: 176px; width: 358px; margin: 0 auto;}
  .g_gauge.n02{background:url(/resources/img/sub/graph_bg2.png) no-repeat center 0;}
  .g_gauge .pge {z-index:5;position:absolute;top:97px;left:48%;transform:translateX(-48%);text-align:center;}
@@ -807,12 +810,17 @@ input.a_box_line{width: 120px;}
  .g_gauge .valueBox h3 {font-size:20px;color:#fff;font-weight:400;margin-right:13px;}
  .g_gauge .valueBox span {color:#00ccff;font-size:26px;margin:10px 0 0 5px;}
  .g_gauge .valueBox strong {font-size:50px;color:#00ccff;font-weight:900;}
-  .todaysG .valueBox span,
+ 
+ .todaysG .valueBox span,
  .todaysG .valueBox strong {color:#ff7d53;}
-  .conversionE .valueBox span,
+ 
+ .conversionE .valueBox span,
  .conversionE .valueBox strong {color:#ffc807;}
-  .guage_area {height:100%;padding:0 50px 50px;box-sizing:border-box;}
-   .guage_area .guage_wrapper {
+ 
+ .guage_area {height:100%;padding:0 50px 50px;box-sizing:border-box;}
+ 
+ 
+ .guage_area .guage_wrapper {
 	 display: -ms-flexbox;
 	 display: flex;
 	 -ms-flex-direction: column;
@@ -868,16 +876,23 @@ input.a_box_line{width: 120px;}
 	 padding: 0;
 	 transition: transform 0.3s ease 0s;
  }
+
+
+ .graph_b_gaue{position: relative; width: 100%; overflow: hidden; text-align: center; height: 200px;}
+
+
  .guage_txt{position: absolute; left: 0; bottom: 0; padding: 10px 80px; text-align: center; z-index: 100; width: 100%;}
  .guage_txt span{font-size: 15px;}
  .guage_txt p{font-size: 16px; letter-spacing: 0;}
  .guage_txt p b{font-size: 1.6em; font-weight: 700; margin-right: 2px;}
+
+
  @media screen and (max-width: 500px) {
 	.graph_b_gaue{overflow: hidden; width: 100%; position: relative; min-width: 230px;}
 	.g_gauge {transform: scale(.7); position: relative; left: calc(50% - 180px);}
-	 }
 
-
+	
+ }
 
 
 .mobile_title{display:none;}

@@ -187,11 +187,12 @@
 
 <article class="artBoard bott_r">
     <h2 class="circle" style="float: left;">통계분석</h2>
+<!--     <button type="button" class="a_box_line" style="color: white;background-color: #0088F1; margin-right: 10px;margin-top: -3px; float: right; ">상세보기</button> -->
 	<button type="button" 
 			class="a_box_line" 
 			onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}')"
 			style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
-		<i class="fa fa-file-excel-o"></i> 엑셀
+		엑셀
 	</button>
     <div class="statis_cate_box">
         <dl>
@@ -222,9 +223,9 @@
        <dl>
            <dt>기간설정</dt>
            <dd>
-               <input type="text" class="a_box_line" name="searchBeginDate" id="searchBeginDate" value="${searchBeginDate }">
+               <input type="text" class="a_box_line" name="searchBeginDate" id="searchBeginDate" value="${searchBeginDate }" onchange="searchDate(99)">
                	~ 
-               <input type="text" class="a_box_line" name="searchEndDate" id="searchEndDate" value="${searchEndDate }">
+               <input type="text" class="a_box_line" name="searchEndDate" id="searchEndDate" value="${searchEndDate }" onchange="searchDate(99)">
                <a href="javascript:;" class="search_a" onclick="searching()">검색</a>
            </dd>
        </dl>

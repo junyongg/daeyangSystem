@@ -2,6 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 
+<style>
+table{
+	width: auto;
+}
+
+.pop_base_calculation {
+	width: auto;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+
+
+</style>
 
 <input type="hidden" id="DaliyType" name="DaliyType" value="${not empty DaliyType? DaliyType:'1' }">
 <input type="hidden" id="InverterType" name="InverterType" value="${not empty InverterType? InverterType:'0' }">
@@ -184,9 +198,9 @@
         </div>
     </article>
 </div>
-
 <article class="artBoard bott_r">
     <h2 class="circle" style="float: left;">통계분석</h2>
+    <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">더보기</a>
 <!--     <button type="button" class="a_box_line" style="color: white;background-color: #0088F1; margin-right: 10px;margin-top: -3px; float: right; ">상세보기</button> -->
 	<button type="button" 
 			class="a_box_line" 
@@ -287,8 +301,174 @@
         </table>
     </div>
 
+
+
+	<section class="base_pop_wrapper">
+            <div class="pop_base_calculation" style="top: 50%; width: 1500px; left: calc(24% - 231px);" >
+                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')"><i class="xi-close"></i></button>
+
+                <div class="form_box">
+				       <table class="tbl_normal fixed" style="width: auto;">
+				           <colgroup>
+				               <!-- <col style="width: 10%;">
+				               <col style="width: 15%;">
+				               <col style="width: 20%;">
+				               <col style="width: 20%;">
+				               <col style="width: 15%;">
+				               <col style="width: 15%;"> -->
+				            </colgroup>
+				            <thead>
+				                <tr>
+				                    <th>일시</th>
+				                    <th>발전소</th>
+				                    <th>이름</th>
+				                    <th>발전량(kWh)</th>
+				                    <th>누적발전량(KWh)</th>
+				                    <th>발전시간(h)</th>
+				                    <th>현재 출력(KW)</th>
+				                    <th>Vpv1</th>
+						             <th>Ipv1</th>
+						             <th>Vpv2</th>
+						             <th>Ipv2</th>
+						             <th>Vpv3</th>
+						             <th>Ipv3</th>
+						             <th>Vpv4</th>
+						             <th>Ipv4</th>
+						             <th>Vpv5</th>
+						             <th>Ipv5</th>
+						             <th>Vpv6</th>
+						             <th>Ipv6</th>
+						             <th>Vpv7</th>
+						             <th>Ipv7</th>
+						             <th>Vpv8</th>
+						             <th>Ipv8</th>
+						             <th>Vpv9</th>
+						             <th>Ipv9</th>
+						             <th>Vpv10</th>
+						             <th>Ipv10</th>
+						             <th>Vpv11</th>
+						             <th>Ipv11</th>
+						             <th>Vpv12</th>
+						             <th>Ipv12</th>
+						             <th>Vpv13</th>
+						             <th>Ipv13</th>
+						             <th>Vpv14</th>
+						             <th>Ipv14</th>
+						             <th>Vpv15</th>
+						             <th>Ipv15</th>
+						             <th>Vpv16</th>
+						             <th>Ipv16</th>
+						             <th>Vpv17</th>
+						             <th>Ipv17</th>
+						             <th>Vpv18</th>
+						             <th>Ipv18</th>
+						             <th>Vpv19</th>
+						             <th>Ipv19</th>
+						             <th>Vpv20</th>
+						             <th>Ipv20</th>
+						             <th>Vpv21</th>
+						             <th>Ipv21</th>
+						             <th>Vpv22</th>
+						             <th>Ipv22</th>
+						             <th>Vpv23</th>
+						             <th>Ipv23</th>
+						             <th>Vpv24</th>
+						             <th>Ipv24</th>
+						             <th>Voltage_Of_Phase_A to B</th>
+						             <th>Voltage_Of_Phase_B to C</th>
+						             <th>Voltage_Of_Phase_C to A</th>
+						             <th>Phase Voltage of phase A</th>
+						             <th>Phase Voltage of phase B</th>
+						             <th>Phase Voltage of phase C</th>
+						             <th>Current of phase A</th>
+						             <th>Current of phase B</th>
+						             <th>Current of phase C</th>
+						             <th>Internal Temperature</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <c:forEach items="${result}" var="result">
+					                <tr>
+					                    <td>${result.Conn_date }</td>
+					                    <td>${ob.DPP_NAME }</td>
+					                    <td>${result.DI_NAME }</td>
+					                    <td>${result.Daily_Generation }</td>
+					                    <td>${result.Cumulative_Generation }</td>
+					                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+					                    <td>${result.Active_Power }</td>
+					                    <td>${result.Vpv1}</td>
+							              <td>${result.Ipv1}</td>
+							              <td>${result.Vpv2}</td>
+							              <td>${result.Ipv2}</td>
+							              <td>${result.Vpv3}</td>
+							              <td>${result.Ipv3}</td>
+							              <td>${result.Vpv4}</td>
+							              <td>${result.Ipv4}</td>
+							              <td>${result.Vpv5}</td>
+							              <td>${result.Ipv5}</td>
+							              <td>${result.Vpv6}</td>
+							              <td>${result.Ipv6}</td>
+							              <td>${result.Vpv7}</td>
+							              <td>${result.Ipv7}</td>
+							              <td>${result.Vpv8}</td>
+							              <td>${result.Ipv8}</td>
+							              <td>${result.Vpv9}</td>
+							              <td>${result.Ipv9}</td>
+							              <td>${result.Vpv10}</td>
+							              <td>${result.Ipv10}</td>
+							              <td>${result.Vpv11}</td>
+							              <td>${result.Ipv11}</td>
+							              <td>${result.Vpv12}</td>
+							              <td>${result.Ipv12}</td>
+							              <td>${result.Vpv13}</td>
+							              <td>${result.Ipv13}</td>
+							              <td>${result.Vpv14}</td>
+							              <td>${result.Ipv14}</td>
+							              <td>${result.Vpv15}</td>
+							              <td>${result.Ipv15}</td>
+							              <td>${result.Vpv16}</td>
+							              <td>${result.Ipv16}</td>
+							              <td>${result.Vpv17}</td>
+							              <td>${result.Ipv17}</td>
+							              <td>${result.Vpv18}</td>
+							              <td>${result.Ipv18}</td>
+							              <td>${result.Vpv19}</td>
+							              <td>${result.Ipv19}</td>
+							              <td>${result.Vpv20}</td>
+							              <td>${result.Ipv20}</td>
+							              <td>${result.Vpv21}</td>
+							              <td>${result.Ipv21}</td>
+							              <td>${result.Vpv22}</td>
+							              <td>${result.Ipv22}</td>
+							              <td>${result.Vpv23}</td>
+							              <td>${result.Ipv23}</td>
+							              <td>${result.Vpv24}</td>
+							              <td>${result.Ipv24}</td>
+							              <td>${result.voltage_of_phase_A_to_B}</td>
+							              <td>${result.voltage_of_phase_B_to_C}</td>
+							              <td>${result.voltage_of_phase_C_to_A}</td>
+							              <td>${result.Phase_voltage_of_phase_A}</td>
+							              <td>${result.Phase_voltage_of_phase_B}</td>
+							              <td>${result.Phase_voltage_of_phase_C}</td>
+							              <td>${result.Current_of_phase_A}</td>
+							              <td>${result.Current_of_phase_B}</td>
+							              <td>${result.Current_of_phase_C}</td>
+							              <td>${result.Internal_temperature}</td>
+					               </tr>
+				                </c:forEach>
+				            </tbody>
+				        </table>
+                </div>
+
+            </div>
+        </section>
 	
 </article>
+
+
+
+
+
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
 $(function(){
@@ -309,8 +489,8 @@ $(function(){
 		$('#searchBeginDate').datepicker('option', 'maxDate', $(this).val());
 	});
 	
-	
 	searchDate("${DaliyType}")
+	
 	if("${InverterType}" == '0'){
 		select('1')
 	}else{
@@ -320,6 +500,9 @@ $(function(){
 	var aJsonArray = new Array();
 	//당일 그래프 분기 처리
 	if("${DaliyType}" == "1"){
+
+		$("#more").show();
+		
 		var list = new Array;
 		
 		var inverternum = "${InverterType}";
@@ -355,6 +538,7 @@ $(function(){
 		
 		chartGraph1(list,aJsonArray);
 	}else{
+		$("#more").hide();
 		
 		var datelist = new Array();
 		var datalist = new Array();
@@ -390,6 +574,7 @@ $(function(){
 
 function searchDate(value){
 	$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a").removeClass("active")
+	
 	if(value == '99'){
 		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child(1)").addClass("active")
 	}else{
@@ -580,6 +765,10 @@ function chartGraph2(list,aJsonArray){
     if (option && typeof option === 'object') {
         myChart.setOption(option);
     }
+}
+
+function moreTable(){
+	$('.base_pop_wrapper').addClass('on')
 }
 
 </script>

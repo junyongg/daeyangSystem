@@ -6,7 +6,11 @@
 <meta http-equiv=Content-Type content="text/html; charset=UTF-8"> 
 <%
 
-String fileName = "발전소 발전 통계.xls";
+
+String now = (String)request.getAttribute("now");
+String ob = (String)request.getAttribute("DPP_NAME");
+
+String fileName = now +" "+ ob + " 발전 통계.xls";
 
 String header = request.getHeader("User-Agent");
    if (header.contains("Trident")) {
@@ -21,7 +25,7 @@ String header = request.getHeader("User-Agent");
 
 if (header.contains("MSIE")) {
        String docName = URLEncoder.encode(fileName,"UTF-8").replaceAll("\\+", "%20"); 
-       response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";");
+       response.setHeader("Content-Disposition", "attachment; filename=" + docName + ";");
 } else if (header.contains("Firefox")) {
        String docName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
        response.setHeader("Content-Disposition", "attachment; filename=\"" + docName + "\"");
@@ -132,16 +136,9 @@ br      {mso-data-placement:same-cell;}
 	<thead>
 		<tr></tr>
 		<tr class="background">
-			<th colspan="${colspan}" class="title">발전소 발전 통계</th>
+			<th colspan="${colspan}" class="title">${searchBeginDate} ~  ${searchEndDate}  ${DPP_NAME}  발전소 발전 통계</th>
 		</tr>
 		<tr></tr>
-		<tr>
-			<th colspan="${colspan}" class="Subdate">
-				<c:if test="${not empty search.searchBeginDate || not empty search.searchEndDate  }">
-				${search.searchBeginDate} ~ ${search.searchEndDate}
-				</c:if>
-			</th>
-		</tr>
 	</thead>
 </table>		
 

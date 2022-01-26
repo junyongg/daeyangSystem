@@ -492,6 +492,9 @@ public class DyController {
     	mv.addObject("result",result);
     	
 		if(excel != null){
+			mv.addObject("DPP_NAME",ob.get("DPP_NAME"));
+			mv.addObject("now",now);
+			
 			mv.setViewName("/user/_DY/monitering/excel/dy_statstic_excel");
 			
 			try {

@@ -609,8 +609,7 @@ public class DyController {
 	   type.put("searchEndDate",searchEndDate);
 	   type.put("InverterType",InverterType);
  	   
- 	   
- 	   mv.addObject("list", Component.getList(sql,type));
+	   mv.addObject("list", Component.getList(sql,type));
  	   
  	   type.put("type",key);
  	   type.put("name",name);
@@ -653,11 +652,54 @@ public class DyController {
        String area = ob.get("DPP_AREA").toString(); //지역
   	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
   	   
+	   if(weather.size() > 0) {
+		   mv.addObject("weatherToday",weather.get(1));
+		   mv.addObject("weather",weather);
+	   }
+  	   
   	   mv.addObject("InverterType",InverterType);
   	   mv.addObject("MainList",MainList);
-  	   mv.addObject("weatherToday",weather.get(0));
-	   mv.addObject("weather",weather);
+  	   
+	   DateFormat format2 = new SimpleDateFormat("yyyy");
 	   
+	   // 이번달 날짜 count 
+	   Calendar c1 = Calendar.getInstance(); 
+	   Date Today = c1.getTime();
+	   c1.set(Calendar.DAY_OF_MONTH,1);
+	   Date Fmon = c1.getTime();
+	   long diffDay = (Today.getTime() - Fmon.getTime()) / (24*60*60*1000);
+	   mv.addObject("month1Cnt",diffDay);
+
+	   format = new SimpleDateFormat("yyyy-MM");
+	   String nowd = format.format(c1.getTime()); 
+	   c1.add(Calendar.MONTH, -1); 
+	   String pred = format.format(c1.getTime()); 
+	   c1.add(Calendar.MONTH, -1); 
+	   String ppred = format.format(c1.getTime());
+	   
+	   Calendar c2 = Calendar.getInstance(); 
+	   c2.add(Calendar.YEAR, -1); 
+	   String nowY = format2.format(c2.getTime()); //작년
+
+	   type.put("date","day");
+	   //전월 누적치 차액(전달 - 전에전달) 
+	   type.put("Conn_date",pred);
+	   float preC = Component.getData("main.recent_sum",type);
+	   
+	   type.put("Conn_date",ppred);
+	   float ppreC = Component.getData("main.recent_sum",type);
+	   mv.addObject("Prmonth",preC-ppreC);
+	   
+	   type.put("Conn_date",nowd);//금월
+	   float TodayCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("month1",TodayCum-preC);
+	   
+	   type.put("date","year");
+	   type.put("Conn_date",nowY);
+	   float YearCum = Component.getData("main.recent_sum",type);
+	   mv.addObject("year1",TodayCum-YearCum);
+  	   
+  	   
        return mv;
     }
     
@@ -862,7 +904,7 @@ public class DyController {
 		//리스트 뽑기 - 현재 게시물 알림은 index=1
 		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
-		jsonObj = (JSONObject) jsonObj_a.get(3); //발전소 게시물 확인
+		jsonObj = (JSONObject) jsonObj_a.get(6); //발전소 게시물 확인
 
     	//확인 눌렀을때 현재 - 슈퍼관리자한테만
     	List<UserDTO> list = Component.getListNoParam("main.NotUserData_Admin");
@@ -885,8 +927,8 @@ public class DyController {
     * @return 날씨 등록 테스트
     */
    @RequestMapping("/wether.do")
-   public ModelAndView wether(HttpServletRequest req) throws Exception{
-	   ModelAndView mv = new ModelAndView("");
+   public void wether(HttpServletRequest req) throws Exception{
+	  /* ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
 	   String[] regionL = {"나주","광주"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
@@ -897,7 +939,7 @@ public class DyController {
 		   WeatherOrganize(list);
 	   }
 	   
-	   return mv;
+	   return mv;*/
    }
    
    public void WeatherOrganize(ArrayList<String> weatherList) {

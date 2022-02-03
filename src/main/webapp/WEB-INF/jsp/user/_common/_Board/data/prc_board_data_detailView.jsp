@@ -72,13 +72,7 @@
 					</button>
 				</c:if> --%>
 				<button type="button" class="btn_list" onclick="pf_back()">목록</button>
-				<!-- 발전소 사업주 고 bn_check 가 N일때 -->
-				<c:if test="${BoardNotice.BN_SEND_CHECK eq 'N' && ownerCheck eq '1'}">
-					<button class="btn_list" type="button" onclick="sendLinkCustom()">
-						확인
-					</button>
-					<p style="color: gray;margin-top: 20px;">* 게시물 확인 시 확인버튼 눌러주세요.</p>
-				</c:if>
+
 				<c:if test="${BoardNotice.BN_USE_YN eq 'Y' && ( not empty BoardNotice.BN_PWD || BoardNotice.BN_REGNM == userInfo.UI_KEYNO || userInfo.isAdmin eq 'Y') }">
 					<button class="btn_list" type="button" onclick="pf_UpdateView('${BoardNotice.BN_KEYNO}')">
 				 		수정
@@ -91,6 +85,13 @@
 					<button class="btn_list" type="button" onclick="pf_replyWrite('${BoardNotice.BN_KEYNO}')">
 						답글
 					</button>
+				</c:if>
+				<!-- 발전소 사업주 고 bn_check 가 N일때 -->
+				<c:if test="${BoardNotice.BN_SEND_CHECK eq 'N' && ownerCheck eq '1'}">
+					<button class="btn_list" type="button" onclick="sendLinkCustom()">
+						확인
+					</button>
+					<p style="color: gray;margin-top: 20px;">* 게시물 확인 시 확인버튼 눌러주세요.</p>
 				</c:if>
             </div>	
 			

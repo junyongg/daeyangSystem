@@ -331,6 +331,7 @@
 				]]>
 				</if>
 				,BN_GONGNULI_TYPE
+				,BN_SEND_CHECK
 		<![CDATA[
 				)
 		VALUES(
@@ -363,6 +364,7 @@
 				</if>
 				<![CDATA[
 				,#{BN_GONGNULI_TYPE}
+				,#{BN_SEND_CHECK}
 				)
 		]]>
 	</insert>

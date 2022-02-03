@@ -50,7 +50,7 @@
 			</choose>
 		</if>
 		<if test = "UI_KEYNO != null and UI_KEYNO != ''">
-			<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
+			<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자') and !UIA_NAME.equals('경영관리자')">
 				AND DPP_USER = #{UI_KEYNO}
 			</if>
 		</if>
@@ -399,7 +399,7 @@
 		SELECT DPP_KEYNO
 		FROM dy_power_plant 
 		WHERE 1=1 
-		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
+		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자') and !UIA_NAME.equals('경영관리자')">
 		AND DPP_USER = #{UI_KEYNO}
 		</if>
 		ORDER BY DPP_NAME ASC
@@ -410,7 +410,7 @@
 		SELECT DPP_KEYNO, DPP_NAME
 		FROM dy_power_plant 
 		WHERE 1=1 
-		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자')">
+		<if test = "!UIA_NAME.equals('안전관리자') and !UIA_NAME.equals('유지관리자') and !UIA_NAME.equals('개발자') and !UIA_NAME.equals('홈페이지 관리자') and !UIA_NAME.equals('경영관리자')">
 		AND DPP_USER = #{UI_KEYNO}
 		</if>
 		ORDER BY DPP_NAME ASC
@@ -670,5 +670,39 @@
 		]]>
 	</delete>
 	
+	
+	<!-- 예측을 위한 데이터 정리 -->
+	<select id="selectHourData"  resultType="hashmap">
+		SELECT * 
+		FROM (
+			SELECT DP_KEYNO, DI_NAME , Daily_Generation, date_format(Conn_date,'%Y-%m-%d %H:00:00') as DATETIEMS
+			FROM dy_inverter_data 
+			WHERE DP_KEYNO = #{keyno}
+			AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
+			ORDER BY DI_NAME , Conn_date DESC
+			LIMIT 100000
+		)A
+		GROUP BY  DI_NAME, DATETIEMS
+	</select>
+	
+	<!-- 데이터 등록 -->
+	<insert id="insertHourData">
+		
+		INSERT INTO dy_predict_dataset 
+		(
+			keyno,
+			name,
+			power,
+			dateTimes
+		) VALUES
+		<foreach item="l" collection="list" separator=",">
+		(
+			#{l.DP_KEYNO},
+			#{l.DI_NAME},
+			#{l.Daily_Generation},
+			#{l.DATETIEMS}
+		)
+		</foreach>
+	</insert>
 	
 </mapper>

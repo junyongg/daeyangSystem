@@ -64,6 +64,9 @@ public class BoardNotice extends Common{
 	
 	//카테고리이름 
 	private String BN_CATEGORY_NAME;
+
+	//알림톡 이후 처리 
+	private char BN_SEND_CHECK;
 	
 	
 

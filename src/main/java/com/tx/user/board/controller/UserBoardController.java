@@ -563,18 +563,19 @@ public class UserBoardController {
 			Component.updateData("BoardNotice.BN_update", BoardNotice);
 		} else {
 			BoardNotice.setBN_INSERT_IP(CommonService.getClientIP(req));
-			Component.createData("BoardNotice.BN_insert", BoardNotice);
-			
 			
 			//현재 유저가 안전관리자 인지 체크하기 ( 안전관리자일때만 알림톡 전송 ) 
 			HashMap<String,Object> checking = Component.getData("main.SendUserCheck", BoardNotice.getBN_REGNM());
 			
 			if(checking.get("UIA_KEYNO").equals("UIA_EWXHE")) {
-				alimTalkSendMethod(BoardNotice,checking,4);
-			}else if(checking.get("UIA_KEYNO").equals("UIA_ASDFG")) {
+				alimTalkSendMethod(BoardNotice,checking,7);
+				BoardNotice.setBN_SEND_CHECK('N');
+			}else if(checking.get("UIA_KEYNO").equals("UIA_NWMDX")) {
 				alimTalkSendMethod(BoardNotice,checking,5);
+				BoardNotice.setBN_SEND_CHECK('Y');
 			}
 			
+			Component.createData("BoardNotice.BN_insert", BoardNotice);
 		}
 
 		// 이메일
@@ -948,10 +949,11 @@ public class UserBoardController {
     	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",notice.getBN_PLANT_NAME());
 
     	String contents = check.get("UI_NAME").toString() +" (이)가\n발전소 : "+ map.get("DPP_NAME").toString()+"의 \n게시물 : "+notice.getBN_TITLE()+" (를)을 \n등록했습니다.";
-    	String url = "http://dymonitering.co.kr/";
+//    	url = "http://dymonitering.co.kr/";
+    	String url = "http://dymonitering.co.kr/dy/Board/"+notice.getBN_KEYNO().toString()+"/detailView.do?pageIndex=1";
     	if(cnt == 5) {
     		contents = map.get("DPP_NAME").toString()+"에 새로운 게시물이 등록되었습니다. 확인해주세요.";
-    		url = "http://dymonitering.co.kr/dy/Board/"+notice.getBN_KEYNO().toString()+"/detailView.do?pageIndex=1";
+//    		url = "http://dymonitering.co.kr/dy/Board/"+notice.getBN_KEYNO().toString()+"/detailView.do?pageIndex=1";
     	}
     	
     	//토큰받기

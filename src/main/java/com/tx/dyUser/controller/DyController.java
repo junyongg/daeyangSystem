@@ -928,7 +928,8 @@ public class DyController {
     */
    @RequestMapping("/wether.do")
    public void wether(HttpServletRequest req) throws Exception{
-	  /* ModelAndView mv = new ModelAndView("");
+	
+	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
 	   String[] regionL = {"나주","광주"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
@@ -939,7 +940,6 @@ public class DyController {
 		   WeatherOrganize(list);
 	   }
 	   
-	   return mv;*/
    }
    
    public void WeatherOrganize(ArrayList<String> weatherList) {

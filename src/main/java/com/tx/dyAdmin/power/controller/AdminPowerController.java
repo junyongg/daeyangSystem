@@ -191,7 +191,7 @@ public class AdminPowerController {
 		if(power != null) {
 			if(power.getDPP_SN() != null) {
 				String[] list = power.getDPP_SN().toString().split(",");
-				int firstNum = 23;
+				int firstNum = 151;
 				String str = "";
 				ArrayList<String> Stringlist = new ArrayList<String>();
 				
@@ -207,17 +207,13 @@ public class AdminPowerController {
 					
 					int num = 0;
 					for(int i = 0;i<l.length();i++) {
-						if(Character.isDigit(l.charAt(i))) { 		//숫자부분
-							temp += "3"+String.valueOf(l.charAt(i)); 
-							if(i>4) {
-								num += Integer.parseInt(String.valueOf(l.charAt(i)));
-							}
-						}else { 									//알파벳부분
-							temp += Integer.toHexString((int)l.charAt(i));
+						temp += Integer.toHexString((int)l.charAt(i));
+						if( i < 4 || (7 < i && i < 11) || (11< i && i <16)) {
+							num += Integer.parseInt(Integer.toHexString((int)l.charAt(i)));
 						}
 					}
 					finall += temp + "0"+ (j+1) + "05";
-					finall += Integer.toHexString(210+num+(j+1) - firstNum);
+					finall += Integer.toHexString(num+ (j+1)-firstNum);
 					Stringlist.add(finall);
 				}
 				str = StringUtils.join(Stringlist, ",");

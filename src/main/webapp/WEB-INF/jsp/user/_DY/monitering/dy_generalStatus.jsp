@@ -735,12 +735,29 @@ function calculation(){
 	var rec = $("#rec1").val();
 	var plus = $("#plus").text();
 	
-	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원");
-	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
+	$("#pre_benefit").text(comma((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString() + "원");
+	$("#benefit").text(comma((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString() +"원");
+	$("#Pm_benefit").text(comma((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString() +"원");
+	$("#y_benefit").text(comma((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString() +"원");
+	$("#n_benefit").text(comma((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString() +"원");
 }
+
+function comma(num){
+    var len, point, str; 
+       
+    num = num + ""; 
+    point = num.length % 3 ;
+    len = num.length; 
+   
+    str = num.substring(0, point); 
+    while (point < len) { 
+        if (str != "") str += ","; 
+        str += num.substring(point, point + 3); 
+        point += 3; 
+    } 
+    return str;
+}
+
 
 function plusValue(value){
 	var a = "${(ob.DPP_INVER_COUNT + 0.2)/ob.DPP_INVER_COUNT}"
@@ -757,7 +774,7 @@ function clean(){
 }
 
 function showCCTV(ip){
-	var url = "http://"+ip+":8081/";
+	var url = "http://"+ip+":8082/";
 	var win = window.open(url, "PopupWin", "width=500,height=600");
 
 // 	win.document.write("<p>새창에 표시될 내용 입니다.</p>");

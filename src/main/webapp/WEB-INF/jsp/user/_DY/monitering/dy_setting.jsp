@@ -4,6 +4,7 @@
 
 <form:form action="/dy/moniter/settingAction.do" method="POST" id="Form" commandName="ModReqUserDTO">
 <input type="hidden" name="UI_KEYNO" id="UI_KEYNO" value="${user.UI_KEYNO }">
+<input type="hidden" name="UI_NAME" id="UI_NAME" value="${user.UI_NAME }">
 <input type="hidden" name="UI_MAILLING" id="UI_MAILLING" value="${userInfo.UI_MAILLING }">
 <input type="hidden" name="PASSWORD_REGEX" id="PASSWORD_REGEX" value="${userInfoSetting.SC_CODEVAL01}">
 <div id="container" class="heightAuto">

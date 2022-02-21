@@ -10,7 +10,7 @@
 
 <input type="hidden" id="DaliyType" name="DaliyType" value="${not empty DaliyType? DaliyType:'1' }">
 <input type="hidden" id="InverterType" name="InverterType" value="${not empty InverterType? InverterType:'0' }">
-<input type="hidden" id="keyno" name="keyno" value="${ob.DDM_DPP_KEYNO }">
+<input type="hidden" id="keyno" name="keyno" value="${ob.DPP_KEYNO }">
 
     
     <!-- COMTAINER -->
@@ -81,136 +81,6 @@
 	            
 	        </article> 
 		</section>
-
-		<!-- 수익계산 팝업 - 클래스 on 추가시 나타남 -->
-        <%-- <section class="base_pop_wrapper">
-            <div class="pop_base_calculation">
-                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')"><i class="xi-close"></i></button>
-
-                <div class="warning_box">
-                    SMP 또는 REC 중 한가지만 입력하고 계산이 가능합니다.<br>
-                    SMP,  REC 둘다 입력하고 계산하면 예상수익을 볼 수 있습니다.
-                </div>
-
-                <div class="form_box">
-                    <dl class="bo">
-                        <dt>
-                            <b>SMP</b>
-                            <label for="smp1">SMP 단가</label>
-                        </dt>
-                        <dd>
-                            <p class="money_inp">
-                                <input type="text" class="in_txt2" id="smp1">
-                                <span>원</span>
-                            </p>
-                        </dd>
-                    </dl>
-                    <dl class="bo">
-                        <dt>
-                            <b>REC</b>
-                            <label for="rec1">REC 단가</label>
-                        </dt>
-                        <dd>
-                            <p class="money_inp">
-                                <input type="text" class="in_txt2" id="rec1">
-                                <span>원</span>
-                            </p>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt><label for="set">설치유형</label></dt>
-                        <dd>
-                            <select id="set" class="select_in02" onchange="plusValue(this.value)">
-                                <option value="a">일반부지</option>
-                                <option value="b">축사</option>
-                            </select>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>가중치</dt>
-                        <dd id="plus">${(ob.DPP_INVER_COUNT + 0.2)/ob.DPP_INVER_COUNT}</dd>
-                    </dl>
-                </div>
-
-                <div class="btn_mid">
-                    <button type="button" class="btn_round_1 blue" onclick="calculation();">계산</button>
-                    <button type="button" class="btn_round_1 line" onclick="clean();">초기화</button>
-                </div>
-
-                <!-- 계산 버튼 누를시 나타남 - 클래스 on 추가시 나타남 -->
-                <div class="calculation_result">
-                    <ul class="list">
-                        <li>
-                            <span class="state black">전일</span>
-                            <ul class="mid">
-                                <li>
-                                    <span class="tit">발전량</span>
-                                    <span class="number" ><b><fmt:formatNumber value="${ob.DDM_P_DATA}" pattern="0.00"/></b>kWh</span>
-                                </li>
-                            </ul>
-                            <div class="result">
-                                <span class="blue">예상수익</span>
-                                <div class="re" id="pre_benefit">0원</div>
-                            </div>
-                        </li>
-						<li>
-                            <span class="state red">전월</span>
-                            <ul class="mid">
-                                <li>
-                                    <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${Prmonth}" pattern="0.00"/></b>kWh</span>
-                                </li>
-                            </ul>
-                            <div class="result">
-                                <span class="blue">예상수익</span>
-                                <div class="re" id="Pm_benefit">0원</div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="state green">금일</span>
-                            <ul class="mid">
-                                <li>
-                                    <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${ob.DDM_D_DATA}" pattern="0.00"/></b>kWh</span>
-                                </li>
-                            </ul>
-                            <div class="result">
-                                <span class="blue">예상수익</span>
-                                <div class="re" id="benefit">0원</div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="state orange">금년</span>
-                            <ul class="mid">
-                                <li>
-                                    <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${year1}" pattern="0.00"/></b>kWh</span>
-                                </li>
-                            </ul>
-                            <div class="result">
-                                <span class="blue">예상수익</span>
-                                <div class="re" id="y_benefit">0원</div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="state gray">누적</span>
-                            <ul class="mid">
-                                <li>
-                                    <span class="tit">발전량</span>
-                                    <span class="number"><b><fmt:formatNumber value="${ob.DDM_CUL_DATA }" pattern="0.00"/></b>kWh</span>
-                                </li>
-                            </ul>
-                            <div class="result">
-                                <span class="blue">예상수익</span>
-                                <div class="re" id="n_benefit">0원</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section> --%>
-        <!-- // 수익계산 팝업 -->
-
 
 		<section class="one_row right3">
 
@@ -460,98 +330,9 @@
 
         </section>
 
-
-
-        <article class="artBoard mobile">
-            <h2 class="circle">종합</h2>
-
-            <div class="all_static_b">
-                <dl class="st_dl">
-                    <dt>최저: ${mindata.Conn_date }</dt>
-                    <dd>
-                        <div class="table_wrapper auto">
-                            <table class="tbl_normal auto">
-                                <tbody>
-                                    <tr>
-                                        <th class="txtL" style="width: 50%;">발전 출력</th>
-                                        <td class="txtR" style="width: 50%;"><b>${empty mindata.Active_Power ? 0 : mindata.Active_Power}</b>W</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </dd>
-                </dl>
-
-                <dl class="st_dl">
-                    <dt>최고: ${maxdata.Conn_date }</dt>
-                    <dd>
-                        <div class="table_wrapper auto">
-                            <table class="tbl_normal auto">
-                                <tbody>
-                                    <tr>
-                                        <th class="txtL" style="width: 50%;">발전 출력</th>
-	                                   <td class="txtR" style="width: 50%;"><b>${empty maxdata.Active_Power? 0: maxdata.Active_Power}</b>W</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </dd>
-                </dl>
-                
-                <dl class="st_dl">
-	               <dt>당일</dt>
-	               <dd>
-	                   <div class="table_wrapper auto">
-	                       <table class="tbl_normal auto">
-	                           <tbody>
-	                               <tr>
-	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${empty ob.DDM_D_DATA ? 0 : ob.DDM_D_DATA }" pattern="0.00"/>KWh</td>
-	                               </tr>
-	                               <tr>
-	                                   <th class="txtL" style="width: 50%;">발전시간</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${ob.DDM_D_DATA/ob.DPP_VOLUM }" pattern="0.00"/>h</td>
-	                               </tr>
-	                           </tbody>
-	                       </table>
-	                   </div>
-	               </dd>
-	           </dl>
-	           
-	           <dl class="st_dl">
-	               <dt>누적</dt>
-	               <dd>
-	                   <div class="table_wrapper auto">
-	                       <table class="tbl_normal auto">
-	                           <tbody>
-	                               <tr>
-	                                   <th class="txtL" style="width: 50%;">발전량</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${empty ob.DDM_CUL_DATA ? 0 : ob.DDM_CUL_DATA}" pattern="0.00"/>KWh</td>
-	                               </tr>
-	                               <tr>
-	                                   <th class="txtL" style="width: 50%;">발전시간</th>
-	                                   <td class="txtR" style="width: 50%;"><fmt:formatNumber value="${ob.DDM_CUL_DATA/ob.DPP_VOLUM }" pattern="0.00"/>h</td>
-	                               </tr>
-	                           </tbody>
-	                       </table>
-	                   </div>
-	               </dd>
-	           </dl>
-	           
-            </div>
-        </article>
-
-
-        <article class="artBoard mobile">
-            <h2 class="circle">발전량분석</h2>
-
-            <div class="con_h fix">
-                <div class="line_graph_w">
-                    <div id="line_graph" style="height: 100%; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;" _echarts_instance_="ec_1634621548504"><div style="position: relative; width: 823px; height: 258px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="823" height="258" style="position: absolute; left: 0px; top: 0px; width: 823px; height: 258px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
-                </div>
-            </div>
-        </article>
-
+		<!-- 세부 내용 표시 부분 -->
+		<article class="artBoard bott_r" id="staticAjax">
+		</article>
         
     </div>
     <!-- COMTAINER END -->
@@ -560,82 +341,17 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
 $(function(){
-// 	pf_setMap();
  	ajaxData();
- 	
- 	var aJsonArray = new Array();
-	//당일 그래프 분기 처리
-	var list = new Array;
-	
-	var inverternum = "${InverterType}";
-	<c:forEach begin="0" end="${fn:length(MainList)}" varStatus="status">
-		var list_sub = new Array;
-		<c:forEach items="${MainList[status.index]}" var="v">
-			list_sub.push("${v}")
-		</c:forEach>
-		list.push(list_sub.reverse())
-	</c:forEach>
-	
-	if(inverternum == '0'){
-		for(var i=1;i<list.length-1;i++){
-			var aJson = new Object();
-			aJson.name = "인버터"+i+"호";
-			aJson.type = "line";
-			aJson.stack = "a"+i;
-			aJson.data = list[i];
-			
-			aJsonArray.push(aJson);
-		}
-	}else{
-		for(var i=1;i<list.length-1;i++){
-			var aJson = new Object();
-			aJson.name = "인버터"+inverternum+"호";
-			aJson.type = "line";
-			aJson.stack = "a"+i;
-			aJson.data = list[i];
-			
-			aJsonArray.push(aJson);
-		}
-	}
-	
-	chartGraph1(list,aJsonArray);
- 	
+ 	searching();
 });
-
-function inputInverterNum(value){
-	$("#InverterType").val(value)
-}
-
 
 function DPPDataAjax(keyno){
 	$("#keyno").val(keyno);
 	$("#Form").submit();
 }
-
-function pf_setMap(){
-	lat = "${ob.DPP_X_LOCATION}"
-	lng = "${ob.DPP_Y_LOCATION}"
-	
-	$("#map").html("")
-	
-	var container = document.getElementById("map");
-	var options = {
-		center: new kakao.maps.LatLng(lat, lng),
-		level: 3
-	};
-	map = new daum.maps.Map(container, options);
-	
-	map.setMapTypeId(kakao.maps.MapTypeId.HYBRID); 
-	
-	marker = new daum.maps.Marker({ 
-	    // 지도 중심좌표에 마커를 생성합니다 
-	    position: map.getCenter() 
-	}); 
-	marker.setMap(map);
-}
-
 
 function ajaxData(){
 	$.ajax({
@@ -672,50 +388,6 @@ function ajaxData(){
         }
 	});
 }
-
-function chartGraph1(list,aJsonArray){
-	
-	var dom = document.getElementById("line_graph");
-    var myChart = echarts.init(dom);
-    var app = {};
-
-    var option;
-
-
-    option = {
-        color: ['#F31614', '#38C146', '#3A37FF','#ffeb3b','#ff9800'],
-        tooltip: {
-            show: true,
-        },
-        legend: {
-            show: true,
-        },
-        legend: {
-            show: true,
-        },
-        grid: {
-            top: '4%',
-            left: '4%',
-            right: '4%',
-            bottom: '2%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: true,
-            data: list[0]
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: aJsonArray
-    };
-
-    if (option && typeof option === 'object') {
-        myChart.setOption(option);
-    }
-}
-
 
 function chartOption(v1, v2, s1){
 	  var chartDom = document.getElementById('gauge_1');
@@ -879,32 +551,31 @@ function chartOption(v1, v2, s1){
 }
 
 
-/* function calculation(){
-	$('.calculation_result').addClass('on')
-// 	var Dm_val = "${month.DATA+ob.DDM_D_DATA}";	//금월
-// 	var y_val = "${year.DATA+ob.DDM_D_DATA}";	//금년
-// 	var n_val = "${all.DATA+ob.DDM_D_DATA}";	//누적
-	var val = "${ob.DDM_D_DATA}";	//금일
-	var Dm_val = "${month1}";	//금월
-	var P_val = "${ob.DDM_P_DATA}";	//전일
-	var Pm_val = "${Prmonth}";//전월
-	var y_val = "${year1}";	//금년
-	var n_val = "${ob.DDM_CUL_DATA}";	//누적
-	var smp = $("#smp1").val();	
-	var rec = $("#rec1").val();
-	var plus = $("#plus").text();
-	
-	$("#pre_benefit").text(((P_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원");
-	$("#benefit").text(((val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#Pm_benefit").text(((Pm_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#y_benefit").text(((y_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-	$("#n_benefit").text(((n_val*(parseFloat(smp) + (rec*plus))).toFixed(0)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원");
-} */
-
-
 function clean(){
 	$("#rec1").val("");
 	$("#smp1").val("");
+}
+
+function searching(){
+	$.ajax({
+        url: '/dy/mobileAjax.do',
+        type: 'POST',
+        data: {
+        	keyno : $("#keyno").val(),
+        	InverterType : $("#InverterType").val(),
+        	DaliyType : $("#DaliyType").val(),
+        	searchBeginDate : $("#searchBeginDate").val(),
+        	searchEndDate : $("#searchEndDate").val()
+        },
+        async: false,  
+        success: function(result) {
+        	$("#staticAjax").html(result);
+        },
+        error: function(){
+        	alert("에러 관리자에 문의해주세요.");
+        }
+	});
+	
 }
 
 </script>

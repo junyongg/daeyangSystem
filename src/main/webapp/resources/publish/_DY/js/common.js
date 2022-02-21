@@ -1,21 +1,18 @@
 $(function(){
 
-    //PC 메뉴
-    $('#gnb ul > li').on('click', function(){
-        $('#gnb ul > li').removeClass('on');
-        $(this).addClass('on');
-       if (!Mobile()){
-          menuBar();
-       	}
-    })
-	
-  if (!Mobile()){// 모바일일 경우
-    	 menuBar();
+	//PC 메뉴
+    if (matchMedia("screen and (min-width: 1000px)").matches) {
+        // 1000px 이상에서 사용할 JavaScript
+        $('#gnb ul > li').on('click', function(){
+            $('#gnb ul > li').removeClass('on');
+            $(this).addClass('on');
+    
+            menuBar();
+        })
+    
+        menuBar();
     }
-	
-    function Mobile(){
-		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
-  
+
     function menuBar(){
         var gnbLiWidth, gnbLipos, number;
 
@@ -26,19 +23,6 @@ $(function(){
     
         $('.menu_bar').css('width',number);
     }
-    
-
-    // 모바일 메뉴
-    $('.mo_menu').on('click',function(){
-        if($(this).hasClass('on')){
-            $(this).removeClass('on')
-            $('#gnb').removeClass('on')
-        } else {
-            $(this).addClass('on')
-            $('#gnb').addClass('on')
-        }
-    })
-
 
 })
 

@@ -561,7 +561,6 @@ public class DyController {
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/mobile/dy_mobile");
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
- 	   
  	   //아이디 세션에 있는값 저장
  	   Map<String, Object> user = CommonService.getUserInfo(req);
  	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
@@ -596,17 +595,7 @@ public class DyController {
 	   DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	   Date d = new Date();
 	   String now = format.format(d);
-	   	
-	   
-	   if(searchBeginDate == null || StringUtils.isEmpty(searchBeginDate)) {
-	   		searchBeginDate = now;
-	   }
-	   if(searchEndDate == null || StringUtils.isEmpty(searchEndDate)) {
-		   searchEndDate = now;
-	   }
-	   	
-	   type.put("searchBeginDate",searchBeginDate);
-	   type.put("searchEndDate",searchEndDate);
+
 	   type.put("InverterType",InverterType);
  	   
 	   mv.addObject("list", Component.getList(sql,type));
@@ -624,31 +613,6 @@ public class DyController {
 	   type.put("minmax","max");
 	   mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
 	   	
-	   List<List<String>> MainList = new ArrayList<List<String>>();
-	   if(DaliyType.equals("1")) {
-	   		//당일일때만 오늘날짜 데이터 뽑는것 
-	       	type.put("minmax","min");
-	       	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
-	       	type.put("minmax","max");
-	       	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
-	       	
-	       	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
-	       	
-	       	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
-	       	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
-	       	if(InverterType.equals("0")) {
-	       		for(int i=1;i<=numbering;i++) {
-	           		type.put("inverterNum",i);
-	           		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
-	           		MainList.add(subList);
-	           	}
-	       	}else {
-	       		type.put("inverterNum", InverterType);
-	       		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
-	       		MainList.add(subList);
-	       	}
-   		}
-       
        String area = ob.get("DPP_AREA").toString(); //지역
   	   List<HashMap<String,Object>> weather =  Component.getList("Weather.select_Weather",area);
   	   
@@ -658,7 +622,7 @@ public class DyController {
 	   }
   	   
   	   mv.addObject("InverterType",InverterType);
-  	   mv.addObject("MainList",MainList);
+  	   mv.addObject("DaliyType",DaliyType);
   	   
 	   DateFormat format2 = new SimpleDateFormat("yyyy");
 	   
@@ -704,22 +668,98 @@ public class DyController {
     }
     
     /**
-     * @return 모바일 부분
+     * @return 모바일 통계
      */
-    @RequestMapping("/dy/mobileBoard.do")
-    public ModelAndView MobileView2(HttpServletRequest req,
-    		@RequestParam(value="keyno",defaultValue="0")String key,
-    		@RequestParam(value="name",defaultValue="인버터 1호")String name,
-    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    @RequestMapping("/dy/mobileAjax.do")
+    @ResponseBody
+    public ModelAndView mobileAjax(HttpServletRequest req,
+    		HttpServletResponse res,
+    		@RequestParam(value="keyno",defaultValue="1")String keyno,
     		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
     		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
-    		HttpSession session) throws Exception{
-    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/mobile/dy_mobile_board");
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType
+    		) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_mobile_ajax");
     	
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+    	List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
+    	
+    	type.put("type",keyno);
+    	
+    	
+    	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	Date d = new Date();
+    	String now = format.format(d);
+    	
+    	if(searchBeginDate == null || searchBeginDate.equals("") || DaliyType.equals("1") ) {
+    		searchBeginDate = now;
+    	}
+    	if(searchEndDate == null || searchEndDate.equals("") || DaliyType.equals("1")) {
+    		searchEndDate = now;
+    	}
+    	
+    	type.put("searchBeginDate",searchBeginDate);
+    	type.put("searchEndDate",searchEndDate);
+    	type.put("InverterType",InverterType);
+    	
+    	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	//당일일때만 오늘날짜 데이터 뽑는것 
+	 	type.put("minmax","min");
+	 	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
+	 	type.put("minmax","max");
+	 	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
+ 	   	
+ 	    List<List<String>> MainList = new ArrayList<List<String>>();
+    	
+    	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
+    	
+    	if(DaliyType.equals("1")) {
+    		
+    		result =  Component.getList("main.select_inverterData",type);
+    		
+    		//당일일때만 오늘날짜 데이터 뽑는것 
+        	type.put("minmax","min");
+        	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
+        	type.put("minmax","max");
+        	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
+        	
+        	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
+        	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+        	if(InverterType.equals("0")) {
+        		for(int i=1;i<=numbering;i++) {
+            		type.put("inverterNum",i);
+            		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+            		MainList.add(subList);
+            	}
+        	}else {
+        		type.put("inverterNum", InverterType);
+        		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+        		MainList.add(subList);
+        	}
+    	}else {
+    		result =  Component.getList("main.select_inverterData_other",type);
+    		
+    		//최대 최솟값 날짜랑 데이터 뽑기
+        	type.put("minmax","min");
+        	mv.addObject("mindata",Component.getData("main.select_inverterData_other_MINMAX", type));
+        	type.put("minmax","max");
+        	mv.addObject("maxdata",Component.getData("main.select_inverterData_other_MINMAX", type));
+        	//avg,sum
+        	mv.addObject("avgdata",Component.getData("main.select_inverterData_other_AVGSUM", type));
+    	}
+    	
+    	mv.addObject("MainList",MainList);
+    	mv.addObject("InverterType",InverterType);
+    	mv.addObject("DaliyType",DaliyType);
+    	mv.addObject("searchBeginDate",searchBeginDate);
+    	mv.addObject("searchEndDate",searchEndDate);
+    	mv.addObject("ob",ob);
+    	mv.addObject("result",result);
     	
     	return mv;
     }
+    
     
     /**
      * 안전관리자 부분 

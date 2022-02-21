@@ -198,6 +198,7 @@ table{
         </div>
     </article>
 </div>
+
 <article class="artBoard bott_r">
     <h2 class="circle" style="float: left;">통계분석</h2>
     <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">더보기</a>

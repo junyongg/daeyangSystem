@@ -247,7 +247,6 @@ public class DyController {
 	   
 	   type.put("type",key);
 	   type.put("name",name);
-	   
 	   //인버터 데이터
 	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   type.put("group","group");
@@ -971,7 +970,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주"};
+	   String[] regionL = {"나주","광주","해남"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {

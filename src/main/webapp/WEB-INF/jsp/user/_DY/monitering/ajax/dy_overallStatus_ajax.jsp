@@ -180,10 +180,11 @@
 <article class="artBoard rb half">
 	<h2 class="circle">알림</h2>
 	
-	<div class="table_wrapper con_h">
+	<div class="table_wrapper con_h" style = "overflow-x : auto ">
 	    <table class="tbl_normal">
 	        <colgroup>
 	            <col style="width: 23%;">
+	            <col style="width: 10%;">
 	            <col style="width: 22%;">
 	            <col style="width: 10%;">
 	            <col style="width: 30%;">
@@ -192,6 +193,7 @@
             <thead>
                 <tr>
                     <th>현장명</th>
+                    <th>인버터명</th>
                     <th>시간</th>
                     <th>인버터</th>
                     <th>DSP 에러</th>
@@ -202,11 +204,12 @@
 	            <tbody>
 	            	<c:forEach items="${ResultList }" var="list">
 						<tr>
-		                    <td>[ ${list.DPP_AREA } ] ${list.DPP_NAME }</td>
-		                    <td>${list.DIE_DATE }</td>
-		                    <td>${list.DPP_INVER }</td>
-		                    <td>${list.DIE_DSP_ERROR eq 'Normal' ? '정상' : list.DIE_DSP_ERROR }</td>
-		                    <td>${list.DIE_DSP_S_ERROR eq 'Normal' ? '정상' : list.DIE_DSP_S_ERROR  }</td>
+		                    <td style ="white-space: nowrap;">[ ${list.DPP_AREA } ] ${list.DPP_NAME }</td>
+		                    <td style ="white-space: nowrap;">${list.DIE_INVERTER_NAME }</td>
+		                    <td style ="white-space: nowrap;">${list.DIE_DATE }</td>
+		                    <td style ="white-space: nowrap;">${list.DPP_INVER }</td>
+		                    <td style ="white-space: nowrap;">${list.DIE_DSP_ERROR eq 'Normal' ? '정상' : list.DIE_DSP_ERROR }</td>
+		                    <td style ="white-space: nowrap;">${list.DIE_DSP_S_ERROR eq 'Normal' ? '정상' : list.DIE_DSP_S_ERROR  }</td>
 	              	  	</tr>            	
 	            	</c:forEach>
 	            </tbody>

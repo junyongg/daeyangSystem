@@ -99,36 +99,40 @@ public class ScheduleService {
 	
 	
 	
-	//22시에 데이터 합치기   
-	@Scheduled(cron="0 0 22 * * ?")
+	//20시30분에 데이터 합치기   
+	@Scheduled(cron="0 30 20 * * ?")
 	public void scheduleTest() throws Exception {
 		
-		
-		List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
-		
-		for(HashMap<String,Object> l : list) {
+		try {
+			List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
 			
-			
-			HashMap<String,Object> map = new HashMap<String, Object>();
-			
-			String keyno = l.get("DPP_KEYNO").toString();
-			
-			Component.deleteData("main.deleteMain",keyno);
-			
-			List<String> slist = Component.getList("main.recent_date", keyno);
-			
-			map.put("list", slist);
-			map.put("keyno", keyno);
-			
-			Component.deleteData("main.deleteToday", map);
+			for(HashMap<String,Object> l : list) {
+				
+				
+				HashMap<String,Object> map = new HashMap<String, Object>();
+				
+				String keyno = l.get("DPP_KEYNO").toString();
+				
+				Component.deleteData("main.deleteMain",keyno);
+				
+				List<String> slist = Component.getList("main.recent_date", keyno);
+				
+				map.put("list", slist);
+				map.put("keyno", keyno);
+				
+				Component.deleteData("main.deleteToday", map);
+			}
+		}catch (Exception e) {
+			System.out.println(e);
 		}
+		
 	}
 
 	//21시에 데이터 추가   
 	@Scheduled(cron="0 0 21 * * ?")
 	public void Insertforpredict() throws Exception {
 		
-	   String[] keylist = {"3","23","31"};
+	   String[] keylist = {"23","31","33","40"};
 		
 		for(String k : keylist) {
 			List<HashMap<String, Object>> list = Component.getList("main.selectHourData", k);

@@ -85,7 +85,10 @@ public class CommonMemberController {
 		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung|KakaoTalk).*"); 
 
 		if (mobile1 || mobile2) {
+
+			//session.invalidate();
 			session.removeAttribute("userInfo");
+			session.setAttribute("referrerPage", req.getHeader("Referer"));
 		}
 		
 		//로그인한 상태라면 메인화면으로 리다이렉트 (관리자와 회원 구분)

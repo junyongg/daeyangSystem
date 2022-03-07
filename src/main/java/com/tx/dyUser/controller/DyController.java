@@ -466,7 +466,7 @@ public class DyController {
             	}
         	}else {
         		type.put("inverterNum", InverterType);
-        		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+        		List<String> subList = Component.getList("main.select_inverterData_active",type); 
         		MainList.add(subList);
         	}
     	}else {
@@ -562,8 +562,14 @@ public class DyController {
     	HashMap<String,Object> type = new HashMap<String, Object>();
  	   //아이디 세션에 있는값 저장
  	   Map<String, Object> user = CommonService.getUserInfo(req);
- 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
- 	   type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	   
+ 	   if(user != null) {
+ 		   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 		   type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	   }else {
+ 		   mv = new ModelAndView("redirect:/user/member/login.do");
+ 		   return mv;
+ 	   }
  	  
  	   String sql = "main.select_MainData";
  	   String sql2 = "main.Power_SelectKEY";

@@ -139,7 +139,7 @@ $(document).ready(function() {
         	
         	UI_NAME : {required:true, minlength:2, maxlength:30, notEmpty:true},
         	
-        	UI_EMAIL : {required:true, minlength:5, maxlength:50, email:true},
+        	//UI_EMAIL : {required:true, minlength:5, maxlength:50, email:true},
         	
         	UI_PHONE : {phone:true}        	
 

@@ -662,10 +662,10 @@
 	<delete id="deleteMain">
 		<![CDATA[
 			DELETE  FROM dy_inverter_data_main 
-				WHERE DDM_DATE < (SELECT DDM_DATE FROM dy_inverter_data_main WHERE date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now(),'%Y-%m-%d') 
+				WHERE DDM_DATE < (SELECT DDM_DATE FROM dy_inverter_data_main WHERE date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now() ,'%Y-%m-%d') 
 				AND DDM_DPP_KEYNO = #{keyno} 
 				ORDER BY DDM_DATE DESC LIMIT 1 ) 
-			AND date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now(),'%Y-%m-%d') 
+			AND date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now() ,'%Y-%m-%d') 
 			AND DDM_DPP_KEYNO = #{keyno} 
 		]]>
 	</delete>

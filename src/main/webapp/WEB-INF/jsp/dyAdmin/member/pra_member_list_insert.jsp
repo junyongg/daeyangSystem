@@ -95,15 +95,15 @@ $(document).ready(function() {
         },
         rules : {
         	
-        	UI_ID : {required:true, minlength:5, maxlength:50, loginID:true, dupleCheck:true},
+        	UI_ID : {required:true, minlength:4, maxlength:50, loginID:true, dupleCheck:true},
         	
-        	UI_PASSWORD : {minlength:8, maxlength:16, passwordChk:true},
+        	//UI_PASSWORD : {minlength:8, maxlength:16, passwordChk:true},
 
-        	UI_PASSWORD2 : {equalTo:"#UI_PASSWORD"},
+        	//UI_PASSWORD2 : {equalTo:"#UI_PASSWORD"},
         	
         	UI_NAME : {required:true, minlength:2, maxlength:30, notEmpty:true},
         	
-        	UI_EMAIL : {required:true,minlength:5, maxlength:50, email:true},
+        	UI_EMAIL : {required:false,minlength:5, maxlength:50, email:true},
         	
         	UI_PHONE : {phone:true}        	
 

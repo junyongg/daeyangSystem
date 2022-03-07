@@ -277,7 +277,7 @@ function Inver_Insert(){
 				async: false,
 				data: $('#Form').serializeArray(),
 				success : function(){
-					location.reload();
+// 					location.reload();
 				}, 
 				error: function(){
 					cf_smallBox('error', "발전소 등록 에러", 3000,'#d24158');
@@ -294,7 +294,7 @@ function Inver_Update(){
 				async: false,
 				data: $('#Form').serializeArray(),
 				success : function(){
-					location.reload();
+// 					location.reload();
 				}, 
 				error: function(){
 					cf_smallBox('error', "발전소 등록 에러", 3000,'#d24158');

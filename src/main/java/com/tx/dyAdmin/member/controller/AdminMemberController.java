@@ -418,7 +418,7 @@ public class AdminMemberController {
 		String msg = "성공적으로 등록 되었습니다.";
 		String regex = SettingData.PASSWORD_REGEX;
 		
-		if(!WeaknessService.regexCheck(SettingData.ID_REGEX, UserDTO.getUI_ID())){
+		/*if(!WeaknessService.regexCheck(SettingData.ID_REGEX, UserDTO.getUI_ID())){
 			msg = "아이디 형식이 잘못되었습니다.";
 			regexBoolean = false;
 		}else{
@@ -431,7 +431,7 @@ public class AdminMemberController {
 					regexBoolean = false;
 				}
 			}
-		}
+		}*/
 		
 		if(regexBoolean){
 			String encPwd = passwordEncoder.encode(UserDTO.getUI_PASSWORD());

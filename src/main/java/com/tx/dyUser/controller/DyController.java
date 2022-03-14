@@ -422,6 +422,7 @@ public class DyController {
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
+    	List<HashMap<String,Object>> result1 = new ArrayList<HashMap<String,Object>>();
     	List<List<String>> MainList = new ArrayList<List<String>>();
     	
     	type.put("type",keyno);
@@ -446,9 +447,11 @@ public class DyController {
     	
     	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
     	
+    	
     	if(DaliyType.equals("1")) {
     		
     		result =  Component.getList("main.select_inverterData",type);
+    		result1 = result;
     		
     		//당일일때만 오늘날짜 데이터 뽑는것 
         	type.put("minmax","min");
@@ -471,6 +474,7 @@ public class DyController {
         	}
     	}else {
     		result =  Component.getList("main.select_inverterData_other",type);
+    		result1 =  Component.getList("sub.select_hourData",type);
     		
     		//최대 최솟값 날짜랑 데이터 뽑기
         	type.put("minmax","min");
@@ -489,6 +493,7 @@ public class DyController {
     	mv.addObject("searchEndDate",searchEndDate);
     	mv.addObject("ob",ob);
     	mv.addObject("result",result);
+    	mv.addObject("result1",result1);
     	
 		if(excel != null){
 			mv.addObject("DPP_NAME",ob.get("DPP_NAME"));
@@ -985,6 +990,8 @@ public class DyController {
 		   WeatherOrganize(list);
 	   }
 	   
+//		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
+//		Component.getData("sub.inserthourDetail",list);
    }
    
    public void WeatherOrganize(ArrayList<String> weatherList) {

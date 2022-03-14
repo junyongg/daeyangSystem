@@ -305,7 +305,7 @@ table{
 
 
 	<section class="base_pop_wrapper">
-            <div class="pop_base_calculation" style="top: 50%; width: 1500px; left: calc(24% - 231px);" >
+            <div class="pop_base_calculation" style="top: 50%; width: 690px; left: calc(44% - 231px);" >
                 <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')"><i class="xi-close"></i></button>
 
                 <div class="form_box">
@@ -321,13 +321,14 @@ table{
 				            <thead>
 				                <tr>
 				                    <th>일시</th>
+				                    <th>시간</th>
 				                    <th>발전소</th>
 				                    <th>이름</th>
 				                    <th>발전량(kWh)</th>
 				                    <th>누적발전량(KWh)</th>
 				                    <th>발전시간(h)</th>
 				                    <th>현재 출력(KW)</th>
-				                    <th>Vpv1</th>
+				                    <!-- <th>Vpv1</th>
 						             <th>Ipv1</th>
 						             <th>Vpv2</th>
 						             <th>Ipv2</th>
@@ -384,20 +385,21 @@ table{
 						             <th>Current of phase A</th>
 						             <th>Current of phase B</th>
 						             <th>Current of phase C</th>
-						             <th>Internal Temperature</th>
+						             <th>Internal Temperature</th> -->
 				                </tr>
 				            </thead>
 				            <tbody>
-				                <c:forEach items="${result}" var="result">
+				                <c:forEach items="${result1}" var="result1">
 					                <tr>
-					                    <td>${result.Conn_date }</td>
+					                    <td>${result1.Conn_date }</td>
+					                    <td>${result1.hour_date }</td>
 					                    <td>${ob.DPP_NAME }</td>
-					                    <td>${result.DI_NAME }</td>
-					                    <td>${result.Daily_Generation }</td>
-					                    <td>${result.Cumulative_Generation }</td>
-					                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
-					                    <td>${result.Active_Power }</td>
-					                    <td>${result.Vpv1}</td>
+					                    <td>${result1.DI_NAME }</td>
+					                    <td>${result1.Daily_Generation }</td>
+					                    <td>${result1.Cumulative_Generation }</td>
+					                    <td><fmt:formatNumber value="${result1.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+					                    <td>${result1.Active_Power }</td>
+					                    <%-- <td>${result.Vpv1}</td>
 							              <td>${result.Ipv1}</td>
 							              <td>${result.Vpv2}</td>
 							              <td>${result.Ipv2}</td>
@@ -454,7 +456,7 @@ table{
 							              <td>${result.Current_of_phase_A}</td>
 							              <td>${result.Current_of_phase_B}</td>
 							              <td>${result.Current_of_phase_C}</td>
-							              <td>${result.Internal_temperature}</td>
+							              <td>${result.Internal_temperature}</td> --%>
 					               </tr>
 				                </c:forEach>
 				            </tbody>
@@ -539,7 +541,7 @@ $(function(){
 		
 		chartGraph1(list,aJsonArray);
 	}else{
-		$("#more").hide();
+		$("#more").show();
 		
 		var datelist = new Array();
 		var datalist = new Array();

@@ -56,7 +56,7 @@ public class ScheduleService {
     }
 	
 	//오전 8시 30분에 통신 체크 한번
-	@Scheduled(cron="0 0 9 * * ?")  
+	@Scheduled(cron="0 0 9 * * ?")
 	public void InverterDataSend() throws Exception {
 		List<HashMap<String,Object>> list = Component.getListNoParam("main.PowerConCheck");
 		
@@ -101,6 +101,7 @@ public class ScheduleService {
 	
 	//20시30분에 데이터 합치기   
 	@Scheduled(cron="0 30 20 * * ?")
+	@Transactional
 	public void scheduleTest() throws Exception {
 		
 		try {
@@ -130,6 +131,7 @@ public class ScheduleService {
 
 	//21시에 데이터 추가   
 	@Scheduled(cron="0 0 21 * * ?")
+	@Transactional
 	public void Insertforpredict() throws Exception {
 		
 	   String[] keylist = {"23","31","33","40"};
@@ -138,9 +140,22 @@ public class ScheduleService {
 			List<HashMap<String, Object>> list = Component.getList("main.selectHourData", k);
 			Component.getData("main.insertHourData",list);
 		}
-	   
 	}
 
+	
+	//시간별 데이터 추출 세달 전까지만 수집   
+	@Scheduled(cron="0 30 21 * * ?")
+	@Transactional
+	public void InsertDetail() throws Exception {
+		
+		Component.deleteData("sub.deletehourData");
+		
+		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
+		Component.getData("sub.inserthourDetail",list);
+
+	}
+	
+	
 	
    public void WeatherOrganize(ArrayList<String> weatherList) {
 	   //혹시모를 갯수 체크

@@ -95,7 +95,7 @@ $(document).ready(function() {
         },
         rules : {
         	
-        	UI_ID : {required:true, minlength:4, maxlength:50, loginID:true, dupleCheck:true},
+        	//UI_ID : {required:true, minlength:4, maxlength:50, loginID:true, dupleCheck:true},
         	
         	//UI_PASSWORD : {minlength:8, maxlength:16, passwordChk:true},
 

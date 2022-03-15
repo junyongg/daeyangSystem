@@ -328,135 +328,135 @@ table{
 				                    <th>누적발전량(KWh)</th>
 				                    <th>발전시간(h)</th>
 				                    <th>현재 출력(KW)</th>
-				                    <!-- <th>Vpv1</th>
-						             <th>Ipv1</th>
-						             <th>Vpv2</th>
-						             <th>Ipv2</th>
-						             <th>Vpv3</th>
-						             <th>Ipv3</th>
-						             <th>Vpv4</th>
-						             <th>Ipv4</th>
-						             <th>Vpv5</th>
-						             <th>Ipv5</th>
-						             <th>Vpv6</th>
-						             <th>Ipv6</th>
-						             <th>Vpv7</th>
-						             <th>Ipv7</th>
-						             <th>Vpv8</th>
-						             <th>Ipv8</th>
-						             <th>Vpv9</th>
-						             <th>Ipv9</th>
-						             <th>Vpv10</th>
-						             <th>Ipv10</th>
-						             <th>Vpv11</th>
-						             <th>Ipv11</th>
-						             <th>Vpv12</th>
-						             <th>Ipv12</th>
-						             <th>Vpv13</th>
-						             <th>Ipv13</th>
-						             <th>Vpv14</th>
-						             <th>Ipv14</th>
-						             <th>Vpv15</th>
-						             <th>Ipv15</th>
-						             <th>Vpv16</th>
-						             <th>Ipv16</th>
-						             <th>Vpv17</th>
-						             <th>Ipv17</th>
-						             <th>Vpv18</th>
-						             <th>Ipv18</th>
-						             <th>Vpv19</th>
-						             <th>Ipv19</th>
-						             <th>Vpv20</th>
-						             <th>Ipv20</th>
-						             <th>Vpv21</th>
-						             <th>Ipv21</th>
-						             <th>Vpv22</th>
-						             <th>Ipv22</th>
-						             <th>Vpv23</th>
-						             <th>Ipv23</th>
-						             <th>Vpv24</th>
-						             <th>Ipv24</th>
-						             <th>Voltage_Of_Phase_A to B</th>
-						             <th>Voltage_Of_Phase_B to C</th>
-						             <th>Voltage_Of_Phase_C to A</th>
-						             <th>Phase Voltage of phase A</th>
-						             <th>Phase Voltage of phase B</th>
-						             <th>Phase Voltage of phase C</th>
-						             <th>Current of phase A</th>
-						             <th>Current of phase B</th>
-						             <th>Current of phase C</th>
-						             <th>Internal Temperature</th> -->
+				                    <th>Vpv1</th>
+						            <th>Ipv1</th>
+						            <th>Vpv2</th>
+						            <th>Ipv2</th>
+						            <th>Vpv3</th>
+						            <th>Ipv3</th>
+						            <th>Vpv4</th>
+						            <th>Ipv4</th>
+						            <th>Vpv5</th>
+						            <th>Ipv5</th>
+						            <th>Vpv6</th>
+						            <th>Ipv6</th>
+						            <th>Vpv7</th>
+						            <th>Ipv7</th>
+						            <th>Vpv8</th>
+						            <th>Ipv8</th>
+						            <th>Vpv9</th>
+						            <th>Ipv9</th>
+						            <th>Vpv10</th>
+						            <th>Ipv10</th>
+						            <th>Vpv11</th>
+						            <th>Ipv11</th>
+						            <th>Vpv12</th>
+						            <th>Ipv12</th>
+						            <th>Vpv13</th>
+						            <th>Ipv13</th>
+						            <th>Vpv14</th>
+						            <th>Ipv14</th>
+						            <th>Vpv15</th>
+						            <th>Ipv15</th>
+						            <th>Vpv16</th>
+						            <th>Ipv16</th>
+						            <th>Vpv17</th>
+						            <th>Ipv17</th>
+						            <th>Vpv18</th>
+						            <th>Ipv18</th>
+						            <th>Vpv19</th>
+						            <th>Ipv19</th>
+						            <th>Vpv20</th>
+						            <th>Ipv20</th>
+						            <th>Vpv21</th>
+						            <th>Ipv21</th>
+						            <th>Vpv22</th>
+						            <th>Ipv22</th>
+						            <th>Vpv23</th>
+						            <th>Ipv23</th>
+						            <th>Vpv24</th>
+						            <th>Ipv24</th>
+						            <th>Voltage_Of_Phase_A to B</th>
+						            <th>Voltage_Of_Phase_B to C</th>
+						            <th>Voltage_Of_Phase_C to A</th>
+						            <th>Phase Voltage of phase A</th>
+						            <th>Phase Voltage of phase B</th>
+						            <th>Phase Voltage of phase C</th>
+						            <th>Current of phase A</th>
+						            <th>Current of phase B</th>
+						            <th>Current of phase C</th>
+						            <th>Internal Temperature</th>
 				                </tr>
 				            </thead>
 				            <tbody>
 				                <c:forEach items="${result1}" var="result1">
 					                <tr>
-					                    <td>${result1.Conn_date }</td>
-					                    <td>${result1.hour_date }</td>
+					                    <td>${fn:substring(result1.Conn_date,0,11)}</td>
+					                    <td>${fn:substring(result1.Conn_date,11,16)}</td>
 					                    <td>${ob.DPP_NAME }</td>
 					                    <td>${result1.DI_NAME }</td>
 					                    <td>${result1.Daily_Generation }</td>
 					                    <td>${result1.Cumulative_Generation }</td>
 					                    <td><fmt:formatNumber value="${result1.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 					                    <td>${result1.Active_Power }</td>
-					                    <%-- <td>${result.Vpv1}</td>
-							              <td>${result.Ipv1}</td>
-							              <td>${result.Vpv2}</td>
-							              <td>${result.Ipv2}</td>
-							              <td>${result.Vpv3}</td>
-							              <td>${result.Ipv3}</td>
-							              <td>${result.Vpv4}</td>
-							              <td>${result.Ipv4}</td>
-							              <td>${result.Vpv5}</td>
-							              <td>${result.Ipv5}</td>
-							              <td>${result.Vpv6}</td>
-							              <td>${result.Ipv6}</td>
-							              <td>${result.Vpv7}</td>
-							              <td>${result.Ipv7}</td>
-							              <td>${result.Vpv8}</td>
-							              <td>${result.Ipv8}</td>
-							              <td>${result.Vpv9}</td>
-							              <td>${result.Ipv9}</td>
-							              <td>${result.Vpv10}</td>
-							              <td>${result.Ipv10}</td>
-							              <td>${result.Vpv11}</td>
-							              <td>${result.Ipv11}</td>
-							              <td>${result.Vpv12}</td>
-							              <td>${result.Ipv12}</td>
-							              <td>${result.Vpv13}</td>
-							              <td>${result.Ipv13}</td>
-							              <td>${result.Vpv14}</td>
-							              <td>${result.Ipv14}</td>
-							              <td>${result.Vpv15}</td>
-							              <td>${result.Ipv15}</td>
-							              <td>${result.Vpv16}</td>
-							              <td>${result.Ipv16}</td>
-							              <td>${result.Vpv17}</td>
-							              <td>${result.Ipv17}</td>
-							              <td>${result.Vpv18}</td>
-							              <td>${result.Ipv18}</td>
-							              <td>${result.Vpv19}</td>
-							              <td>${result.Ipv19}</td>
-							              <td>${result.Vpv20}</td>
-							              <td>${result.Ipv20}</td>
-							              <td>${result.Vpv21}</td>
-							              <td>${result.Ipv21}</td>
-							              <td>${result.Vpv22}</td>
-							              <td>${result.Ipv22}</td>
-							              <td>${result.Vpv23}</td>
-							              <td>${result.Ipv23}</td>
-							              <td>${result.Vpv24}</td>
-							              <td>${result.Ipv24}</td>
-							              <td>${result.voltage_of_phase_A_to_B}</td>
-							              <td>${result.voltage_of_phase_B_to_C}</td>
-							              <td>${result.voltage_of_phase_C_to_A}</td>
-							              <td>${result.Phase_voltage_of_phase_A}</td>
-							              <td>${result.Phase_voltage_of_phase_B}</td>
-							              <td>${result.Phase_voltage_of_phase_C}</td>
-							              <td>${result.Current_of_phase_A}</td>
-							              <td>${result.Current_of_phase_B}</td>
-							              <td>${result.Current_of_phase_C}</td>
-							              <td>${result.Internal_temperature}</td> --%>
+					                    <td>${result1.Vpv1}</td>
+							            <td>${result1.Ipv1}</td>
+							            <td>${result1.Vpv2}</td>
+							            <td>${result1.Ipv2}</td>
+							            <td>${result1.Vpv3}</td>
+							            <td>${result1.Ipv3}</td>
+							            <td>${result1.Vpv4}</td>
+							            <td>${result1.Ipv4}</td>
+							            <td>${result1.Vpv5}</td>
+							            <td>${result1.Ipv5}</td>
+							            <td>${result1.Vpv6}</td>
+							            <td>${result1.Ipv6}</td>
+							            <td>${result1.Vpv7}</td>
+							            <td>${result1.Ipv7}</td>
+							            <td>${result1.Vpv8}</td>
+							            <td>${result1.Ipv8}</td>
+							            <td>${result1.Vpv9}</td>
+							            <td>${result1.Ipv9}</td>
+							            <td>${result1.Vpv10}</td>
+							            <td>${result1.Ipv10}</td>
+							            <td>${result1.Vpv11}</td>
+							            <td>${result1.Ipv11}</td>
+							            <td>${result1.Vpv12}</td>
+							            <td>${result1.Ipv12}</td>
+							            <td>${result1.Vpv13}</td>
+							            <td>${result1.Ipv13}</td>
+							            <td>${result1.Vpv14}</td>
+							            <td>${result1.Ipv14}</td>
+							            <td>${result1.Vpv15}</td>
+							            <td>${result1.Ipv15}</td>
+							            <td>${result1.Vpv16}</td>
+							            <td>${result1.Ipv16}</td>
+							            <td>${result1.Vpv17}</td>
+							            <td>${result1.Ipv17}</td>
+							            <td>${result1.Vpv18}</td>
+							            <td>${result1.Ipv18}</td>
+							            <td>${result1.Vpv19}</td>
+							            <td>${result1.Ipv19}</td>
+							            <td>${result1.Vpv20}</td>
+							            <td>${result1.Ipv20}</td>
+							            <td>${result1.Vpv21}</td>
+							            <td>${result1.Ipv21}</td>
+							            <td>${result1.Vpv22}</td>
+							            <td>${result1.Ipv22}</td>
+							            <td>${result1.Vpv23}</td>
+							            <td>${result1.Ipv23}</td>
+							            <td>${result1.Vpv24}</td>
+							            <td>${result1.Ipv24}</td>
+							            <td>${result1.voltage_of_phase_A_to_B}</td>
+							            <td>${result1.voltage_of_phase_B_to_C}</td>
+							            <td>${result1.voltage_of_phase_C_to_A}</td>
+							            <td>${result1.Phase_voltage_of_phase_A}</td>
+							            <td>${result1.Phase_voltage_of_phase_B}</td>
+							            <td>${result1.Phase_voltage_of_phase_C}</td>
+							            <td>${result1.Current_of_phase_A}</td>
+							            <td>${result1.Current_of_phase_B}</td>
+							            <td>${result1.Current_of_phase_C}</td>
+							            <td>${result1.Internal_temperature}</td>
 					               </tr>
 				                </c:forEach>
 				            </tbody>

@@ -474,6 +474,7 @@ public class DyController {
         	}
     	}else {
     		result =  Component.getList("main.select_inverterData_other",type);
+    		type.put("now",now);
     		result1 =  Component.getList("sub.select_hourData",type);
     		
     		//최대 최솟값 날짜랑 데이터 뽑기

@@ -100,7 +100,7 @@ public class ScheduleService {
 	
 	
 	//20시30분에 데이터 합치기   
-	@Scheduled(cron="0 30 20 * * ?")
+	@Scheduled(cron="0 30 21 * * ?")
 	@Transactional
 	public void scheduleTest() throws Exception {
 		
@@ -144,7 +144,7 @@ public class ScheduleService {
 
 	
 	//시간별 데이터 추출 세달 전까지만 수집   
-	@Scheduled(cron="0 30 21 * * ?")
+	@Scheduled(cron="0 30 20 * * ?")
 	@Transactional
 	public void InsertDetail() throws Exception {
 		

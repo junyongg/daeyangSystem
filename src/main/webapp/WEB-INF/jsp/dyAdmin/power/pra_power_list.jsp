@@ -1,9 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
 
 <style>
+
+datalist{
+
+display : none;
+}
+
+
 
 .checksize{
  width: 20% !important;
@@ -114,7 +123,7 @@ form .error {color:red}
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 유저선택</label>
 														<div class="col-md-6">
-															<select class="form-control DPP_USERS" id="DPP_USER" name="DPP_USER">
+															<select class="form-control input-sm select2 DPP_USERS" id="DPP_USER" name="DPP_USERS">
 																<c:forEach items="${member }" var="member">
 																	<option value="${member.UI_KEYNO }">${member.UI_ID }</option>
 																</c:forEach>
@@ -277,7 +286,7 @@ function Inver_Insert(){
 				async: false,
 				data: $('#Form').serializeArray(),
 				success : function(){
-// 					location.reload();
+ 					cf_smallBox('수정 완료', "발전소 등록 완료", 3000,);
 				}, 
 				error: function(){
 					cf_smallBox('error', "발전소 등록 에러", 3000,'#d24158');
@@ -294,7 +303,7 @@ function Inver_Update(){
 				async: false,
 				data: $('#Form').serializeArray(),
 				success : function(){
-// 					location.reload();
+					cf_smallBox('수정 완료', "발전소 수정 완료", 3000,);
 				}, 
 				error: function(){
 					cf_smallBox('error', "발전소 등록 에러", 3000,'#d24158');

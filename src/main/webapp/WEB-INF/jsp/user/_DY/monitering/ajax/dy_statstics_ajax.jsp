@@ -514,16 +514,20 @@ $(function(){
 			<c:forEach items="${MainList[status.index]}" var="v">
 				list_sub.push("${v}")
 			</c:forEach>
-			list.push(list_sub.reverse())
+// 			list.push(list_sub.reverse())
+			list.push(list_sub)
 		</c:forEach>
+			console.log(list)
 		
 		if(inverternum == '0'){
 			for(var i=1;i<list.length-1;i++){
 				var aJson = new Object();
 				aJson.name = "인버터"+i+"호";
 				aJson.type = "line";
+				aJson.showSymbol = false;
 				aJson.stack = "a"+i;
-				aJson.data = list[i];
+				aJson.data = list[i]
+				
 				
 				aJsonArray.push(aJson);
 			}
@@ -532,6 +536,7 @@ $(function(){
 				var aJson = new Object();
 				aJson.name = "인버터"+inverternum+"호";
 				aJson.type = "line";
+				aJson.showSymbol = false;
 				aJson.stack = "a"+i;
 				aJson.data = list[i];
 				
@@ -540,6 +545,8 @@ $(function(){
 		}
 		
 		chartGraph1(list,aJsonArray);
+		
+		
 	}else{
 		$("#more").show();
 		
@@ -553,18 +560,19 @@ $(function(){
 			var hour = "${result.DDM_T_HOUR}";
 			hourlist.push(parseFloat(hour).toFixed(2))
 		</c:forEach>
-		
+		 
 		var aJson = new Object();
 		aJson.name = "발전량";
 		aJson.type = "line";
+		aJson.showSymbol = false;
 		aJson.stack = "a1";
 		aJson.data = datalist;
-		
 		aJsonArray.push(aJson);
 		
 		var aJson2 = new Object();
 		aJson2.name = "발전시간";
 		aJson2.type = "line";
+		aJson.showSymbol = false;
 		aJson2.stack = "a2";
 		aJson2.data = hourlist;
 		
@@ -573,6 +581,7 @@ $(function(){
 		
 		chartGraph2(datelist,aJsonArray);
 	}
+		console.log(aJson)
 })
 
 function searchDate(value){
@@ -697,9 +706,10 @@ function chartGraph1(list,aJsonArray){
         color: ['#F31614', '#38C146', '#3A37FF','#ffeb3b','#ff9800'],
         tooltip: {
             show: true,
+            trigger: 'axis'
         },
         legend: {
-            show: true,
+            show: false,
         },
         legend: {
             show: true,
@@ -709,8 +719,10 @@ function chartGraph1(list,aJsonArray){
             left: '4%',
             right: '4%',
             bottom: '2%',
-            containLabel: true
+            containLabel: true,
+           
         },
+        
         xAxis: {
             type: 'category',
             boundaryGap: true,
@@ -718,8 +730,11 @@ function chartGraph1(list,aJsonArray){
         },
         yAxis: {
             type: 'value'
+            
         },
-        series: aJsonArray
+        series : aJsonArray
+
+        
     };
 
     if (option && typeof option === 'object') {

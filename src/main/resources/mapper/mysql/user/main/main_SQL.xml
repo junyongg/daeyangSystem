@@ -214,74 +214,231 @@
 	
 	
 	<!-- 당일 통계를 위한 인버터 별 전력 출력 (그래프를위함)-->
-	<select id="select_inverterData_active" resultType="String" parameterType="hashmap">
-		SELECT A.Active_Power
-		FROM(
-			SELECT * 
-			FROM dy_inverter_data
-			WHERE DP_KEYNO = #{type}
-			<if test="searchBeginDate != null and searchBeginDate != ''">
-	 		<![CDATA[
-	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
-	 		]]>
-		 	</if>
-		 	<if test="searchEndDate != null and searchEndDate != ''">
-		 	<![CDATA[
-	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
-		 	]]>
-		 	</if>
-		 	ORDER BY Conn_date DESC
-			LIMIT 1000
-		)A
-		WHERE 1=1
-		<if test="inverterNum != null and inverterNum != '' ">
+<!-- 	<select id="select_inverterData_active" resultType="String" parameterType="hashmap"> -->
+<!-- 		SELECT IFNULL(A.Active_Power,0) -->
+<!-- 		FROM( -->
+<!-- 			SELECT *  -->
+<!-- 			FROM dy_inverter_data -->
+<!-- 			WHERE DP_KEYNO = #{type} -->
+<!-- 			<if test="searchBeginDate != null and searchBeginDate != ''"> -->
+<!-- 	 		<![CDATA[ -->
+<!--  	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}  -->
+<!--  	 		]]>  -->
+<!-- 		 	</if> -->
+<!-- 		 	<if test="searchEndDate != null and searchEndDate != ''"> -->
+<!-- 		 	<![CDATA[ -->
+<!--  	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}  -->
+<!--  		 	]]>  -->
+<!-- 		 	</if> -->
+<!-- 		 	ORDER BY Conn_date DESC -->
+<!-- 			LIMIT 1000 -->
+<!-- 		)A -->
+<!-- 		WHERE 1=1 -->
+<!-- 		<if test="inverterNum != null and inverterNum != '' "> -->
+<!-- 			<if test="inverterNum == 1"> -->
+<!-- 				AND A.DI_NAME = '인버터 1호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 2"> -->
+<!-- 				AND A.DI_NAME = '인버터 2호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 3"> -->
+<!-- 				AND A.DI_NAME = '인버터 3호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 4"> -->
+<!-- 				AND A.DI_NAME = '인버터 4호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 5"> -->
+<!-- 				AND A.DI_NAME = '인버터 5호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 6"> -->
+<!-- 				AND A.DI_NAME = '인버터 6호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 7"> -->
+<!-- 				AND A.DI_NAME = '인버터 7호'  -->
+<!-- 			</if> -->
+<!-- 		</if> -->
+<!-- 		LIMIT 10 -->
+<!--  	</select>  -->
+		<!-- 당일 통계를 위한 인버터 별 전력 출력 (그래프를위함)-->
+		<select id="select_inverterData_active" resultType="String" parameterType="hashmap">
+		select IFNULL(K.power,0)
+      FROM(
+         SELECT *
+         FROM(
+            SELECT IFNULL(AA.Active_Power,0) as power ,
+            <![CDATA[
+               case when substr(AA.DATETIEMS,4,2)<'10' then concat(substr(AA.DATETIEMS,1,2),':00')
+                   when substr(AA.DATETIEMS,4,2) >='10' and substr(AA.DATETIEMS,4,2)<'20' then concat(substr(AA.DATETIEMS,1,2),':10')
+                    when substr(AA.DATETIEMS,4,2) >='20' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':20')
+                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'40' then concat(substr(AA.DATETIEMS,1,2),':30')
+                    when substr(AA.DATETIEMS,4,2) >='40' and substr(AA.DATETIEMS,4,2)<'50' then concat(substr(AA.DATETIEMS,1,2),':40')
+                    when substr(AA.DATETIEMS,4,2) >='50' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':50')
+                   ]]>
+                END as hhmm
+            FROM (
+               SELECT DP_KEYNO, DI_NAME , Active_Power, date_format(Conn_date,'%H:%i') as DATETIEMS
+               FROM dy_inverter_data
+               WHERE 1=1
+               AND DP_KEYNO = ${type}
+            <if test="inverterNum != null and inverterNum != '' ">
 			<if test="inverterNum == 1">
-				AND A.DI_NAME = '인버터 1호' 
+				AND DI_NAME = '인버터 1호' 
 			</if>
 			<if test="inverterNum == 2">
-				AND A.DI_NAME = '인버터 2호' 
+				AND DI_NAME = '인버터 2호' 
 			</if>
 			<if test="inverterNum == 3">
-				AND A.DI_NAME = '인버터 3호' 
+				AND DI_NAME = '인버터 3호' 
 			</if>
 			<if test="inverterNum == 4">
-				AND A.DI_NAME = '인버터 4호' 
+				AND DI_NAME = '인버터 4호' 
 			</if>
 			<if test="inverterNum == 5">
-				AND A.DI_NAME = '인버터 5호' 
+				AND DI_NAME = '인버터 5호' 
 			</if>
 			<if test="inverterNum == 6">
-				AND A.DI_NAME = '인버터 6호' 
+				AND DI_NAME = '인버터 6호' 
 			</if>
 			<if test="inverterNum == 7">
-				AND A.DI_NAME = '인버터 7호' 
+				AND DI_NAME = '인버터 7호' 
 			</if>
-		</if>
-		LIMIT 10
+			</if>
+               AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
+               ORDER BY DI_NAME , Conn_date DESC
+               LIMIT 100000
+            )AA
+            GROUP BY  DI_NAME, DATETIEMS
+         )B
+         right join (
+            WITH RECURSIVE A AS
+            (
+            	<![CDATA[
+               SELECT STR_TO_DATE(date_format(now(),'%Y%m%d06'),'%Y%m%d%H%') AS YMDHM
+               UNION ALL
+               SELECT DATE_ADD(A.YMDHM, INTERVAL 10 minute) AS YMDHM FROM A
+                WHERE A.YMDHM < STR_TO_DATE(date_format(now(),'%Y%m%d19'), '%Y%m%d%H')
+                ]]>
+            )
+            SELECT DATE_FORMAT(YMDHM, '%H:%i') AS YMDHM FROM A
+         )C
+         on B.hhmm = C.YMDHM
+      	)K
+      
+
 	</select>
 	
+<!-- 	<select id="select_inverterData_date" resultType="String" parameterType="hashmap"> -->
+<!-- 		SELECT date_format(A.Conn_date, '%H:%i') as dates -->
+<!-- 		FROM( -->
+<!-- 			SELECT *  -->
+<!-- 			FROM dy_inverter_data -->
+<!-- 			WHERE DP_KEYNO = #{type} -->
+<!-- 			<if test="searchBeginDate != null and searchBeginDate != ''"> -->
+<!-- 	 		<![CDATA[ -->
+<!-- 	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate} -->
+<!-- 	 		]]> -->
+<!-- 		 	</if> -->
+<!-- 		 	<if test="searchEndDate != null and searchEndDate != ''"> -->
+<!-- 		 	<![CDATA[ -->
+<!-- 	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate} -->
+<!-- 		 	]]> -->
+<!-- 		 	</if> -->
+<!-- 		 	ORDER BY Conn_date DESC -->
+<!-- 			LIMIT 1000 -->
+<!-- 		)A -->
+<!-- 		WHERE 1=1 -->
+<!-- 		AND A.DI_NAME = '인버터 1호'  -->
+<!-- 		LIMIT 10 -->
+<!-- 	</select> -->
+
 	<select id="select_inverterData_date" resultType="String" parameterType="hashmap">
-		SELECT date_format(A.Conn_date, '%H:%i') as dates
-		FROM(
-			SELECT * 
-			FROM dy_inverter_data
-			WHERE DP_KEYNO = #{type}
-			<if test="searchBeginDate != null and searchBeginDate != ''">
-	 		<![CDATA[
-	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
-	 		]]>
-		 	</if>
-		 	<if test="searchEndDate != null and searchEndDate != ''">
-		 	<![CDATA[
-	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
-		 	]]>
-		 	</if>
-		 	ORDER BY Conn_date DESC
-			LIMIT 1000
-		)A
-		WHERE 1=1
-		AND A.DI_NAME = '인버터 1호' 
-		LIMIT 10
+ select DISTINCT K.YMDHM 
+      FROM(
+         SELECT *
+         FROM(
+            SELECT IFNULL(AA.Active_Power,0) as power ,
+            <![CDATA[
+               case when substr(AA.DATETIEMS,4,2)<'10' then concat(substr(AA.DATETIEMS,1,2),':00')
+                   when substr(AA.DATETIEMS,4,2) >='10' and substr(AA.DATETIEMS,4,2)<'20' then concat(substr(AA.DATETIEMS,1,2),':10')
+                    when substr(AA.DATETIEMS,4,2) >='20' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':20')
+                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'40' then concat(substr(AA.DATETIEMS,1,2),':30')
+                    when substr(AA.DATETIEMS,4,2) >='40' and substr(AA.DATETIEMS,4,2)<'50' then concat(substr(AA.DATETIEMS,1,2),':40')
+                    when substr(AA.DATETIEMS,4,2) >='50' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':50')
+              ]]>      
+                END as hhmm
+            FROM (
+               SELECT DP_KEYNO, DI_NAME , Active_Power, date_format(Conn_date,'%H:%i') as DATETIEMS
+               FROM dy_inverter_data 
+               WHERE 1=1
+               AND DP_KEYNO = ${type}
+<!--             <if test="inverterNum != null and inverterNum != '' "> -->
+<!-- 			<if test="inverterNum == 1"> -->
+<!-- 				AND DI_NAME = '인버터 1호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 2"> -->
+<!-- 				AND DI_NAME = '인버터 2호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 3"> -->
+<!-- 				AND DI_NAME = '인버터 3호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 4"> -->
+<!-- 				AND DI_NAME = '인버터 4호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 5"> -->
+<!-- 				AND DI_NAME = '인버터 5호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 6"> -->
+<!-- 				AND DI_NAME = '인버터 6호'  -->
+<!-- 			</if> -->
+<!-- 			<if test="inverterNum == 7"> -->
+<!-- 				AND DI_NAME = '인버터 7호'  -->
+<!-- 			</if> -->
+<!-- 			</if> -->
+               AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
+               ORDER BY DI_NAME , Conn_date DESC
+               LIMIT 100000
+            )AA
+            GROUP BY  DI_NAME, DATETIEMS
+         )B
+         right join (
+            WITH RECURSIVE A AS
+            (
+            <![CDATA[
+               SELECT STR_TO_DATE(date_format(now(),'%Y%m%d06'),'%Y%m%d%H%') AS YMDHM
+               UNION ALL
+               SELECT DATE_ADD(A.YMDHM, INTERVAL 10 minute) AS YMDHM FROM A
+                WHERE A.YMDHM < STR_TO_DATE(date_format(now(),'%Y%m%d19'), '%Y%m%d%H')
+            ]]>
+            )
+            SELECT DATE_FORMAT(YMDHM, '%H:%i') AS YMDHM FROM A
+         )C
+         on B.hhmm = C.YMDHM
+      )K
+      
+	</select>
+	
+	<select id="select_inverterData_graph" resultType="String" parameterType="hashmap">
+		select DISTINCT
+		<![CDATA[
+   	 case 
+    	 when substr(Conn_date,15,2) <'10' then concat(substr(Conn_date,12,2),':00')
+    	 when substr(Conn_date,15,2) >='10' and substr(Conn_date,15,2)<'20' then concat(substr(Conn_date,12,2),':10')
+         when substr(Conn_date,15,2) >='20' and substr(Conn_date,15,2)<'30' then concat(substr(Conn_date,12,2),':20')
+         when substr(Conn_date,15,2) >='30' and substr(Conn_date,15,2)<'40' then concat(substr(Conn_date,12,2),':30')
+         when substr(Conn_date,15,2) >='40' and substr(Conn_date,15,2)<'50' then concat(substr(Conn_date,12,2),':40')
+         when substr(Conn_date,15,2) >='50' and substr(Conn_date,15,2)<'60' then concat(substr(Conn_date,12,2),':50')
+         ]]>
+   	 end as hhmm
+	FROM dy_inverter_data
+	where 1=1
+	AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+	and DP_KEYNO = #{type}
+ 	<if test="InverterType != null and InverterType != '' and !InverterType.equals('0') and InverterType != 0"> -->
+<!-- 	and DI_NAME = '인버터 1호' -->
+	and DI_NAME = '인버터 ${InverterType}호'
+	</if>
+	order by hhmm DESC
+	limit 7
 	</select>
 	
 	

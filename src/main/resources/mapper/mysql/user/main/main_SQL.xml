@@ -307,7 +307,7 @@
                ORDER BY DI_NAME , Conn_date DESC
                LIMIT 100000
             )AA
-            GROUP BY  DI_NAME, DATETIEMS
+            GROUP BY hhmm
          )B
          right join (
             WITH RECURSIVE A AS
@@ -352,7 +352,7 @@
 <!-- 	</select> -->
 
 	<select id="select_inverterData_date" resultType="String" parameterType="hashmap">
- select DISTINCT K.YMDHM 
+ select DISTINCT K.YMDHM
       FROM(
          SELECT *
          FROM(
@@ -398,7 +398,7 @@
                ORDER BY DI_NAME , Conn_date DESC
                LIMIT 100000
             )AA
-            GROUP BY  DI_NAME, DATETIEMS
+            GROUP BY hhmm
          )B
          right join (
             WITH RECURSIVE A AS

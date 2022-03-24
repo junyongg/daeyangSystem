@@ -183,11 +183,11 @@
 	<div class="table_wrapper con_h" style = "overflow-x : auto ">
 	    <table class="tbl_normal">
 	        <colgroup>
-	            <col style="width: 23%;">
+	            <col style="width: 20%;">
 	            <col style="width: 10%;">
 	            <col style="width: 22%;">
 	            <col style="width: 10%;">
-	            <col style="width: 30%;">
+	            <col style="width: 20%;">
 	            <col style="width: 25%;">
 	        </colgroup>
             <thead>

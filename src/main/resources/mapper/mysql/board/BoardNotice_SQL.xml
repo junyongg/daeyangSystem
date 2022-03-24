@@ -462,7 +462,6 @@
 					<if test="DPPKEY != null and DPPKEY !=''" >
 				    AND       	BN.BN_PLANT_NAME = #{DPPKEY}
 				    </if>
-				    AND
 				    <foreach collection="plantList" item="plant" open="(" close=")" separator="OR" >
 								BN.BN_PLANT_NAME = ${plant.DPP_KEYNO}
 					</foreach>

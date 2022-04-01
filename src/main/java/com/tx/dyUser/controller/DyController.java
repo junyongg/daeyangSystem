@@ -465,6 +465,7 @@ public class DyController {
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
             		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
+            		System.out.println(subList.size());
             		MainList.add(subList);
             	}
         	}else {
@@ -970,6 +971,69 @@ public class DyController {
 		Component.updateData("main.UpdateBNcheck", BN_KEYNO);
 		
 		return msg;
+    }
+    
+    @RequestMapping("/userkakakoAjax.do")
+    @ResponseBody
+    public <E> String kakakosendAjax(HttpServletRequest req,
+    		@RequestParam(value="UI_KEYNO",required=false)String user,
+    		@RequestParam(value="content",required=false)String content
+    		) throws Exception{
+    	
+    	
+    	String[] userlist = user.split(",");
+//    	List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("userlist", userlist);
+    	
+    	String msg = "성공";
+    	
+//    	String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+    	String contents = content+"에 새로운 게시물이 등록되었습니다. 확인해주세요.";
+    	//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+    	
+		//리스트 뽑기 - 현재 게시물 알림은 index=1
+		JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+		JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+		jsonObj = (JSONObject) jsonObj_a.get(5); //템플릿 리스트
+
+    	List<UserDTO> list = Component.getList("main.Kakaotalk_ad",map);
+    	String Sendurl  = "http://dymonitering.co.kr/"; 
+		for(UserDTO l : list) {
+    		l.decode();
+    		String phone = l.getUI_PHONE().toString().replace("-", "");
+    		//받은 토큰으로 알림톡 전송		
+    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,contents,phone,Sendurl);
+    	}
+		
+		
+		return msg;
+    }
+    
+    @RequestMapping("/userkakakoselectAjax.do")
+    @ResponseBody
+    public List<UserDTO> kakakouserselectAjax(HttpServletRequest req,
+    		@RequestParam(value="UIA_KEYNO",required=false)String UIA_KEYNO
+    		) throws Exception{
+    	
+    	List userlist;
+    	
+    	if(UIA_KEYNO.equals("") || UIA_KEYNO == null) {
+    		List<UserDTO> list = Component.getListNoParam("main.Group_select_all");
+    		userlist = list;
+    		
+    	}else {
+    		List<UserDTO> list = Component.getList("main.Group_select",UIA_KEYNO);
+    		userlist = list;
+    	}
+    	
+//    	List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
+//    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+		
+		return userlist;
     }
     
     

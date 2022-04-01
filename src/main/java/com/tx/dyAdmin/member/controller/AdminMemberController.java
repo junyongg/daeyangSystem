@@ -554,4 +554,21 @@ public class AdminMemberController {
 		return list;
 	}
 	
+	/**
+	 * 카카오톡 전송
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dyAdmin/kakaotalk/ailim.do")
+	public ModelAndView kakakotalk(HttpServletRequest req
+			,@ModelAttribute UserDTO UserDTO
+			) throws Exception {
+		
+		ModelAndView mv  = new ModelAndView("/dyAdmin/member/pra_member_kakao.adm");
+		
+		mv.addObject("authList",Component.getListNoParam("Authority.UIA_GetList_kakao"));
+		mv.addObject("kakao",Component.getListNoParam("main.Kakaotalk"));
+		return mv;
+	}	
 }
+
+

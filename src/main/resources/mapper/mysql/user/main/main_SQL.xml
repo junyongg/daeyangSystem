@@ -371,29 +371,6 @@
                FROM dy_inverter_data 
                WHERE 1=1
                AND DP_KEYNO = ${type}
-<!--             <if test="inverterNum != null and inverterNum != '' "> -->
-<!-- 			<if test="inverterNum == 1"> -->
-<!-- 				AND DI_NAME = '인버터 1호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 2"> -->
-<!-- 				AND DI_NAME = '인버터 2호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 3"> -->
-<!-- 				AND DI_NAME = '인버터 3호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 4"> -->
-<!-- 				AND DI_NAME = '인버터 4호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 5"> -->
-<!-- 				AND DI_NAME = '인버터 5호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 6"> -->
-<!-- 				AND DI_NAME = '인버터 6호'  -->
-<!-- 			</if> -->
-<!-- 			<if test="inverterNum == 7"> -->
-<!-- 				AND DI_NAME = '인버터 7호'  -->
-<!-- 			</if> -->
-<!-- 			</if> -->
                AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
                ORDER BY DI_NAME , Conn_date DESC
                LIMIT 100000
@@ -629,6 +606,47 @@
 		LEFT JOIN u_userinfo_authority C
 		ON C.UIA_KEYNO = B.UIA_KEYNO 
 		WHERE C.UIA_KEYNO = 'UIA_ASDFG'
+	</select>
+	<select id = "Kakaotalk" resultType="USER" parameterType="HashMap" >
+		SELECT *
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = 'UIA_LHAPK'
+	</select>
+	
+	<select id="Kakaotalk_ad" resultType="USER" parameterType="hashmap">
+		SELECT A.UIA_KEYNO,C.UI_NAME, C.UI_PHONE
+		FROM u_userinfo_authority A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UIA_KEYNO = B.UIA_KEYNO
+		LEFT JOIN u_userinfo C
+		ON C.UI_KEYNO = B.UI_KEYNO
+		WHERE 
+		<foreach item = "l" index="index" collection="userlist" open="(" close=")" separator="or">
+		C.UI_KEYNO = #{l}
+		</foreach>
+	</select>
+	
+	<select id = "Group_select" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = #{l}
+	</select>
+	
+	<select id = "Group_select_all" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM u_userinfo A
+		LEFT JOIN u_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN u_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO
 	</select>
 	
 	<!-- 카카오 알림전송전 권한키 확인 -->

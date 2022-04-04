@@ -25,14 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.JsonParser;
 import com.tx.common.config.SettingData;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.dyAdmin.member.dto.UserDTO;
-import com.tx.dyAdmin.statistics.dto.LogDTO;
 import com.tx.dyUser.wether.WetherService;
 
 

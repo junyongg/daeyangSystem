@@ -1,42 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <%@ include file="/WEB-INF/jsp/dyAdmin/include/CodeMirror_Include.jsp"%>
-<script type="text/javascript" src="/resources/common/js/common/diff_match_patch.js"></script>
-
-<style>
-.columnTitle {
-	text-align: center;
-	word-break: keep-all;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ccc;
-	padding: 5px 0
-}
-
-.columnTitle section {
-	margin-bottom: 0
-}
-
-.option_dp, .selectCodeWrap, .column_size_dp {
-	display: none;
-}
-
-.column_ul .column_li label {
-	width: 20%;
-}
-
-.column_ul .column_li input {
-	padding-left: 10px;
-	width: 50%;
-}
-
-.column_ul .column_li div {
-	margin-left: 20px;
-}
-</style>
-
-<script type="text/javascript">
-
-</script>
 
 <div id="content">
 
@@ -47,7 +11,7 @@
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i>
 						</span>
-					    <h2>공급자 등록</h2>
+					    <h2>공급자 개별 등록</h2>
 					</header>
 
 					<div class="widget-body">
@@ -64,60 +28,74 @@
 
 							<div id="myTabContent1"
 								class="tab-content padding-10 form-horizontal bv-form">
+								
+								<div class="form-group">
+									<label class="col-md-3 control-label"><span class="nessSpan">*</span> 공급자 선택</label>
+									
+									<div class="col-md-6">
+										<select class="form-control input-sm select2" id="user" name="user" onchange="providerSelect(this.value)">
+											<option value="0">신규 등록</option>
+											<c:forEach items="${billList }" var="b">
+												<option value="${b.dbp_keyno }">${b.dbp_name }</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								
 								<div>
 									<table id="" class="table table-bordered table-striped">
 										<colgroup>
 											<col style="width: 10%;">
+											<col style="width: 15%;">
 											<col style="width: 10%;">
+											<col style="width: 15%;">
 											<col style="width: 10%;">
-											<col style="width: 10%;">
-											<col style="width: 10%;">
-											<col style="width: 10%;">
+											<col style="width: 15%;">
 										</colgroup>
 										<tbody>
 											<tr>
 												<td>회사코드(아이디)</td>
-												<td><input type="text" class="" id="hometaxbill_id" name="hometaxbill_id"></td>
+												<td><input type="text" class="form-control check" id="hometaxbill_id" name="hometaxbill_id"></td>
 												<td>패스워드</td>
-												<td><input type="text" class="" id="spass" name="spass"></td>
+												<td><input type="text" class="form-control check" id="spass" name="spass"></td>
 												<td>인증키</td>
-												<td><input type="text" class="" id="apikey" name="apikey"></td>
-												<td>고유번호(자동생성)</td>
-												<td><input type="text" class="" id="homemunseo_id" name="homemunseo_id"></td>
+												<td colspan="3"><input type="text" class="form-control check" id="apikey" name="apikey"></td>
 											</tr>
 											<tr>
 												<td>사업자등록번호</td>
-												<td><input type="text" class="" id="ir_companynumber" name="ir_companynumber"></td>
+												<td><input type="text" class="form-control check" id="ir_companynumber" name="ir_companynumber"></td>
 												<td>업태</td>
-												<td><input type="text" class="" id="ir_biztype" name="ir_biztype"></td>
+												<td><input type="text" class="form-control check" id="ir_biztype" name="ir_biztype"></td>
 												<td>상호</td>
-												<td><input type="text" class="" id="ir_companyname" name="ir_companyname"></td>
+												<td><input type="text" class="form-control check" id="ir_companyname" name="ir_companyname"></td>
 												<td>업종</td>
-												<td><input type="text" class="" id="ir_bizclassification" name="ir_bizclassification"></td>
+												<td><input type="text" class="form-control check" id="ir_bizclassification" name="ir_bizclassification"></td>
 											</tr>
 											<tr>
 												<td>대표자성명</td>
-												<td><input type="text" class="" id="ir_ceoname" name="ir_ceoname"></td>
+												<td><input type="text" class="form-control check" id="ir_ceoname" name="ir_ceoname"></td>
 												<td>담당부서명</td>
-												<td><input type="text" class="" id="ir_busename" name="ir_busename"></td>
+												<td><input type="text" class="form-control" id="ir_busename" name="ir_busename"></td>
 												<td>담당자명</td>
-												<td><input type="text" class="" id="ir_name" name="ir_name"></td>
-												<td>담장자전화번호</td>
-												<td><input type="text" class="" id="ir_cell" name="ir_cell"></td>
+												<td><input type="text" class="form-control" id="ir_name" name="ir_name"></td>
+												<td>담당자전화번호</td>
+												<td><input type="text" class="form-control" id="ir_cell" name="ir_cell"></td>
 											</tr>
 											<tr>
-												<td><span class="nessSpan">*</span>스킨 이름</td>
-												<td colspan="3"><input type="text" 	class="form-control checkTrim" id="PIS_SUBJECT" name="PIS_SUBJECT" value="${PIS_DATA.PIS_SUBJECT }" maxlength="100">
+												<td>담당자이메일</td>
+												<td colspan="3"><input type="text" class="form-control" id="ir_email" name="ir_email"></td>
+												<td>주소</td>
+												<td colspan="3"><input type="text" class="form-control" id="ir_companyaddress" name="ir_companyaddress"></td>
 											</tr>
 											<tr>
-												<td><span class="nessSpan">*</span>코멘트</td>
-												<td colspan="3"><input type="text" class="form-control" name="PISH_COMMENT" id="PISH_COMMENT" data-bv-field="fullName" maxlength="500" placeholder="no message"></td>
-											</tr>										
-											<tr>
-												<td colspan="4">
+												<td colspan="8">
 													<fieldset class="padding-10 text-right">
-														<button class="btn btn-sm btn-primary" type="button" onclick="pf_popupSkinInsert()">저장</button>
-														<button class="btn btn-sm btn-default" id="Board_Delete" type="button" onclick="pf_back()">취소</button>
+														<input type="hidden" id="buttionType" name="buttionType" value="insert"> 
+														<input type="hidden" id="dbp_keyno" name="dbp_keyno" value=""> 
+														<button type="button" id="ActionType" onclick="providerInsert();" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
+														</button>
+														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
+														</button>
 													</fieldset>
 												</td>
 											</tr>
@@ -131,4 +109,227 @@
 			</article>
 		</div>
 	</section>
+	
+	
+		<section id="widget-grid">
+		<div class="row">
+			<article class="col-sm-12 col-md-12 col-lg-12">
+				<div class="jarviswidget jarviswidget-color-blueDark" id="" data-widget-editbutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i>
+						</span>
+					    <h2>공급받는자 등록</h2>
+					</header>
+
+					<div class="widget-body">
+
+						<form:form id="Form2" class="form-horizontal" name="Form2"  method="post">
+							<legend>
+								<div class="widget-body-toolbar bg-color-white">
+									<div class="alert alert-info no-margin fade in">
+										<button type="button" class="close" data-dismiss="alert">×</button>
+										세금계산서 공급받는자 개별 등록 
+									</div>
+								</div>
+							</legend>
+
+
+							<div class="form-group">
+									<label class="col-md-3 control-label"><span class="nessSpan">*</span> 공급받는자 선택</label>
+									
+									<div class="col-md-6">
+										<select class="form-control input-sm select2" id="user" name="user" onchange="providerSelect(this.value)">
+											<option value="0">신규 등록</option>
+											<c:forEach items="${billList }" var="b">
+												<option value="${b.dbp_keyno }">${b.dbp_name }</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+
+
+							<div id="myTabContent1"
+								class="tab-content padding-10 form-horizontal bv-form">
+								<div>
+									<table id="" class="table table-bordered table-striped">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>사업자등록번호</td>
+												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber"  required oninvalid="this.setCustomValidity('Please select the item.')"  oninput="this.setCustomValidity('')"></td>
+												<td>업태</td>
+												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype"></td>
+												<td>사업체명</td>
+												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname"></td>
+												<td>업종</td>
+												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification"></td>
+											</tr>
+											<tr>
+												<td>종사업장번호</td>
+												<td><input type="text" class="form-control check2" id="ie_taxnumber" name="ie_taxnumber"></td>
+												<td>대표자명</td>
+												<td><input type="text" class="form-control check2" id="ie_ceoname" name="ie_ceoname"></td>
+												<td>담당부서1</td>
+												<td><input type="text" class="form-control" id="ie_busename1" name="ie_busename1"></td>
+												<td>담당자명1</td>
+												<td><input type="text" class="form-control" id="ie_name1" name="ie_name1"></td>
+											</tr>
+											<tr>
+												<td>담당자연락처1</td>
+												<td><input type="text" class="form-control" id="ir_ceoname" name="ir_ceoname"></td>
+												<td>담당자이메일1</td>
+												<td><input type="text" class="form-control" id="ir_busename" name="ir_busename"></td>
+												<td>담당부서2</td>
+												<td><input type="text" class="form-control" id="ir_name" name="ir_name"></td>
+												<td>담당자명2</td>
+												<td><input type="text" class="form-control" id="ir_cell" name="ir_cell"></td>
+											</tr>
+											<tr>
+												<td>담당자연락처2</td>
+												<td><input type="text" class="form-control" id="ir_ceoname" name="ir_ceoname"></td>
+												<td>담당자이메일2</td>
+												<td><input type="text" class="form-control" id="ir_busename" name="ir_busename"></td>
+												<td>회사주소</td>
+												<td colspan="3"><input type="text" class="form-control" id="ir_name" name="ir_name"></td>
+											</tr>
+											<tr>
+												<td colspan="8">
+													<fieldset class="padding-10 text-right"> 
+														<button type="button" onclick="" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
+														</button>
+														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
+														</button>
+													</fieldset>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</form:form>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
+	
 </div>
+
+
+<script type="text/javascript">
+
+$(function(){
+});
+
+function providerSelect(value){
+	console.log(value)
+	if(value == "0"){
+		clear();
+		$("#ActionType").html('<i class="fa fa-floppy-o"></i> 저장')
+		
+		$("#buttionType").val("insert");
+	}else{
+		providerSelectmethod(value);
+	}
+}
+
+function clear(){
+	$("#hometaxbill_id").val("")
+	$("#spass").val("")
+	$("#apikey").val("")
+	$("#ir_companynumber").val("")
+	$("#ir_biztype").val("")
+	$("#ir_companyname").val("")
+	$("#ir_ceoname").val("")
+	$("#ir_busename").val("")
+	$("#ir_name").val("")
+	$("#ir_cell").val("")
+	$("#ir_email").val("")
+	$("#ir_companyaddress").val("")
+}
+
+function providerSelectmethod(value){
+	 $.ajax({
+        url: '/dyAdmin/bills/providerSelectAjax.do',
+        type: 'POST',
+        data: {
+        	"dbp_keyno":value
+        },
+        async: false,  
+        success: function(result) {
+        	$("#dbp_keyno").val(result.dbp_keyno)
+        	$("#hometaxbill_id").val(result.dbp_id)
+        	$("#spass").val(result.dbp_pass)
+        	$("#apikey").val(result.dbp_apikey)
+        	$("#ir_companynumber").val(result.dbp_co_num)
+        	$("#ir_biztype").val(result.dbp_biztype)
+        	$("#ir_companyname").val(result.dbp_name)
+        	$("#ir_bizclassification").val(result.dbp_bizclassification)
+        	$("#ir_ceoname").val(result.dbp_ceoname)
+        	$("#ir_busename").val(result.dbp_busename)
+        	$("#ir_name").val(result.dbp_ir_name)
+        	$("#ir_cell").val(result.dbp_ir_cell)
+        	$("#ir_email").val(result.dbp_email)
+        	$("#ir_companyaddress").val(result.dbp_address)
+        	
+        	$("#ActionType").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
+        	$("#buttionType").val("update");
+        },
+        error: function(){
+        	alert("공급자 선택 에러");
+        }
+	}); 
+}
+
+function providerInsert(){
+	
+	if(!validationCheck()) return false
+	
+	 $.ajax({
+        url: '/dyAdmin/bills/billsActionAjax.do',
+        type: 'POST',
+        data: $("#Form").serialize(),
+        async: false,  
+        success: function(result) {
+        	alert(result);
+        },
+        error: function(){
+        	alert("공급자 선택 에러");
+        }
+	}); 
+}
+
+function validationCheck(){
+	if($("#hometaxbill_id").val() == ''){
+		alert("아이디를 입력해주세요");
+		return false
+	}else if($("#spass").val() == ''){
+		alert("패스워드를 입력해주세요");
+		return false
+	}else if($("#apikey").val() == ''){
+		alert("인증키를 입력해주세요");
+		return false
+	}else if($("#ir_companynumber").val() == ''){
+		alert("사업자등록번호를 입력해주세요");
+		return false
+	}else if($("#ir_biztype").val() == ''){
+		alert("업태를 입력해주세요");
+		return false
+	}else if($("#ir_companyname").val() == ''){
+		alert("상호를 입력해주세요");
+		return false
+	}else if($("#ir_ceoname").val() == ''){
+		alert("대표자이름을 입력해주세요");
+		return false
+	}
+	return true	
+}
+
+</script>

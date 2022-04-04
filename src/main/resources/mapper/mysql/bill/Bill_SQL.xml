@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bills">
+	
+	<select id="billsSelect" resultType="hashmap" >
+		SELECT * 
+		FROM dy_bills_provider
+	</select>
+
+	<select id="billsSelect_one" resultType="hashmap" parameterType="String">
+		SELECT * 
+		FROM dy_bills_provider
+		WHERE dbp_keyno = #{dbp_keyno}
+	</select>
+	
+	
+	<insert id="billsProvideInsert" parameterType="billDTO">
+		INSERT INTO dy_bills_provider
+		(
+			dbp_id,
+			dbp_pass,
+			dbp_apikey,
+			dbp_co_num,
+			dbp_biztype,
+			dbp_name,
+			dbp_bizclassification,
+			dbp_ceoname,
+			dbp_busename,
+			dbp_ir_name,
+			dbp_ir_cell,
+			dbp_email,
+			dbp_address
+		)VALUES(
+			#{hometaxbill_id},
+			#{spass},
+			#{apikey},
+			#{ir_companynumber},
+			#{ir_biztype},
+			#{ir_companyname},
+			#{ir_bizclassification},
+			#{ir_ceoname},
+			#{ir_busename},
+			#{ir_name},
+			#{ir_cell},
+			#{ir_email},
+			#{ir_companyaddress}
+		)
+	</insert>
+	
+	<update id="billsProvideUPdate" parameterType="billDTO">
+		UPDATE dy_bills_provider 
+		SET dbp_id = #{hometaxbill_id},
+			dbp_pass = #{spass},
+			dbp_apikey = #{apikey},
+			dbp_co_num = #{ir_companynumber},
+			dbp_biztype = #{ir_biztype},
+			dbp_name = #{ir_companyname},
+			dbp_bizclassification = #{ir_bizclassification},
+			dbp_ceoname = #{ir_ceoname},
+			dbp_busename = #{ir_busename},
+			dbp_ir_name = #{ir_name},
+			dbp_ir_cell = #{ir_cell},
+			dbp_email = #{ir_email},
+			dbp_address = #{ir_companyaddress}
+		WHERE dbp_keyno = #{dbp_keyno}
+	</update>
+	
+	<!-- 사업등록번호 카운팅 -->
+	<select id="billCount" resultType="int" parameterType="billDTO">
+		SELECT COUNT(*) FROM dy_bills_provider WHERE dbp_co_num = #{ir_companynumber}
+	</select>
+	
+</mapper>
+ 

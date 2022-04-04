@@ -143,6 +143,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		
 		<!-- 발전소 관리 -->
 		<typeAlias alias="PowerDTO" type="com.tx.dyAdmin.power.dto.PowerDTO"/>
+		
+		<!-- 세금 계산서 -->
+		<typeAlias alias="billDTO" type="com.tx.test.dto.billDTO"/>
 	</typeAliases>
 	
 	<typeHandlers>

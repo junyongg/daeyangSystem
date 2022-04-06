@@ -140,7 +140,7 @@
 									<div class="col-md-6">
 										<select class="form-control input-sm select2" id="user" name="user" onchange="providerSelect(this.value)">
 											<option value="0">신규 등록</option>
-											<c:forEach items="${billList }" var="b">
+											<c:forEach items="${billListSub }" var="b">
 												<option value="${b.dbp_keyno }">${b.dbp_name }</option>
 											</c:forEach>
 										</select>
@@ -183,26 +183,28 @@
 											</tr>
 											<tr>
 												<td>담당자연락처1</td>
-												<td><input type="text" class="form-control" id="ir_ceoname" name="ir_ceoname"></td>
+												<td><input type="text" class="form-control" id="ie_cell1" name="ie_cell1"></td>
 												<td>담당자이메일1</td>
-												<td><input type="text" class="form-control" id="ir_busename" name="ir_busename"></td>
+												<td><input type="text" class="form-control" id="ie_email1" name="ie_email1"></td>
 												<td>담당부서2</td>
-												<td><input type="text" class="form-control" id="ir_name" name="ir_name"></td>
+												<td><input type="text" class="form-control" id="ie_busename2" name="ie_busename2"></td>
 												<td>담당자명2</td>
-												<td><input type="text" class="form-control" id="ir_cell" name="ir_cell"></td>
+												<td><input type="text" class="form-control" id="ie_name2" name="ie_name2"></td>
 											</tr>
 											<tr>
 												<td>담당자연락처2</td>
-												<td><input type="text" class="form-control" id="ir_ceoname" name="ir_ceoname"></td>
+												<td><input type="text" class="form-control" id="ie_cell2" name="ie_cell2"></td>
 												<td>담당자이메일2</td>
-												<td><input type="text" class="form-control" id="ir_busename" name="ir_busename"></td>
+												<td><input type="text" class="form-control" id="ie_email2" name="ie_email2"></td>
 												<td>회사주소</td>
-												<td colspan="3"><input type="text" class="form-control" id="ir_name" name="ir_name"></td>
+												<td colspan="3"><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress"></td>
 											</tr>
 											<tr>
 												<td colspan="8">
 													<fieldset class="padding-10 text-right"> 
-														<button type="button" onclick="" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
+														<input type="hidden" id="buttionType2" name="buttionType2" value="insert"> 
+														<input type="hidden" id="dbp_keyno2" name="dbp_keyno2" value=""> 
+														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
 														</button>
 														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
 														</button>
@@ -224,9 +226,6 @@
 
 
 <script type="text/javascript">
-
-$(function(){
-});
 
 function providerSelect(value){
 	console.log(value)
@@ -331,5 +330,94 @@ function validationCheck(){
 	}
 	return true	
 }
+
+
+
+//----------------------------------공급받는자 script---------------------------------------------------------
+
+
+function providerSelect2(value){
+	
+	if(value == "0"){
+		clear();
+		$("#ActionType2").html('<i class="fa fa-floppy-o"></i> 저장')
+		
+		$("#buttionType2").val("insert");
+	}else{
+		providerSelectmethod2(value);
+	}
+}
+
+function clear2(){
+	$("#ie_companynumber").val("")
+	$("#ie_biztype").val("")
+	$("#ie_companyname").val("")
+	$("#ie_bizclassification").val("")
+	$("#ie_taxnumber").val("")
+	$("#ie_ceoname").val("")
+	$("#ie_busename1").val("")
+	$("#ie_name1").val("")
+	$("#ie_cell1").val("")
+	$("#ie_email1").val("")
+	$("#ie_busename2").val("")
+	$("#ie_name2").val("")
+	$("#ie_cell2").val("")
+	$("#ie_email2").val("")
+	$("#ie_companyaddress").val("")
+}
+
+function providerSelectmethod2(value){
+	 $.ajax({
+        url: '/dyAdmin/bills/providerSelectAjax2.do',
+        type: 'POST',
+        data: {
+        	"dbs_keyno":value
+        },
+        async: false,  
+        success: function(result) {
+        	$("#ie_companynumber").val(result.dbs_co_num)
+        	$("#ie_biztype").val(result.dbs_biztype)
+        	$("#ie_companyname").val(result.dbs_name)
+        	$("#ie_bizclassification").val(result.dbs_bizclassification)
+        	$("#ie_taxnumber").val(result.dbs_taxnum)
+        	$("#ie_ceoname").val(result.dbs_ceoname)
+        	$("#ie_busename1").val(result.dbs_busename1)
+        	$("#ie_name1").val(result.dbs_name1)
+        	$("#ie_cell1").val(result.dbs_cell1)
+        	$("#ie_email1").val(result.dbs_email1)
+        	$("#ie_busename2").val(result.dbs_busename2)
+        	$("#ie_name2").val(result.dbs_name2)
+        	$("#ie_cell2").val(result.dbs_cell2)
+        	$("#ie_email2").val(result.dbs_email2)
+        	$("#ie_companyaddress").val(result.dbs_address)
+        	
+        	$("#ActionType2").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
+        	$("#buttionType2").val("update");
+        },
+        error: function(){
+        	alert("공급자 선택 에러");
+        }
+	}); 
+}
+
+function providerInsert2(){
+	
+	//if(!validationCheck2()) return false
+	
+	 $.ajax({
+        url: '/dyAdmin/bills/billsActionAjax2.do',
+        type: 'POST',
+        data: $("#Form2").serialize(),
+        async: false,  
+        success: function(result) {
+        	alert(result);
+        },
+        error: function(){
+        	alert("공급자 선택 에러");
+        }
+	}); 
+}
+
+
 
 </script>

@@ -50,16 +50,53 @@ public class RestApiTest {
 		 String msg = "";
 		 
 		 if(type.equals("update")) {
-			 Component.updateData("bills.billsProvideUPdate", bill);
+			 Component.updateData("bills.billsProvideUPdate2", bill);
 			 msg = "수정이 완료 되었습니다.";
 		 }else {
 			//등록된 사업자등록번호 확인 
-			 int count = Component.getCount("bills.billCount",bill);
+			 int count = Component.getCount("bills.billCount2",bill);
 			 
 			 if(count > 0) {
 				 msg = "사업자 등록 번호가 이미 등록되어있습니다.";
 			 }else {
 				 Component.createData("bills.billsProvideInsert", bill);
+				 msg = "등록이 완료 되었습니다.";
+			 }
+		 }
+		
+		 return msg;
+	}
+	
+	@RequestMapping("/dyAdmin/bills/providerSelectAjax2.do")
+	@ResponseBody
+	public HashMap<String,Object> providerSelectAjax2(HttpServletRequest req,
+			@RequestParam(value="dbs_keyno")String dbs_keyno
+			) throws Exception {
+		 
+		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",dbs_keyno);
+		
+		return map;
+	}
+	
+	
+	
+	@RequestMapping("/dyAdmin/bills/billsActionAjax2.do")
+	@ResponseBody
+	public String billsActionAjax2(HttpServletRequest req,billDTO bill, @RequestParam(value="buttionType2", defaultValue="insert")String type) throws Exception {
+		 
+		 String msg = "";
+		 
+		 if(type.equals("update")) {
+			 Component.updateData("bills.billsProvideUPdate2", bill);
+			 msg = "수정이 완료 되었습니다.";
+		 }else {
+			//등록된 사업자등록번호 확인 
+			 int count = Component.getCount("bills.billCount2",bill);
+			 
+			 if(count > 0) {
+				 msg = "사업자 등록 번호가 이미 등록되어있습니다.";
+			 }else {
+				 Component.createData("bills.billsProvideInsert2", bill);
 				 msg = "등록이 완료 되었습니다.";
 			 }
 		 }

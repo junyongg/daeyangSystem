@@ -138,10 +138,10 @@
 									<label class="col-md-3 control-label"><span class="nessSpan">*</span> 공급받는자 선택</label>
 									
 									<div class="col-md-6">
-										<select class="form-control input-sm select2" id="user" name="user" onchange="providerSelect(this.value)">
+										<select class="form-control input-sm select2" id="user" name="user" onchange="providerSelect2(this.value)">
 											<option value="0">신규 등록</option>
-											<c:forEach items="${billListSub }" var="b">
-												<option value="${b.dbp_keyno }">${b.dbp_name }</option>
+											<c:forEach items="${billList_sub }" var="b">
+												<option value="${b.dbs_keyno }">${b.dbs_name }</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -202,9 +202,10 @@
 											<tr>
 												<td colspan="8">
 													<fieldset class="padding-10 text-right"> 
-														<input type="hidden" id="buttionType2" name="buttionType2" value="insert"> 
+														<input type="hidden" id="buttionType2" name="buttionType2" value="insert">
+														<input type="hidden" id="dbs_keyno" name="dbs_keyno" value=""> 
 														<input type="hidden" id="dbp_keyno2" name="dbp_keyno2" value=""> 
-														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
+														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary" id="ActionType2"><i class="fa fa-floppy-o"></i> 저장
 														</button>
 														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
 														</button>
@@ -339,7 +340,7 @@ function validationCheck(){
 function providerSelect2(value){
 	
 	if(value == "0"){
-		clear();
+		clear2();
 		$("#ActionType2").html('<i class="fa fa-floppy-o"></i> 저장')
 		
 		$("#buttionType2").val("insert");
@@ -375,6 +376,7 @@ function providerSelectmethod2(value){
         },
         async: false,  
         success: function(result) {
+        	$("#dbs_keyno").val(result.dbs_keyno)
         	$("#ie_companynumber").val(result.dbs_co_num)
         	$("#ie_biztype").val(result.dbs_biztype)
         	$("#ie_companyname").val(result.dbs_name)

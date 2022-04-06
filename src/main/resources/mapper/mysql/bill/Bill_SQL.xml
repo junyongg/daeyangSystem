@@ -7,6 +7,11 @@
 			FROM dy_bills_provider
 		</select>
 		
+		<select id="billsSelect2" resultType="hashmap" >
+			SELECT * 
+			FROM dy_bills_supplied
+		</select>
+		
 		<select id="billsSelect_one" resultType="hashmap" parameterType="String">
 			SELECT * 
 			FROM dy_bills_provider
@@ -129,8 +134,8 @@
 			dbs_email1 = #{ie_email1},
 			dbs_busename2 = #{ie_busename2},
 			dbs_name2 = #{ie_name2},
-			dbs_cell2 = #{ie_cell2}
-			dbs_email2 = #{ie_email2}
+			dbs_cell2 = #{ie_cell2},
+			dbs_email2 = #{ie_email2},
 			dbs_address = #{ie_companyaddress}
 		WHERE dbs_keyno = #{dbs_keyno}
 	</update>

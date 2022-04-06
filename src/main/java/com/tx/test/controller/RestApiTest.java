@@ -54,6 +54,8 @@ public class RestApiTest {
 	 @RequestMapping("/dyAdmin/bills/hanjeon.do")
 	   public ModelAndView billshanjeon(HttpServletRequest req) throws Exception {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_hanjeon.adm");
+		   
+		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		
 	      return mv;
 	  }
@@ -62,7 +64,9 @@ public class RestApiTest {
 	 @RequestMapping("/dyAdmin/bills/client.do")
 	   public ModelAndView billsclient(HttpServletRequest req) throws Exception {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_client.adm");
-		
+		   
+		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
+		   
 	      return mv;
 	  }
 	 
@@ -70,6 +74,8 @@ public class RestApiTest {
 	 @RequestMapping("/dyAdmin/bills/admin.do")
 	   public ModelAndView billsadmin(HttpServletRequest req) throws Exception {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_admin.adm");
+		   
+		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		
 	      return mv;
 	  }
@@ -80,6 +86,7 @@ public class RestApiTest {
 			@RequestParam(value="dbp_keyno")String dbp_keyno
 			) throws Exception {
 		 
+		
 		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",dbp_keyno);
 		
 		return map;

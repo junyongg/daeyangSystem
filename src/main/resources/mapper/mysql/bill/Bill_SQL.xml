@@ -61,7 +61,7 @@
 				dbp_ir_name = #{ir_name},
 				dbp_ir_cell = #{ir_cell},
 				dbp_email = #{ir_email},
-				dbp_address = #{ir_companyaddress}
+				dbp_address = #{ir_companyaddress},
 			WHERE dbp_keyno = #{dbp_keyno}
 		</update>
 		
@@ -69,7 +69,10 @@
 		<select id="billCount" resultType="int" parameterType="billDTO">
 			SELECT COUNT(*) FROM dy_bills_provider WHERE dbp_co_num = #{ir_companynumber}
 		</select>
-		
+		<select id="billsSelect2" resultType="hashmap" >
+			SELECT * 
+			FROM dy_bills_supplied
+		</select>
 		
 		<select id="SuppliedSelect_one" resultType="hashmap" parameterType="String">
 			SELECT * 

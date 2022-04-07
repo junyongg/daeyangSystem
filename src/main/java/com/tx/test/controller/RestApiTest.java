@@ -56,6 +56,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_hanjeon.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
+		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
 		
 	      return mv;
 	  }
@@ -66,6 +67,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_client.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
+		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
 		   
 	      return mv;
 	  }
@@ -76,6 +78,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_admin.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
+		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
 		
 	      return mv;
 	  }
@@ -101,11 +104,11 @@ public class RestApiTest {
 		 String msg = "";
 		 
 		 if(type.equals("update")) {
-			 Component.updateData("bills.billsProvideUPdate2", bill);
+			 Component.updateData("bills.billsProvideUPdate", bill);
 			 msg = "수정이 완료 되었습니다.";
 		 }else {
 			//등록된 사업자등록번호 확인 
-			 int count = Component.getCount("bills.billCount2",bill);
+			 int count = Component.getCount("bills.billCount",bill);
 			 
 			 if(count > 0) {
 				 msg = "사업자 등록 번호가 이미 등록되어있습니다.";
@@ -151,6 +154,18 @@ public class RestApiTest {
 				 msg = "등록이 완료 되었습니다.";
 			 }
 		 }
+		
+		 return msg;
+	}
+	
+	@RequestMapping("/dyAdmin/bills/sendNtsAjax.do")
+	@ResponseBody
+	public billDTO sendNTS(HttpServletRequest req, billDTO bill)
+			throws Exception {
+		 
+		 billDTO msg = bill;
+		 
+		 
 		
 		 return msg;
 	}

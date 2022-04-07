@@ -88,57 +88,57 @@ public class RestApiSample_post {
 		JSONObject data = new JSONObject();
 
 		// JSONObject객체에 세금계산서 정보를 추가
-		data.put("hometaxbill_id", taxinfo.get(0).get(0));			// 회사코드 (아이디) (사용자코드 1001 
-		data.put("spass", taxinfo.get(0).get(1));					// 패스워드 
-		data.put("apikey", taxinfo.get(0).get(2));					// 인증키
-		data.put("homemunseo_id", taxinfo.get(0).get(3));			// 고유번호
+		data.put("hometaxbill_id", taxinfo.get(0).get(0));			// 회사코드 (아이디) (사용자코드 1001 *
+		data.put("spass", taxinfo.get(0).get(1));					// 패스워드 *
+		data.put("apikey", taxinfo.get(0).get(2));					// 인증키*
+		data.put("homemunseo_id", taxinfo.get(0).get(3));			// 고유번호*
 		data.put("signature", taxinfo.get(0).get(4));				// 전자서명
 		
 		data.put("issueid", taxinfo.get(0).get(5));					// 승인번호(자동생성)
-		data.put("typecode1", taxinfo.get(0).get(6));				// (세금)계산서 종류1
-		data.put("typecode2", taxinfo.get(0).get(7));				// (세금)계산서 종류2
+		data.put("typecode1", taxinfo.get(0).get(6));				// (세금)계산서 종류1*
+		data.put("typecode2", taxinfo.get(0).get(7));				// (세금)계산서 종류2*
 		data.put("description", taxinfo.get(0).get(8));				// 비고
-		data.put("issuedate", taxinfo.get(0).get(9));				// 작성일자
+		data.put("issuedate", taxinfo.get(0).get(9));				// 작성일자*
 		
 		data.put("modifytype", taxinfo.get(0).get(10));				// 수정사유
-		data.put("purposetype", taxinfo.get(0).get(11));			// 영수/청구 구분
+		data.put("purposetype", taxinfo.get(0).get(11));			// 영수/청구 구분*
 		data.put("originalissueid", taxinfo.get(0).get(12));		// 당초전자(세금)계산서 승인번호
 		data.put("si_id", taxinfo.get(0).get(13));					// 수입신고번호
-		data.put("si_hcnt", taxinfo.get(0).get(14));				// 수입총건
+		data.put("si_hcnt", taxinfo.get(0).get(14));				// 수입총건 *
 		
 		data.put("si_startdt", taxinfo.get(0).get(15));				// 일괄발급시작일
 		data.put("si_enddt", taxinfo.get(0).get(16));				// 일괄발급종료일
-		data.put("ir_companynumber", taxinfo.get(0).get(17));		// 공급자 사업자등록번호
-		data.put("ir_biztype", taxinfo.get(0).get(18));				// 공급자 업태
-		data.put("ir_companyname", taxinfo.get(0).get(19));			// 공급자 상호
+		data.put("ir_companynumber", taxinfo.get(0).get(17));		// 공급자 사업자등록번호*
+		data.put("ir_biztype", taxinfo.get(0).get(18));				// 공급자 업태*
+		data.put("ir_companyname", taxinfo.get(0).get(19));			// 공급자 상호*
 		
-		data.put("ir_bizclassification", taxinfo.get(0).get(20));	// 공급자 업종
-		data.put("ir_ceoname", taxinfo.get(0).get(21));				// 공급자 대표자성명
+		data.put("ir_bizclassification", taxinfo.get(0).get(20));	// 공급자 업종*
+		data.put("ir_ceoname", taxinfo.get(0).get(21));				// 공급자 대표자성명*
 		data.put("ir_busename", taxinfo.get(0).get(22));			// 공급자 담당부서명
-		data.put("ir_name", taxinfo.get(0).get(23));				// 공급자 담당자명
-		data.put("ir_cell", taxinfo.get(0).get(24));				// 공급자 담당자전화번호
+		data.put("ir_name", taxinfo.get(0).get(23));				// 공급자 담당자명*
+		data.put("ir_cell", taxinfo.get(0).get(24));				// 공급자 담당자전화번호*
 		
-		data.put("ir_email", taxinfo.get(0).get(25));				// 공급자 담당자이메일
-		data.put("ir_companyaddress", taxinfo.get(0).get(26));		// 공급자 주소
-		data.put("ie_companynumber", taxinfo.get(0).get(27));		// 공급받는자 사업자등록번호
-		data.put("ie_biztype", taxinfo.get(0).get(28));				// 공급받는자 업태
-		data.put("ie_companyname", taxinfo.get(0).get(29));			// 공급받는자 사업체명
+		data.put("ir_email", taxinfo.get(0).get(25));				// 공급자 담당자이메일*
+		data.put("ir_companyaddress", taxinfo.get(0).get(26));		// 공급자 주소*
+		data.put("ie_companynumber", taxinfo.get(0).get(27));		// 공급받는자 사업자등록번호*
+		data.put("ie_biztype", taxinfo.get(0).get(28));				// 공급받는자 업태*
+		data.put("ie_companyname", taxinfo.get(0).get(29));			// 공급받는자 사업체명*
 		
-		data.put("ie_bizclassification", taxinfo.get(0).get(30));	// 공급받는자 업종
+		data.put("ie_bizclassification", taxinfo.get(0).get(30));	// 공급받는자 업종*
 		data.put("ie_taxnumber", taxinfo.get(0).get(31));			// 공급받는자 종사업장번호
-		data.put("partytypecode", taxinfo.get(0).get(32));			// 공급받는자 구분 01=사업자등록번호 02=주민등록번호 03=외국인
-		data.put("ie_ceoname", taxinfo.get(0).get(33));				// 공급받는자 대표자명
+		data.put("partytypecode", taxinfo.get(0).get(32));			// 공급받는자 구분 01=사업자등록번호 02=주민등록번호 03=외국인*
+		data.put("ie_ceoname", taxinfo.get(0).get(33));				// 공급받는자 대표자명*
 		data.put("ie_busename1", taxinfo.get(0).get(34));			// 공급받는자 담당부서1
 		
-		data.put("ie_name1", taxinfo.get(0).get(35));				// 공급받는자 담당자명1
-		data.put("ie_cell1", taxinfo.get(0).get(36));				// 공급받는자 담당자연락처1
-		data.put("ie_email1", taxinfo.get(0).get(37));				// 공급받는자 담당자이메일1
+		data.put("ie_name1", taxinfo.get(0).get(35));				// 공급받는자 담당자명1*
+		data.put("ie_cell1", taxinfo.get(0).get(36));				// 공급받는자 담당자연락처1*
+		data.put("ie_email1", taxinfo.get(0).get(37));				// 공급받는자 담당자이메일1*
 		data.put("ie_busename2", taxinfo.get(0).get(38));			// 공급받는자 담당부서2
 		data.put("ie_name2", taxinfo.get(0).get(39));				// 공급받는자 담당자명2
 		
 		data.put("ie_cell2", taxinfo.get(0).get(40));				// 공급받는자 담당자연락처2
 		data.put("ie_email2", taxinfo.get(0).get(41));				// 공급받는자 담당자이메일2
-		data.put("ie_companyaddress", taxinfo.get(0).get(42));		// 공급받는자 회사주소
+		data.put("ie_companyaddress", taxinfo.get(0).get(42));		// 공급받는자 회사주소*
 		data.put("su_companynumber", taxinfo.get(0).get(43));		// 수탁사업자 사업자등록번호
 		data.put("su_biztype", taxinfo.get(0).get(44));				// 수탁사업자 업태
 		
@@ -153,13 +153,13 @@ public class RestApiSample_post {
 		data.put("su_email", taxinfo.get(0).get(52));				// 수탁사업자 담당자이메일
 		data.put("su_companyaddress", taxinfo.get(0).get(53));		// 수탁사업자 회사주소
 		
-		data.put("cash", taxinfo.get(0).get(54));					// 현금
-		data.put("scheck", taxinfo.get(0).get(55));					// 수표
-		data.put("draft", taxinfo.get(0).get(56));					// 어음
-		data.put("uncollected", taxinfo.get(0).get(57));			// 외상 미수금
-		data.put("chargetotal", taxinfo.get(0).get(58));			// 총 공급가액
-		data.put("taxtotal", taxinfo.get(0).get(59));				// 총 세액 
-		data.put("grandtotal", taxinfo.get(0).get(60));				// 총 금액
+		data.put("cash", taxinfo.get(0).get(54));					// 현금*
+		data.put("scheck", taxinfo.get(0).get(55));					// 수표*
+		data.put("draft", taxinfo.get(0).get(56));					// 어음*
+		data.put("uncollected", taxinfo.get(0).get(57));			// 외상 미수금*
+		data.put("chargetotal", taxinfo.get(0).get(58));			// 총 공급가액*
+		data.put("taxtotal", taxinfo.get(0).get(59));				// 총 세액 *
+		data.put("grandtotal", taxinfo.get(0).get(60));				// 총 금액*
 
 		// 세금계산서 detail정보 생성.(입력할 detail정보개수만큼 for문 활성화)
 		JSONArray jArray = new JSONArray();

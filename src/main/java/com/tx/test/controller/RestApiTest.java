@@ -44,6 +44,7 @@ public class RestApiTest {
 	ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_producer_insertView.adm");
 	
 		mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
+		mv.addObject("billList_sub",Component.getListNoParam("bills.billsSelect2"));
 	
 	
 	     return mv;

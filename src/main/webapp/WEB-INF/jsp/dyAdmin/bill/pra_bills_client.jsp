@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
 
 <style>
 
@@ -26,7 +24,6 @@ form .error {color:red}
 <input type="hidden" name="hometaxbill_id" id="hometaxbill_id">
 <input type="hidden" name="spass" id="spass">
 <input type="hidden" name="apikey" id="apikey">
-<input type="hidden" name="homemunseo_id" id="homemunseo_id">
 <input type="hidden" name="signature" id="signature">
 <input type="hidden" name="issueid" id="issueid">
 <input type="hidden" name="typecode1" id="typecode1" value = "01">
@@ -109,8 +106,8 @@ form .error {color:red}
 											<th class="arrow" data-index="2">발전소 명</th>
 											<th class="arrow" data-index="3">주소</th>
 											<th class="arrow" data-index="4">이메일</th>
-											<th class="arrow" data-index="6">날짜</th>
-											<th class="arrow" data-index="5" style="width: 50px;">상태</th>
+											<th class="arrow" data-index="5">등록날짜</th>
+											<th class="arrow" data-index="6" style="width: 50px;">상태</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -128,19 +125,19 @@ form .error {color:red}
 												<td>${b.dbp_address}</td>
 												<td>${b.dbp_email}</td>
 												<td>${b.dbp_date}</td>
-												<td>완료</td>
+												<td>저장완료  or 정보입력</td>
 										</c:forEach>
 											</tr>
 									</tbody>
 								</table>
 							</div>
-<!-- 							<div style="text-align: center;"> -->
-<!-- 							<button class="btn btn-sm btn-primary" id="insertButton" -->
-<!-- 								type="button" onclick="" style="width : 100px;">국세청 전송</button> -->
-<!-- 							</div>	 -->
-				</div>
+							<div style="text-align: center;">
+							<button class="btn btn-sm btn-primary" id="insertButton"
+								type="button" onclick="" style="width : 100px;">국세청 전송</button>
+							</div>
+							</div>
 			</article>
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 80%; left:0px;" >
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
 				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 					data-widget-editbutton="false" >
 					<header>
@@ -155,25 +152,25 @@ form .error {color:red}
 					<span>기업</span> 
 					</label>
 					<label style="float: left;">
-					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "02" title = "개인" checked>
+					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "02" title = "개인" >
 					<span>개인</span> 
 					</label>
 					<label style="float: left;">
-					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "03" title = "외국인" checked>
+					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "03" title = "외국인">
 					<span>외국인</span> 
 					</label>
 					</div>
 					<div class="widget-body ">
 								<div class="form-group">
-									<label class="col-md-3 control-label"  style ="height: 30px; background-color: #f7b1b1;"><span class="nessSpan"></span> 공급자 선택</label>
+									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-								<select class="form-control input-sm select2 ir_keyno" id="ir_keyno" name="ir_keyno" onchange="providerSelect(this.value)">
-									<option>선택하세요</option>
-									<c:forEach items="${billList}" var="b">
-										<option value="${b.dbp_keyno}">${b.dbp_name}</option>
-									</c:forEach>
-								</select>
+									<select class="form-control input-sm select2 ir_keyno" id="ir_keyno" name="ir_keyno" onchange="providerSelect(this.value)">
+										<option>선택하세요</option>
+										<c:forEach items="${billList}" var="b">
+											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
+										</c:forEach>
+									</select>
 									</div>
 								</div>
 							<div id="myTabContent1"
@@ -190,18 +187,18 @@ form .error {color:red}
 										</colgroup>
 										<tbody>
 											<tr>
-												<td style="background-color: #f7b1b1;" >사업자등록번호</td>
-												<td><input type="text" class="form-control check2" id="ir_companynumber" name="ir_companynumber"></td>
+												<td style="background-color: #f7b1b1;">등록 번호</td>
+												<td><input type="text" class="form-control check2" id="homemunseo_id" name="homemunseo_id" value=""></td>
+												<td style="background-color: #f7b1b1;">사업자등록번호</td>
+												<td><input type="text" class="form-control check2" id="ir_companynumber" name="ir_companynumber"></td>											
 												<td style="background-color: #f7b1b1;">업태</td>
-												<td><input type="text" class="form-control check2" id="ir_biztype" name="ir_biztype"></td>											
+												<td><input type="text" class="form-control check2" id="ir_biztype" name="ir_biztype"></td>
 												<td style="background-color: #f7b1b1;">사업체명</td>
 												<td><input type="text" class="form-control check2" id="ir_companyname" name="ir_companyname"></td>
-												<td style="background-color: #f7b1b1;">업종</td>
-												<td><input type="text" class="form-control check2" id="ir_bizclassificatio" name="ir_bizclassification"></td>
 											</tr>
 											<tr>
-												<td style="background-color: #f7b1b1;">종사업장번호</td>
-												<td><input type="text" class="form-control check2" id="ir_taxnumber" name="ir_taxnumber"></td>
+												<td style="background-color: #f7b1b1;">업종</td>
+												<td><input type="text" class="form-control check2" id="ir_bizclassificatio" name="ir_bizclassificatio"></td>
 												<td style="background-color: #f7b1b1;">대표자명</td>
 												<td><input type="text" class="form-control check2" id="ir_ceoname" name="ir_ceoname"></td>
 												<td style="background-color: #f7b1b1;">회사주소</td>
@@ -213,7 +210,7 @@ form .error {color:red}
 							</div>
                      <!-- ----------------------------------------------   공급받는자 DIV  ----------------------------------------------------------->
 						<div class="form-group">
-									<label class="col-md-3 control-label" style= "height: 30px; background-color: #b0ccfe;"><span class="nessSpan"></span> 공급받는자 선택</label>
+									<label class="col-md-3" style= "height: 30px; background-color: #b0ccfe; padding: 7px; margin-left: 11px;">공급받는자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
 								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
@@ -343,21 +340,21 @@ form .error {color:red}
 												<td rowspan = "2" style="text-align: center;">
 												<span>
 												<label>
-												<input type="radio" class="form-control" name="purposetype" title = "영수" value = "01">영수
+													<input type="radio" class="form-control" name="purposetype" title = "영수" value = "01" checked>영수
 												</label>
 												<br>
 												<label>
-												<input type="radio" class="form-control" name="purposetype" title = "청구" value = "02">청구
+													<input type="radio" class="form-control" name="purposetype" title = "청구" value = "02">청구
 												</label>
 												</span>
 												</td>
 											</tr>
 											<tr>	
-												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal"></td>
-												<td><input type="text" class="form-control check2" id="cash" name="cash"></td>	
-												<td><input type="text" class="form-control" id="scheck" name="scheck"></td>
-												<td><input type="text" class="form-control" id="draft" name="draft"></td>
-												<td><input type="text" class="form-control" id="uncollected" name="uncollected"></td>
+												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)"></td>	
+												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -408,7 +405,7 @@ form .error {color:red}
 									</div>
 						<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="sendButton"
-								type="button" onclick="sendNts()" style="width: 100px;">국세청 전송</button>
+								type="button" onclick="sendNts()" style="width: 100px;">저장</button>
 						</div>
 						</fieldset>
 								</div>
@@ -444,7 +441,9 @@ function providerSelect(value){
        	$("#issueid").val()
        	$("#ir_keyno").val(result.dbp_keyno)
        	$("#ir_companynumber").val(result.dbp_co_num)
-//      	$("#ir_taxnumber").val() //종 사업장 번호
+       	
+       	$("#homemunseo_id").val(result.dbp_homemunseo_id)
+
        	$("#ir_companyname").val(result.dbp_name)
        	$("#ir_ceoname").val(result.dbp_ceoname)
        	$("#ir_companyaddress").val(result.dbp_address)
@@ -523,4 +522,18 @@ function seletAll(){
 }
 
 
+function inputNumberFormat(obj) {
+    obj.value = comma(uncomma(obj.value));
+}
+
+function comma(str) {
+    str = String(str);
+
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+function uncomma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
 </script>

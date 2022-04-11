@@ -92,8 +92,23 @@ public class RestApiTest {
 			) throws Exception {
 		 
 		
+
 		String keyno = dbp_keyno.substring(1);
 		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",keyno);
+
+
+		//등록번호 추출 부분
+		String code = map.get("dbp_homemunseo_id").toString();
+		if(code.equals("0")) {
+			code = map.get("dbp_id").toString().substring(0,3) + "1";
+			System.out.println(code);
+		}else {
+			String codenum = code.substring(code.length()-8,code.length());
+			int tempc = Integer.parseInt(codenum) + 1 ;
+			code = map.get("dbp_id").toString().substring(0,3) + tempc;
+		}
+		
+		map.put("dbp_homemunseo_id",code);
 		
 		return map;
 	}

@@ -216,7 +216,7 @@ form .error {color:red}
 									<label class="col-md-3 control-label" style= "height: 30px; background-color: #b0ccfe;"><span class="nessSpan"></span> 공급받는자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="providerSelect2(this.value)">
+								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
 									<option>선택하세요</option>
 									<c:forEach items="${billList2}" var="b">
 										<option value="${b.dbs_keyno}">${b.dbs_name}</option>
@@ -432,10 +432,8 @@ function providerSelect(value){
 	 $.ajax({
        url: '/dyAdmin/bills/providerSelectAjax.do',
        type: 'POST',
-       data: {
-          	"dbp_keyno":value
-          },
-       async: false,  
+       data: $("#Form").serialize(),
+       async: false,
        success: function(result) {
     	   
     	   
@@ -468,17 +466,15 @@ function providerSelect(value){
 
 // ---------------------------- 공급 받는자 --------------------------------------------------------
 
-function providerSelect2(value){
+function supliedSelect(value){
 	 $.ajax({
-       url: '/dyAdmin/bills/providerSelectAjax2.do',
+       url: '/dyAdmin/bills/supliedSelectAjax.do',
        type: 'POST',
-       data: {
-          	"dbs_keyno":value
-          },
+       data: $("#Form").serialize(),
        async: false,  
        success: function(result) {
     	   
-    	   
+    	console.log(result);
        	$("#ie_keyno").val(result.dbs_keyno)
        	$("#ie_companynumber").val(result.dbs_co_num)
      	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
@@ -511,6 +507,7 @@ function sendNts(){
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
+        	
         	cf_smallBox('전송 완료', "세금 계산서 발행 완료", 3000,);
         },
         error: function(){

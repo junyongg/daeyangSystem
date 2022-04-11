@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,11 +88,12 @@ public class RestApiTest {
 	@RequestMapping("/dyAdmin/bills/providerSelectAjax.do")
 	@ResponseBody
 	public HashMap<String,Object> providerSelectAjax(HttpServletRequest req,
-			@RequestParam(value="dbp_keyno")String dbp_keyno
+			@RequestParam(value="ir_keyno")String dbp_keyno
 			) throws Exception {
 		 
 		
-		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",dbp_keyno);
+		String keyno = dbp_keyno.substring(1);
+		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",keyno);
 		
 		return map;
 	}
@@ -100,7 +102,8 @@ public class RestApiTest {
 	
 	@RequestMapping("/dyAdmin/bills/billsActionAjax.do")
 	@ResponseBody
-	public String billsActionAjax(HttpServletRequest req,billDTO bill, @RequestParam(value="buttionType", defaultValue="insert")String type) throws Exception {
+	public String billsActionAjax(HttpServletRequest req,billDTO bill, 
+			@RequestParam(value="buttionType", defaultValue="insert")String type) throws Exception {
 		 
 		 String msg = "";
 		 
@@ -122,13 +125,14 @@ public class RestApiTest {
 		 return msg;
 	}
 	
-	@RequestMapping("/dyAdmin/bills/providerSelectAjax2.do")
+	@RequestMapping("/dyAdmin/bills/supliedSelectAjax.do")
 	@ResponseBody
-	public HashMap<String,Object> providerSelectAjax2(HttpServletRequest req,
-			@RequestParam(value="dbs_keyno")String dbs_keyno
+	public HashMap<String, Object> supliedSelectAjax(HttpServletRequest req,
+			@RequestParam(value="ie_keyno")String dbs_keyno
 			) throws Exception {
-		 
-		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",dbs_keyno);
+		
+		String keyno = dbs_keyno.substring(1);
+		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",keyno);
 		
 		return map;
 	}

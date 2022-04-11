@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class billDTO {
 	
+	
 	String dbp_keyno, 	
 	dbs_keyno, 	
 	hometaxbill_id,

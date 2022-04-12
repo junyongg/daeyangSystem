@@ -79,7 +79,14 @@ public class billDTO {
 	,uncollected
 	,chargetotal
 	,taxtotal
-	,grandtotal = "";
+	,grandtotal
+	,supplyprice
+	,quantity
+	,unit
+	,subject
+	,gyymmdd
+	,tax
+	,unitprice = "";
 	
 	
 

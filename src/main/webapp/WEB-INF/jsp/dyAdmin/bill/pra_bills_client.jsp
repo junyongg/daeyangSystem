@@ -125,7 +125,7 @@ form .error {color:red}
 												<td>${b.dbp_address}</td>
 												<td>${b.dbp_email}</td>
 												<td>${b.dbp_date}</td>
-												<td>저장완료  or 정보입력</td>
+												<td>저장완료</td>
 										</c:forEach>
 											</tr>
 									</tbody>
@@ -137,7 +137,7 @@ form .error {color:red}
 							</div>
 							</div>
 			</article>
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
 				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 					data-widget-editbutton="false" >
 					<header>
@@ -198,7 +198,7 @@ form .error {color:red}
 											</tr>
 											<tr>
 												<td style="background-color: #f7b1b1;">업종</td>
-												<td><input type="text" class="form-control check2" id="ir_bizclassificatio" name="ir_bizclassificatio"></td>
+												<td><input type="text" class="form-control check2" id="ir_bizclassification" name="ir_bizclassification"></td>
 												<td style="background-color: #f7b1b1;">대표자명</td>
 												<td><input type="text" class="form-control check2" id="ir_ceoname" name="ir_ceoname"></td>
 												<td style="background-color: #f7b1b1;">회사주소</td>
@@ -215,7 +215,7 @@ form .error {color:red}
 									<div class="col-md-6" style="padding-bottom: 20px;">
 								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
 									<option>선택하세요</option>
-									<c:forEach items="${billList2}" var="b">
+									<c:forEach items="${SuppliedList}" var="b">
 										<option value="${b.dbs_keyno}">${b.dbs_name}</option>
 									</c:forEach>
 								</select>
@@ -360,7 +360,7 @@ form .error {color:red}
 									</table>
 								</div>
 							</div>	
-						     <!-- ----------------------------------------------   발급,수신 담장자 DIV  ----------------------------------------------------------->
+						     <!-- ----------------------------------------------   발급,수신 담당자 DIV  ----------------------------------------------------------->
 						     <div style = "margin-top: 30px">
 						     <table id="" class="table table-bordered table-striped" style="text-align: center;">
 										<colgroup>
@@ -429,7 +429,9 @@ function providerSelect(value){
 	 $.ajax({
        url: '/dyAdmin/bills/providerSelectAjax.do',
        type: 'POST',
-       data: $("#Form").serialize(),
+       data: {
+       	"dbp_keyno":value
+       },
        async: false,
        success: function(result) {
     	   
@@ -439,11 +441,9 @@ function providerSelect(value){
        	$("#apikey").val(result.dbp_apikey)
        	$("#homemunseo_id").val()
        	$("#issueid").val()
-       	$("#ir_keyno").val(result.dbp_keyno)
-       	$("#ir_companynumber").val(result.dbp_co_num)
-       	
+//      $("#ir_keyno").val(result.dbp_keyno)
+       	$("#ir_companynumber").val(result.dbp_co_num) 	
        	$("#homemunseo_id").val(result.dbp_homemunseo_id)
-
        	$("#ir_companyname").val(result.dbp_name)
        	$("#ir_ceoname").val(result.dbp_ceoname)
        	$("#ir_companyaddress").val(result.dbp_address)
@@ -453,11 +453,11 @@ function providerSelect(value){
        	$("#ir_busename").val(result.dbp_busename)
        	$("#ir_name").val(result.dbp_name)
        	$("#ir_email").val(result.dbp_email)
-       	$("#ir_cell").val(result.dbp_cell)
+       	$("#ir_cell").val(result.dbp_ir_cell)
        	
        },
        error: function(){
-       	alert("공급받는자 정보 불러오기 에러");
+       	alert("공급자 정보 불러오기 에러");
        }
 	}); 
 }
@@ -469,12 +469,14 @@ function supliedSelect(value){
 	 $.ajax({
        url: '/dyAdmin/bills/supliedSelectAjax.do',
        type: 'POST',
-       data: $("#Form").serialize(),
-       async: false,  
+       data: {
+       	"dbs_keyno":value
+       },
+       async: false,
        success: function(result) {
     	   
     	console.log(result);
-       	$("#ie_keyno").val(result.dbs_keyno)
+//        	$("#ie_keyno").val(result.dbs_keyno)
        	$("#ie_companynumber").val(result.dbs_co_num)
      	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
        	$("#ie_companyname").val(result.dbs_name)
@@ -501,13 +503,14 @@ function sendNts(){
 // 	if(!validationCheck()) return false
 	
 	 $.ajax({
-        url: '/dyAdmin/bills/sendNtsAjax.do',
+        url: '/dyAdmin/bills/loadBillInfo.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	
+        	console.log(result);
         	cf_smallBox('전송 완료', "세금 계산서 발행 완료", 3000,);
+        	
         },
         error: function(){
         	alert("전송 실패");

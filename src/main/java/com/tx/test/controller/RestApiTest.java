@@ -2,6 +2,8 @@ package com.tx.test.controller;
 
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +49,7 @@ public class RestApiTest {
 	ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_producer_insertView.adm");
 	
 		mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
-		mv.addObject("billList_sub",Component.getListNoParam("bills.billsSelect2"));
+		mv.addObject("billList_sub",Component.getListNoParam("bills.SuppliedSelect"));
 	
 	
 	     return mv;
@@ -58,7 +62,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_hanjeon.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
-		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
+		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		
 	      return mv;
 	  }
@@ -69,7 +73,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_client.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
-		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
+		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		   
 	      return mv;
 	  }
@@ -80,7 +84,7 @@ public class RestApiTest {
 		   ModelAndView mv = new ModelAndView("/dyAdmin/bill/pra_bills_admin.adm");
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
-		   mv.addObject("billList2",Component.getListNoParam("bills.billsSelect2"));
+		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		
 	      return mv;
 	  }
@@ -88,13 +92,13 @@ public class RestApiTest {
 	@RequestMapping("/dyAdmin/bills/providerSelectAjax.do")
 	@ResponseBody
 	public HashMap<String,Object> providerSelectAjax(HttpServletRequest req,
-			@RequestParam(value="ir_keyno")String dbp_keyno
+			@RequestParam(value="dbp_keyno")String dbp_keyno
 			) throws Exception {
 		 
 		
 
-		String keyno = dbp_keyno.substring(1);
-		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",keyno);
+//		String keyno = dbp_keyno.substring(1);
+		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",dbp_keyno);
 
 
 		//등록번호 추출 부분
@@ -143,11 +147,13 @@ public class RestApiTest {
 	@RequestMapping("/dyAdmin/bills/supliedSelectAjax.do")
 	@ResponseBody
 	public HashMap<String, Object> supliedSelectAjax(HttpServletRequest req,
-			@RequestParam(value="ie_keyno")String dbs_keyno
+			@RequestParam(value="dbs_keyno")String dbs_keyno
 			) throws Exception {
 		
-		String keyno = dbs_keyno.substring(1);
-		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",keyno);
+//		String keyno = dbs_keyno.substring(1);
+		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",dbs_keyno);
+		
+//		map.replace("dbs_keyno",keyno);
 		
 		return map;
 	}
@@ -178,16 +184,110 @@ public class RestApiTest {
 		 return msg;
 	}
 	
-	@RequestMapping("/dyAdmin/bills/sendNtsAjax.do")
+	@RequestMapping("/dyAdmin/bills/loadBillInfo.do")
 	@ResponseBody
-	public billDTO sendNTS(HttpServletRequest req, billDTO bill)
+	public static void loadBillInfo(HttpServletRequest req, billDTO bill)
 			throws Exception {
-		 
-		 billDTO msg = bill;
-		 
-		 
-		
-		 return msg;
+
+			// JSONObject객체 생성
+			JSONObject data = new JSONObject();
+
+			// JSONObject객체에 세금계산서 정보를 추가
+			data.put("hometaxbill_id", bill.getHometaxbill_id());				// 회사코드 (아이디) (사용자코드 1001 *
+			data.put("spass", bill.getSpass());									// 패스워드 *
+			data.put("apikey", bill.getApikey() );								// 인증키*
+			data.put("homemunseo_id",bill.getHomemunseo_id() );					// 고유번호*
+			data.put("signature",bill.getSignature() );							// 전자서명
+			
+			data.put("issueid",bill.getIssueid() );								// 승인번호(자동생성)
+			data.put("typecode1",bill.getTypecode1() );							// (세금)계산서 종류1*
+			data.put("typecode2",bill.getTypecode2() );							// (세금)계산서 종류2*
+			data.put("description", bill.getDescription() );						// 비고
+			data.put("issuedate",bill.getIssuedate() );							// 작성일자*
+			
+			data.put("modifytype",bill.getModifytype() );						// 수정사유
+			data.put("purposetype",bill.getPurposetype() );						// 영수/청구 구분*
+			data.put("originalissueid",bill.getOriginalissueid() );				// 당초전자(세금)계산서 승인번호
+			data.put("si_id",bill.getSi_id() );									// 수입신고번호
+			data.put("si_hcnt",bill.getSi_hcnt() );								// 수입총건 *
+			
+			data.put("si_startdt",bill.getSi_startdt() );						// 일괄발급시작일
+			data.put("si_enddt",bill.getSi_enddt() );							// 일괄발급종료일
+			data.put("ir_companynumber",bill.getIr_companynumber() );			// 공급자 사업자등록번호*
+			data.put("ir_biztype",bill.getIr_biztype() );						// 공급자 업태*
+			data.put("ir_companyname",bill.getIr_companyname() );				// 공급자 상호*
+			
+			data.put("ir_bizclassification",bill.getIr_bizclassification() );	// 공급자 업종*
+			data.put("ir_ceoname",bill.getIr_ceoname());						// 공급자 대표자성명*
+			data.put("ir_busename",bill.getIr_busename());						// 공급자 담당부서명
+			data.put("ir_name", bill.getIr_name());								// 공급자 담당자명*
+			data.put("ir_cell", bill.getIr_cell());								// 공급자 담당자전화번호*
+			
+			data.put("ir_email",bill.getIr_email());							// 공급자 담당자이메일*
+			data.put("ir_companyaddress",bill.getIr_companyaddress() );			// 공급자 주소*
+			data.put("ie_companynumber", bill.getIe_companynumber());			// 공급받는자 사업자등록번호*
+			data.put("ie_biztype",bill.getIe_companyname());					// 공급받는자 업태*
+			data.put("ie_companyname",bill.getIe_companyname() );				// 공급받는자 사업체명*
+			
+			data.put("ie_bizclassification",bill.getIe_bizclassification() );	// 공급받는자 업종*
+			data.put("ie_taxnumber",bill.getIe_taxnumber() );					// 공급받는자 종사업장번호
+			data.put("partytypecode",bill.getPartytypecode() );					// 공급받는자 구분 01=사업자등록번호 02=주민등록번호 03=외국인*
+			data.put("ie_ceoname",bill.getIe_ceoname() );						// 공급받는자 대표자명*
+			data.put("ie_busename1",bill.getIe_busename1() );					// 공급받는자 담당부서1
+			
+			data.put("ie_name1",bill.getIe_name1() );							// 공급받는자 담당자명1*
+			data.put("ie_cell1",bill.getIe_cell1() );							// 공급받는자 담당자연락처1*
+			data.put("ie_email1",bill.getIe_email1() );							// 공급받는자 담당자이메일1*
+			data.put("ie_busename2",bill.getIe_busename2() );					// 공급받는자 담당부서2
+			data.put("ie_name2",bill.getIe_name2() );							// 공급받는자 담당자명2
+			
+			data.put("ie_cell2",bill.getIe_cell2());							// 공급받는자 담당자연락처2
+			data.put("ie_email2",bill.getIe_email2() );							// 공급받는자 담당자이메일2
+			data.put("ie_companyaddress",bill.getIe_companyaddress() );			// 공급받는자 회사주소*
+			data.put("su_companynumber",bill.getSu_companynumber() );			// 수탁사업자 사업자등록번호
+			data.put("su_biztype",bill.getSu_biztype() );						// 수탁사업자 업태
+			
+			data.put("su_companyname",bill.getSu_companyname() );				// 수탁사업자 상호명
+			data.put("su_bizclassification",bill.getSu_bizclassification() );	// 수탁사업자 업종
+			data.put("su_taxnumber",bill.getSu_taxnumber() );					// 수탁사업자 종사업장번호
+			data.put("su_ceoname",bill.getSu_ceoname() );						// 수탁사업자 대표자명
+			data.put("su_busename",bill.getSu_busename() );						// 수탁사업자 담당부서명
+			
+			data.put("su_name",bill.getSu_name() );								// 수탁사업자 담당자명
+			data.put("su_cell",bill.getSu_cell() );								// 수탁사업자 담당자전화번호
+			data.put("su_email",bill.getSu_email() );							// 수탁사업자 담당자이메일
+			data.put("su_companyaddress",bill.getSu_companyaddress() );			// 수탁사업자 회사주소
+			
+			data.put("cash",bill.getCash() );									// 현금*
+			data.put("scheck",bill.getScheck() );								// 수표*
+			data.put("draft",bill.getDraft() );									// 어음*
+			data.put("uncollected",bill.getUncollected() );						// 외상 미수금*
+			data.put("chargetotal",bill.getChargetotal());						// 총 공급가액*
+			data.put("taxtotal",bill.getTaxtotal() );							// 총 세액 *
+			data.put("grandtotal",bill.getGrandtotal() );						// 총 금액*
+			
+			JSONArray jArray = new JSONArray();
+			
+			for (int i = 0; i < 2; i++) {
+				
+				JSONObject sObject = new JSONObject();
+				sObject.put("description", bill.getDescription() );				// 품목별 비고입력
+				sObject.put("supplyprice",bill.getSupplyprice());				// 품목별 공급가액
+				sObject.put("quantity",bill.getQuantity() );					// 품목수량
+				sObject.put("unit",bill.getUnit() );							// 품목규격
+				sObject.put("subject",bill.getSubject() );						// 품목명
+				sObject.put("gyymmdd",bill.getGyymmdd() );						// 공급연원일
+				sObject.put("tax",bill.getTax() );								// 세액
+				sObject.put("unitprice",bill.getUnitprice());					// 단가
+				jArray.put(sObject);
+			}
+
+			// 세금계산서 detail정보를 JSONObject객체에 추가
+			data.put("taxdetailList", jArray);// 배열을 넣음
+
+			System.out.println(data);
+			
+		 return;
 	}
 	
 }

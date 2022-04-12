@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
 
 <style>
 
@@ -23,28 +21,35 @@ form .error {color:red}
 </style>
 
 <form:form id="Form" name="Form" method="post" action="">
+<input type="hidden" name="hometaxbill_id" id="hometaxbill_id">
+<input type="hidden" name="spass" id="spass">
+<input type="hidden" name="apikey" id="apikey">
+<input type="hidden" name="signature" id="signature">
+<input type="hidden" name="issueid" id="issueid">
+<input type="hidden" name="typecode1" id="typecode1" value = "01">
+<input type="hidden" name="typecode2" id="typecode2" value = "01">
 <input type="hidden" name="ir_keyno" id="ir_keyno">
+<input type="hidden" name="ie_keyno" id="ie_keyno">
 <section id="widget-grid" class="">
 	<div class="row">
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 70%;">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 				data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i>
 					</span>
-					<h2>공급 받는 자(발전소) 리스트</h2>
+					<h2>공급자(발전소) 리스트</h2>
 				</header>
 				<div class="widget-body " >
-					<div class="widget-body-toolbar bg-color-white">
+						<div class="widget-body-toolbar bg-color-white">
+							<div class="alert alert-info no-margin fade in">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								발전소 리스트를 확인합니다.
+							</div>
+						</div>
+						<div class="widget-body-toolbar bg-color-white">
 							<div class="pageNumberBox">
 								<c:if test="${not empty resultList }">
-<!-- 									<div class="col-sm-6 col-xs-12" -->
-<!-- 										style="line-height: 35px; text-align: left;"> -->
-<!-- 										<span class="pagetext">총 -->
-<%-- 											${paginationInfo.totalRecordCount }건 / 총 --%>
-<%-- 											${paginationInfo.totalPageCount} 페이지 중 --%>
-<%-- 											${paginationInfo.currentPageNo} 페이지 </span> --%>
-<!-- 									</div> -->
 									<div class="col-sm-6 col-xs-12 middlePage"
 										style="text-align: right;">
 										<ul class="pageNumberUl">
@@ -53,13 +58,6 @@ form .error {color:red}
 										</ul>
 									</div>
 								</c:if>
-<%-- 								<c:if test="${empty resultList }"> --%>
-<!-- 									<div class="col-sm-6 col-xs-12" -->
-<!-- 										style="line-height: 35px; text-align: left;"> -->
-<!-- 										<span class="pagetext">0건 중 0~0번째 결과(총 -->
-<%-- 											${paginationInfo.totalRecordCount }건중 매칭된 데이터)</span> --%>
-<!-- 									</div> -->
-<%-- 								</c:if> --%>
 								<div style="clear: both"></div>
 							</div>
 
@@ -68,7 +66,6 @@ form .error {color:red}
 									class="pagingTable table table-striped table-bordered table-hover"
 									width="100%">
 									<thead>
-										<%-- 모든필드 , 게시글 갯수 시작  --%>
 										<tr>
 											<th colspan="10">
 												<div style="float: left;">
@@ -83,7 +80,6 @@ form .error {color:red}
 												</div>
 											</th>
 										</tr>
-										<%-- 모든필드  ,  엑셀다운, 게시글 갯수 끝  --%>
 										<tr>
 											<th>선택</th>
 											<th class="hasinput"><input type="text"
@@ -105,222 +101,313 @@ form .error {color:red}
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
-											<th style="width: 50px;"><input type="checkbox" name="cbx_chkAll"></td>
+											<th style="width: 50px;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
 											<th class="arrow" data-index="1">사업자 번호</th>
 											<th class="arrow" data-index="2">발전소 명</th>
 											<th class="arrow" data-index="3">주소</th>
 											<th class="arrow" data-index="4">이메일</th>
-											<th class="arrow" data-index="6">날짜</th>
-											<th class="arrow" data-index="5" style="width: 50px;">상태</th>
+											<th class="arrow" data-index="5">등록날짜</th>
+											<th class="arrow" data-index="6" style="width: 50px;">상태</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:if test="${empty resultList }">
+										<c:if test="${empty billList }">
 											<tr>
 												<td colspan="7">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${resultList }" var="model">
+										<c:forEach items="${billList }" var="b">
 											<tr>
 												<td><input type="checkbox" name="chk"></td>
-												<td>${model.COUNT}</td>
-												<td>${model.DPP_AREA}</td>
+												<td>${b.dbp_co_num}</td>
 												<td><a href="javascript:;"
-													onclick="detailData('${model.DPP_KEYNO}')">${model.DPP_NAME}</a></td>
-												<td>${model.DPP_INVER_COUNT}</td>
-												<td>${model.DPP_DATE}</td>
-												<td>${model.DPP_DATE}</td>
-											</tr>
+													onclick="detailData('${b.dbp_keyno}')">${b.dbp_name}</a></td>
+												<td>${b.dbp_address}</td>
+												<td>${b.dbp_email}</td>
+												<td>${b.dbp_date}</td>
+												<td>저장완료</td>
 										</c:forEach>
+											</tr>
 									</tbody>
 								</table>
 							</div>
-							<%-- 하단 페이징 --%>
-<!-- 							<div class="pageNumberBox dt-toolbar-footer"> -->
-<%-- 								<c:if test="${not empty resultList }"> --%>
-<!-- 									<div class="col-sm-6 col-xs-12" -->
-<!-- 										style="line-height: 35px; text-align: left;"> -->
-<!-- 										<span class="pagetext">총 -->
-<%-- 											${paginationInfo.totalRecordCount }건 / 총 --%>
-<%-- 											${paginationInfo.totalPageCount} 페이지 중 --%>
-<%-- 											${paginationInfo.currentPageNo} 페이지</span> --%>
-<!-- 									</div> -->
-<!-- 									<div class="col-sm-6 col-xs-12" style="text-align: right;"> -->
-<!-- 										<ul class="pageNumberUl"> -->
-<%-- 											<ui:pagination paginationInfo="${paginationInfo }" --%>
-<%-- 												type="normal_board" jsFunction="pf_LinkPage" /> --%>
-<!-- 										</ul> -->
-<!-- 									</div> -->
-<%-- 								</c:if> --%>
-<%-- 								<c:if test="${empty resultList }"> --%>
-<!-- 									<div class="col-sm-6 col-xs-12" -->
-<!-- 										style="line-height: 35px; text-align: left;"> -->
-<!-- 										<span class="pagetext">0건 중 0~0번째 결과(총 -->
-<%-- 											${paginationInfo.totalRecordCount }건중 매칭된 데이터)</span> --%>
-<!-- 									</div> -->
-<%-- 								</c:if> --%>
-<!-- 							</div> -->
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="insertButton"
 								type="button" onclick="" style="width : 100px;">국세청 전송</button>
 							</div>
-							<!-- <div class="widget-body-toolbar bg-color-white">
-						<div class="row"> 
-							<div class="col-sm-12 col-md-2 text-align-right" style="float:right;">
-								<div class="btn-group">
-									<button class="btn btn-sm btn-primary" type="button" onclick="pf_openInsertPopup();">
-										<i class="fa fa-plus"></i> 발전소 등록
-									</button> 
-								</div>
 							</div>
-						</div>
-					</div> -->
-<!-- 					<div class="table-responsive"> -->
-<%-- 						<jsp:include page="/WEB-INF/jsp/dyAdmin/include/search/pra_search_header_paging.jsp" flush="true"> --%>
-<%-- 							<jsp:param value="/dyAdmin/bills/clientpagingAjax.do" name="pagingDataUrl" /> --%>
-<%-- 							<jsp:param value="/dyAdmin/person/view/excelAjax.do" name="excelDataUrl" /> --%>
-<%-- 						</jsp:include> --%>
-<!-- 						<fieldset id="tableWrap"> -->
-<!-- 						</fieldset> -->
-<!-- 					</div> -->
-				
-			</div>
-		</article>
-		
-		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 30%; left:0px;" >
+			</article>
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
 				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 					data-widget-editbutton="false" >
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i>
 						</span>
-						<h2>공급자 정보</h2>
+						<h2>세금계산서 정보</h2>
 					</header>
+					<div>
+					<h1 style="float: left; margin-top: 0px; font-size: 15px">공급 받는자 구분</h1>
+					<label style="float: left;">
+					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "01" title = "기업" checked>
+					<span>기업</span> 
+					</label>
+					<label style="float: left;">
+					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "02" title = "개인" >
+					<span>개인</span> 
+					</label>
+					<label style="float: left;">
+					<input type = "radio" style="margin-left: 13px; margin-top: 5px;" name = "partytypecode" value = "03" title = "외국인">
+					<span>외국인</span> 
+					</label>
+					</div>
 					<div class="widget-body ">
-						<div class="widget-body-toolbar bg-color-white">
-							<div class="row">
-								<div class="col-sm-6 col-md-6 text-align-right"
-									style="float: right;">
-<!-- 									<div class="btn-group"> -->
-<!-- 										<button class="btn btn-sm btn-primary" id="insertButton" -->
-<!-- 											type="button" onclick="Inver_Insert();">저장</button> -->
-<!-- 										<button class="btn btn-sm btn-danger" type="button" -->
-<!-- 											onclick="cancle()">취소</button> -->
-<!-- 									</div> -->
+								<div class="form-group">
+									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
+									
+									<div class="col-md-6" style="padding-bottom: 20px;">
+									<select class="form-control input-sm select2 ir_keyno" id="ir_keyno" name="ir_keyno" onchange="providerSelect(this.value)">
+										<option>선택하세요</option>
+										<c:forEach items="${billList}" var="b">
+											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
+										</c:forEach>
+									</select>
+									</div>
+								</div>
+							<div id="myTabContent1"
+								class="tab-content padding-10 form-horizontal bv-form">
+								<div>
+									<table id="" class="table table-bordered table-striped">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td style="background-color: #f7b1b1;">등록 번호</td>
+												<td><input type="text" class="form-control check2" id="homemunseo_id" name="homemunseo_id" value=""></td>
+												<td style="background-color: #f7b1b1;">사업자등록번호</td>
+												<td><input type="text" class="form-control check2" id="ir_companynumber" name="ir_companynumber"></td>											
+												<td style="background-color: #f7b1b1;">업태</td>
+												<td><input type="text" class="form-control check2" id="ir_biztype" name="ir_biztype"></td>
+												<td style="background-color: #f7b1b1;">사업체명</td>
+												<td><input type="text" class="form-control check2" id="ir_companyname" name="ir_companyname"></td>
+											</tr>
+											<tr>
+												<td style="background-color: #f7b1b1;">업종</td>
+												<td><input type="text" class="form-control check2" id="ir_bizclassification" name="ir_bizclassification"></td>
+												<td style="background-color: #f7b1b1;">대표자명</td>
+												<td><input type="text" class="form-control check2" id="ir_ceoname" name="ir_ceoname"></td>
+												<td style="background-color: #f7b1b1;">회사주소</td>
+												<td colspan="3"><input type="text" class="form-control" id="ir_companyaddress" name="ir_companyaddress"></td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
+                     <!-- ----------------------------------------------   공급받는자 DIV  ----------------------------------------------------------->
+						<div class="form-group">
+									<label class="col-md-3" style= "height: 30px; background-color: #b0ccfe; padding: 7px; margin-left: 11px;">공급받는자 선택</label>
+									
+									<div class="col-md-6" style="padding-bottom: 20px;">
+								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
+									<option>선택하세요</option>
+									<c:forEach items="${SuppliedList}" var="b">
+										<option value="${b.dbs_keyno}">${b.dbs_name}</option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
-						<div class="table-responsive">
-							<!-- insert -->
-							<!-- 발전소 리스트 -->
-							<div id="power-insert" title="발전소 등록" style="width: 100%; margin-left: 20px;">
-								<div class="widget-body ">
-									<fieldset>
-										<div class="form-horizontal">
-<!-- 											<div class="bs-example necessT" style="text-align: center;"> -->
-<!-- 												<span class="colorR fs12">*표시는 필수 입력 항목입니다.</span> -->
-<!-- 											</div> -->
-											<fieldset>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 선택</label>
-													<div class="col-md-6">
-														<select style="height: 100px;"
-															class="form-control input-sm select2" id="ir_keyno"
-															name="ir_keyno" placeholder="발전소를 선택하세요" onchange = "providerSelect(this.value)">
-															<option>선택하세요</option>
-															<c:forEach items="${billList}" var="b">
-																<option value="${b.dbp_keyno}">${b.dbp_name}</option>
-															</c:forEach>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 사업자 번호</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_companynumber"
-															name="ir_companynumber" id="ir_companynumber" value="" maxlength="30">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 종 사업장 번호</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_taxnumber"
-															id="ir_taxnumber" name="ir_taxnumber" value="">
-													</div>
-												</div>
-
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 사업체명</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_companyname"
-															id="ir_companyname" name="ir_companyname" value="">
-													</div>
-												</div>
-
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 관리자 성명</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_name"
-															id="ir_name" name="ir_name" value="">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 사업장 주소</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_companyaddress"
-															id="ir_companyaddress" name="ir_companyaddress" value="">
-													</div>
-												</div>
-
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 업태 </label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_biztype"
-															id="ir_biztype" name="ir_biztype" value="">
-													</div>
-												</div>
-
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 종목 </label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_bizclassification"
-															id="ir_bizclassification" name="ir_bizclassification" value="">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 이메일 </label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_email"
-															id="ir_email" name="ir_email" value="">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 금액</label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_price"
-															id="ir_ir_pricetax" name="ir_price" value="">
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-md-3 control-label"><span
-														class="nessSpan"></span> 품목 </label>
-													<div class="col-md-6">
-														<input type="text" class="form-control ir_itemname"
-															id="ir_itemname" name="ir_itemname" value="">
-													</div>
-												</div>
-											</fieldset>
-										</div>
-									</fieldset>
+							<div id="myTabContent1"
+								class="tab-content padding-10 form-horizontal bv-form">
+								<div>
+									<table id="" class="table table-bordered table-striped">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td style="background-color: #b0ccfe;">사업자등록번호</td>
+												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber"></td>
+												<td style="background-color: #b0ccfe;">업태</td>
+												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype"></td>
+												<td style="background-color: #b0ccfe;">사업체명</td>
+												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname"></td>
+												<td style="background-color: #b0ccfe;">업종</td>
+												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification"></td>
+											</tr>
+											<tr>
+												<td style="background-color: #b0ccfe;">종사업장번호</td>
+												<td><input type="text" class="form-control check2" id="ie_taxnumber" name="ie_taxnumber"></td>
+												<td style="background-color: #b0ccfe;">대표자명</td>
+												<td><input type="text" class="form-control check2" id="ie_ceoname" name="ie_ceoname"></td>
+												<td style="background-color: #b0ccfe;">회사주소</td>
+												<td colspan="3"><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+						 <!-- ----------------------------------------------   부가사항 DIV  ----------------------------------------------------------->
+						 	<div id="myTabContent1" class="tab-content padding-10 form-horizontal bv-form" style="margin-top: -40px; text-align: center;">
+								<div>
+									<table id="" class="table table-bordered table-striped">
+										<colgroup>
+											<col style="width: 25%;">
+											<col style="width: 25%;">
+											<col style="width: 25%;">
+											<col style="width: 25%;">
+											<col style="width: 10%;">
+											<col style="width: 15%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>작성일자</td>
+												<td>공급가격</td>				
+												<td>세액</td>			
+												<td>비고</td>		
+											</tr>
+											<tr>	
+												<td><input type="text" class="form-control check2" id="issuedate" name="issuedate"></td>
+												<td><input type="text" class="form-control check2" id="chargetotal" name="chargetotal" style = "background-color:#e8e8e8" value="0"></td>	
+												<td><input type="text" class="form-control" id="taxtotal" name="taxtotal" style = "background-color:#e8e8e8" value="0"></td>
+												<td><input type="text" class="form-control" id="description" name="description"></td>
+											</tr>
+										</tbody>
+									</table>
+									<table id="" class="table table-bordered table-striped" style="margin-top: -20px; text-align: center;">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>월/일</td>
+												<td>품목</td>				
+												<td>규격</td>			
+												<td>수량</td>		
+												<td>단가</td>		
+												<td>공급가액</td>		
+												<td>세액</td>		
+												<td>비고</td>		
+												<td><button>+</button></td>		
+											</tr>
+											<tr>	
+<!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
+												<td><input type="text" class="form-control check2" id="conn_date" name="conn_date"></td>
+												<td><input type="text" class="form-control check2" id="subject" name="subject"></td>	
+												<td><input type="text" class="form-control" id="unit" name="unit"></td>
+												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>
+												<td><input type="text" class="form-control" id="unitprice" name="unitprice"></td>
+												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice"></td>
+												<td><input type="text" class="form-control" id="tax" name="tax"></td>
+												<td><input type="text" class="form-control" id="sub_description" name="sub_description"></td>
+												<td><input type="text" class="form-control" id="inputplus" name="inputplus"></td>
+											</tr>
+										</tbody>
+									</table>
+									<table id="" class="table table-bordered table-striped" style="margin-top: -20px; text-align: center!important;">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>합계금액</td>
+												<td>현금</td>				
+												<td>수표</td>			
+												<td>어음</td>		
+												<td>외상미수금</td>	
+												<td rowspan = "2" style="text-align: center;">
+												<span>
+												<label>
+													<input type="radio" class="form-control" name="purposetype" title = "영수" value = "01" checked>영수
+												</label>
+												<br>
+												<label>
+													<input type="radio" class="form-control" name="purposetype" title = "청구" value = "02">청구
+												</label>
+												</span>
+												</td>
+											</tr>
+											<tr>	
+												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)"></td>	
+												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+						     <!-- ----------------------------------------------   발급,수신 담당자 DIV  ----------------------------------------------------------->
+						     <div style = "margin-top: 30px">
+						     <table id="" class="table table-bordered table-striped" style="text-align: center;">
+										<colgroup>
+											<col style="width: 10%;">
+											<col style="width: 25%;">
+											<col style="width: 25%;">
+											<col style="width: 25%;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td></td>
+												<td>발급 담당자</td>				
+												<td>수신 담당자1</td>			
+												<td>수신 담당자2</td>		
+											</tr>
+											<tr>	
+												<td>담당자 부서명</td>
+												<td><input type="text" class="form-control check2" id="ir_busename" name="ir_busename"></td>	
+												<td><input type="text" class="form-control" id="ie_busename1" name="ie_busename1"></td>
+												<td><input type="text" class="form-control" id="ie_busename2" name="ie_busename2"></td>
+											</tr>
+											<tr style = "background-color: #FFFFFF;">
+												<td>담당자 명 *</td>
+												<td><input type="text" class="form-control check2" id="ir_name" name="ir_name"></td>	
+												<td><input type="text" class="form-control" id="ie_name1" name="ie_name1"></td>
+												<td><input type="text" class="form-control" id="ie_name2" name="ie_name2"></td>
+											</tr>
+											<tr>	
+												<td>이메일 주소 *</td>
+												<td><input type="text" class="form-control check2" id="ir_email" name="ir_email"></td>	
+												<td><input type="text" class="form-control" id="ie_email1" name="ie_email1"></td>
+												<td><input type="text" class="form-control" id="ie_email2" name="ie_email2"></td>
+											</tr>
+											<tr style = "background-color: #FFFFFF;">
+												<td>연락처</td>
+												<td><input type="text" class="form-control check2" id="ir_cell" name="ir_cell"></td>
+												<td><input type="text" class="form-control" id="ie_cell1" name="ie_cell1"></td>
+												<td><input type="text" class="form-control" id="ie_cell2" name="ie_cell2"></td>
+											</tr>
+										</tbody>
+									</table>
+									</div>
+						<div style="text-align: center;">
+							<button class="btn btn-sm btn-primary" id="sendButton"
+								type="button" onclick="sendNts()" style="width: 100px;">저장</button>
+						</div>
+						</fieldset>
 								</div>
 							</div>
 							<!-- endInsert -->
@@ -329,7 +416,6 @@ form .error {color:red}
 					</div>
 				</div>
 			</article>
-		
 	</div>
 </section>
 </form:form>
@@ -341,29 +427,93 @@ form .error {color:red}
 
 function providerSelect(value){
 	 $.ajax({
-        url: '/dyAdmin/bills/providerSelectAjax.do',
+       url: '/dyAdmin/bills/providerSelectAjax.do',
+       type: 'POST',
+       data: {
+       	"dbp_keyno":value
+       },
+       async: false,
+       success: function(result) {
+    	   
+    	   
+       	$("#hometaxbill_id").val(result.dbp_id)
+       	$("#spass").val(result.dbp_pass)
+       	$("#apikey").val(result.dbp_apikey)
+       	$("#homemunseo_id").val()
+       	$("#issueid").val()
+//      $("#ir_keyno").val(result.dbp_keyno)
+       	$("#ir_companynumber").val(result.dbp_co_num) 	
+       	$("#homemunseo_id").val(result.dbp_homemunseo_id)
+       	$("#ir_companyname").val(result.dbp_name)
+       	$("#ir_ceoname").val(result.dbp_ceoname)
+       	$("#ir_companyaddress").val(result.dbp_address)
+       	$("#ir_biztype").val(result.dbp_biztype)
+       	$("#ir_bizclassification").val(result.dbp_bizclassification)
+       	$("#ir_email").val(result.dbp_email)
+       	$("#ir_busename").val(result.dbp_busename)
+       	$("#ir_name").val(result.dbp_name)
+       	$("#ir_email").val(result.dbp_email)
+       	$("#ir_cell").val(result.dbp_ir_cell)
+       	
+       },
+       error: function(){
+       	alert("공급자 정보 불러오기 에러");
+       }
+	}); 
+}
+
+
+// ---------------------------- 공급 받는자 --------------------------------------------------------
+
+function supliedSelect(value){
+	 $.ajax({
+       url: '/dyAdmin/bills/supliedSelectAjax.do',
+       type: 'POST',
+       data: {
+       	"dbs_keyno":value
+       },
+       async: false,
+       success: function(result) {
+    	   
+    	console.log(result);
+//        	$("#ie_keyno").val(result.dbs_keyno)
+       	$("#ie_companynumber").val(result.dbs_co_num)
+     	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
+       	$("#ie_companyname").val(result.dbs_name)
+       	$("#ie_ceoname").val(result.dbs_ceoname)
+       	$("#ie_companyaddress").val(result.dbs_address)
+       	$("#ie_biztype").val(result.dbs_biztype)
+       	$("#ie_bizclassification").val(result.dbs_bizclassification)
+       	$("#ie_email").val(result.dbs_email1)
+       	$("#ie_busename1").val(result.dbs_busename1)
+       	$("#ie_name1").val(result.dbs_name1)
+       	$("#ie_email1").val(result.dbs_email1)
+       	$("#ie_cell1").val(result.dbs_cell1)
+
+       	
+       },
+       error: function(){
+       	alert("공급받는자 정보 불러오기 에러");
+       }
+	}); 
+}
+
+function sendNts(){
+	
+// 	if(!validationCheck()) return false
+	
+	 $.ajax({
+        url: '/dyAdmin/bills/loadBillInfo.do',
         type: 'POST',
-        data: {
-        	"dbp_keyno":value
-        },
+        data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	$("#ir_keyno").val(result.dbp_keyno)
-        	$("#ir_companynumber").val(result.dbp_co_num)
-//         	$("#ir_taxnumber").val(result.dbp_pass) //종 사업장 번호
-        	$("#ir_companyname").val(result.dbp_name)
-        	$("#ir_name").val(result.dbp_ir_name)
-        	$("#ir_companyaddress").val(result.dbp_address)
-        	$("#ir_biztype").val(result.dbp_biztype)
-        	$("#ir_bizclassification").val(result.dbp_bizclassification)
-        	$("#ir_email").val(result.dbp_email)
-//         	$("#ir_price").val(result.dbp_ceoname)   //금액
-//         	$("#ir_itemname").val(result.dbp_busename) // 품목
-
+        	console.log(result);
+        	cf_smallBox('전송 완료', "세금 계산서 발행 완료", 3000,);
         	
         },
         error: function(){
-        	alert("공급자 정보 불러오기 에러");
+        	alert("전송 실패");
         }
 	}); 
 }
@@ -375,5 +525,18 @@ function seletAll(){
 }
 
 
+function inputNumberFormat(obj) {
+    obj.value = comma(uncomma(obj.value));
+}
 
+function comma(str) {
+    str = String(str);
+
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+function uncomma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
 </script>

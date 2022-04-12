@@ -369,7 +369,7 @@ function clear2(){
 
 function providerSelectmethod2(value){
 	 $.ajax({
-        url: '/dyAdmin/bills/providerSelectAjax2.do',
+        url: '/dyAdmin/bills/supliedSelectAjax.do',
         type: 'POST',
         data: {
         	"dbs_keyno":value

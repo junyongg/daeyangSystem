@@ -6,6 +6,7 @@
 			SELECT * 
 			FROM dy_bills_provider
 		</select>
+
 		<select id="billsSelect_one" resultType="hashmap" parameterType="String">
 			SELECT * 
 			FROM dy_bills_provider
@@ -69,6 +70,10 @@
 			SELECT COUNT(*) FROM dy_bills_provider WHERE dbp_co_num = #{ir_companynumber}
 		</select>
 
+		<select id="SuppliedSelect" resultType="hashmap">
+			SELECT *
+			FROM dy_bills_supplied
+		</select>
 		<select id="SuppliedSelect_one" resultType="hashmap" parameterType="String">
 			SELECT * 
 			FROM dy_bills_supplied

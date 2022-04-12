@@ -184,6 +184,7 @@ public class RestApiTest {
 		 return msg;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/dyAdmin/bills/loadBillInfo.do")
 	@ResponseBody
 	public static void loadBillInfo(HttpServletRequest req, billDTO bill)
@@ -202,7 +203,7 @@ public class RestApiTest {
 			data.put("issueid",bill.getIssueid() );								// 승인번호(자동생성)
 			data.put("typecode1",bill.getTypecode1() );							// (세금)계산서 종류1*
 			data.put("typecode2",bill.getTypecode2() );							// (세금)계산서 종류2*
-			data.put("description", bill.getDescription() );						// 비고
+			data.put("description", bill.getDescription() );					// 비고
 			data.put("issuedate",bill.getIssuedate() );							// 작성일자*
 			
 			data.put("modifytype",bill.getModifytype() );						// 수정사유

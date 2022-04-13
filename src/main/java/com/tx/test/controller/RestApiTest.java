@@ -42,7 +42,8 @@ import com.tx.test.dto.billDTO;
 @Controller
 public class RestApiTest {
 
-	@Autowired ComponentService Component;
+	@Autowired
+	ComponentService Component;
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -268,25 +269,26 @@ public class RestApiTest {
 			data.put("grandtotal",bill.getGrandtotal() );						// 총 금액*
 			
 			JSONArray jArray = new JSONArray();
-			
-			for (int i = 0; i < 2; i++) {
+		
 				
-				JSONObject sObject = new JSONObject();
-				sObject.put("description", bill.getDescription() );				// 품목별 비고입력
-				sObject.put("supplyprice",bill.getSupplyprice());				// 품목별 공급가액
-				sObject.put("quantity",bill.getQuantity() );					// 품목수량
-				sObject.put("unit",bill.getUnit() );							// 품목규격
-				sObject.put("subject",bill.getSubject() );						// 품목명
-				sObject.put("gyymmdd",bill.getGyymmdd() );						// 공급연원일
-				sObject.put("tax",bill.getTax() );								// 세액
-				sObject.put("unitprice",bill.getUnitprice());					// 단가
-				jArray.put(sObject);
-			}
+			JSONObject sObject = new JSONObject();
+			sObject.put("description", bill.getDescription() );				// 품목별 비고입력
+			sObject.put("supplyprice",bill.getSupplyprice());				// 품목별 공급가액
+			sObject.put("quantity",bill.getQuantity() );					// 품목수량
+			sObject.put("unit",bill.getUnit() );							// 품목규격
+			sObject.put("subject",bill.getSubject() );						// 품목명
+			sObject.put("gyymmdd",bill.getGyymmdd() );						// 공급연원일
+			sObject.put("tax",bill.getTax() );								// 세액
+			sObject.put("unitprice",bill.getUnitprice());					// 단가
+			jArray.put(sObject);
+			
 
 			// 세금계산서 detail정보를 JSONObject객체에 추가
-			data.put("taxdetailList", jArray);// 배열을 넣음
+			data.put("taxdetailList", jArray); // 배열을 넣음
 
 			System.out.println(data);
+			
+//			Component.createData("bills.billsInfoInsert", data);
 			
 		 return;
 	}

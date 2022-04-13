@@ -509,11 +509,11 @@ function sendNts(){
         async: false,  
         success: function(result) {
         	console.log(result);
-        	cf_smallBox('전송 완료', "세금 계산서 발행 완료", 3000,);
+        	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
         	
         },
         error: function(){
-        	alert("전송 실패");
+        	alert("저장 실패");
         }
 	}); 
 }

@@ -38,7 +38,7 @@ form .error {color:red}
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i>
 					</span>
-					<h2>공급자(발전소) 리스트</h2>
+					<h2>공급받는 자(발전소) 리스트</h2>
 				</header>
 				<div class="widget-body " >
 						<div class="widget-body-toolbar bg-color-white">
@@ -116,16 +116,16 @@ form .error {color:red}
 												<td colspan="7">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${billList }" var="b">
+										<c:forEach items="${SuppliedList }" var="b">
 											<tr>
 												<td><input type="checkbox" name="chk"></td>
-												<td>${b.dbp_co_num}</td>
+												<td>${b.dbs_co_num}</td>
 												<td><a href="javascript:;"
-													onclick="detailData('${b.dbp_keyno}')">${b.dbp_name}</a></td>
-												<td>${b.dbp_address}</td>
-												<td>${b.dbp_email}</td>
-												<td>${b.dbp_date}</td>
-												<td>저장완료</td>
+													onclick="detailData('${b.dbs_keyno}')">${b.dbs_name}</a></td>
+												<td>${b.dbs_address}</td>
+												<td>${b.dbs_email1}</td>
+												<td>${b.dbs_date}</td>
+												<td>저장 완료</td>
 										</c:forEach>
 											</tr>
 									</tbody>
@@ -406,6 +406,8 @@ form .error {color:red}
 						<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="sendButton"
 								type="button" onclick="sendNts()" style="width: 100px;">저장</button>
+							<a href="#" style="margin-left: 50px;">맨위로</a>
+<!-- 							<a href="name값" style="margin-left: 50px;">TOP</a> -->
 						</div>
 						</fieldset>
 								</div>

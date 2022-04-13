@@ -142,5 +142,44 @@
 	<select id="billCount2" resultType="int" parameterType="billDTO">
 		SELECT COUNT(*) FROM dy_bills_supplied WHERE dbs_co_num = #{ie_companynumber}
 	</select>
+	
+	<insert id="billsInfoInsert" parameterType="billDTO">
+			INSERT INTO dy_bills_log
+			(
+				dbl_provider_key,
+				dbl_supplied_key,
+				dbl_cash,
+				dbl_scheck,
+				dbl_draft,
+				dbl_uncollected,
+				dbl_chargetotal,
+				dbl_taxtotal,
+				dbl_grandtotal,
+				dbl_subject,
+				dbl_unit,
+				dbl_quantity,
+				dbl_unitprice,
+				dbl_supplyprice,
+				dbl_tax,
+				dbl_description
+			)VALUES(
+				#{dbp_keyno},
+				#{dbs_keyno},
+				#{cash},
+				#{scheck},
+				#{draft},
+				#{uncollected},
+				#{chargetotal},
+				#{taxtotal},
+				#{grandtotal},
+				#{subject},
+				#{unit},
+				#{quantity},
+				#{unitprice}
+				#{supplyprice},
+				#{tax},
+				#{description}
+			)
+		</insert>
 </mapper>
  

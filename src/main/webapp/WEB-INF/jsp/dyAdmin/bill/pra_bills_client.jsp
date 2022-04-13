@@ -276,9 +276,9 @@ form .error {color:red}
 												<td>비고</td>		
 											</tr>
 											<tr>	
-												<td><input type="text" class="form-control check2" id="issuedate" name="issuedate"></td>
-												<td><input type="text" class="form-control check2" id="chargetotal" name="chargetotal" style = "background-color:#e8e8e8" value="0"></td>	
-												<td><input type="text" class="form-control" id="taxtotal" name="taxtotal" style = "background-color:#e8e8e8" value="0"></td>
+												<td><input type="text" class="form-control check2" id="issuedate" name="issuedate" value="${nowDate }"></td>
+												<td><input type="text" class="form-control check2" id="chargetotal" name="chargetotal" style = "background-color:#e8e8e8" value="0" readonly="readonly"></td>	
+												<td><input type="text" class="form-control" id="taxtotal" name="taxtotal" style = "background-color:#e8e8e8" value="0" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="description" name="description"></td>
 											</tr>
 										</tbody>
@@ -309,13 +309,13 @@ form .error {color:red}
 											</tr>
 											<tr>	
 <!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
-												<td><input type="text" class="form-control check2" id="conn_date" name="conn_date"></td>
-												<td><input type="text" class="form-control check2" id="subject" name="subject"></td>	
+												<td><input type="text" class="form-control check2" id="conn_date" name="conn_date" value="${nowDate }"</td>
+												<td><input type="text" class="form-control check2" id="subject" name="subject" value="${itemName }"></td>	
 												<td><input type="text" class="form-control" id="unit" name="unit"></td>
 												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>
-												<td><input type="text" class="form-control" id="unitprice" name="unitprice"></td>
-												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice"></td>
-												<td><input type="text" class="form-control" id="tax" name="tax"></td>
+												<td><input type="text" class="form-control" id="unitprice" name="unitprice" onkeyup="Divison(this)"></td>
+												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice" readonly="readonly"></td>
+												<td><input type="text" class="form-control" id="tax" name="tax" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="sub_description" name="sub_description"></td>
 												<td><input type="text" class="form-control" id="inputplus" name="inputplus"></td>
 											</tr>
@@ -350,11 +350,11 @@ form .error {color:red}
 												</td>
 											</tr>
 											<tr>	
-												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)"></td>	
-												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)" value="0"></td>	
+												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)" value="0"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -424,6 +424,15 @@ form .error {color:red}
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 
 <script type="text/javascript">
+
+
+$(document).ready(function(){
+	
+	$('#issuedate').datepicker()
+	$('#conn_date').datepicker()
+
+}); 
+
 
 function providerSelect(value){
 	 $.ajax({
@@ -538,5 +547,27 @@ function comma(str) {
 function uncomma(str) {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
+}
+
+
+function Divison(obj){
+	var vv = obj.value.replace(",","");
+	var v = parseInt(vv)
+	var tax = (v*0.1).toFixed(0)
+	
+	$("#unitprice").val(comma(v))
+	$("#grandtotal").val(comma(v))
+	$("#supplyprice").val(comma(v - tax))
+	
+	$("#chargetotal").val(comma(v - tax))
+	if (tax > 0) {	
+		$("#tax").val(comma(tax))
+		$("#taxtotal").val(comma(tax))
+	}else{
+		$("#tax").val(tax)
+		$("#taxtotal").val(tax)
+	}
+	
+	
 }
 </script>

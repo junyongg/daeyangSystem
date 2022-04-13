@@ -2,8 +2,11 @@ package com.tx.test.controller;
 
 
 import java.awt.Component;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +45,7 @@ import com.tx.test.dto.billDTO;
 @Controller
 public class RestApiTest {
 
-	@Autowired
-	ComponentService Component;
+	@Autowired ComponentService Component;
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -75,6 +77,13 @@ public class RestApiTest {
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
+		   
+		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		   
+		   
+		   mv.addObject("nowDate",now);
+		   mv.addObject("itemName",month+"월 발전대금");
 		   
 	      return mv;
 	  }
@@ -260,35 +269,34 @@ public class RestApiTest {
 			data.put("su_email",bill.getSu_email() );							// 수탁사업자 담당자이메일
 			data.put("su_companyaddress",bill.getSu_companyaddress() );			// 수탁사업자 회사주소
 			
-			data.put("cash",bill.getCash() );									// 현금*
-			data.put("scheck",bill.getScheck() );								// 수표*
-			data.put("draft",bill.getDraft() );									// 어음*
-			data.put("uncollected",bill.getUncollected() );						// 외상 미수금*
-			data.put("chargetotal",bill.getChargetotal());						// 총 공급가액*
-			data.put("taxtotal",bill.getTaxtotal() );							// 총 세액 *
-			data.put("grandtotal",bill.getGrandtotal() );						// 총 금액*
+			data.put("cash",bill.getCash().replace(",", ""));									// 현금*
+			data.put("scheck",bill.getScheck().replace(",", ""));								// 수표*
+			data.put("draft",bill.getDraft().replace(",", ""));									// 어음*
+			data.put("uncollected",bill.getUncollected().replace(",", ""));						// 외상 미수금*
+			data.put("chargetotal",bill.getChargetotal().replace(",", ""));						// 총 공급가액*
+			data.put("taxtotal",bill.getTaxtotal().replace(",", ""));							// 총 세액 *
+			data.put("grandtotal",bill.getGrandtotal().replace(",", ""));						// 총 금액*
 			
 			JSONArray jArray = new JSONArray();
-		
-				
-			JSONObject sObject = new JSONObject();
-			sObject.put("description", bill.getDescription() );				// 품목별 비고입력
-			sObject.put("supplyprice",bill.getSupplyprice());				// 품목별 공급가액
-			sObject.put("quantity",bill.getQuantity() );					// 품목수량
-			sObject.put("unit",bill.getUnit() );							// 품목규격
-			sObject.put("subject",bill.getSubject() );						// 품목명
-			sObject.put("gyymmdd",bill.getGyymmdd() );						// 공급연원일
-			sObject.put("tax",bill.getTax() );								// 세액
-			sObject.put("unitprice",bill.getUnitprice());					// 단가
-			jArray.put(sObject);
 			
+			for (int i = 0; i < 1; i++) {
+				
+				JSONObject sObject = new JSONObject();
+				sObject.put("description", bill.getDescription() );								// 품목별 비고입력
+				sObject.put("supplyprice",bill.getSupplyprice().replace(",", ""));				// 품목별 공급가액
+				sObject.put("quantity",bill.getQuantity() );									// 품목수량
+				sObject.put("unit",bill.getUnit() );											// 품목규격
+				sObject.put("subject",bill.getSubject() );										// 품목명
+				sObject.put("gyymmdd",bill.getGyymmdd() );										// 공급연원일
+				sObject.put("tax",bill.getTax().replace(",", ""));								// 세액
+				sObject.put("unitprice",bill.getUnitprice().replace(",", ""));					// 단가
+				jArray.put(sObject);
+			}
 
 			// 세금계산서 detail정보를 JSONObject객체에 추가
-			data.put("taxdetailList", jArray); // 배열을 넣음
+			data.put("taxdetailList", jArray);// 배열을 넣음
 
 			System.out.println(data);
-			
-//			Component.createData("bills.billsInfoInsert", data);
 			
 		 return;
 	}

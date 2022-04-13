@@ -267,10 +267,8 @@
          FROM(
             SELECT IFNULL(AA.Active_Power,0) as power ,
             <![CDATA[
-               case when substr(AA.DATETIEMS,4,2) >='00' and substr(AA.DATETIEMS,4,2)<'15' then concat(substr(AA.DATETIEMS,1,2),':00')
-                    when substr(AA.DATETIEMS,4,2) >='15' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':15')
-                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'45' then concat(substr(AA.DATETIEMS,1,2),':30')
-                    when substr(AA.DATETIEMS,4,2) >='45' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':45')
+               case when substr(AA.DATETIEMS,4,2) >='00' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':00')
+                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':30')
                    ]]>
                 END as hhmm
             FROM (
@@ -313,7 +311,7 @@
             	<![CDATA[
                SELECT STR_TO_DATE(date_format(now(),'%Y%m%d06'),'%Y%m%d%H%') AS YMDHM
                UNION ALL
-               SELECT DATE_ADD(A.YMDHM, INTERVAL 45 minute) AS YMDHM FROM A
+               SELECT DATE_ADD(A.YMDHM, INTERVAL 30 minute) AS YMDHM FROM A
                 WHERE A.YMDHM < STR_TO_DATE(date_format(now(),'%Y%m%d19'), '%Y%m%d%H')
                 ]]>
             )
@@ -356,10 +354,8 @@
          FROM(
             SELECT IFNULL(AA.Active_Power,0) as power ,
             <![CDATA[
-               case when substr(AA.DATETIEMS,4,2) >='00' and substr(AA.DATETIEMS,4,2)<'15' then concat(substr(AA.DATETIEMS,1,2),':00')
-                    when substr(AA.DATETIEMS,4,2) >='15' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':15')
-                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'45' then concat(substr(AA.DATETIEMS,1,2),':30')
-                    when substr(AA.DATETIEMS,4,2) >='45' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':45')
+               case when substr(AA.DATETIEMS,4,2) >='00' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':00')
+                    when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':30')
               ]]>      
                 END as hhmm
             FROM (
@@ -379,7 +375,7 @@
             <![CDATA[
                SELECT STR_TO_DATE(date_format(now(),'%Y%m%d06'),'%Y%m%d%H%') AS YMDHM
                UNION ALL
-               SELECT DATE_ADD(A.YMDHM, INTERVAL 45 minute) AS YMDHM FROM A
+               SELECT DATE_ADD(A.YMDHM, INTERVAL 30 minute) AS YMDHM FROM A
                 WHERE A.YMDHM < STR_TO_DATE(date_format(now(),'%Y%m%d19'), '%Y%m%d%H')
             ]]>
             )

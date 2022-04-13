@@ -65,6 +65,12 @@
 			WHERE dbp_keyno = #{dbp_keyno}
 		</update>
 		
+		<update id="registNumberUpdate" parameterType="billDTO">
+		UPDATE dy_bills_provider 
+		SET dbp_homemunseo_id = #{homemunseo_id}
+		WHERE dbp_keyno = #{dbp_keyno}
+	</update>	
+		
 		<!-- 사업등록번호 카운팅 -->
 		<select id="billCount" resultType="int" parameterType="billDTO">
 			SELECT COUNT(*) FROM dy_bills_provider WHERE dbp_co_num = #{ir_companynumber}
@@ -143,7 +149,7 @@
 		SELECT COUNT(*) FROM dy_bills_supplied WHERE dbs_co_num = #{ie_companynumber}
 	</select>
 	
-	<insert id="billsInfoInsert" parameterType="billDTO">
+	<insert id="billsInfoInsert" parameterType="String">
 			INSERT INTO dy_bills_log
 			(
 				dbl_provider_key,
@@ -175,11 +181,12 @@
 				#{subject},
 				#{unit},
 				#{quantity},
-				#{unitprice}
+				#{unitprice},
 				#{supplyprice},
 				#{tax},
-				#{description}
+				#{sub_description}
 			)
-		</insert>
+	</insert>
+
 </mapper>
  

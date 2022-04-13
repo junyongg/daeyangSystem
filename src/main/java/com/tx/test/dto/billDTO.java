@@ -86,7 +86,8 @@ public class billDTO {
 	,subject
 	,gyymmdd
 	,tax
-	,unitprice = "";
+	,unitprice
+	,sub_description= "";
 	
 	
 

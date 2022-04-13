@@ -28,8 +28,8 @@ form .error {color:red}
 <input type="hidden" name="issueid" id="issueid">
 <input type="hidden" name="typecode1" id="typecode1" value = "01">
 <input type="hidden" name="typecode2" id="typecode2" value = "01">
-<input type="hidden" name="ir_keyno" id="ir_keyno">
-<input type="hidden" name="ie_keyno" id="ie_keyno">
+<!-- <input type="hidden" name="ir_keyno" id="ir_keyno"> -->
+<!-- <input type="hidden" name="ie_keyno" id="ie_keyno"> -->
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
@@ -65,6 +65,16 @@ form .error {color:red}
 								<table id="dt_basic"
 									class="pagingTable table table-striped table-bordered table-hover"
 									width="100%">
+									<colgroup>
+											<col style="width: 3%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 20%;">
+											<col style="width: 20%;">
+											<col style="width: 10%;">
+											<col style="width: 5%;">
+											<col style="width: 5%;">
+										</colgroup>
 									<thead>
 										<tr>
 											<th colspan="10">
@@ -81,7 +91,7 @@ form .error {color:red}
 											</th>
 										</tr>
 										<tr>
-											<th>선택</th>
+											<th style="text-align: center;">선택</th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="1"
 												placeholder="번호 검색" /></th>
@@ -98,19 +108,21 @@ form .error {color:red}
 												class="form-control search-control" data-searchindex="5"
 												placeholder="날짜 검색" /></th>
 											<th class="hasinput" data-searchindex="6"></th>
+											<th class="hasinput" data-searchindex="7"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
-											<th style="width: 50px;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
-											<th class="arrow" data-index="1">사업자 번호</th>
-											<th class="arrow" data-index="2">발전소 명</th>
-											<th class="arrow" data-index="3">주소</th>
-											<th class="arrow" data-index="4">이메일</th>
-											<th class="arrow" data-index="5">등록날짜</th>
-											<th class="arrow" data-index="6" style="width: 50px;">상태</th>
+											<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
+											<th class="arrow" style="text-align: center;">사업자 번호</th>
+											<th class="arrow" style="text-align: center;">발전소 명</th>
+											<th class="arrow" style="text-align: center;">주소</th>
+											<th class="arrow" style="text-align: center;">이메일</th>
+											<th class="arrow" style="text-align: center;">등록날짜</th>
+											<th class="arrow" style="text-align: center;">작성 상태</th>
+											<th class="arrow" style="text-align: center;">전송 상태</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody style="text-align: center;">
 										<c:if test="${empty billList }">
 											<tr>
 												<td colspan="7">검색된 데이터가 없습니다.</td>
@@ -126,6 +138,7 @@ form .error {color:red}
 												<td>${b.dbp_email}</td>
 												<td>${b.dbp_date}</td>
 												<td>저장완료</td>
+												<td><button>보기</button></td>
 										</c:forEach>
 											</tr>
 									</tbody>
@@ -165,7 +178,7 @@ form .error {color:red}
 									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-									<select class="form-control input-sm select2 ir_keyno" id="ir_keyno" name="ir_keyno" onchange="providerSelect(this.value)">
+									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelect(this.value)">
 										<option>선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
@@ -213,7 +226,7 @@ form .error {color:red}
 									<label class="col-md-3" style= "height: 30px; background-color: #b0ccfe; padding: 7px; margin-left: 11px;">공급받는자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
+								<select class="form-control input-sm select2 ir_keyno" id="dbs_keyno" name="dbs_keyno" onchange="supliedSelect(this.value)">
 									<option>선택하세요</option>
 									<c:forEach items="${SuppliedList}" var="b">
 										<option value="${b.dbs_keyno}">${b.dbs_name}</option>
@@ -405,7 +418,7 @@ form .error {color:red}
 									</div>
 						<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="sendButton"
-								type="button" onclick="sendNts()" style="width: 100px;">저장</button>
+								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
 						</div>
 						</fieldset>
 								</div>
@@ -450,7 +463,7 @@ function providerSelect(value){
        	$("#apikey").val(result.dbp_apikey)
        	$("#homemunseo_id").val()
        	$("#issueid").val()
-//      $("#ir_keyno").val(result.dbp_keyno)
+	    $("#dbp_keyno").val(result.dbp_keyno)
        	$("#ir_companynumber").val(result.dbp_co_num) 	
        	$("#homemunseo_id").val(result.dbp_homemunseo_id)
        	$("#ir_companyname").val(result.dbp_name)
@@ -485,7 +498,7 @@ function supliedSelect(value){
        success: function(result) {
     	   
     	console.log(result);
-//        	$("#ie_keyno").val(result.dbs_keyno)
+       	$("#dbs_keyno").val(result.dbs_keyno)
        	$("#ie_companynumber").val(result.dbs_co_num)
      	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
        	$("#ie_companyname").val(result.dbs_name)
@@ -507,18 +520,19 @@ function supliedSelect(value){
 	}); 
 }
 
-function sendNts(){
+function loadBillInfo(){
 	
 // 	if(!validationCheck()) return false
 	
 	 $.ajax({
-        url: '/dyAdmin/bills/loadBillInfo.do',
+        url: '/dyAdmin/bills/billsInfoInsert.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
         	console.log(result);
-        	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
+        	alert(result);
+//         	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
         	
         },
         error: function(){

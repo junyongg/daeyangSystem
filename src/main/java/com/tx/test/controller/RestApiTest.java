@@ -2,6 +2,11 @@ package com.tx.test.controller;
 
 
 import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -194,10 +200,60 @@ public class RestApiTest {
 		 return msg;
 	}
 	
+	
+	public static String Api(String strUrl, String jsonMessage) { // strUrl = 전송할 restapi 서버 url , jsonMessage = 전송할 데이터
+		// json형식을 String으로 형변환
+		try {
+			URL url = new URL(strUrl);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setConnectTimeout(10000); // 서버에 연결되는 Timeout 시간 설정
+			con.setReadTimeout(10000); // InputStream 읽어 오는 Timeout 시간 설정
+
+			con.setRequestProperty("Connection", "keep-alive");
+
+			con.setRequestMethod("POST");
+
+			// json으로 message를 전달하고자 할 때
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setDoInput(true);
+			con.setDoOutput(true); // POST 데이터를 OutputStream으로 넘겨 주겠다는 설정
+			con.setUseCaches(false);
+			con.setDefaultUseCaches(false);
+
+			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream(), "utf-8"); // 전송할때 한글깨짐현상으로 인한 utf-8
+			// 인코딩
+			wr.write(jsonMessage); // json 형식의 message 전달
+			wr.flush();
+			// -----------전송 끝
+
+			// 리턴받는 부분 시작
+			StringBuilder sb = new StringBuilder();
+
+			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				// Stream을 처리해줘야 하는 귀찮음이 있음.
+				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8")); // 리턴받을때
+				// 한글깨짐현상으로인한 utf-8 인코딩
+				String line;
+				while ((line = br.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+				br.close();
+				// System.out.println(sb);
+				return sb.toString();
+			} else {
+				System.out.println(con.getResponseMessage());
+				return "fail";
+			}
+		} catch (Exception e) {
+			System.err.println(e.toString());
+			return "fail";
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
-	@RequestMapping("/dyAdmin/bills/loadBillInfo.do")
+	@RequestMapping("/dyAdmin/bills/sendApi.do")
 	@ResponseBody
-	public static void loadBillInfo(HttpServletRequest req, billDTO bill)
+	public void sendApi(HttpServletRequest req, billDTO bill)
 			throws Exception {
 
 			// JSONObject객체 생성
@@ -279,26 +335,65 @@ public class RestApiTest {
 			
 			JSONArray jArray = new JSONArray();
 			
-			for (int i = 0; i < 1; i++) {
 				
-				JSONObject sObject = new JSONObject();
-				sObject.put("description", bill.getDescription() );								// 품목별 비고입력
-				sObject.put("supplyprice",bill.getSupplyprice().replace(",", ""));				// 품목별 공급가액
-				sObject.put("quantity",bill.getQuantity() );									// 품목수량
-				sObject.put("unit",bill.getUnit() );											// 품목규격
-				sObject.put("subject",bill.getSubject() );										// 품목명
-				sObject.put("gyymmdd",bill.getGyymmdd() );										// 공급연원일
-				sObject.put("tax",bill.getTax().replace(",", ""));								// 세액
-				sObject.put("unitprice",bill.getUnitprice().replace(",", ""));					// 단가
-				jArray.put(sObject);
-			}
+			JSONObject sObject = new JSONObject();
+			sObject.put("sub_description", bill.getDescription() );							// 품목별 비고입력
+			sObject.put("supplyprice",bill.getSupplyprice().replace(",", ""));				// 품목별 공급가액
+			sObject.put("quantity",bill.getQuantity() );									// 품목수량
+			sObject.put("unit",bill.getUnit() );											// 품목규격
+			sObject.put("subject",bill.getSubject() );										// 품목명
+			sObject.put("gyymmdd",bill.getGyymmdd() );										// 공급연원일
+			sObject.put("tax",bill.getTax().replace(",", ""));								// 세액
+			sObject.put("unitprice",bill.getUnitprice().replace(",", ""));					// 단가
+			jArray.put(sObject);
 
 			// 세금계산서 detail정보를 JSONObject객체에 추가
 			data.put("taxdetailList", jArray);// 배열을 넣음
 
 			System.out.println(data);
 			
-		 return;
+			// 전자세금계산서 발행 후 리턴
+			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			
+			if(restapi.equals("fail")) {
+				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				return;
+			}
+			
+			// Api에서 리턴받은 값으로 예외처리 및 출력
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(restapi);
+			JSONObject jsonObj = (JSONObject) obj;
+
+			if (!restapi.equals("fail")) {
+				if (jsonObj.get("code").equals("0")) {
+					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : "
+							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
+							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
+							+ (String) jsonObj.get("homemunseo_id"));
+				} else {
+					System.out.println(
+							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+				}
+			}else {
+				System.out.println(
+						"code : -1" + "\n" + "msg : 서버호출에 실패했습니다.");
+			}
+
 	}
+
+	@RequestMapping("/dyAdmin/bills/billsInfoInsert.do")
+	@ResponseBody
+	public String billsInfoAjax(HttpServletRequest req,billDTO bill) throws Exception {
+		
+		
+		Component.updateData("bills.registNumberUpdate", bill);
+		Component.createData("bills.billsInfoInsert", bill);
+		 String msg = "세금계산서 정보 저장 완료";
+
+
+		return msg;
 	
+	}
+
 }

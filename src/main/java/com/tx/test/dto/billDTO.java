@@ -7,13 +7,13 @@ public class billDTO {
 	
 	
 	String dbp_keyno, 	
-	dbs_keyno, 	
+	dbs_keyno,
+	dbl_keyno,
 	hometaxbill_id,
 	spass,
 	apikey,
 	homemunseo_id,
 	signature,
-	
 	issueid,
 	typecode1,
 	typecode2,
@@ -84,10 +84,74 @@ public class billDTO {
 	,quantity
 	,unit
 	,subject
-	,gyymmdd
+	,sub_issuedate
 	,tax
 	,unitprice
-	,sub_description= "";
+	,sub_description
+	
+	
+	
+	,dbl_provider_key
+	,dbl_supplied_key
+	,dbl_date
+	,dbl_cash
+	,dbl_scheck
+	,dbl_draft
+	,dbl_uncollected
+	,dbl_chargetotal
+	,dbl_taxtotal
+	,dbl_grandtotal
+	,dbl_subject
+	,dbl_unit
+	,dbl_quantity
+	,dbl_unitprice
+	,dbl_supplyprice
+	,dbl_tax
+	,dbl_description
+	,dbl_sub_keyno
+	,dbl_purposetype
+	,dbl_partytypecode
+	,dbl_checkYN
+	,dbl_p_name
+	,dbl_s_name
+	,dbl_issueid
+	,dbl_typecode1
+	,dbl_typecode2 
+	,dbl_sub_description
+	,dbl_issuedate
+	,dbl_sub_issuedate
+	,dbp_id
+	,dbp_pass
+	,dbp_apikey
+	,dbp_co_num
+	,dbp_biztype
+	,dbp_name
+	,dbp_bizclassification
+	,dbp_ceoname
+	,dbp_busename
+	,dbp_ir_name
+	,dbp_ir_cell
+	,dbp_email
+	,dbp_address
+	,dbp_date
+	,dbp_sub_keyno
+	,dbp_homemunseo_id
+	,dbs_co_num
+	,dbs_biztype
+	,dbs_name
+	,dbs_bizclassification
+	,dbs_taxnum
+	,dbs_ceoname
+	,dbs_busename1
+	,dbs_name1
+	,dbs_cell1
+	,dbs_email1
+	,dbs_busename2
+	,dbs_name2
+	,dbs_cell2
+	,dbs_email2
+	,dbs_address
+	,dbs_date = "";
 	
 	
 

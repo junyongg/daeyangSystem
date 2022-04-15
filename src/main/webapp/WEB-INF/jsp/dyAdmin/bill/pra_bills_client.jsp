@@ -28,8 +28,9 @@ form .error {color:red}
 <input type="hidden" name="issueid" id="issueid">
 <input type="hidden" name="typecode1" id="typecode1" value = "01">
 <input type="hidden" name="typecode2" id="typecode2" value = "01">
-<!-- <input type="hidden" name="ir_keyno" id="ir_keyno"> -->
-<!-- <input type="hidden" name="ie_keyno" id="ie_keyno"> -->
+<input type="hidden" name="dbl_keyno" id="dbl_keyno">
+<input type="hidden" name="dbl_sub_keyno" id="dbl_sub_keyno" value = "2">
+<input type="hidden" name="chkvalue" id="chkvalue">
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
@@ -113,43 +114,46 @@ form .error {color:red}
 										<%-- 화살표 정렬 --%>
 										<tr>
 											<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
-											<th class="arrow" style="text-align: center;">사업자 번호</th>
-											<th class="arrow" style="text-align: center;">발전소 명</th>
-											<th class="arrow" style="text-align: center;">주소</th>
-											<th class="arrow" style="text-align: center;">이메일</th>
+											<th class="arrow" style="text-align: center;">공급자 명</th>
+											<th class="arrow" style="text-align: center;">공급받는자 명</th>
+											<th class="arrow" style="text-align: center;">품목명</th>
+											<th class="arrow" style="text-align: center;">합계금액</th>
 											<th class="arrow" style="text-align: center;">등록날짜</th>
 											<th class="arrow" style="text-align: center;">작성 상태</th>
 											<th class="arrow" style="text-align: center;">전송 상태</th>
 										</tr>
 									</thead>
 									<tbody style="text-align: center;">
-										<c:if test="${empty billList }">
+										<c:if test="${empty loglist }">
 											<tr>
 												<td colspan="7">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${billList }" var="b">
+										<c:forEach items="${loglist }" var="b">
 											<tr>
-												<td><input type="checkbox" name="chk"></td>
-												<td>${b.dbp_co_num}</td>
-												<td><a href="javascript:;"
-													onclick="detailData('${b.dbp_keyno}')">${b.dbp_name}</a></td>
-												<td>${b.dbp_address}</td>
-												<td>${b.dbp_email}</td>
-												<td>${b.dbp_date}</td>
+												<td><input type="checkbox" name="chk" value = "${b.dbl_keyno}"></td>
+												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}')">${b.dbl_p_name}</a></td>
+												<td>${b.dbl_s_name}</td>
+												<td>${b.dbl_subject}</td>
+												<td>${b.dbl_grandtotal}</td>
+												<td>${b.dbl_issuedate}</td>
 												<td>저장완료</td>
-												<td><button>보기</button></td>
+												<td>전송완료</td>
 										</c:forEach>
 											</tr>
 									</tbody>
 								</table>
 							</div>
 							<div style="text-align: center;">
-							<button class="btn btn-sm btn-primary" id="insertButton"
-								type="button" onclick="" style="width : 100px;">국세청 전송</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="sendNTS()" style="width : 100px;">국세청 전송</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							</div>
 							</div>
 			</article>
+			<!-- ----------------------------------------------   세금계산서 정보  ----------------------------------------------------------->
+			
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
 				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 					data-widget-editbutton="false" >
@@ -322,7 +326,7 @@ form .error {color:red}
 											</tr>
 											<tr>	
 <!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
-												<td><input type="text" class="form-control check2" id="conn_date" name="conn_date" value="${nowDate }"</td>
+												<td><input type="text" class="form-control check2" id="sub_issuedate" name="sub_issuedate" value="${nowDate }"</td>
 												<td><input type="text" class="form-control check2" id="subject" name="subject" value="${itemName }"></td>	
 												<td><input type="text" class="form-control" id="unit" name="unit"></td>
 												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>
@@ -417,7 +421,7 @@ form .error {color:red}
 									</table>
 									</div>
 						<div style="text-align: center;">
-							<button class="btn btn-sm btn-primary" id="sendButton"
+							<button class="btn btn-sm btn-primary" id="loadButton"
 								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
 						</div>
 						</fieldset>
@@ -476,6 +480,7 @@ function providerSelect(value){
        	$("#ir_name").val(result.dbp_name)
        	$("#ir_email").val(result.dbp_email)
        	$("#ir_cell").val(result.dbp_ir_cell)
+       	$("#dbp_sub_keyno").val(result.dbp_sub_keyno) //발행 종류 구분
        	
        },
        error: function(){
@@ -530,8 +535,8 @@ function loadBillInfo(){
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	console.log(result);
         	alert(result);
+        	location.reload();
 //         	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
         	
         },
@@ -540,6 +545,162 @@ function loadBillInfo(){
         }
 	}); 
 }
+
+function detailView(keyno){
+	$.ajax({
+		url: '/dyAdmin/bills/selectAllView.do',
+		type: 'POST',
+		data: {
+			dbl_keyno : keyno
+		},
+		async: false,
+		success : function(data){
+			
+			
+			
+			$("#dbl_keyno").val(data.dbl_keyno)
+			$("#dbp_keyno").val(data.dbp_keyno)
+			$("#homemunseo_id").val(data.dbp_homemunseo_id)
+			$("#ir_companynumber").val(data.dbp_co_num)
+			$("#ir_biztype").val(data.dbp_biztype)
+			$("#ir_companyname").val(data.dbp_name)
+			$("#ir_bizclassification").val(data.dbp_bizclassification)
+			$("#ir_ceoname").val(data.dbp_ceoname)
+			$("#ir_companyaddress").val(data.dbp_address)
+			
+			
+			$("#dbs_keyno").val(data.dbs_keyno)
+			$("#ie_companynumber").val(data.dbs_co_num)
+			$("#ie_biztype").val(data.dbs_biztype)
+			$("#ie_companyname").val(data.dbs_name)
+			$("#ie_taxnumber").val(data.dbs_taxnum)
+			$("#ie_bizclassification").val(data.dbs_bizclassification)
+			$("#ie_ceoname").val(data.dbs_ceoname)
+			$("#ie_companyaddress").val(data.dbs_address)
+			
+			
+			$("#partytypecode").val(data.dbl_partytypecode)
+			$("#purposetype").val(data.dbl_purposetype)
+			$("#issuedate").val(data.dbl_issuedate)
+			$("#chargetotal").val(data.dbl_chargetotal)
+			$("#taxtotal").val(data.dbl_taxtotal)
+			$("#description").val(data.dbl_description)
+			$("#sub_issuedate").val(data.dbl_sub_issuedate)
+			$("#subject").val(data.dbl_subject)
+			$("#unit").val(data.dbl_unit)
+			$("#quantity").val(data.dbl_quantity)
+			$("#unitprice").val(data.dbl_unitprice)
+			$("#supplyprice").val(data.dbl_supplyprice)
+			$("#tax").val(data.dbl_tax)
+			$("#sub_description").val(data.dbl_description)
+			
+			
+			$("#grandtotal").val(data.dbl_grandtotal)
+			$("#cash").val(data.dbl_cash)
+			$("#scheck").val(data.dbl_scheck)
+			$("#draft").val(data.dbl_draft)
+			$("#uncollected").val(data.dbl_uncollected)
+			
+			
+			$("#ir_busename").val(data.dbp_busename)
+			$("#ie_busename1").val(data.dbs_busename1)
+			$("#ie_busename2").val(data.dbs_busename2)
+			$("#ir_name").val(data.dbp_ir_name)
+			$("#ie_name1").val(data.dbs_name1)
+			$("#ie_name2").val(data.dbs_name2)
+			$("#ir_email").val(data.dbp_email)
+			$("#ie_email1").val(data.dbs_email1)
+			$("#ie_email2").val(data.dbs_email2)
+			$("#ir_cell").val(data.dbp_ir_cell)
+			$("#ie_cell1").val(data.dbs_cell1)
+			$("#ie_cell2").val(data.dbs_cell2)
+			
+			
+			
+			$("#loadButton").text("수정");
+			$("#loadButton").attr("onclick","detailViewUpdate()");
+		}, 
+		error: function(){
+			cf_smallBox('error', "저장에러", 3000,'#d24158');
+		}
+	}); 
+}
+
+function sendNTS(){
+	
+	if(confirm("전송하시겠습니까?")){
+		
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	 $.ajax({
+			type: "POST",
+			url: "/dyAdmin/bills/sendNTS.do",
+			data: $('#Form').serializeArray(),
+			async: false,
+			success : function(data){
+				console.log(data);
+				
+			}, 
+			error: function(){
+				
+			}
+	}); 
+	}else
+		return false;
+}
+
+
+function deleteInfo(){
+	
+	if(confirm("삭제하시겠습니까?")){
+		
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	$.ajax({
+		type: "POST",
+		url: "/dyAdmin/bills/deleteInfo.do",
+		async: false,
+		data: $('#Form').serializeArray(),
+		success : function(data){
+			location.reload();
+		}, 
+		error: function(){
+			
+		}
+	}); 
+	
+	}else
+		return false;
+	
+}
+
+function detailViewUpdate(){
+	 
+		 $.ajax({
+				type: "POST",
+				url: "/dyAdmin/bills/billsInfoUpdate.do",
+				async: false,
+				data: $('#Form').serializeArray(),
+				success : function(data){
+					alert(data);
+					location.reload();
+				}, 
+				error: function(){
+					
+				}
+		}); 
+	 }
+
 
 function seletAll(){
 	

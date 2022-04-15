@@ -72,6 +72,17 @@ public class RestApiTest {
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
+		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
+		   
+		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String nowdate = now.replace("-", "");
+		   String nowdate2 = nowdate.trim();
+		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		   
+		   
+		   mv.addObject("nowDate",nowdate2);
+		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
 		
 	      return mv;
 	  }
@@ -83,13 +94,17 @@ public class RestApiTest {
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
+		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
 		   
 		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String nowdate = now.replace("-", "");
+		   String nowdate2 = nowdate.trim();
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   
 		   
-		   mv.addObject("nowDate",now);
-		   mv.addObject("itemName",month+"월 발전대금");
+		   mv.addObject("nowDate",nowdate2);
+		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
 		   
 	      return mv;
 	  }
@@ -101,6 +116,17 @@ public class RestApiTest {
 		   
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
+		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
+		   
+		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String nowdate = now.replace("-", "");
+		   String nowdate2 = nowdate.trim();
+		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		   
+		   
+		   mv.addObject("nowDate",nowdate2);
+		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
 		
 	      return mv;
 	  }
@@ -123,7 +149,7 @@ public class RestApiTest {
 			code = map.get("dbp_id").toString().substring(0,3) + "1";
 			System.out.println(code);
 		}else {
-			String codenum = code.substring(code.length()-8,code.length());
+			String codenum = code.substring(3,code.length());
 			int tempc = Integer.parseInt(codenum) + 1 ;
 			code = map.get("dbp_id").toString().substring(0,3) + tempc;
 		}
@@ -166,10 +192,8 @@ public class RestApiTest {
 			@RequestParam(value="dbs_keyno")String dbs_keyno
 			) throws Exception {
 		
-//		String keyno = dbs_keyno.substring(1);
 		HashMap<String,Object> map = Component.getData("bills.SuppliedSelect_one",dbs_keyno);
 		
-//		map.replace("dbs_keyno",keyno);
 		
 		return map;
 	}
@@ -178,7 +202,8 @@ public class RestApiTest {
 	
 	@RequestMapping("/dyAdmin/bills/billsActionAjax2.do")
 	@ResponseBody
-	public String billsActionAjax2(HttpServletRequest req,billDTO bill, @RequestParam(value="buttionType2", defaultValue="insert")String type) throws Exception {
+	public String billsActionAjax2(HttpServletRequest req,billDTO bill,
+			@RequestParam(value="buttionType2", defaultValue="insert")String type) throws Exception {
 		 
 		 String msg = "";
 		 
@@ -250,148 +275,204 @@ public class RestApiTest {
 		}
 	}
 	
+
 	@SuppressWarnings("unchecked")
-	@RequestMapping("/dyAdmin/bills/sendApi.do")
-	@ResponseBody
-	public void sendApi(HttpServletRequest req, billDTO bill)
+	public String sendApi( billDTO bill)
 			throws Exception {
 
 			// JSONObject객체 생성
 			JSONObject data = new JSONObject();
 
 			// JSONObject객체에 세금계산서 정보를 추가
-			data.put("hometaxbill_id", bill.getHometaxbill_id());				// 회사코드 (아이디) (사용자코드 1001 *
-			data.put("spass", bill.getSpass());									// 패스워드 *
-			data.put("apikey", bill.getApikey() );								// 인증키*
-			data.put("homemunseo_id",bill.getHomemunseo_id() );					// 고유번호*
+			data.put("hometaxbill_id", bill.getDbp_id());				// 회사코드 (아이디) (사용자코드 1001 *
+			data.put("spass", bill.getDbp_pass());									// 패스워드 *
+			data.put("apikey", bill.getDbp_apikey() );								// 인증키*
+			data.put("homemunseo_id",bill.getDbp_homemunseo_id() );					// 고유번호*
 			data.put("signature",bill.getSignature() );							// 전자서명
 			
-			data.put("issueid",bill.getIssueid() );								// 승인번호(자동생성)
-			data.put("typecode1",bill.getTypecode1() );							// (세금)계산서 종류1*
-			data.put("typecode2",bill.getTypecode2() );							// (세금)계산서 종류2*
-			data.put("description", bill.getDescription() );					// 비고
-			data.put("issuedate",bill.getIssuedate() );							// 작성일자*
+			data.put("issueid",bill.getDbl_issueid() );								// 승인번호(자동생성)
+			data.put("typecode1",bill.getDbl_typecode1());							// (세금)계산서 종류1*
+			data.put("typecode2",bill.getDbl_typecode2());							// (세금)계산서 종류2*
+			data.put("description",bill.getDescription());						// 비고
+			data.put("issuedate",bill.getDbl_issuedate());							// 작성일자*
 			
-			data.put("modifytype",bill.getModifytype() );						// 수정사유
-			data.put("purposetype",bill.getPurposetype() );						// 영수/청구 구분*
-			data.put("originalissueid",bill.getOriginalissueid() );				// 당초전자(세금)계산서 승인번호
-			data.put("si_id",bill.getSi_id() );									// 수입신고번호
+			data.put("modifytype",bill.getModifytype() );						// 수정사유-
+			data.put("purposetype",bill.getDbl_purposetype());						// 영수/청구 구분*
+			data.put("originalissueid",bill.getOriginalissueid());				// 당초전자(세금)계산서 승인번호-
+			data.put("si_id",bill.getSi_id() );									// 수입신고번호-
 			data.put("si_hcnt",bill.getSi_hcnt() );								// 수입총건 *
 			
-			data.put("si_startdt",bill.getSi_startdt() );						// 일괄발급시작일
-			data.put("si_enddt",bill.getSi_enddt() );							// 일괄발급종료일
-			data.put("ir_companynumber",bill.getIr_companynumber() );			// 공급자 사업자등록번호*
-			data.put("ir_biztype",bill.getIr_biztype() );						// 공급자 업태*
-			data.put("ir_companyname",bill.getIr_companyname() );				// 공급자 상호*
+			data.put("si_startdt",bill.getSi_startdt() );						// 일괄발급시작일-
+			data.put("si_enddt",bill.getSi_enddt() );							// 일괄발급종료일-
+			data.put("ir_companynumber",bill.getDbp_co_num() );					// 공급자 사업자등록번호*
+			data.put("ir_biztype",bill.getDbp_biztype());						// 공급자 업태*
+			data.put("ir_companyname",bill.getDbp_name());						// 공급자 상호*
 			
-			data.put("ir_bizclassification",bill.getIr_bizclassification() );	// 공급자 업종*
-			data.put("ir_ceoname",bill.getIr_ceoname());						// 공급자 대표자성명*
-			data.put("ir_busename",bill.getIr_busename());						// 공급자 담당부서명
-			data.put("ir_name", bill.getIr_name());								// 공급자 담당자명*
-			data.put("ir_cell", bill.getIr_cell());								// 공급자 담당자전화번호*
+			data.put("ir_bizclassification",bill.getDbp_bizclassification() );	// 공급자 업종*
+			data.put("ir_ceoname",bill.getDbp_ceoname());						// 공급자 대표자성명*
+			data.put("ir_busename",bill.getDbp_busename());						// 공급자 담당부서명
+			data.put("ir_name", bill.getDbp_ir_name());								// 공급자 담당자명*
+			data.put("ir_cell", bill.getDbp_ir_cell());								// 공급자 담당자전화번호*
 			
-			data.put("ir_email",bill.getIr_email());							// 공급자 담당자이메일*
-			data.put("ir_companyaddress",bill.getIr_companyaddress() );			// 공급자 주소*
-			data.put("ie_companynumber", bill.getIe_companynumber());			// 공급받는자 사업자등록번호*
-			data.put("ie_biztype",bill.getIe_companyname());					// 공급받는자 업태*
-			data.put("ie_companyname",bill.getIe_companyname() );				// 공급받는자 사업체명*
+			data.put("ir_email",bill.getDbp_email());							// 공급자 담당자이메일*
+			data.put("ir_companyaddress",bill.getDbp_address() );			// 공급자 주소*
+			data.put("ie_companynumber", bill.getDbs_co_num());				// 공급받는자 사업자등록번호*
+			data.put("ie_biztype",bill.getDbs_biztype());					// 공급받는자 업태*
+			data.put("ie_companyname",bill.getDbs_name() );				// 공급받는자 사업체명*
+				
+			data.put("ie_bizclassification",bill.getDbs_bizclassification() );	// 공급받는자 업종*
+			data.put("ie_taxnumber",bill.getDbs_taxnum() );					// 공급받는자 종사업장번호
+			data.put("partytypecode",bill.getDbl_partytypecode() );					// 공급받는자 구분 01=사업자등록번호 02=주민등록번호 03=외국인*
+			data.put("ie_ceoname",bill.getDbs_ceoname() );						// 공급받는자 대표자명*
+			data.put("ie_busename1",bill.getDbs_busename1() );					// 공급받는자 담당부서1
 			
-			data.put("ie_bizclassification",bill.getIe_bizclassification() );	// 공급받는자 업종*
-			data.put("ie_taxnumber",bill.getIe_taxnumber() );					// 공급받는자 종사업장번호
-			data.put("partytypecode",bill.getPartytypecode() );					// 공급받는자 구분 01=사업자등록번호 02=주민등록번호 03=외국인*
-			data.put("ie_ceoname",bill.getIe_ceoname() );						// 공급받는자 대표자명*
-			data.put("ie_busename1",bill.getIe_busename1() );					// 공급받는자 담당부서1
+			data.put("ie_name1",bill.getDbs_name1() );							// 공급받는자 담당자명1*
+			data.put("ie_cell1",bill.getDbs_cell1() );							// 공급받는자 담당자연락처1*
+			data.put("ie_email1",bill.getDbs_email1() );							// 공급받는자 담당자이메일1*
+			data.put("ie_busename2",bill.getDbs_name2() );					// 공급받는자 담당부서2
+			data.put("ie_name2",bill.getDbs_name2() );							// 공급받는자 담당자명2
 			
-			data.put("ie_name1",bill.getIe_name1() );							// 공급받는자 담당자명1*
-			data.put("ie_cell1",bill.getIe_cell1() );							// 공급받는자 담당자연락처1*
-			data.put("ie_email1",bill.getIe_email1() );							// 공급받는자 담당자이메일1*
-			data.put("ie_busename2",bill.getIe_busename2() );					// 공급받는자 담당부서2
-			data.put("ie_name2",bill.getIe_name2() );							// 공급받는자 담당자명2
+			data.put("ie_cell2",bill.getDbs_cell2());							// 공급받는자 담당자연락처2
+			data.put("ie_email2",bill.getDbs_email2() );							// 공급받는자 담당자이메일2
+			data.put("ie_companyaddress",bill.getDbs_address() );			// 공급받는자 회사주소*
+			data.put("su_companynumber",bill.getSu_companynumber() );			// 수탁사업자 사업자등록번호-
+			data.put("su_biztype",bill.getSu_biztype() );						// 수탁사업자 업태-
 			
-			data.put("ie_cell2",bill.getIe_cell2());							// 공급받는자 담당자연락처2
-			data.put("ie_email2",bill.getIe_email2() );							// 공급받는자 담당자이메일2
-			data.put("ie_companyaddress",bill.getIe_companyaddress() );			// 공급받는자 회사주소*
-			data.put("su_companynumber",bill.getSu_companynumber() );			// 수탁사업자 사업자등록번호
-			data.put("su_biztype",bill.getSu_biztype() );						// 수탁사업자 업태
+			data.put("su_companyname",bill.getSu_companyname() );				// 수탁사업자 상호명-
+			data.put("su_bizclassification",bill.getSu_bizclassification() );	// 수탁사업자 업종-
+			data.put("su_taxnumber",bill.getSu_taxnumber() );					// 수탁사업자 종사업장번호-
+			data.put("su_ceoname",bill.getSu_ceoname() );						// 수탁사업자 대표자명-
+			data.put("su_busename",bill.getSu_busename() );						// 수탁사업자 담당부서명-
 			
-			data.put("su_companyname",bill.getSu_companyname() );				// 수탁사업자 상호명
-			data.put("su_bizclassification",bill.getSu_bizclassification() );	// 수탁사업자 업종
-			data.put("su_taxnumber",bill.getSu_taxnumber() );					// 수탁사업자 종사업장번호
-			data.put("su_ceoname",bill.getSu_ceoname() );						// 수탁사업자 대표자명
-			data.put("su_busename",bill.getSu_busename() );						// 수탁사업자 담당부서명
+			data.put("su_name",bill.getSu_name() );								// 수탁사업자 담당자명-
+			data.put("su_cell",bill.getSu_cell() );								// 수탁사업자 담당자전화번호-
+			data.put("su_email",bill.getSu_email() );							// 수탁사업자 담당자이메일-
+			data.put("su_companyaddress",bill.getSu_companyaddress() );			// 수탁사업자 회사주소-
 			
-			data.put("su_name",bill.getSu_name() );								// 수탁사업자 담당자명
-			data.put("su_cell",bill.getSu_cell() );								// 수탁사업자 담당자전화번호
-			data.put("su_email",bill.getSu_email() );							// 수탁사업자 담당자이메일
-			data.put("su_companyaddress",bill.getSu_companyaddress() );			// 수탁사업자 회사주소
-			
-			data.put("cash",bill.getCash().replace(",", ""));									// 현금*
-			data.put("scheck",bill.getScheck().replace(",", ""));								// 수표*
-			data.put("draft",bill.getDraft().replace(",", ""));									// 어음*
-			data.put("uncollected",bill.getUncollected().replace(",", ""));						// 외상 미수금*
-			data.put("chargetotal",bill.getChargetotal().replace(",", ""));						// 총 공급가액*
-			data.put("taxtotal",bill.getTaxtotal().replace(",", ""));							// 총 세액 *
-			data.put("grandtotal",bill.getGrandtotal().replace(",", ""));						// 총 금액*
+			data.put("cash",bill.getDbl_cash().replace(",", ""));									// 현금*
+			data.put("scheck",bill.getDbl_scheck().replace(",", ""));								// 수표*
+			data.put("draft",bill.getDbl_draft().replace(",", ""));									// 어음*
+			data.put("uncollected",bill.getDbl_uncollected().replace(",", ""));						// 외상 미수금*
+			data.put("chargetotal",bill.getDbl_chargetotal().replace(",","")) ;						// 총 공급가액*
+			data.put("taxtotal",bill.getDbl_taxtotal().replace(",", ""));							// 총 세액 *
+			data.put("grandtotal",bill.getDbl_grandtotal().replace(",", ""));						// 총 금액*
 			
 			JSONArray jArray = new JSONArray();
 			
 				
 			JSONObject sObject = new JSONObject();
 			sObject.put("sub_description", bill.getDescription() );							// 품목별 비고입력
-			sObject.put("supplyprice",bill.getSupplyprice().replace(",", ""));				// 품목별 공급가액
-			sObject.put("quantity",bill.getQuantity() );									// 품목수량
-			sObject.put("unit",bill.getUnit() );											// 품목규격
-			sObject.put("subject",bill.getSubject() );										// 품목명
-			sObject.put("gyymmdd",bill.getGyymmdd() );										// 공급연원일
-			sObject.put("tax",bill.getTax().replace(",", ""));								// 세액
-			sObject.put("unitprice",bill.getUnitprice().replace(",", ""));					// 단가
+			sObject.put("supplyprice",bill.getDbl_supplyprice().replace(",", ""));				// 품목별 공급가액
+			sObject.put("quantity",bill.getDbl_quantity() );									// 품목수량
+			sObject.put("unit",bill.getDbl_unit() );											// 품목규격
+			sObject.put("subject",bill.getDbl_subject() );										// 품목명
+			sObject.put("sub_issuedate",bill.getDbl_sub_issuedate() );											// 공급연원일
+			sObject.put("tax",bill.getDbl_tax().replace(",", ""));								// 세액
+			sObject.put("unitprice",bill.getDbl_unitprice().replace(",", ""));					// 단가
 			jArray.put(sObject);
 
 			// 세금계산서 detail정보를 JSONObject객체에 추가
 			data.put("taxdetailList", jArray);// 배열을 넣음
 
 			System.out.println(data);
-			
-			// 전자세금계산서 발행 후 리턴
-			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
-			
-			if(restapi.equals("fail")) {
-				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
-				return;
-			}
-			
-			// Api에서 리턴받은 값으로 예외처리 및 출력
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(restapi);
-			JSONObject jsonObj = (JSONObject) obj;
-
-			if (!restapi.equals("fail")) {
-				if (jsonObj.get("code").equals("0")) {
-					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : "
-							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
-							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
-							+ (String) jsonObj.get("homemunseo_id"));
-				} else {
-					System.out.println(
-							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
-				}
-			}else {
-				System.out.println(
-						"code : -1" + "\n" + "msg : 서버호출에 실패했습니다.");
-			}
-
+			return null;
+//			// 전자세금계산서 발행 후 리턴
+//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+//			
+//			if(restapi.equals("fail")) {
+//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				return "서버문제장애";
+//			}
+//			
+//			// Api에서 리턴받은 값으로 예외처리 및 출력
+//			JSONParser parser = new JSONParser();
+//			Object obj = parser.parse(restapi);
+//			JSONObject jsonObj = (JSONObject) obj;
+//			String msg = "";
+//			if (!restapi.equals("fail")) {
+//				if (jsonObj.get("code").equals("0")) {
+//					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : "
+//							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
+//							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
+//							+ (String) jsonObj.get("homemunseo_id"));
+//				} else {
+//					System.out.println(
+//							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+//				}
+//			}else {
+//				msg = "code : -1" + "\n" + "msg : 서버호출에 실패했습니다.";
+//			}
+//			return msg;
 	}
 
 	@RequestMapping("/dyAdmin/bills/billsInfoInsert.do")
 	@ResponseBody
-	public String billsInfoAjax(HttpServletRequest req,billDTO bill) throws Exception {
+	public String billsInfoIsnsertAjax(HttpServletRequest req,billDTO bill) throws Exception {
 		
-		
+
 		Component.updateData("bills.registNumberUpdate", bill);
 		Component.createData("bills.billsInfoInsert", bill);
 		 String msg = "세금계산서 정보 저장 완료";
 
 
+		return msg;
+	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/billsInfoUpdate.do")
+	@ResponseBody
+	public String billsInfoUpdateAjax(HttpServletRequest req,billDTO bill) throws Exception {
+		
+		
+		Component.updateData("bills.billsInfoUpdate", bill);
+		 String msg = "세금계산서 정보 수정 완료";
+
+
+		return msg;
+	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/selectAllView.do")
+	@ResponseBody
+	public billDTO selectAllView(HttpServletRequest req,billDTO bill) throws Exception {
+		
+		
+		bill = Component.getData("bills.selectAllView", bill);
+		
+		
+		return bill;
+	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/sendNTS.do")
+	@ResponseBody
+	public billDTO sendNTS(HttpServletRequest req,billDTO bill,
+			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
+		
+		String[] list = dbl_keyno.split(",");
+		
+		for(int i= 0; i<list.length; i++) {
+		bill = Component.getData("bills.selectAllView", list[i]);
+		sendApi(bill);
+		}
+		
+		return bill;
+	}
+	
+	@RequestMapping("/dyAdmin/bills/deleteInfo.do")
+	@ResponseBody
+	public String deleteInfo(HttpServletRequest req,
+			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
+		
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String msg = "";
+		String [] dblkey = dbl_keyno.split(",");
+		
+		map.put("dblkey", dblkey);
+
+		Component.deleteData("bills.billsDelete", dblkey);
+	
 		return msg;
 	
 	}

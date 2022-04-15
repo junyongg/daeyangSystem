@@ -167,7 +167,18 @@
 				dbl_unitprice,
 				dbl_supplyprice,
 				dbl_tax,
-				dbl_description
+				dbl_description,
+				dbl_p_name,
+				dbl_s_name,
+				dbl_purposetype,
+				dbl_partytypecode,
+				dbl_issueid,
+				dbl_typecode1,
+				dbl_typecode2,
+				dbl_sub_description,
+				dbl_issuedate,
+				dbl_sub_issuedate,
+				dbl_sub_keyno
 			)VALUES(
 				#{dbp_keyno},
 				#{dbs_keyno},
@@ -184,9 +195,71 @@
 				#{unitprice},
 				#{supplyprice},
 				#{tax},
-				#{sub_description}
+				#{description},
+				#{ir_companyname},
+				#{ie_companyname},
+				#{purposetype},
+				#{partytypecode},
+				#{issueid},
+				#{typecode1},
+				#{typecode2},
+				#{sub_description},
+				#{issuedate},
+				#{sub_issuedate},
+				#{dbl_sub_keyno}
 			)
 	</insert>
+	
+	<update id="billsInfoUpdate" parameterType="billDTO">
+		UPDATE dy_bills_log
+		SET dbl_provider_key = #{dbp_keyno},
+			dbl_supplied_key = #{dbs_keyno},
+			dbl_cash = #{cash},
+			dbl_scheck = #{scheck},
+			dbl_draft = #{draft},
+			dbl_uncollected = #{uncollected},
+			dbl_chargetotal = #{chargetotal},
+			dbl_taxtotal = #{taxtotal},
+			dbl_grandtotal = #{grandtotal},
+			dbl_subject = #{subject},
+			dbl_unit = #{unit},
+			dbl_quantity = #{quantity},
+			dbl_unitprice = #{unitprice},
+			dbl_supplyprice = #{supplyprice},
+			dbl_tax = #{tax},
+			dbl_description = #{description},
+			dbl_p_name = #{ir_companyname},
+			dbl_s_name = #{ie_companyname},
+			dbl_purposetype = #{purposetype},
+			dbl_partytypecode = #{partytypecode},
+			dbl_sub_description = #{sub_description},
+			dbl_issuedate = #{issuedate},
+			dbl_sub_issuedate = #{sub_issuedate}
+		WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
+	<select id="billslogselect" resultType="hashmap" >
+			SELECT * 
+			FROM dy_bills_log
+			
+	</select>
+	
+	<select id="selectAllView" parameterType="billDTO" resultType="billDTO">
+			SELECT * 
+			FROM dy_bills_log l
+			left join dy_bills_provider p
+			on l.dbl_provider_key = p.dbp_keyno
+			left join dy_bills_supplied s
+			on l.dbl_supplied_key = s.dbs_keyno
+			where l.dbl_keyno = #{dbl_keyno}
 
+	</select>
+	<delete id="billsDelete" parameterType="arraylist">
+			DELETE  FROM dy_bills_log 
+			where
+			<foreach item = "l" index="index" collection="array" open="(" close=")" separator="or">
+			dbl_keyno = #{l}
+			</foreach>
+	</delete>
 </mapper>
  

@@ -28,8 +28,9 @@ form .error {color:red}
 <input type="hidden" name="issueid" id="issueid">
 <input type="hidden" name="typecode1" id="typecode1" value = "01">
 <input type="hidden" name="typecode2" id="typecode2" value = "01">
-<input type="hidden" name="ir_keyno" id="ir_keyno">
-<input type="hidden" name="ie_keyno" id="ie_keyno">
+<input type="hidden" name="dbl_keyno" id="dbl_keyno">
+<input type="hidden" name="dbl_sub_keyno" id="dbl_sub_keyno" value = "1">
+<input type="hidden" name="chkvalue" id="chkvalue">
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
@@ -65,6 +66,16 @@ form .error {color:red}
 								<table id="dt_basic"
 									class="pagingTable table table-striped table-bordered table-hover"
 									width="100%">
+									<colgroup>
+											<col style="width: 3%;">
+											<col style="width: 10%;">
+											<col style="width: 10%;">
+											<col style="width: 20%;">
+											<col style="width: 20%;">
+											<col style="width: 10%;">
+											<col style="width: 5%;">
+											<col style="width: 5%;">
+										</colgroup>
 									<thead>
 										<tr>
 											<th colspan="10">
@@ -81,7 +92,7 @@ form .error {color:red}
 											</th>
 										</tr>
 										<tr>
-											<th>선택</th>
+											<th style="text-align: center;">선택</th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="1"
 												placeholder="번호 검색" /></th>
@@ -98,45 +109,51 @@ form .error {color:red}
 												class="form-control search-control" data-searchindex="5"
 												placeholder="날짜 검색" /></th>
 											<th class="hasinput" data-searchindex="6"></th>
+											<th class="hasinput" data-searchindex="7"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
-											<th style="width: 50px;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
-											<th class="arrow" data-index="1">사업자 번호</th>
-											<th class="arrow" data-index="2">발전소 명</th>
-											<th class="arrow" data-index="3">주소</th>
-											<th class="arrow" data-index="4">이메일</th>
-											<th class="arrow" data-index="5">등록날짜</th>
-											<th class="arrow" data-index="6" style="width: 50px;">상태</th>
+											<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
+											<th class="arrow" style="text-align: center;">공급자 명</th>
+											<th class="arrow" style="text-align: center;">공급받는자 명</th>
+											<th class="arrow" style="text-align: center;">품목명</th>
+											<th class="arrow" style="text-align: center;">합계금액</th>
+											<th class="arrow" style="text-align: center;">등록날짜</th>
+											<th class="arrow" style="text-align: center;">작성 상태</th>
+											<th class="arrow" style="text-align: center;">전송 상태</th>
 										</tr>
 									</thead>
-									<tbody>
-										<c:if test="${empty billList }">
+									<tbody style="text-align: center;">
+										<c:if test="${empty loglist }">
 											<tr>
 												<td colspan="7">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${billList }" var="b">
+										<c:forEach items="${loglist }" var="b">
 											<tr>
-												<td><input type="checkbox" name="chk"></td>
-												<td>${b.dbp_co_num}</td>
-												<td><a href="javascript:;"
-													onclick="detailData('${b.dbp_keyno}')">${b.dbp_name}</a></td>
-												<td>${b.dbp_address}</td>
-												<td>${b.dbp_email}</td>
-												<td>${b.dbp_date}</td>
+												<td><input type="checkbox" name="chk" value = "${b.dbl_keyno}"></td>
+												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}')">${b.dbl_p_name}</a></td>
+												<td>${b.dbl_s_name}</td>
+												<td>${b.dbl_subject}</td>
+												<td>${b.dbl_grandtotal}</td>
+												<td>${b.dbl_issuedate}</td>
 												<td>저장완료</td>
+												<td>전송완료</td>
 										</c:forEach>
 											</tr>
 									</tbody>
 								</table>
 							</div>
 							<div style="text-align: center;">
-							<button class="btn btn-sm btn-primary" id="insertButton"
-								type="button" onclick="" style="width : 100px;">국세청 전송</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="sendNTS()" style="width : 100px;">국세청 전송</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							</div>
 							</div>
 			</article>
+			<!-- ----------------------------------------------   세금계산서 정보  ----------------------------------------------------------->
+			
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_2" style="width: 100%; left:0px;" >
 				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 					data-widget-editbutton="false" >
@@ -165,7 +182,7 @@ form .error {color:red}
 									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-									<select class="form-control input-sm select2 ir_keyno" id="ir_keyno" name="ir_keyno" onchange="providerSelect(this.value)">
+									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelect(this.value)">
 										<option>선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
@@ -213,7 +230,7 @@ form .error {color:red}
 									<label class="col-md-3" style= "height: 30px; background-color: #b0ccfe; padding: 7px; margin-left: 11px;">공급받는자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-								<select class="form-control input-sm select2 ir_keyno" id="ie_keyno" name="ie_keyno" onchange="supliedSelect(this.value)">
+								<select class="form-control input-sm select2 ir_keyno" id="dbs_keyno" name="dbs_keyno" onchange="supliedSelect(this.value)">
 									<option>선택하세요</option>
 									<c:forEach items="${SuppliedList}" var="b">
 										<option value="${b.dbs_keyno}">${b.dbs_name}</option>
@@ -276,9 +293,9 @@ form .error {color:red}
 												<td>비고</td>		
 											</tr>
 											<tr>	
-												<td><input type="text" class="form-control check2" id="issuedate" name="issuedate"></td>
-												<td><input type="text" class="form-control check2" id="chargetotal" name="chargetotal" style = "background-color:#e8e8e8" value="0"></td>	
-												<td><input type="text" class="form-control" id="taxtotal" name="taxtotal" style = "background-color:#e8e8e8" value="0"></td>
+												<td><input type="text" class="form-control check2" id="issuedate" name="issuedate" value="${nowDate }"></td>
+												<td><input type="text" class="form-control check2" id="chargetotal" name="chargetotal" style = "background-color:#e8e8e8" value="0" readonly="readonly"></td>	
+												<td><input type="text" class="form-control" id="taxtotal" name="taxtotal" style = "background-color:#e8e8e8" value="0" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="description" name="description"></td>
 											</tr>
 										</tbody>
@@ -309,13 +326,13 @@ form .error {color:red}
 											</tr>
 											<tr>	
 <!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
-												<td><input type="text" class="form-control check2" id="conn_date" name="conn_date"></td>
-												<td><input type="text" class="form-control check2" id="subject" name="subject"></td>	
+												<td><input type="text" class="form-control check2" id="sub_issuedate" name="sub_issuedate" value="${nowDate }"</td>
+												<td><input type="text" class="form-control check2" id="subject" name="subject" value="${itemName }"></td>	
 												<td><input type="text" class="form-control" id="unit" name="unit"></td>
 												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>
-												<td><input type="text" class="form-control" id="unitprice" name="unitprice"></td>
-												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice"></td>
-												<td><input type="text" class="form-control" id="tax" name="tax"></td>
+												<td><input type="text" class="form-control" id="unitprice" name="unitprice" onkeyup="Divison(this)"></td>
+												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice" readonly="readonly"></td>
+												<td><input type="text" class="form-control" id="tax" name="tax" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="sub_description" name="sub_description"></td>
 												<td><input type="text" class="form-control" id="inputplus" name="inputplus"></td>
 											</tr>
@@ -350,11 +367,11 @@ form .error {color:red}
 												</td>
 											</tr>
 											<tr>	
-												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)"></td>	
-												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)"></td>
-												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)"></td>
+												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)" value="0"></td>	
+												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)" value="0"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -404,8 +421,8 @@ form .error {color:red}
 									</table>
 									</div>
 						<div style="text-align: center;">
-							<button class="btn btn-sm btn-primary" id="sendButton"
-								type="button" onclick="sendNts()" style="width: 100px;">저장</button>
+							<button class="btn btn-sm btn-primary" id="loadButton"
+								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
 						</div>
 						</fieldset>
 								</div>
@@ -425,6 +442,15 @@ form .error {color:red}
 
 <script type="text/javascript">
 
+
+$(document).ready(function(){
+	
+	$('#issuedate').datepicker()
+	$('#conn_date').datepicker()
+
+}); 
+
+
 function providerSelect(value){
 	 $.ajax({
        url: '/dyAdmin/bills/providerSelectAjax.do',
@@ -441,7 +467,7 @@ function providerSelect(value){
        	$("#apikey").val(result.dbp_apikey)
        	$("#homemunseo_id").val()
        	$("#issueid").val()
-//      $("#ir_keyno").val(result.dbp_keyno)
+	    $("#dbp_keyno").val(result.dbp_keyno)
        	$("#ir_companynumber").val(result.dbp_co_num) 	
        	$("#homemunseo_id").val(result.dbp_homemunseo_id)
        	$("#ir_companyname").val(result.dbp_name)
@@ -454,6 +480,7 @@ function providerSelect(value){
        	$("#ir_name").val(result.dbp_name)
        	$("#ir_email").val(result.dbp_email)
        	$("#ir_cell").val(result.dbp_ir_cell)
+       	$("#dbp_sub_keyno").val(result.dbp_sub_keyno) //발행 종류 구분
        	
        },
        error: function(){
@@ -476,7 +503,7 @@ function supliedSelect(value){
        success: function(result) {
     	   
     	console.log(result);
-//        	$("#ie_keyno").val(result.dbs_keyno)
+       	$("#dbs_keyno").val(result.dbs_keyno)
        	$("#ie_companynumber").val(result.dbs_co_num)
      	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
        	$("#ie_companyname").val(result.dbs_name)
@@ -498,25 +525,182 @@ function supliedSelect(value){
 	}); 
 }
 
-function sendNts(){
+function loadBillInfo(){
 	
 // 	if(!validationCheck()) return false
 	
 	 $.ajax({
-        url: '/dyAdmin/bills/loadBillInfo.do',
+        url: '/dyAdmin/bills/billsInfoInsert.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	console.log(result);
-        	cf_smallBox('전송 완료', "세금 계산서 발행 완료", 3000,);
+        	alert(result);
+        	location.reload();
+//         	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
         	
         },
         error: function(){
-        	alert("전송 실패");
+        	alert("저장 실패");
         }
 	}); 
 }
+
+function detailView(keyno){
+	$.ajax({
+		url: '/dyAdmin/bills/selectAllView.do',
+		type: 'POST',
+		data: {
+			dbl_keyno : keyno
+		},
+		async: false,
+		success : function(data){
+			
+			
+			
+			$("#dbl_keyno").val(data.dbl_keyno)
+			$("#dbp_keyno").val(data.dbp_keyno)
+			$("#homemunseo_id").val(data.dbp_homemunseo_id)
+			$("#ir_companynumber").val(data.dbp_co_num)
+			$("#ir_biztype").val(data.dbp_biztype)
+			$("#ir_companyname").val(data.dbp_name)
+			$("#ir_bizclassification").val(data.dbp_bizclassification)
+			$("#ir_ceoname").val(data.dbp_ceoname)
+			$("#ir_companyaddress").val(data.dbp_address)
+			
+			
+			$("#dbs_keyno").val(data.dbs_keyno)
+			$("#ie_companynumber").val(data.dbs_co_num)
+			$("#ie_biztype").val(data.dbs_biztype)
+			$("#ie_companyname").val(data.dbs_name)
+			$("#ie_taxnumber").val(data.dbs_taxnum)
+			$("#ie_bizclassification").val(data.dbs_bizclassification)
+			$("#ie_ceoname").val(data.dbs_ceoname)
+			$("#ie_companyaddress").val(data.dbs_address)
+			
+			
+			$("#partytypecode").val(data.dbl_partytypecode)
+			$("#purposetype").val(data.dbl_purposetype)
+			$("#issuedate").val(data.dbl_date)
+			$("#chargetotal").val(data.dbl_chargetotal)
+			$("#taxtotal").val(data.dbl_taxtotal)
+			$("#description").val(data.dbl_description)
+			$("#conn_date").val(data.dbl_date)
+			$("#subject").val(data.dbl_subject)
+			$("#unit").val(data.dbl_unit)
+			$("#quantity").val(data.dbl_quantity)
+			$("#unitprice").val(data.dbl_unitprice)
+			$("#supplyprice").val(data.dbl_supplyprice)
+			$("#tax").val(data.dbl_tax)
+			$("#sub_description").val(data.dbl_description)
+			
+			
+			$("#grandtotal").val(data.dbl_grandtotal)
+			$("#cash").val(data.dbl_cash)
+			$("#scheck").val(data.dbl_scheck)
+			$("#draft").val(data.dbl_draft)
+			$("#uncollected").val(data.dbl_uncollected)
+			
+			
+			$("#ir_busename").val(data.dbp_busename)
+			$("#ie_busename1").val(data.dbs_busename1)
+			$("#ie_busename2").val(data.dbs_busename2)
+			$("#ir_name").val(data.dbp_ir_name)
+			$("#ie_name1").val(data.dbs_name1)
+			$("#ie_name2").val(data.dbs_name2)
+			$("#ir_email").val(data.dbp_email)
+			$("#ie_email1").val(data.dbs_email1)
+			$("#ie_email2").val(data.dbs_email2)
+			$("#ir_cell").val(data.dbp_ir_cell)
+			$("#ie_cell1").val(data.dbs_cell1)
+			$("#ie_cell2").val(data.dbs_cell2)
+			
+			
+			
+			$("#loadButton").text("수정");
+			$("#loadButton").attr("onclick","detailViewUpdate()");
+		}, 
+		error: function(){
+			cf_smallBox('error', "저장에러", 3000,'#d24158');
+		}
+	}); 
+}
+
+function sendNTS(){
+	
+	if(confirm("전송하시겠습니까?")){
+		
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	 $.ajax({
+			type: "POST",
+			url: "/dyAdmin/bills/sendNTS.do",
+			data: $('#Form').serializeArray(),
+			async: false,
+			success : function(data){
+				console.log(data);
+				
+			}, 
+			error: function(){
+				
+			}
+	}); 
+	}else
+		return false;
+}
+
+
+function deleteInfo(){
+	
+	if(confirm("삭제하시겠습니까?")){
+		
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	$.ajax({
+		type: "POST",
+		url: "/dyAdmin/bills/deleteInfo.do",
+		async: false,
+		data: $('#Form').serializeArray(),
+		success : function(data){
+			location.reload();
+		}, 
+		error: function(){
+			
+		}
+	}); 
+	
+	}else
+		return false;
+	
+}
+
+function detailViewUpdate(){
+	 
+		 $.ajax({
+				type: "POST",
+				url: "/dyAdmin/bills/billsInfoUpdate.do",
+				async: false,
+				data: $('#Form').serializeArray(),
+				success : function(data){
+					alert(data);
+					location.reload();
+				}, 
+				error: function(){
+					
+				}
+		}); 
+	 }
+
 
 function seletAll(){
 	
@@ -538,5 +722,27 @@ function comma(str) {
 function uncomma(str) {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
+}
+
+
+function Divison(obj){
+	var vv = obj.value.replace(",","");
+	var v = parseInt(vv)
+	var tax = (v*0.1).toFixed(0)
+	
+	$("#unitprice").val(comma(v))
+	$("#grandtotal").val(comma(v))
+	$("#supplyprice").val(comma(v - tax))
+	
+	$("#chargetotal").val(comma(v - tax))
+	if (tax > 0) {	
+		$("#tax").val(comma(tax))
+		$("#taxtotal").val(comma(tax))
+	}else{
+		$("#tax").val(tax)
+		$("#taxtotal").val(tax)
+	}
+	
+	
 }
 </script>

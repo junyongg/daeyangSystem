@@ -31,6 +31,10 @@ form .error {color:red}
 <input type="hidden" name="dbl_keyno" id="dbl_keyno">
 <input type="hidden" name="dbl_sub_keyno" id="dbl_sub_keyno" value = "2">
 <input type="hidden" name="chkvalue" id="chkvalue">
+<input type="hidden" name="si_hcnt" id="si_hcnt" value = "0">
+<input type="hidden" name="checkYN" id="checkYN" value = "N">
+<input type="hidden" name="dbp_subkey2" id="dbp_subkey2" value = "">
+<input type="hidden" name="dbs_subkey2" id="dbs_subkey2" value = "">
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
@@ -73,8 +77,7 @@ form .error {color:red}
 											<col style="width: 20%;">
 											<col style="width: 20%;">
 											<col style="width: 10%;">
-											<col style="width: 5%;">
-											<col style="width: 5%;">
+											<col style="width: 10%;">
 										</colgroup>
 									<thead>
 										<tr>
@@ -95,21 +98,20 @@ form .error {color:red}
 											<th style="text-align: center;">선택</th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="1"
-												placeholder="번호 검색" /></th>
+												placeholder="공급자 검색" /></th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="2"
-												placeholder="발전소 검색" /></th>
+												placeholder="공급받는자 검색" /></th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="3"
-												placeholder="주소 검색" /></th>
+												placeholder="품목명 검색" /></th>
 											<th class="hasinput" ><input type="text"
 												class="form-control search-control" data-searchindex="4"
-												placeholder="이메일 검색" /></th>
+												placeholder="금액 검색" /></th>
 											<th class="hasinput" ><input type="text"
 												class="form-control search-control" data-searchindex="5"
 												placeholder="날짜 검색" /></th>
 											<th class="hasinput" data-searchindex="6"></th>
-											<th class="hasinput" data-searchindex="7"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
@@ -119,7 +121,6 @@ form .error {color:red}
 											<th class="arrow" style="text-align: center;">품목명</th>
 											<th class="arrow" style="text-align: center;">합계금액</th>
 											<th class="arrow" style="text-align: center;">등록날짜</th>
-											<th class="arrow" style="text-align: center;">작성 상태</th>
 											<th class="arrow" style="text-align: center;">전송 상태</th>
 										</tr>
 									</thead>
@@ -129,15 +130,19 @@ form .error {color:red}
 												<td colspan="7">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${loglist }" var="b">
+										<c:forEach items="${loglist2 }" var="b">
 											<tr>
-												<td><input type="checkbox" name="chk" value = "${b.dbl_keyno}"></td>
+												<c:if test="${b.dbl_checkYN eq 'N' }">
+												<td><input type="checkbox" name="chk" id ="chk" value = "${b.dbl_keyno}"></td>
+												</c:if>                         						
+												<c:if test="${b.dbl_checkYN eq 'Y' }">
+												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
+												</c:if>                         						
 												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}')">${b.dbl_p_name}</a></td>
 												<td>${b.dbl_s_name}</td>
 												<td>${b.dbl_subject}</td>
 												<td>${b.dbl_grandtotal}</td>
 												<td>${b.dbl_issuedate}</td>
-												<td>저장완료</td>
 												<td>전송완료</td>
 										</c:forEach>
 											</tr>
@@ -205,21 +210,21 @@ form .error {color:red}
 										<tbody>
 											<tr>
 												<td style="background-color: #f7b1b1;">등록 번호</td>
-												<td><input type="text" class="form-control check2" id="homemunseo_id" name="homemunseo_id" value=""></td>
+												<td><input type="text" class="form-control check2" id="homemunseo_id" name="homemunseo_id" value="" readonly="readonly"></td>
 												<td style="background-color: #f7b1b1;">사업자등록번호</td>
-												<td><input type="text" class="form-control check2" id="ir_companynumber" name="ir_companynumber"></td>											
+												<td><input type="text" class="form-control check2" id="ir_companynumber" name="ir_companynumber" readonly="readonly"></td>											
 												<td style="background-color: #f7b1b1;">업태</td>
-												<td><input type="text" class="form-control check2" id="ir_biztype" name="ir_biztype"></td>
+												<td><input type="text" class="form-control check2" id="ir_biztype" name="ir_biztype" readonly="readonly"></td>
 												<td style="background-color: #f7b1b1;">사업체명</td>
-												<td><input type="text" class="form-control check2" id="ir_companyname" name="ir_companyname"></td>
+												<td><input type="text" class="form-control check2" id="ir_companyname" name="ir_companyname" readonly="readonly"></td>
 											</tr>
 											<tr>
 												<td style="background-color: #f7b1b1;">업종</td>
-												<td><input type="text" class="form-control check2" id="ir_bizclassification" name="ir_bizclassification"></td>
+												<td><input type="text" class="form-control check2" id="ir_bizclassification" name="ir_bizclassification" readonly="readonly"></td>
 												<td style="background-color: #f7b1b1;">대표자명</td>
-												<td><input type="text" class="form-control check2" id="ir_ceoname" name="ir_ceoname"></td>
+												<td><input type="text" class="form-control check2" id="ir_ceoname" name="ir_ceoname" readonly="readonly"></td>
 												<td style="background-color: #f7b1b1;">회사주소</td>
-												<td colspan="3"><input type="text" class="form-control" id="ir_companyaddress" name="ir_companyaddress"></td>
+												<td colspan="3"><input type="text" class="form-control" id="ir_companyaddress" name="ir_companyaddress" readonly="readonly"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -253,21 +258,21 @@ form .error {color:red}
 										<tbody>
 											<tr>
 												<td style="background-color: #b0ccfe;">사업자등록번호</td>
-												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber"></td>
+												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber" readonly="readonly"></td>
 												<td style="background-color: #b0ccfe;">업태</td>
-												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype"></td>
+												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype" readonly="readonly"></td>
 												<td style="background-color: #b0ccfe;">사업체명</td>
-												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname"></td>
+												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname" readonly="readonly"></td>
 												<td style="background-color: #b0ccfe;">업종</td>
-												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification"></td>
+												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification" readonly="readonly"></td>
 											</tr>
 											<tr>
 												<td style="background-color: #b0ccfe;">종사업장번호</td>
-												<td><input type="text" class="form-control check2" id="ie_taxnumber" name="ie_taxnumber"></td>
+												<td><input type="text" class="form-control check2" id="ie_taxnumber" name="ie_taxnumber" readonly="readonly"></td>
 												<td style="background-color: #b0ccfe;">대표자명</td>
-												<td><input type="text" class="form-control check2" id="ie_ceoname" name="ie_ceoname"></td>
+												<td><input type="text" class="form-control check2" id="ie_ceoname" name="ie_ceoname" readonly="readonly"></td>
 												<td style="background-color: #b0ccfe;">회사주소</td>
-												<td colspan="3"><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress"></td>
+												<td colspan="3"><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" readonly="readonly"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -357,21 +362,21 @@ form .error {color:red}
 												<td rowspan = "2" style="text-align: center;">
 												<span>
 												<label>
-													<input type="radio" class="form-control" name="purposetype" title = "영수" value = "01" checked>영수
+													<input type="radio" class="form-control" name="purposetype" title = "영수" value = "01" >영수
 												</label>
 												<br>
 												<label>
-													<input type="radio" class="form-control" name="purposetype" title = "청구" value = "02">청구
+													<input type="radio" class="form-control" name="purposetype" title = "청구" value = "02" checked>청구
 												</label>
 												</span>
 												</td>
 											</tr>
 											<tr>	
 												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)" value="0"></td>
-												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeypress="inputNumberFormat(this)" value="0"></td>	
-												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeypress="inputNumberFormat(this)" value="0"></td>
-												<td><input type="text" class="form-control" id="draft" name="draft" onkeypress="inputNumberFormat(this)" value="0"></td>
-												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeypress="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeyup="inputNumberFormat(this)" value="0"></td>	
+												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeyup="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="draft" name="draft" onkeyup="inputNumberFormat(this)" value="0"></td>
+												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeyup="inputNumberFormat(this)" value="0"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -420,7 +425,7 @@ form .error {color:red}
 										</tbody>
 									</table>
 									</div>
-						<div style="text-align: center;">
+						<div style="text-align: center;" id="buttondiv">
 							<button class="btn btn-sm btn-primary" id="loadButton"
 								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
 						</div>
@@ -465,7 +470,6 @@ function providerSelect(value){
        	$("#hometaxbill_id").val(result.dbp_id)
        	$("#spass").val(result.dbp_pass)
        	$("#apikey").val(result.dbp_apikey)
-       	$("#homemunseo_id").val()
        	$("#issueid").val()
 	    $("#dbp_keyno").val(result.dbp_keyno)
        	$("#ir_companynumber").val(result.dbp_co_num) 	
@@ -526,24 +530,40 @@ function supliedSelect(value){
 }
 
 function loadBillInfo(){
-	
 // 	if(!validationCheck()) return false
-	
 	 $.ajax({
         url: '/dyAdmin/bills/billsInfoInsert.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	alert(result);
-        	location.reload();
-//         	cf_smallBox('저장 완료', "세금 계산서 저장 완료", 3000,);
-        	
+        	if(result != "저장 완료"){
+        		if(confirm("동일한 공급자와 공급받는자가 이미 등록되어 있습니다."+ "\n" +"작성한 내용으로 수정하시겠습니까?")){
+        			$("#dbl_keyno").val(result)
+        			 $.ajax({
+        					type: "POST",
+        					url: "/dyAdmin/bills/billsInfoUpdate.do",
+        					async: false,
+        					data: $("#Form").serialize(),
+        					success : function(data){
+        						alert(data);
+        						location.reload();
+        					}, 
+        					error: function(){
+        						
+        					}
+        			}); 
+        		}else false;
+        		
+        	}else {
+        		alert("세금계산서 정보 저장 완료")
+        		location.reload();
+        	}
         },
         error: function(){
         	alert("저장 실패");
         }
-	}); 
+	});
 }
 
 function detailView(keyno){
@@ -593,6 +613,7 @@ function detailView(keyno){
 			$("#supplyprice").val(data.dbl_supplyprice)
 			$("#tax").val(data.dbl_tax)
 			$("#sub_description").val(data.dbl_description)
+			$("#si_hcnt").val(data.dbl_si_hcnt)
 			
 			
 			$("#grandtotal").val(data.dbl_grandtotal)
@@ -616,17 +637,25 @@ function detailView(keyno){
 			$("#ie_cell2").val(data.dbs_cell2)
 			
 			
-			
-			$("#loadButton").text("수정");
-			$("#loadButton").attr("onclick","detailViewUpdate()");
+			console.log(data);
+			if(data.dbl_checkYN == "N"){
+				
+				$("#loadButton").append("<button class='btn btn-sm btn-primary' id='loadButton' type='button' onclick='loadBillInfo()' style='width: 100px;'>저장</button>")
+				$("#loadButton").text("수정");
+				$("#loadButton").attr("onclick","detailViewUpdate()");
+					
+				}else{
+					$("#buttondiv").remove();
+				}
 		}, 
 		error: function(){
 			cf_smallBox('error', "저장에러", 3000,'#d24158');
 		}
-	}); 
+	});
 }
 
 function sendNTS(){
+	
 	
 	if(confirm("전송하시겠습니까?")){
 		
@@ -636,6 +665,7 @@ function sendNTS(){
 	});
 	
 	$("#chkvalue").val(array);
+	$("#checkYN").val("Y");
 	
 	 $.ajax({
 			type: "POST",
@@ -643,8 +673,11 @@ function sendNTS(){
 			data: $('#Form').serializeArray(),
 			async: false,
 			success : function(data){
-				console.log(data);
-				
+			
+			alert("전송 완료");
+			location.reload();
+			
+			
 			}, 
 			error: function(){
 				
@@ -729,18 +762,20 @@ function Divison(obj){
 	var vv = obj.value.replace(",","");
 	var v = parseInt(vv)
 	var tax = (v*0.1).toFixed(0)
+	var tax1 = (v/1.1).toFixed(0)
+	var tax2 = (tax1*0.1).toFixed(0)
 	
 	$("#unitprice").val(comma(v))
 	$("#grandtotal").val(comma(v))
-	$("#supplyprice").val(comma(v - tax))
+	$("#supplyprice").val(comma(tax1))
 	
-	$("#chargetotal").val(comma(v - tax))
+	$("#chargetotal").val(comma(tax1))
 	if (tax > 0) {	
-		$("#tax").val(comma(tax))
-		$("#taxtotal").val(comma(tax))
+		$("#tax").val(comma(tax2))
+		$("#taxtotal").val(comma(tax2))
 	}else{
-		$("#tax").val(tax)
-		$("#taxtotal").val(tax)
+		$("#tax").val(tax2)
+		$("#taxtotal").val(tax2)
 	}
 	
 	

@@ -120,6 +120,7 @@ public class billDTO {
 	,dbl_sub_description
 	,dbl_issuedate
 	,dbl_sub_issuedate
+	,dbl_si_hcnt
 	,dbp_id
 	,dbp_pass
 	,dbp_apikey
@@ -136,6 +137,7 @@ public class billDTO {
 	,dbp_date
 	,dbp_sub_keyno
 	,dbp_homemunseo_id
+	,dbp_subkey1
 	,dbs_co_num
 	,dbs_biztype
 	,dbs_name
@@ -151,7 +153,8 @@ public class billDTO {
 	,dbs_cell2
 	,dbs_email2
 	,dbs_address
-	,dbs_date = "";
+	,dbs_date
+	,dbs_subkey1= "";
 	
 	
 

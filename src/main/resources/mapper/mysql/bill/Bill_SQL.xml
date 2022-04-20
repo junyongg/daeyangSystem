@@ -149,6 +149,18 @@
 		SELECT COUNT(*) FROM dy_bills_supplied WHERE dbs_co_num = #{ie_companynumber}
 	</select>
 	
+	<select id="billLogCount" resultType="String" parameterType="billDTO">
+	SELECT dbl_keyno
+	FROM dy_bills_log l
+	left join dy_bills_provider p
+	on l.dbl_provider_key = p.dbp_keyno
+	left join dy_bills_supplied s
+	on l.dbl_supplied_key = s.dbs_keyno
+	WHERE p.dbp_keyno = #{dbp_keyno}
+	and s.dbs_keyno = #{dbs_keyno}
+	and l.dbl_sub_keyno = #{dbl_sub_keyno}
+	</select>
+	
 	<insert id="billsInfoInsert" parameterType="String">
 			INSERT INTO dy_bills_log
 			(
@@ -178,7 +190,8 @@
 				dbl_sub_description,
 				dbl_issuedate,
 				dbl_sub_issuedate,
-				dbl_sub_keyno
+				dbl_sub_keyno,
+				dbl_si_hcnt
 			)VALUES(
 				#{dbp_keyno},
 				#{dbs_keyno},
@@ -206,7 +219,8 @@
 				#{sub_description},
 				#{issuedate},
 				#{sub_issuedate},
-				#{dbl_sub_keyno}
+				#{dbl_sub_keyno},
+				#{si_hcnt}
 			)
 	</insert>
 	
@@ -234,8 +248,15 @@
 			dbl_partytypecode = #{partytypecode},
 			dbl_sub_description = #{sub_description},
 			dbl_issuedate = #{issuedate},
-			dbl_sub_issuedate = #{sub_issuedate}
+			dbl_sub_issuedate = #{sub_issuedate},
+			dbl_si_hcnt = #{si_hcnt}
 		WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
+	<update id="checkYN" parameterType="billDTO">
+	UPDATE dy_bills_log
+	SET dbl_checkYN = 'Y'
+	WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
 	<select id="billslogselect" resultType="hashmap" >
@@ -261,5 +282,41 @@
 			dbl_keyno = #{l}
 			</foreach>
 	</delete>
+	<select id="logList1" resultType="hashmap">
+	select *
+	from dy_bills_log
+	where dbl_sub_keyno = 1
+	</select>
+	
+	<select id="logList2" resultType="hashmap">
+	select *
+	from dy_bills_log
+	where dbl_sub_keyno = 2
+	</select>
+	
+	<select id="logList3" resultType="hashmap">
+	select *
+	from dy_bills_log
+	where dbl_sub_keyno = 3
+	</select>
+	<insert id="psubkey1Insert" parameterType="String" >
+	INSERT INTO dy_bills_provider
+			(
+				dbp_subkey1
+				
+			)VALUES(
+				#{dbp_subkey1}
+			)
+	</insert>
+	
+	<insert id="ssubkey1Insert" parameterType="String" >
+	INSERT INTO dy_bills_supplied
+			(
+				dbs_subkey1
+				
+			)VALUES(
+				#{dbs_subkey1}
+			)
+	</insert>
 </mapper>
  

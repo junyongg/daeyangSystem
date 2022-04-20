@@ -73,14 +73,16 @@ public class RestApiTest {
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
+		   mv.addObject("loglist1",Component.getListNoParam("bills.logList1"));
 		   
-		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 		   String nowdate = now.replace("-", "");
 		   String nowdate2 = nowdate.trim();
+		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   
-		   
+		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
 		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
 		
@@ -95,16 +97,19 @@ public class RestApiTest {
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
+		   mv.addObject("loglist2",Component.getListNoParam("bills.logList2"));
 		   
-		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 		   String nowdate = now.replace("-", "");
 		   String nowdate2 = nowdate.trim();
+		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   
 		   
+		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
+		   mv.addObject("itemName",year+"년 "+month+"월분 발전대금");
 		   
 	      return mv;
 	  }
@@ -117,16 +122,18 @@ public class RestApiTest {
 		   mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		   mv.addObject("SuppliedList",Component.getListNoParam("bills.SuppliedSelect"));
 		   mv.addObject("loglist",Component.getListNoParam("bills.billslogselect"));
+		   mv.addObject("loglist3",Component.getListNoParam("bills.logList3"));
 		   
-		   String now = new SimpleDateFormat("yyyy-MM-dd ").format(Calendar.getInstance().getTime());
+		   String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
 		   String nowdate = now.replace("-", "");
 		   String nowdate2 = nowdate.trim();
+		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   
-		   
+		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
+		   mv.addObject("itemName",year+"년 "+month+"월분 전기안전관리비");
 		
 	      return mv;
 	  }
@@ -300,7 +307,7 @@ public class RestApiTest {
 			data.put("purposetype",bill.getDbl_purposetype());						// 영수/청구 구분*
 			data.put("originalissueid",bill.getOriginalissueid());				// 당초전자(세금)계산서 승인번호-
 			data.put("si_id",bill.getSi_id() );									// 수입신고번호-
-			data.put("si_hcnt",bill.getSi_hcnt() );								// 수입총건 *
+			data.put("si_hcnt",bill.getDbl_si_hcnt());								// 수입총건 *
 			
 			data.put("si_startdt",bill.getSi_startdt() );						// 일괄발급시작일-
 			data.put("si_enddt",bill.getSi_enddt() );							// 일괄발급종료일-
@@ -361,12 +368,12 @@ public class RestApiTest {
 			
 				
 			JSONObject sObject = new JSONObject();
-			sObject.put("sub_description", bill.getDescription() );							// 품목별 비고입력
+			sObject.put("description", bill.getDescription() );							// 품목별 비고입력
 			sObject.put("supplyprice",bill.getDbl_supplyprice().replace(",", ""));				// 품목별 공급가액
 			sObject.put("quantity",bill.getDbl_quantity() );									// 품목수량
 			sObject.put("unit",bill.getDbl_unit() );											// 품목규격
 			sObject.put("subject",bill.getDbl_subject() );										// 품목명
-			sObject.put("sub_issuedate",bill.getDbl_sub_issuedate() );											// 공급연원일
+			sObject.put("gyymmdd",bill.getDbl_sub_issuedate() );							// 공급연원일
 			sObject.put("tax",bill.getDbl_tax().replace(",", ""));								// 세액
 			sObject.put("unitprice",bill.getDbl_unitprice().replace(",", ""));					// 단가
 			jArray.put(sObject);
@@ -375,44 +382,54 @@ public class RestApiTest {
 			data.put("taxdetailList", jArray);// 배열을 넣음
 
 			System.out.println(data);
-			return null;
-//			// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
-//			
-//			if(restapi.equals("fail")) {
-//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
-//				return "서버문제장애";
-//			}
-//			
-//			// Api에서 리턴받은 값으로 예외처리 및 출력
-//			JSONParser parser = new JSONParser();
-//			Object obj = parser.parse(restapi);
-//			JSONObject jsonObj = (JSONObject) obj;
-//			String msg = "";
-//			if (!restapi.equals("fail")) {
-//				if (jsonObj.get("code").equals("0")) {
-//					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : "
-//							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
-//							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
-//							+ (String) jsonObj.get("homemunseo_id"));
-//				} else {
-//					System.out.println(
-//							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
-//				}
-//			}else {
-//				msg = "code : -1" + "\n" + "msg : 서버호출에 실패했습니다.";
-//			}
-//			return msg;
+			
+			// 전자세금계산서 발행 후 리턴
+			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			
+			if(restapi.equals("fail")) {
+				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				return "서버문제장애";
+			}
+			
+			// Api에서 리턴받은 값으로 예외처리 및 출력
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(restapi);
+			JSONObject jsonObj = (JSONObject) obj;
+			String msg = "";
+			if (!restapi.equals("fail")) {
+				if (jsonObj.get("code").equals("0")) {
+					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : "
+							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
+							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
+							+ (String) jsonObj.get("homemunseo_id"));
+				} else {
+					System.out.println(
+							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+				}
+			}else {
+				msg = "code : -1" + "\n" + "msg : 서버호출에 실패했습니다.";
+			}
+			return msg;
 	}
 
 	@RequestMapping("/dyAdmin/bills/billsInfoInsert.do")
 	@ResponseBody
 	public String billsInfoIsnsertAjax(HttpServletRequest req,billDTO bill) throws Exception {
 		
-
-		Component.updateData("bills.registNumberUpdate", bill);
-		Component.createData("bills.billsInfoInsert", bill);
-		 String msg = "세금계산서 정보 저장 완료";
+		
+		String msg = "";
+		//공급자 공급받는자 등록 확인 
+		 String keyno = Component.getData("bills.billLogCount",bill);
+		 
+		 if(keyno != null && keyno != "") {
+			 msg = keyno;
+			 
+		 }else {
+			 
+			 Component.updateData("bills.registNumberUpdate", bill);
+			 Component.createData("bills.billsInfoInsert", bill);
+			 msg = "저장 완료";
+		 }
 
 
 		return msg;
@@ -447,12 +464,23 @@ public class RestApiTest {
 	@RequestMapping("/dyAdmin/bills/sendNTS.do")
 	@ResponseBody
 	public billDTO sendNTS(HttpServletRequest req,billDTO bill,
-			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
+			@RequestParam(value="chkvalue")String dbl_keyno,
+			@RequestParam(value="checkYN")String checkYN) throws Exception {
+		
 		
 		String[] list = dbl_keyno.split(",");
+		String[] list1 = checkYN.split(",");
+		
+
+		
 		
 		for(int i= 0; i<list.length; i++) {
+		
+		//전송 Y/N 체크
+		Component.updateData("bills.checkYN", list[i]);
+		
 		bill = Component.getData("bills.selectAllView", list[i]);
+		
 		sendApi(bill);
 		}
 		

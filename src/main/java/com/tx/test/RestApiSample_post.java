@@ -78,11 +78,11 @@ public class RestApiSample_post {
 		// 입력할 세금계산서 정보를 배열에 추가(JSONObject객체와 순서가 일치해야함.)
 		List<List<String>> taxinfo = new ArrayList<>();
 
-		taxinfo.add(Arrays.asList("daeyang0715", "hyungki933", "daeyang0715NCoizZb5", "dddd10002", "", "", "01", "01",
-				"", "20210819", "", "02", "", "", "0", "", "", "6838800157", "서비스업", "주식회사 대양기업", "태양광발전시스템 설계및 시공", "김형기", "",
-				"업체담당자", "01033334444", "irabc@sinit.co.kr", "경기도 수원시 영통구", "44455666666", "판매업", "오케이뱅크", "서비스업", "",
-				"01", "이나영", "", "공급담당자", "01011112222", "ieabc@sinit.co.kr", "", "", "", "", "서울시 금천구 가산디지털로", "", "",
-				"", "", "", "", "", "", "", "", "", "2200", "0", "0", "0", "2000", "200", "2200"));
+		taxinfo.add(Arrays.asList("daeesco0715", "qwer4321", "daeesco0715hP3zeUiI", "dae3", "", "", "01", "01",
+				"", "20220418", "", "02", "", "", "0", "", "", "1858701989", "서비스업", "대양에스코 주식회사", "전기안전관리대행", "김형기", "",
+				"이시연", "01093338988", "dy3246@dycompany.co.kr", "전라남도 나주시 봉황면 운곡용곡길 16", "5102016079", "전기업", "한성수산태양광발전소", "태양광발전업", "",
+				"01", "신아령", "", "신아령", "01089887516", "hansung@han.com", "", "", "", "", "충청남도 서천군 장항읍 장마로 257-9", "", "",
+				"", "", "", "", "", "", "", "", "", "0", "0", "0", "0", "50000", "5000", "55000"));
 
 		// JSONObject객체 생성
 		JSONObject data = new JSONObject();
@@ -164,8 +164,8 @@ public class RestApiSample_post {
 		// 세금계산서 detail정보 생성.(입력할 detail정보개수만큼 for문 활성화)
 		JSONArray jArray = new JSONArray();
 		List<List<String>> detail = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
-			detail.add(Arrays.asList("품목별비고입력", "500", "1", "", "품목", "20010501", "50", "0"));
+		for (int i = 0; i < 1; i++) {
+			detail.add(Arrays.asList("", "50000", "", "", "2022년 04월분 전기안전관리비", "20220418", "5000", "55000"));
 			JSONObject sObject = new JSONObject();
 			sObject.put("description", detail.get(i).get(0));		// 품목별 비고입력
 			sObject.put("supplyprice", detail.get(i).get(1));		// 품목별 공급가액

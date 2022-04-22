@@ -33,8 +33,7 @@ form .error {color:red}
 <input type="hidden" name="chkvalue" id="chkvalue">
 <input type="hidden" name="si_hcnt" id="si_hcnt" value = "0">
 <input type="hidden" name="checkYN" id="checkYN" value = "N">
-<input type="hidden" name="dbp_subkey2" id="dbp_subkey2" value = "">
-<input type="hidden" name="dbs_subkey2" id="dbs_subkey2" value = "">
+<input type="hidden" name="dbp_subkey2" id="dbp_subkey2">
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1" style="width: 100%;">
@@ -51,111 +50,14 @@ form .error {color:red}
 								<button type="button" class="close" data-dismiss="alert">×</button>
 								발전소 리스트를 확인합니다.
 							</div>
+							<div class="table-responsive">
+							<jsp:include page="/WEB-INF/jsp/dyAdmin/include/search/pra_search_header_paging.jsp" flush="true">
+								<jsp:param value="/dyAdmin/bills/pagingAjax2.do" name="pagingDataUrl" />
+							</jsp:include>
+							<fieldset id="tableWrap">
+							</fieldset>
 						</div>
-						<div class="widget-body-toolbar bg-color-white">
-							<div class="pageNumberBox">
-								<c:if test="${not empty resultList }">
-									<div class="col-sm-6 col-xs-12 middlePage"
-										style="text-align: right;">
-										<ul class="pageNumberUl">
-											<ui:pagination paginationInfo="${paginationInfo }"
-												type="normal_board" jsFunction="pf_LinkPage" />
-										</ul>
-									</div>
-								</c:if>
-								<div style="clear: both"></div>
-							</div>
-
-							<div class="tableMobileWrap">
-								<table id="dt_basic"
-									class="pagingTable table table-striped table-bordered table-hover"
-									width="100%">
-									<colgroup>
-											<col style="width: 3%;">
-											<col style="width: 10%;">
-											<col style="width: 10%;">
-											<col style="width: 20%;">
-											<col style="width: 20%;">
-											<col style="width: 10%;">
-											<col style="width: 10%;">
-										</colgroup>
-									<thead>
-										<tr>
-											<th colspan="10">
-												<div style="float: left;">
-													<input type="text" class="form-control search-control"
-														data-searchindex="all" placeholder="모든필드 검색"
-														style="width: 200px; display: inline-block;" />
-													<button class="btn btn-sm btn-primary smallBtn"
-														type="button" onclick="pf_LinkPage()"
-														style="margin-right: 10px;">
-														<i class="fa fa-plus"></i> 검색
-													</button>
-												</div>
-											</th>
-										</tr>
-										<tr>
-											<th style="text-align: center;">선택</th>
-											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="1"
-												placeholder="공급자 검색" /></th>
-											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="2"
-												placeholder="공급받는자 검색" /></th>
-											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="3"
-												placeholder="품목명 검색" /></th>
-											<th class="hasinput" ><input type="text"
-												class="form-control search-control" data-searchindex="4"
-												placeholder="금액 검색" /></th>
-											<th class="hasinput" ><input type="text"
-												class="form-control search-control" data-searchindex="5"
-												placeholder="날짜 검색" /></th>
-											<th class="hasinput" data-searchindex="6"></th>
-										</tr>
-										<%-- 화살표 정렬 --%>
-										<tr>
-											<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
-											<th class="arrow" style="text-align: center;">공급자 명</th>
-											<th class="arrow" style="text-align: center;">공급받는자 명</th>
-											<th class="arrow" style="text-align: center;">품목명</th>
-											<th class="arrow" style="text-align: center;">합계금액</th>
-											<th class="arrow" style="text-align: center;">등록날짜</th>
-											<th class="arrow" style="text-align: center;">전송 상태</th>
-										</tr>
-									</thead>
-									<tbody style="text-align: center;">
-										<c:if test="${empty loglist }">
-											<tr>
-												<td colspan="7">검색된 데이터가 없습니다.</td>
-											</tr>
-										</c:if>
-										<c:forEach items="${loglist2 }" var="b">
-											<tr>
-												<c:if test="${b.dbl_checkYN eq 'N' }">
-												<td><input type="checkbox" name="chk" id ="chk" value = "${b.dbl_keyno}"></td>
-												</c:if>                         						
-												<c:if test="${b.dbl_checkYN eq 'Y' }">
-												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
-												</c:if>                         						
-												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}')">${b.dbl_p_name}</a></td>
-												<td>${b.dbl_s_name}</td>
-												<td>${b.dbl_subject}</td>
-												<td>${b.dbl_grandtotal}</td>
-												<td>${b.dbl_issuedate}</td>
-												<td>전송완료</td>
-										</c:forEach>
-											</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="text-align: center;">
-							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px;">국세청 전송</button>
-							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
-							</div>
-							</div>
+						</div>
 			</article>
 			<!-- ----------------------------------------------   세금계산서 정보  ----------------------------------------------------------->
 			
@@ -187,7 +89,7 @@ form .error {color:red}
 									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelect(this.value)">
+									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelect()">
 										<option>선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
@@ -405,13 +307,13 @@ form .error {color:red}
 												<td><input type="text" class="form-control" id="ie_busename2" name="ie_busename2"></td>
 											</tr>
 											<tr style = "background-color: #FFFFFF;">
-												<td>담당자 명 *</td>
+												<td>담당자 명</td>
 												<td><input type="text" class="form-control check2" id="ir_name" name="ir_name"></td>	
 												<td><input type="text" class="form-control" id="ie_name1" name="ie_name1"></td>
 												<td><input type="text" class="form-control" id="ie_name2" name="ie_name2"></td>
 											</tr>
 											<tr>	
-												<td>이메일 주소 *</td>
+												<td>이메일 주소</td>
 												<td><input type="text" class="form-control check2" id="ir_email" name="ir_email"></td>	
 												<td><input type="text" class="form-control" id="ie_email1" name="ie_email1"></td>
 												<td><input type="text" class="form-control" id="ie_email2" name="ie_email2"></td>
@@ -425,9 +327,10 @@ form .error {color:red}
 										</tbody>
 									</table>
 									</div>
-						<div style="text-align: center;" id="buttondiv">
-							<button class="btn btn-sm btn-primary" id="loadButton"
-								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
+						<div id="buttondiv">
+							<button  class="btn btn-sm btn-primary" id="loadButton"													
+								type="button" onclick="loadBillInfo()" style="width: 100px; margin-left: 800px;">저장</button>
+							<button  type="button" onclick="window.scrollTo(0,0);"  style="margin-left: 800px;">TOP</button>
 						</div>
 						</fieldset>
 								</div>
@@ -456,13 +359,11 @@ $(document).ready(function(){
 }); 
 
 
-function providerSelect(value){
+function providerSelect(){
 	 $.ajax({
-       url: '/dyAdmin/bills/providerSelectAjax.do',
+       url: '/dyAdmin/bills/proAndSupSelect.do',
        type: 'POST',
-       data: {
-       	"dbp_keyno":value
-       },
+       data: $("#Form").serialize(),
        async: false,
        success: function(result) {
     	   
@@ -485,6 +386,21 @@ function providerSelect(value){
        	$("#ir_email").val(result.dbp_email)
        	$("#ir_cell").val(result.dbp_ir_cell)
        	$("#dbp_sub_keyno").val(result.dbp_sub_keyno) //발행 종류 구분
+       	
+       	/* 이전 달 공급받는자 따라옴 */
+       	$("#dbs_keyno").val(result.dbs_keyno)
+       	$("#ie_companynumber").val(result.dbs_co_num)
+     	$("#ie_taxnumber").val(result.dbs_taxnum) //종 사업장 번호
+       	$("#ie_companyname").val(result.dbs_name)
+       	$("#ie_ceoname").val(result.dbs_ceoname)
+       	$("#ie_companyaddress").val(result.dbs_address)
+       	$("#ie_biztype").val(result.dbs_biztype)
+       	$("#ie_bizclassification").val(result.dbs_bizclassification)
+       	$("#ie_email").val(result.dbs_email1)
+       	$("#ie_busename1").val(result.dbs_busename1)
+       	$("#ie_name1").val(result.dbs_name1)
+       	$("#ie_email1").val(result.dbs_email1)
+       	$("#ie_cell1").val(result.dbs_cell1)
        	
        },
        error: function(){
@@ -529,10 +445,18 @@ function supliedSelect(value){
 	}); 
 }
 
+
+function validationCheck(){
+	if($("#unitprice").val() == ''){
+		alert("단가를 입력해주세요");
+		return false
+	}return true
+}
+
 function loadBillInfo(){
-// 	if(!validationCheck()) return false
+	if(!validationCheck()) return false
 	 $.ajax({
-        url: '/dyAdmin/bills/billsInfoInsert.do',
+        url: '/dyAdmin/bills/billsInfoInsert2.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
@@ -637,15 +561,19 @@ function detailView(keyno){
 			$("#ie_cell2").val(data.dbs_cell2)
 			
 			
-			console.log(data);
+			
 			if(data.dbl_checkYN == "N"){
 				
-				$("#loadButton").append("<button class='btn btn-sm btn-primary' id='loadButton' type='button' onclick='loadBillInfo()' style='width: 100px;'>저장</button>")
+				$("#buttondiv").html("<button class='btn btn-sm btn-primary'  style='margin-left: 700px; width: 100px;'id='loadButton' type='button' onclick='loadBillInfo()' >저장</button>")
+				$("#buttondiv").append("<a onClick='window.location.reload()' style='cursor: pointer; padding-left: 30px;'>[작성 페이지로 이동]</a>")
+				$("#buttondiv").append("<button  type='button' onclick='window.scrollTo(0,0);'  style='margin-left: 700px;''>TOP</button>")
 				$("#loadButton").text("수정");
 				$("#loadButton").attr("onclick","detailViewUpdate()");
-					
+						
 				}else{
-					$("#buttondiv").remove();
+					$("#loadButton").remove();
+					$("#buttondiv").html("<a onClick='window.location.reload()' style='cursor: pointer; margin-left: 800px;'>[작성 페이지로 이동]</a>")
+					$("#buttondiv").append("<button  type='button' onclick='window.scrollTo(0,0);'  style='margin-left: 800px;'>TOP</button>")
 				}
 		}, 
 		error: function(){
@@ -719,6 +647,7 @@ function deleteInfo(){
 
 function detailViewUpdate(){
 	 
+	if(!validationCheck()) return false
 		 $.ajax({
 				type: "POST",
 				url: "/dyAdmin/bills/billsInfoUpdate.do",

@@ -51,7 +51,21 @@ import com.tx.test.dto.billDTO;
 @Controller
 public class RestApiTest {
 
+	
+	
 	@Autowired ComponentService Component;
+	@Autowired CommonService CommonService;
+	
+	/** 페이지 처리 출 */
+	@Autowired private PageAccess PageAccess;
+	
+	@Autowired WeaknessService WeaknessService;
+	
+	@Autowired CodeService CodeService;
+	
+	
+	
+	
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -138,16 +152,25 @@ public class RestApiTest {
 	      return mv;
 	  }
 
-	@RequestMapping("/dyAdmin/bills/providerSelectAjax.do")
+	@RequestMapping("/dyAdmin/bills/proAndSupSelect.do")
 	@ResponseBody
-	public HashMap<String,Object> providerSelectAjax(HttpServletRequest req,
-			@RequestParam(value="dbp_keyno")String dbp_keyno
+	public HashMap<String,Object> proAndSupSelect(HttpServletRequest req,
+			@RequestParam(value="dbp_keyno")String dbp_keyno,
+			@RequestParam(value="dbl_sub_keyno")String dbl_sub_keyno
 			) throws Exception {
 		 
 		
-
-//		String keyno = dbp_keyno.substring(1);
-		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",dbp_keyno);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		
+		
+		if(dbl_sub_keyno.equals("1")) {
+			map = Component.getData("bills.proAndSupSelect1",dbp_keyno);
+		}else if(dbl_sub_keyno.equals("2")) {
+			map = Component.getData("bills.proAndSupSelect2",dbp_keyno);	
+		}else {
+			map = Component.getData("bills.proAndSupSelect3",dbp_keyno);
+		}
 
 
 		//등록번호 추출 부분
@@ -191,6 +214,17 @@ public class RestApiTest {
 		 }
 		
 		 return msg;
+	}
+	@RequestMapping("/dyAdmin/bills/providerSelectAjax.do")
+	@ResponseBody
+	public HashMap<String, Object> providerSelectAjax(HttpServletRequest req,
+			@RequestParam(value="dbp_keyno")String dbp_keyno
+			) throws Exception {
+		
+		HashMap<String,Object> map = Component.getData("bills.billsSelect_one",dbp_keyno);
+		
+		
+		return map;
 	}
 	
 	@RequestMapping("/dyAdmin/bills/supliedSelectAjax.do")
@@ -409,12 +443,22 @@ public class RestApiTest {
 			}else {
 				msg = "code : -1" + "\n" + "msg : 서버호출에 실패했습니다.";
 			}
+			
+			
+			String  code = (String) jsonObj.get("code");
+			bill.setDbl_status(code);
+			String  error = (String) jsonObj.get("msg");
+			bill.setDbl_errormsg(error);
+
+			
+			Component.updateData("bills.codemsgUpdate", bill);
+			
 			return msg;
 	}
 
-	@RequestMapping("/dyAdmin/bills/billsInfoInsert.do")
+	@RequestMapping("/dyAdmin/bills/billsInfoInsert1.do")
 	@ResponseBody
-	public String billsInfoIsnsertAjax(HttpServletRequest req,billDTO bill) throws Exception {
+	public String billsInfoIsnsertAjax1(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		
 		String msg = "";
@@ -425,7 +469,54 @@ public class RestApiTest {
 			 msg = keyno;
 			 
 		 }else {
+			 Component.createData("bills.subkey1Insert", bill);
+			 Component.updateData("bills.registNumberUpdate", bill);
+			 Component.createData("bills.billsInfoInsert", bill);
+			 msg = "저장 완료";
+		 }
+
+
+		return msg;
+	
+	}
+	@RequestMapping("/dyAdmin/bills/billsInfoInsert2.do")
+	@ResponseBody
+	public String billsInfoIsnsertAjax2(HttpServletRequest req,billDTO bill) throws Exception {
+		
+		
+		String msg = "";
+		//공급자 공급받는자 등록 확인 
+		 String keyno = Component.getData("bills.billLogCount",bill);
+		 
+		 if(keyno != null && keyno != "") {
+			 msg = keyno;
 			 
+		 }else {
+			 Component.createData("bills.subkey2Insert", bill);
+			 Component.updateData("bills.registNumberUpdate", bill);
+			 Component.createData("bills.billsInfoInsert", bill);
+			 msg = "저장 완료";
+		 }
+
+
+		return msg;
+	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/billsInfoInsert3.do")
+	@ResponseBody
+	public String billsInfoIsnsertAjax3(HttpServletRequest req,billDTO bill) throws Exception {
+		
+		
+		String msg = "";
+		//공급자 공급받는자 등록 확인 
+		 String keyno = Component.getData("bills.billLogCount",bill);
+		 
+		 if(keyno != null && keyno != "") {
+			 msg = keyno;
+			 
+		 }else {
+			 Component.createData("bills.subkey3Insert", bill);
 			 Component.updateData("bills.registNumberUpdate", bill);
 			 Component.createData("bills.billsInfoInsert", bill);
 			 msg = "저장 완료";
@@ -463,7 +554,7 @@ public class RestApiTest {
 	
 	@RequestMapping("/dyAdmin/bills/sendNTS.do")
 	@ResponseBody
-	public billDTO sendNTS(HttpServletRequest req,billDTO bill,
+	public void sendNTS(HttpServletRequest req,billDTO bill,
 			@RequestParam(value="chkvalue")String dbl_keyno,
 			@RequestParam(value="checkYN")String checkYN) throws Exception {
 		
@@ -473,18 +564,18 @@ public class RestApiTest {
 		
 
 		
-		
 		for(int i= 0; i<list.length; i++) {
 		
-		//전송 Y/N 체크
-		Component.updateData("bills.checkYN", list[i]);
-		
-		bill = Component.getData("bills.selectAllView", list[i]);
-		
-		sendApi(bill);
+			//전송 Y/N 체크
+			Component.updateData("bills.checkYN", list[i]);
+			
+			bill = Component.getData("bills.selectAllView", list[i]);
+			
+			sendApi(bill);
+			
 		}
 		
-		return bill;
+		return;
 	}
 	
 	@RequestMapping("/dyAdmin/bills/deleteInfo.do")
@@ -503,6 +594,101 @@ public class RestApiTest {
 	
 		return msg;
 	
+	}
+	
+	/**
+	 * 공급자 리스트 - 페이징 ajax
+	 * @param req
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/dyAdmin/bills/pagingAjax1.do")
+	public ModelAndView listViewPaging1(HttpServletRequest req,
+			Common search
+			) throws Exception {
+		
+		ModelAndView mv  = new ModelAndView("/dyAdmin/bill/pra_bills_hanjeonPaging");
+
+		List<HashMap<String,Object>> searchList = Component.getSearchList(req);
+		
+		Map<String,Object> map = CommonService.ConverObjectToMap(search);
+		
+		if(searchList != null){
+			map.put("searchList", searchList);
+		}
+		
+		PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"bills.Log_getListCnt1",map, search.getPageUnit(), 10);
+		
+		map.put("firstIndex", pageInfo.getFirstRecordIndex());
+		map.put("lastIndex", pageInfo.getLastRecordIndex());
+		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+		
+		mv.addObject("paginationInfo", pageInfo);
+		
+		List<HashMap<String,Object>> resultList = Component.getList("bills.Log_getList1", map); 
+		mv.addObject("resultList1", resultList);
+		mv.addObject("search", search);
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="/dyAdmin/bills/pagingAjax2.do")
+	public ModelAndView listViewPaging2(HttpServletRequest req,
+			Common search
+			) throws Exception {
+		
+		ModelAndView mv  = new ModelAndView("/dyAdmin/bill/pra_bills_clientPaging");
+
+		List<HashMap<String,Object>> searchList = Component.getSearchList(req);
+		
+		Map<String,Object> map = CommonService.ConverObjectToMap(search);
+		
+		if(searchList != null){
+			map.put("searchList", searchList);
+		}
+		
+		PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"bills.Log_getListCnt2",map, search.getPageUnit(), 10);
+		
+		map.put("firstIndex", pageInfo.getFirstRecordIndex());
+		map.put("lastIndex", pageInfo.getLastRecordIndex());
+		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+		
+		mv.addObject("paginationInfo", pageInfo);
+		
+		List<HashMap<String,Object>> resultList = Component.getList("bills.Log_getList2", map); 
+		mv.addObject("resultList2", resultList);
+		mv.addObject("search", search);
+		return mv;
+	}
+	
+	@RequestMapping(value="/dyAdmin/bills/pagingAjax3.do")
+	public ModelAndView listViewPaging3(HttpServletRequest req,
+			Common search
+			) throws Exception {
+		
+		ModelAndView mv  = new ModelAndView("/dyAdmin/bill/pra_bills_adminPaging");
+
+		List<HashMap<String,Object>> searchList = Component.getSearchList(req);
+		
+		Map<String,Object> map = CommonService.ConverObjectToMap(search);
+		
+		if(searchList != null){
+			map.put("searchList", searchList);
+		}
+		
+		PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"bills.Log_getListCnt3",map, search.getPageUnit(), 10);
+		
+		map.put("firstIndex", pageInfo.getFirstRecordIndex());
+		map.put("lastIndex", pageInfo.getLastRecordIndex());
+		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+		
+		mv.addObject("paginationInfo", pageInfo);
+		
+		List<HashMap<String,Object>> resultList = Component.getList("bills.Log_getList3", map); 
+		mv.addObject("resultList3", resultList);
+		mv.addObject("search", search);
+		return mv;
 	}
 
 }

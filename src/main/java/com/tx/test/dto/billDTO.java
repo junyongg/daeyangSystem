@@ -121,6 +121,8 @@ public class billDTO {
 	,dbl_issuedate
 	,dbl_sub_issuedate
 	,dbl_si_hcnt
+	,dbl_status
+	,dbl_errormsg
 	,dbp_id
 	,dbp_pass
 	,dbp_apikey

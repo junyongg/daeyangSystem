@@ -329,8 +329,8 @@ form .error {color:red}
 									</div>
 						<div id="buttondiv">
 							<button  class="btn btn-sm btn-primary" id="loadButton"													
-								type="button" onclick="loadBillInfo()" style="width: 100px; margin-left: 800px;">저장</button>
-							<button  type="button" onclick="window.scrollTo(0,0);"  style="margin-left: 800px;">TOP</button>
+								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
+							<button class="btn btn-sm btn-default" type="button" onclick="window.scrollTo(0,0);" ><i class="glyphicon glyphicon-chevron-up"></i>Top</button>
 						</div>
 						</fieldset>
 								</div>
@@ -495,7 +495,7 @@ function detailView(keyno){
 		url: '/dyAdmin/bills/selectAllView.do',
 		type: 'POST',
 		data: {
-			dbl_keyno : keyno
+			"dbl_keyno" : keyno
 		},
 		async: false,
 		success : function(data){

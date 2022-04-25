@@ -37,6 +37,27 @@
 	                </select>
 	            </div>
 				
+                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
+                    
+                     <div class="graph_b_gaue">
+                         <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
+                         <div class="guage_txt" style="padding-bottom: 0px;">
+                             <span>총 금일 발전량(%)</span>
+                             <p><b id="AllPower" style="font-size: 1.1em;">0.0KW / 0h</b></p>
+                             <p style="text-align:center; color: gray;font-size: 5px;">* 발전량은 8시간 기준 <br> 100% 입니다.</p>
+                         </div>
+                     </div>
+                     
+                     <h2 class="circle mgSm">현재 발전량</h2>
+                     
+                     <div class="graph_b_gaue">
+                         <div id="gauge_2" style="display: inline-block; width: 300px; height: 300px;"></div>
+                         <div class="guage_txt">
+                             <span>발전 전력</span>
+                             <p><b id="Active">0.0</b></p>
+                         </div>
+                     </div>
+				
 	            <h2 class="location">발전소 현장정보</h2>
 	
 	            <div class="power_preview">
@@ -213,28 +234,7 @@
                     
                 </article>  
 				
-                <article class="artBoard bott">
-                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
-                    
-                     <div class="graph_b_gaue">
-                         <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
-                         <div class="guage_txt" style="padding-bottom: 0px;">
-                             <span>총 금일 발전량(%)</span>
-                             <p><b id="AllPower" style="font-size: 1.1em;">0.0KW / 0h</b></p>
-                             <p style="text-align:center; color: gray;font-size: 5px;">* 발전량은 8시간 기준 <br> 100% 입니다.</p>
-                         </div>
-                     </div>
-                     
-                     <h2 class="circle mgSm">현재 발전량</h2>
-                     
-                     <div class="graph_b_gaue">
-                         <div id="gauge_2" style="display: inline-block; width: 300px; height: 300px;"></div>
-                         <div class="guage_txt">
-                             <span>발전 전력</span>
-                             <p><b id="Active">0.0</b></p>
-                         </div>
-                     </div>
-                 </article>  
+                	
             </div>
 
             <div class="col n03">

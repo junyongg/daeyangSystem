@@ -436,19 +436,21 @@ public class RestApiTest {
 							+ (String) jsonObj.get("msg") + "\n" + "jsnumber : " + (String) jsonObj.get("jsnumber") + "\n"
 							+ "hometaxbill_id : " + (String) jsonObj.get("hometaxbill_id") + "\n" + "homemunseo_id : "
 							+ (String) jsonObj.get("homemunseo_id"));
+						   msg = (String) jsonObj.get("msg");
 				} else {
 					System.out.println(
 							"code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+							msg = (String) jsonObj.get("msg");
 				}
 			}else {
-				msg = "code : -1" + "\n" + "msg : 서버호출에 실패했습니다.";
+				System.out.println("code : -1" + "\n" + "msg : 서버호출에 실패했습니다.");
+				msg = "서버호출에 실패했습니다.";
 			}
 			
 			
 			String  code = (String) jsonObj.get("code");
 			bill.setDbl_status(code);
-			String  error = (String) jsonObj.get("msg");
-			bill.setDbl_errormsg(error);
+			bill.setDbl_errormsg(msg);
 
 			
 			Component.updateData("bills.codemsgUpdate", bill);
@@ -691,4 +693,19 @@ public class RestApiTest {
 		return mv;
 	}
 
+	
+	//실패 로그 확인 메세지
+	@RequestMapping(value="/dyAdmin/bills/sendingAjax.do")
+	@ResponseBody
+	public String sendMSG(HttpServletRequest req,
+			@RequestParam(value="keyno")String keyno
+			) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("dbl_keyno",keyno);
+		map = Component.getData("bills.ErrorrMsg", map);
+
+		String msg = (String) map.getOrDefault(("dbl_errormsg").toString(), "에러");
+		return msg;
+	}
+	
 }

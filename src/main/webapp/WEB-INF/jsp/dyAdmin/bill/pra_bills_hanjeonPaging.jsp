@@ -105,13 +105,13 @@
 												<td>${b.dbl_grandtotal}</td>
 												<td>${b.dbl_issuedate}</td>
 												<c:if test="${b.dbl_status eq '1' }">
-												<td>전송대기</td>
+													<td>전송대기</td>
 												</c:if>                         						
 												<c:if test="${b.dbl_status eq '0' }">
-												<td style="color: #00CC66">전송완료</td>
+													<td style="color: #00CC66">전송완료</td>
 												</c:if>
 												<c:if test="${b.dbl_status eq '-1' }">
-												<td style="color: #FF0000">전송실패</td>
+													<td><a href="javascript:;" onclick="logAlarm('${b.dbl_keyno}')" style="color: #FF0000">전송실패</a></td>
 												</c:if>
 										</c:forEach>
 											</tr>
@@ -150,4 +150,19 @@ $(function(){
 	pf_defaultPagingSetting('${search.orderBy}','${search.sortDirect}');
 })
 
+
+function logAlarm(keyno){
+	$.ajax({
+		url: '/dyAdmin/bills/sendingAjax.do',
+		type: 'POST',
+		data: {
+			"keyno" : keyno
+		},
+		async: false,
+		success : function(data){
+			alert(data)
+		}
+	});
+	
+}
 </script>

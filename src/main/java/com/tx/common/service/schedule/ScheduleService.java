@@ -38,12 +38,12 @@ public class ScheduleService {
 	requestAPIservice requestAPI;
 	
 	//날씨 데이터 매시 57분마다 
-	@Scheduled(cron="0 57 * * * ?")
+	@Scheduled(cron="0 58 * * * ?")
 	@Transactional
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
-	   String[] regionL = {"나주","광주","해남"};
+	   String[] regionL = {"나주","광주","해남","화성"};
 	   
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   

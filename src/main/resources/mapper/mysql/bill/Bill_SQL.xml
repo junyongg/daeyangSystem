@@ -191,7 +191,9 @@
 				dbl_issuedate,
 				dbl_sub_issuedate,
 				dbl_sub_keyno,
-				dbl_si_hcnt
+				dbl_si_hcnt,
+				dbl_homeid
+				
 			)VALUES(
 				#{dbp_keyno},
 				#{dbs_keyno},
@@ -220,7 +222,9 @@
 				#{issuedate},
 				#{sub_issuedate},
 				#{dbl_sub_keyno},
-				#{si_hcnt}
+				#{si_hcnt},
+				#{homemunseo_id}
+				
 			)
 	</insert>
 	
@@ -249,7 +253,8 @@
 			dbl_sub_description = #{sub_description},
 			dbl_issuedate = #{issuedate},
 			dbl_sub_issuedate = #{sub_issuedate},
-			dbl_si_hcnt = #{si_hcnt}
+			dbl_si_hcnt = #{si_hcnt},
+			dbl_homeid = #{homemunseo_id}
 		WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
@@ -320,15 +325,24 @@
 	WHERE dbp_keyno = #{dbp_keyno}
 	</update>
 	
+	<!-- 등록번호 호출 -->
+	<select id="CodeNumberSelect" parameterType="String" resultType="hashmap">
+		select dbl_homeid
+		from dy_bills_log
+		where dbl_provider_key = #{dbp_keyno}
+		order by Conn_date desc
+		limit 1
+	</select>
+	
 	<select id="proAndSupSelect1" parameterType="String" resultType="hashmap">
 	select *
 	from dy_bills_provider a
 	left join dy_bills_supplied b
 	on b.dbs_keyno =
 	(
-	SELECT dbp_subkey1
-	FROM dy_bills_provider
-	where dbp_keyno = #{dbp_keyno}
+		SELECT dbp_subkey1
+		FROM dy_bills_provider
+		where dbp_keyno = #{dbp_keyno}
 	)
 	where dbp_keyno = #{dbp_keyno}
 	</select>
@@ -339,9 +353,9 @@
 	left join dy_bills_supplied b
 	on b.dbs_keyno =
 	(
-	SELECT dbp_subkey2
-	FROM dy_bills_provider
-	where dbp_keyno = #{dbp_keyno}
+		SELECT dbp_subkey2
+		FROM dy_bills_provider
+		where dbp_keyno = #{dbp_keyno}
 	)
 	where dbp_keyno = #{dbp_keyno}
 	</select>
@@ -352,9 +366,9 @@
 	left join dy_bills_supplied b
 	on b.dbs_keyno =
 	(
-	SELECT dbp_subkey3
-	FROM dy_bills_provider
-	where dbp_keyno = #{dbp_keyno}
+		SELECT dbp_subkey3
+		FROM dy_bills_provider
+		where dbp_keyno = #{dbp_keyno}
 	)
 	where dbp_keyno = #{dbp_keyno}
 	</select>
@@ -394,6 +408,9 @@
 	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
  		AND (
  				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
@@ -401,7 +418,8 @@
  				dbl_s_name				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_subject				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
- 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 
+ 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR			
+ 				dbl_status				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
  				
  		)							
 	 			</when>
@@ -436,6 +454,9 @@
 	 		</when>
 	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 6">
+	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
 	 		ORDER BY 	COUNT DESC
@@ -482,6 +503,9 @@
 	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
  		AND (
  				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
@@ -489,7 +513,8 @@
  				dbl_s_name				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_subject				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
- 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 
+ 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_status				LIKE CONCAT( '%',#{item.searchKeyword},'%')
  				
  		)							
 	 			</when>
@@ -522,8 +547,11 @@
 	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 6">
+	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
 	 		ORDER BY 	COUNT DESC
@@ -569,6 +597,9 @@
 	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')			
+	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
  		AND (
  				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
@@ -576,7 +607,8 @@
  				dbl_s_name				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_subject				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
- 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 
+ 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_status				LIKE CONCAT( '%',#{item.searchKeyword},'%')	
  				
  		)							
 	 			</when>
@@ -609,8 +641,11 @@
 	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 6">
+	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
 	 		ORDER BY 	COUNT DESC
@@ -633,5 +668,38 @@
 		FROM dy_bills_log
 		WHERE dbl_keyno = #{dbl_keyno}
 	</select>
+	
+		<select id="homeidSelect" parameterType="hashmap" resultType="hashmap">
+		SELECT dbl_homeid 
+		FROM dy_bills_log a
+		left join dy_bills_provider b
+		on a.dbl_provider_key = b.dbp_keyno
+		where b.dbp_keyno = #{dbp_keyno}
+		order by dbl_homeid desc
+		limit 1
+	</select>
+	
+	<!-- 한전발행,거래처발행용 카카오톡 전송용 전화번호 select -->
+	<select id="AlimSelect" parameterType="String" resultType="String">
+			SELECT p.dbp_ir_cell 
+			FROM dy_bills_log l
+			left join dy_bills_provider p
+			on l.dbl_provider_key = p.dbp_keyno
+			left join dy_bills_supplied s
+			on l.dbl_supplied_key = s.dbs_keyno
+			where l.dbl_keyno = #{dbl_keyno}
+	</select>
+	
+	<!-- 안전관리자용 카카오톡 전송용 전화번호 select -->
+	<select id="AlimSelect2" parameterType="String" resultType="String">
+			SELECT s.dbs_cell1 
+			FROM dy_bills_log l
+			left join dy_bills_provider p
+			on l.dbl_provider_key = p.dbp_keyno
+			left join dy_bills_supplied s
+			on l.dbl_supplied_key = s.dbs_keyno
+			where l.dbl_keyno = #{dbl_keyno}
+	</select>
+	
 </mapper>
  

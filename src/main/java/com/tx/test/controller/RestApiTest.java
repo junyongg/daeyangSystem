@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,15 +34,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.tx.common.config.SettingData;
 import com.tx.common.dto.Common;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.security.rsa.service.RsaService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
+import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
+import com.tx.dyAdmin.member.dto.UserDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -62,6 +66,8 @@ public class RestApiTest {
 	@Autowired WeaknessService WeaknessService;
 	
 	@Autowired CodeService CodeService;
+	
+	@Autowired requestAPIservice requestAPI;
 	
 	
 	
@@ -164,30 +170,38 @@ public class RestApiTest {
 		
 		
 		
-		if(dbl_sub_keyno.equals("1")) {
+		if(dbl_sub_keyno.equals("1")) { 
 			map = Component.getData("bills.proAndSupSelect1",dbp_keyno);
 		}else if(dbl_sub_keyno.equals("2")) {
-			map = Component.getData("bills.proAndSupSelect2",dbp_keyno);	
+			map = Component.getData("bills.proAndSupSelect2",dbp_keyno);		
 		}else {
 			map = Component.getData("bills.proAndSupSelect3",dbp_keyno);
 		}
-
-
-		//등록번호 추출 부분
-		String code = map.get("dbp_homemunseo_id").toString();
-		if(code.equals("0")) {
-			code = map.get("dbp_id").toString().substring(0,3) + "1";
-			System.out.println(code);
-		}else {
-			String codenum = code.substring(3,code.length());
-			int tempc = Integer.parseInt(codenum) + 1 ;
-			code = map.get("dbp_id").toString().substring(0,3) + tempc;
-		}
 		
-		map.put("dbp_homemunseo_id",code);
+		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect",dbp_keyno);
+		String codeStr = "";
+		if(code == null) { 
+			String code1 =  map.get("dbp_co_num").toString().substring(0,3);
+			String codeapi = map.get("dbp_apikey").toString();
+			String code2 = codeapi.substring(codeapi.length()-4, codeapi.length());
+			codeStr = code1+code2+"1";
+
+		 }else { 
+			 	codeStr = code.get("dbl_homeid").toString();
+			 	String codenum = codeStr.substring(7,codeStr.length());
+			 	int tempc = Integer.parseInt(codenum) + 1 ;
+			 	String code1 =  map.get("dbp_co_num").toString().substring(0,3);
+				String codeapi = map.get("dbp_apikey").toString();
+				String code2 = codeapi.substring(codeapi.length()-4, codeapi.length());
+				codeStr = code1+code2+tempc;
+
+			  }
+		 
+		map.put("dbl_homeid", codeStr);
+		 
 		
 		return map;
-	}
+}
 	
 	
 	
@@ -328,7 +342,7 @@ public class RestApiTest {
 			data.put("hometaxbill_id", bill.getDbp_id());				// 회사코드 (아이디) (사용자코드 1001 *
 			data.put("spass", bill.getDbp_pass());									// 패스워드 *
 			data.put("apikey", bill.getDbp_apikey() );								// 인증키*
-			data.put("homemunseo_id",bill.getDbp_homemunseo_id() );					// 고유번호*
+			data.put("homemunseo_id",bill.getDbl_homeid());					// 고유번호*
 			data.put("signature",bill.getSignature() );							// 전자서명
 			
 			data.put("issueid",bill.getDbl_issueid() );								// 승인번호(자동생성)
@@ -418,9 +432,11 @@ public class RestApiTest {
 			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
+//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
 			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
+//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
 				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
@@ -452,11 +468,94 @@ public class RestApiTest {
 			bill.setDbl_status(code);
 			bill.setDbl_errormsg(msg);
 
-			
 			Component.updateData("bills.codemsgUpdate", bill);
+			
+			
+			//카카오톡 전송 
+			if(code.equals("0")) {
+		    	String subkey = bill.getDbl_sub_keyno();
+		    	if(subkey.equals("1")||subkey.equals("2")) {
+		    		
+		    			String pname = bill.getDbl_p_name();
+		    			String sname = bill.getDbl_s_name();
+		    			String subject = bill.getDbl_subject();
+		    			String grandtotal = bill.getDbl_grandtotal();
+		    			String issuedate = bill.getDbl_issuedate();
+
+	
+//		    			String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+			    		String contents = "[세금계산서 발행 완료 안내]\n"
+			    							+pname+"의 세금계산서 발행이 완료되었습니다.\n"
+			    							+"□ 공급자 : "+pname+"\n"
+			    							+"□ 공급받는자: "+sname+"\n"
+			    							+"□ 품목명: "+subject+"\n"
+			    							+"□ 합계금액 : "+grandtotal+"\n"
+			    							+"□ 발행일 : "+issuedate+"\n"+"\n"+"\n"
+			    							+"※ 세금계산서 발행 관련 문의"+"\n"
+			    							+"담당자 : 대양기업 이시연"+"\n"
+			    							+"연락처 : 010-9385-6811";
+			    		//토큰받기
+			    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+			    		tocken = URLEncoder.encode(tocken, "UTF-8");
+			    		
+			    		//리스트 뽑기 - 현재 게시물 알림은 index=1
+			    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+			    		org.json.simple.JSONArray jsonObj_a = (org.json.simple.JSONArray) jsonObj2.get("list");
+			    		jsonObj2 = (JSONObject) jsonObj_a.get(5); //템플릿 리스트
+			    		
+			    		String list = Component.getData("bills.AlimSelect",bill);
+			    		String Sendurl  = "http://dymonitering.co.kr/"; 
+			    		
+			    		String phone = list.toString().replace("-", "");
+			    			//받은 토큰으로 알림톡 전송		
+			    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
+			    		
+			    	}else {
+			    		
+			    		String pname = bill.getDbl_p_name();
+		    			String sname = bill.getDbl_s_name();
+		    			String subject = bill.getDbl_subject();
+		    			String grandtotal = bill.getDbl_grandtotal();
+		    			String issuedate = bill.getDbl_issuedate();
+			       		
+			       		
+
+//				    	String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+		    			String contents = "[세금계산서 발행 완료 안내]\n"
+    							+sname+"의 세금계산서 발행이 완료되었습니다.\n"
+    							+"□ 공급자 : "+pname+"\n"
+    							+"□ 공급받는자: "+sname+"\n"
+    							+"□ 품목명: "+subject+"\n"
+    							+"□ 합계금액 : "+grandtotal+"\n"
+    							+"□ 발행일 : "+issuedate+"\n"+"\n"+"\n"
+    							+"※ 세금계산서 발행 관련 문의"+"\n"
+    							+"담당자 : 대양기업 이시연"+"\n"
+    							+"연락처 : 010-9385-6811";
+					    		//토큰받기
+					    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+					    		tocken = URLEncoder.encode(tocken, "UTF-8");
+					    		
+					    		//리스트 뽑기 - 현재 게시물 알림은 index=1
+					    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+					    		org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
+					    		jsonObj2 = (JSONObject) jsonObj_a2.get(5); //템플릿 리스트
+					    		
+					    		String list = Component.getData("bills.AlimSelect2",bill);
+					    		String Sendurl  = "http://dymonitering.co.kr/"; 
+					    		
+					    		String phone = list.toString().replace("-", "");
+					    			//받은 토큰으로 알림톡 전송
+					    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
+			    	}
+		    		
+		    	}else {
+		    		
+		    	}
+		    	
 			
 			return msg;
 	}
+	
 
 	@RequestMapping("/dyAdmin/bills/billsInfoInsert1.do")
 	@ResponseBody
@@ -579,6 +678,7 @@ public class RestApiTest {
 		
 		return;
 	}
+	
 	
 	@RequestMapping("/dyAdmin/bills/deleteInfo.do")
 	@ResponseBody

@@ -20,7 +20,7 @@
     </c:if>
     <div style="clear: both"></div>
 </div>
-<div class="widget-body-toolbar bg-color-white">
+<div class="bg-color-white">
 							<div class="tableMobileWrap">
 								<table id="dt_basic"
 									class="pagingTable table table-striped table-bordered table-hover"
@@ -70,18 +70,18 @@
 											<th class="hasinput" ><input type="text"
 												class="form-control search-control" data-searchindex="5"
 												placeholder="날짜 검색" /></th>
-											<th class="hasinput" data-searchindex="6"></th>
+											<th class="hasinput"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
 											<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
-											<th class="arrow" style="text-align: center;">번호</th>
-											<th class="arrow" style="text-align: center;">공급자 명</th>
-											<th class="arrow" style="text-align: center;">공급받는자 명</th>
-											<th class="arrow" style="text-align: center;">품목명</th>
-											<th class="arrow" style="text-align: center;">합계금액</th>
-											<th class="arrow" style="text-align: center;">등록날짜</th>
-											<th class="arrow" style="text-align: center;">전송 상태</th>
+											<th class="arrow" style="text-align: center;" data-index="0">번호</th>
+											<th class="arrow" style="text-align: center;" data-index="1">공급자 명</th>
+											<th class="arrow" style="text-align: center;" data-index="2">공급받는자 명</th>
+											<th class="arrow" style="text-align: center;" data-index="3">품목명</th>
+											<th class="arrow" style="text-align: center;" data-index="4">합계금액</th>
+											<th class="arrow" style="text-align: center;" data-index="5">등록날짜</th>
+											<th class="arrow" style="text-align: center;" data-index="6">전송 상태</th>
 										</tr>
 									</thead>
 									<tbody style="text-align: center;">
@@ -120,7 +120,7 @@
 							</div>
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px;">국세청 전송</button>
+								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">국세청 전송</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							</div>

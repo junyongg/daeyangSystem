@@ -123,6 +123,7 @@ public class billDTO {
 	,dbl_si_hcnt
 	,dbl_status
 	,dbl_errormsg
+	,dbl_homeid
 	,dbp_id
 	,dbp_pass
 	,dbp_apikey
@@ -156,7 +157,8 @@ public class billDTO {
 	,dbs_email2
 	,dbs_address
 	,dbs_date
-	,dbs_subkey1= "";
+	,dbs_subkey1
+	,dbs_homeid= "";
 	
 	
 

@@ -89,7 +89,7 @@ form .error {color:red}
 									<label class="col-md-3"  style ="height: 30px; background-color: #f7b1b1; padding: 7px; margin-left: 11px;">공급자 선택</label>
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
-									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelect()">
+									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelectMethod(this.value)">
 										<option>선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
@@ -216,8 +216,8 @@ form .error {color:red}
 											<col style="width: 10%;">
 											<col style="width: 10%;">
 											<col style="width: 10%;">
-											<col style="width: 10%;">
-											<col style="width: 10%;">
+											<col style="width: 20%;">
+											
 										</colgroup>
 										<tbody>
 											<tr>
@@ -229,7 +229,7 @@ form .error {color:red}
 												<td>공급가액</td>		
 												<td>세액</td>		
 												<td>비고</td>		
-												<td><button>+</button></td>		
+														
 											</tr>
 											<tr>	
 <!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
@@ -241,7 +241,7 @@ form .error {color:red}
 												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="tax" name="tax" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="sub_description" name="sub_description"></td>
-												<td><input type="text" class="form-control" id="inputplus" name="inputplus"></td>
+												
 											</tr>
 										</tbody>
 									</table>
@@ -328,8 +328,9 @@ form .error {color:red}
 									</table>
 									</div>
 						<div style="text-align: center;" id="buttondiv">
-						<button class="btn btn-sm btn-primary" id="loadButton"
-						type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button> 
+						<button  class="btn btn-sm btn-primary" id="loadButton"													
+								type="button" onclick="loadBillInfo()" style="width: 100px;">저장</button>
+						<button class="btn btn-sm btn-default" type="button" onclick="window.scrollTo(0,0);" ><i class="glyphicon glyphicon-chevron-up"></i>Top</button>
 						</div>
 						</fieldset>
 								</div>
@@ -357,6 +358,28 @@ $(document).ready(function(){
 
 }); 
 
+function providerSelectMethod(value){
+	console.log(value)
+	if(value == "선택하세요" ||value == "0"){
+		clear();
+		
+	}else{
+		providerSelect();
+	}
+}
+
+function clear(){
+	
+	$("#homemunseo_id").val("")
+	$("#ir_companynumber").val("")
+	$("#ir_biztype").val("")
+	$("#ir_companyname").val("")
+	$("#ir_bizclassification").val("")
+	$("#ir_ceoname").val("")
+	$("#ir_companyaddress").val("")
+
+}
+
 
 function providerSelect(){
 	 $.ajax({
@@ -373,7 +396,7 @@ function providerSelect(){
        	$("#issueid").val()
 	    $("#dbp_keyno").val(result.dbp_keyno)
        	$("#ir_companynumber").val(result.dbp_co_num) 	
-       	$("#homemunseo_id").val(result.dbp_homemunseo_id)
+       	$("#homemunseo_id").val(result.dbl_homeid)
        	$("#ir_companyname").val(result.dbp_name)
        	$("#ir_ceoname").val(result.dbp_ceoname)
        	$("#ir_companyaddress").val(result.dbp_address)
@@ -504,7 +527,7 @@ function detailView(keyno){
 			
 			$("#dbl_keyno").val(data.dbl_keyno)
 			$("#dbp_keyno").val(data.dbp_keyno)
-			$("#homemunseo_id").val(data.dbp_homemunseo_id)
+			$("#homemunseo_id").val(data.dbl_homeid)
 			$("#ir_companynumber").val(data.dbp_co_num)
 			$("#ir_biztype").val(data.dbp_biztype)
 			$("#ir_companyname").val(data.dbp_name)
@@ -565,14 +588,16 @@ function detailView(keyno){
 			
 			if(data.dbl_checkYN == "N"){
 				
-				$("#buttondiv").html("<button class='btn btn-sm btn-primary' id='loadButton' type='button' onclick='loadBillInfo()' style='width: 100px;'>저장</button>")
-				$("#buttondiv").append("<a onClick='window.location.reload()' style='cursor: pointer; padding-left: 30px;'>[작성 페이지로 이동]</a>")
+				$("#buttondiv").html("<button type='button' class='btn btn-default' onclick='window.location.reload()'><i class='fa fa-repeat'></i> 새로고침</button>")
+				$("#buttondiv").append("<button class='btn btn-sm btn-primary'  style='margin-left: 3%; width: 100px;'id='loadButton' type='button' onclick='loadBillInfo()' >저장</button>")
+				$("#buttondiv").append("<button class='btn btn-sm btn-default' type='button' onclick='window.scrollTo(0,0);' style='margin-left: 3%;'><i class='glyphicon glyphicon-chevron-up'></i>Top</button>")
 				$("#loadButton").text("수정");
 				$("#loadButton").attr("onclick","detailViewUpdate()");
 						
 				}else{
 					$("#loadButton").remove();
-					$("#buttondiv").html("<a onClick='window.location.reload()' style='cursor: pointer;'>[작성 페이지로 이동]</a>")
+					$("#buttondiv").html("<button type='button' class='btn btn-default' onclick='window.location.reload()'><i class='fa fa-repeat'></i> 새로고침</button>")
+					$("#buttondiv").append("<button class='btn btn-sm btn-default' type='button' onclick='window.scrollTo(0,0);' style ='margin-left: 2%;'><i class='glyphicon glyphicon-chevron-up'></i>Top</button>")
 				}
 		}, 
 		error: function(){

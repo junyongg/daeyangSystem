@@ -20,7 +20,7 @@
     </c:if>
     <div style="clear: both"></div>
 </div>
-<div class="widget-body-toolbar bg-color-white">
+<div class="bg-color-white">
 							<div class="tableMobileWrap">
 								<table id="dt_basic"
 									class="pagingTable table table-striped table-bordered table-hover"
@@ -70,7 +70,7 @@
 											<th class="hasinput" ><input type="text"
 												class="form-control search-control" data-searchindex="5"
 												placeholder="날짜 검색" /></th>
-											<th class="hasinput" data-searchindex="6"></th>
+											<th class="hasinput"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
@@ -81,7 +81,7 @@
 											<th class="arrow" style="text-align: center;" data-index="3">품목명</th>
 											<th class="arrow" style="text-align: center;" data-index="4">합계금액</th>
 											<th class="arrow" style="text-align: center;" data-index="5">등록날짜</th>
-											<th class="arrow" style="text-align: center;" >전송 상태</th>
+											<th class="arrow" style="text-align: center;" data-index="6">전송 상태</th>
 										</tr>
 									</thead>
 									<tbody style="text-align: center;">
@@ -120,19 +120,19 @@
 							</div>
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px;">국세청 전송</button>
+								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">국세청 전송</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							</div>
 							</div>
 
 <%-- 하단 페이징 --%>
-<div class="pageNumberBox dt-toolbar-footer">
+<div class="pageNumberBox">
 	<c:if test="${not empty resultList1 }">
 		<div class="col-sm-6 col-xs-12" style="line-height: 35px; text-align: left;">
 			<span class="pagetext">총 ${paginationInfo.totalRecordCount }건  / 총 ${paginationInfo.totalPageCount} 페이지 중 ${paginationInfo.currentPageNo} 페이지</span>
 		</div>
-		<div class="col-sm-6 col-xs-12" style="text-align: left;">
+		<div class="col-sm-6 col-xs-12 middlePage" style="text-align: left;">
 				<ul class="pageNumberUl" >
 					<ui:pagination paginationInfo="${paginationInfo }" type="normal_board" jsFunction="pf_LinkPage" />
 			    </ul>

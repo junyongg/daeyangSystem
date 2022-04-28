@@ -237,8 +237,8 @@ form .error {color:red}
 												<td><input type="text" class="form-control check2" id="subject" name="subject" value="${itemName }"></td>	
 												<td><input type="text" class="form-control" id="unit" name="unit"></td>
 												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>
-												<td><input type="text" class="form-control" id="unitprice" name="unitprice" onkeyup="Divison(this)"></td>
-												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice" readonly="readonly"></td>
+												<td><input type="text" class="form-control" id="unitprice" name="unitprice"></td>
+												<td><input type="text" class="form-control" id="supplyprice" name="supplyprice" onkeyup="Divison(this)" oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
 												<td><input type="text" class="form-control" id="tax" name="tax" readonly="readonly"></td>
 												<td><input type="text" class="form-control" id="sub_description" name="sub_description"></td>
 												
@@ -468,8 +468,8 @@ function supliedSelect(value){
 
 
 function validationCheck(){
-	if($("#unitprice").val() == ''){
-		alert("단가를 입력해주세요");
+	if($("#supplyprice").val() == ''){
+		alert("공급가액을 입력해주세요");
 		return false
 	}return true
 }
@@ -709,23 +709,28 @@ function uncomma(str) {
 
 
 function Divison(obj){
-	var vv = obj.value.replace(",","");
-	var v = parseInt(vv)
-	var tax = (v*0.1).toFixed(0)
-	var tax1 = (v/1.1).toFixed(0)
-	var tax2 = (tax1*0.1).toFixed(0)
 	
+	var v = obj.value.replace(",","");
+	
+	var tax = Math.floor(v*0.1)
+	var v1 = Number(v)
+	var tax1 = Number(tax)
+	var total = v1+tax1
+//	var tax1 = (v/1.1).toFixed(0)
+//	var tax2 = (tax1*0.1).toFixed(0)
+	
+//	$("#unitprice").val(comma(v))
+	$("#supplyprice").val(comma(v))
 	$("#unitprice").val(comma(v))
-	$("#grandtotal").val(comma(v))
-	$("#supplyprice").val(comma(tax1))
+	$("#grandtotal").val(comma(total))
+	$("#chargetotal").val(comma(v))
 	
-	$("#chargetotal").val(comma(tax1))
-	if (tax > 0) {	
-		$("#tax").val(comma(tax2))
-		$("#taxtotal").val(comma(tax2))
+	if (tax > 0) {
+		$("#tax").val(comma(tax))
+		$("#taxtotal").val(comma(tax))
 	}else{
-		$("#tax").val(tax2)
-		$("#taxtotal").val(tax2)
+		$("#tax").val(tax)
+		$("#taxtotal").val(tax)
 	}
 	
 	

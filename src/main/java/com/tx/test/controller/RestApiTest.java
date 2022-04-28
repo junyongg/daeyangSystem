@@ -101,10 +101,11 @@ public class RestApiTest {
 		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		   String year2 = year.substring(2, year.length());
 		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year+"년 "+month+"월 발전대금");
+		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
 		
 	      return mv;
 	  }
@@ -125,11 +126,11 @@ public class RestApiTest {
 		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
-		   
+		   String year2 = year.substring(2, year.length());
 		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year+"년 "+month+"월분 발전대금");
+		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
 		   
 	      return mv;
 	  }
@@ -150,10 +151,11 @@ public class RestApiTest {
 		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		   String year2 = year.substring(2, year.length());
 		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year+"년 "+month+"월분 전기안전관리비");
+		   mv.addObject("itemName",year2+"."+month+"월분 전기안전관리비");
 		
 	      return mv;
 	  }
@@ -484,16 +486,13 @@ public class RestApiTest {
 
 	
 //		    			String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
-			    		String contents = "[세금계산서 발행 완료 안내]\n"
-			    							+pname+"의 세금계산서 발행이 완료되었습니다.\n"
-			    							+"□ 공급자 : "+pname+"\n"
-			    							+"□ 공급받는자: "+sname+"\n"
-			    							+"□ 품목명: "+subject+"\n"
-			    							+"□ 합계금액 : "+grandtotal+"\n"
-			    							+"□ 발행일 : "+issuedate+"\n"+"\n"+"\n"
-			    							+"※ 세금계산서 발행 관련 문의"+"\n"
-			    							+"담당자 : 대양기업 이시연"+"\n"
-			    							+"연락처 : 010-9385-6811";
+		    			String contents = "[세금계산서 발행 완료 안내]\n"
+    							+pname+"의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : "+pname
+    							+"\n□ 공급받는자: "+sname
+    							+"\n□ 품목명 : "+subject
+    							+"\n□ 합계금액 : "+grandtotal+"원"
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : 대양기업 이시연\n연락처 : 010-9385-6811";
+
 			    		//토큰받기
 			    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
 			    		tocken = URLEncoder.encode(tocken, "UTF-8");
@@ -501,7 +500,7 @@ public class RestApiTest {
 			    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 			    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 			    		org.json.simple.JSONArray jsonObj_a = (org.json.simple.JSONArray) jsonObj2.get("list");
-			    		jsonObj2 = (JSONObject) jsonObj_a.get(5); //템플릿 리스트
+			    		jsonObj2 = (JSONObject) jsonObj_a.get(8); //템플릿 리스트
 			    		
 			    		String list = Component.getData("bills.AlimSelect",bill);
 			    		String Sendurl  = "http://dymonitering.co.kr/"; 
@@ -522,15 +521,12 @@ public class RestApiTest {
 
 //				    	String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
 		    			String contents = "[세금계산서 발행 완료 안내]\n"
-    							+sname+"의 세금계산서 발행이 완료되었습니다.\n"
-    							+"□ 공급자 : "+pname+"\n"
-    							+"□ 공급받는자: "+sname+"\n"
-    							+"□ 품목명: "+subject+"\n"
-    							+"□ 합계금액 : "+grandtotal+"\n"
-    							+"□ 발행일 : "+issuedate+"\n"+"\n"+"\n"
-    							+"※ 세금계산서 발행 관련 문의"+"\n"
-    							+"담당자 : 대양기업 이시연"+"\n"
-    							+"연락처 : 010-9385-6811";
+    							+sname+"의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : "+pname
+    							+"\n□ 공급받는자: "+sname
+    							+"\n□ 품목명 : "+subject
+    							+"\n□ 합계금액 : "+grandtotal+"원"
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : 대양기업 이시연\n연락처 : 010-9385-6811";
+		    					
 					    		//토큰받기
 					    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
 					    		tocken = URLEncoder.encode(tocken, "UTF-8");
@@ -538,7 +534,7 @@ public class RestApiTest {
 					    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 					    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 					    		org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
-					    		jsonObj2 = (JSONObject) jsonObj_a2.get(5); //템플릿 리스트
+					    		jsonObj2 = (JSONObject) jsonObj_a2.get(8); //템플릿 리스트
 					    		
 					    		String list = Component.getData("bills.AlimSelect2",bill);
 					    		String Sendurl  = "http://dymonitering.co.kr/"; 

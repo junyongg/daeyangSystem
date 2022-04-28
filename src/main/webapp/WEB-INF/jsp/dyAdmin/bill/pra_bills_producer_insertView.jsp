@@ -94,8 +94,8 @@
 														<input type="hidden" id="dbp_keyno" name="dbp_keyno" value=""> 
 														<button type="button" id="ActionType" onclick="providerInsert();" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
 														</button>
-														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
-														</button>
+<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
+<!-- 														</button> -->
 													</fieldset>
 												</td>
 											</tr>
@@ -207,8 +207,8 @@
 														<input type="hidden" id="dbp_keyno2" name="dbp_keyno2" value=""> 
 														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary" id="ActionType2"><i class="fa fa-floppy-o"></i> 저장
 														</button>
-														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제
-														</button>
+<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="clear()" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
+<!-- 														</button> -->
 													</fieldset>
 												</td>
 											</tr>
@@ -281,6 +281,7 @@ function providerSelectmethod(value){
         	
         	$("#ActionType").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
         	$("#buttionType").val("update");
+        	
         },
         error: function(){
         	alert("공급자 선택 에러");
@@ -298,6 +299,7 @@ function providerInsert(){
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
+        	location.reload();
         	alert(result);
         },
         error: function(){
@@ -395,6 +397,7 @@ function providerSelectmethod2(value){
         	
         	$("#ActionType2").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
         	$("#buttionType2").val("update");
+        	
         },
         error: function(){
         	alert("공급자 선택 에러");
@@ -413,6 +416,7 @@ function providerInsert2(){
         async: false,  
         success: function(result) {
         	alert(result);
+        	location.reload();
         },
         error: function(){
         	alert("공급자 선택 에러");

@@ -42,13 +42,13 @@ form .error {color:red}
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i>
 					</span>
-					<h2>공급자(발전소) 리스트</h2>
+					<h2>세금계산서 리스트</h2>
 				</header>
 				<div class="widget-body " >
 						<div class="widget-body-toolbar bg-color-white">
 							<div class="alert alert-info no-margin fade in">
 								<button type="button" class="close" data-dismiss="alert">×</button>
-								발전소 리스트를 확인합니다.
+								세금계산서 작성 리스트를 확인합니다.
 							</div>
 						</div>
 						<div class="table-responsive">

@@ -159,6 +159,7 @@
 	WHERE p.dbp_keyno = #{dbp_keyno}
 	and s.dbs_keyno = #{dbs_keyno}
 	and l.dbl_sub_keyno = #{dbl_sub_keyno}
+	and date_format(l.Conn_date , '%Y-%m') = date_format(now(), '%Y-%m')
 	</select>
 	
 	<insert id="billsInfoInsert" parameterType="String">
@@ -700,6 +701,33 @@
 			on l.dbl_supplied_key = s.dbs_keyno
 			where l.dbl_keyno = #{dbl_keyno}
 	</select>
+	
+	
+	<!-- 국세청 전송 여부 select -->
+	<select id="checkYNselect" parameterType="billDTO" resultType="String">
+		select dbl_checkYN
+		from dy_bills_log
+		where dbl_keyno = #{dbl_keyno}
+	</select>
+	
+	<!-- 전송실패시 checkYN N으로 변경 -->
+	<update id="checkChange" parameterType="billDTO">
+	UPDATE dy_bills_log
+	SET dbl_checkYN = 'N'
+	WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
+	<!-- 공급자 삭제 -->
+	<delete id="proDelete" parameterType="String">
+		DELETE  FROM dy_bills_provider 
+		where dbp_keyno  = #{dbp_keyno}
+	</delete>
+	
+	<!-- 공급받는자 삭제 -->
+	<delete id="supDelete" parameterType="String">
+		DELETE  FROM dy_bills_supplied 
+		where dbs_keyno  = #{dbs_keyno}
+	</delete>
 	
 </mapper>
  

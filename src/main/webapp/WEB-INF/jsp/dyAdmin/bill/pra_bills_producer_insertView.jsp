@@ -65,11 +65,11 @@
 												<td>사업자등록번호</td>
 												<td><input type="text" class="form-control check" id="ir_companynumber" name="ir_companynumber"></td>
 												<td>업태</td>
-												<td><input type="text" class="form-control check" id="ir_biztype" name="ir_biztype"></td>
+												<td><input type="text" class="form-control check" id="ir_biztype" name="ir_biztype" value="${iiee2 }"></td>
 												<td>상호</td>
-												<td><input type="text" class="form-control check" id="ir_companyname" name="ir_companyname"></td>
+												<td><input type="text" class="form-control check" id="ir_companyname" name="ir_companyname" value="${iiee }"></td>
 												<td>업종</td>
-												<td><input type="text" class="form-control check" id="ir_bizclassification" name="ir_bizclassification"></td>
+												<td><input type="text" class="form-control check" id="ir_bizclassification" name="ir_bizclassification" value="${iiee3 }"></td>
 											</tr>
 											<tr>
 												<td>대표자성명</td>
@@ -89,13 +89,17 @@
 											</tr>
 											<tr>
 												<td colspan="8">
-													<fieldset class="padding-10 text-right">
+													<fieldset class="padding-10 text-right" id="buttonset">
+													<div id = "buttondiv2" style ="float: right;">
+<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
+<!-- 														</button> -->
+													</div>
+													<div id = "buttondiv1" style ="float: right;">
 														<input type="hidden" id="buttionType" name="buttionType" value="insert"> 
 														<input type="hidden" id="dbp_keyno" name="dbp_keyno" value=""> 
 														<button type="button" id="ActionType" onclick="providerInsert();" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> 저장
 														</button>
-<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
-<!-- 														</button> -->
+													</div>
 													</fieldset>
 												</td>
 											</tr>
@@ -165,11 +169,11 @@
 												<td>사업자등록번호</td>
 												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber"  required oninvalid="this.setCustomValidity('Please select the item.')"  oninput="this.setCustomValidity('')"></td>
 												<td>업태</td>
-												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype"></td>
+												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype" value ="전기"></td>
 												<td>사업체명</td>
-												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname"></td>
+												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname" value="${iiee }"></td>
 												<td>업종</td>
-												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification"></td>
+												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification" value="태양광발전"></td>
 											</tr>
 											<tr>
 												<td>종사업장번호</td>
@@ -201,14 +205,18 @@
 											</tr>
 											<tr>
 												<td colspan="8">
-													<fieldset class="padding-10 text-right"> 
+													<fieldset class="padding-10 text-right" id = "buttonset2"> 
+													<div id ="buttondiv2-2" style ="float: right">
+<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="clear()" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
+<!-- 														</button> -->
+													</div>
+													<div id = "buttondiv1-2" style ="float: right">
 														<input type="hidden" id="buttionType2" name="buttionType2" value="insert">
 														<input type="hidden" id="dbs_keyno" name="dbs_keyno" value=""> 
 														<input type="hidden" id="dbp_keyno2" name="dbp_keyno2" value=""> 
 														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary" id="ActionType2"><i class="fa fa-floppy-o"></i> 저장
 														</button>
-<!-- 														<button class="btn btn-sm btn-danger" type="button" onclick="clear()" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제 -->
-<!-- 														</button> -->
+													</div>
 													</fieldset>
 												</td>
 											</tr>
@@ -231,9 +239,9 @@
 function providerSelect(value){
 	console.log(value)
 	if(value == "0"){
-		clear();
+		clear();		
+		$("#buttondiv2").empty();
 		$("#ActionType").html('<i class="fa fa-floppy-o"></i> 저장')
-		
 		$("#buttionType").val("insert");
 	}else{
 		providerSelectmethod(value);
@@ -253,6 +261,7 @@ function clear(){
 	$("#ir_cell").val("")
 	$("#ir_email").val("")
 	$("#ir_companyaddress").val("")
+	$("#ir_bizclassification").val("")
 }
 
 function providerSelectmethod(value){
@@ -279,6 +288,9 @@ function providerSelectmethod(value){
         	$("#ir_email").val(result.dbp_email)
         	$("#ir_companyaddress").val(result.dbp_address)
         	
+        	
+        		
+        	$("#buttondiv2").html('<button class="btn btn-sm btn-danger" type="button" onclick="prodeleteInfo();" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제</button>')
         	$("#ActionType").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
         	$("#buttionType").val("update");
         	
@@ -334,6 +346,29 @@ function validationCheck(){
 	return true	
 }
 
+function prodeleteInfo(){
+	
+	if(confirm("현재 공급자를 삭제하시겠습니까?")){
+	
+	$.ajax({
+		type: "POST",
+		url: "/dyAdmin/bills/prodelete.do",
+		async: false,
+		data: $('#Form').serializeArray(),
+		success : function(data){
+			alert(data);
+			location.reload();
+		}, 
+		error: function(){
+			
+		}
+	}); 
+	
+	}else
+		return false;
+	
+}
+
 
 
 //----------------------------------공급받는자 script---------------------------------------------------------
@@ -343,6 +378,7 @@ function providerSelect2(value){
 	
 	if(value == "0"){
 		clear2();
+		$("#buttondiv2-2").empty();
 		$("#ActionType2").html('<i class="fa fa-floppy-o"></i> 저장')
 		
 		$("#buttionType2").val("insert");
@@ -395,6 +431,9 @@ function providerSelectmethod2(value){
         	$("#ie_email2").val(result.dbs_email2)
         	$("#ie_companyaddress").val(result.dbs_address)
         	
+        
+        	
+        	$("#buttondiv2-2").html('<button class="btn btn-sm btn-danger" type="button" onclick="supdeleteInfo();" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제</button>')
         	$("#ActionType2").html('<i class="glyphicon glyphicon-refresh"></i> 수정')
         	$("#buttionType2").val("update");
         	
@@ -422,6 +461,29 @@ function providerInsert2(){
         	alert("공급자 선택 에러");
         }
 	}); 
+}
+
+function supdeleteInfo(){
+	
+	if(confirm("현재 공급받는자를 삭제하시겠습니까?")){
+	
+	$.ajax({
+		type: "POST",
+		url: '/dyAdmin/bills/supdelete.do',
+		async: false,
+		data: $('#Form2').serializeArray(),
+		success : function(data){
+			location.reload();
+			alert(data);
+		}, 
+		error: function(){
+			
+		}
+	}); 
+	
+	}else
+		return false;
+	
 }
 
 

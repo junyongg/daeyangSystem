@@ -79,6 +79,9 @@ public class RestApiTest {
 	
 		mv.addObject("billList",Component.getListNoParam("bills.billsSelect"));
 		mv.addObject("billList_sub",Component.getListNoParam("bills.SuppliedSelect"));
+		mv.addObject("iiee","태양광발전소");
+		mv.addObject("iiee2","전기업");
+		mv.addObject("iiee3","태양광 발전업");
 	
 	
 	     return mv;
@@ -473,7 +476,7 @@ public class RestApiTest {
 			Component.updateData("bills.codemsgUpdate", bill);
 			
 			
-			//카카오톡 전송 
+			//카카오톡 전송 & 전송실패시 체크 풀기
 			if(code.equals("0")) {
 		    	String subkey = bill.getDbl_sub_keyno();
 		    	if(subkey.equals("1")||subkey.equals("2")) {
@@ -545,7 +548,8 @@ public class RestApiTest {
 			    	}
 		    		
 		    	}else {
-		    		
+		    			
+		    		Component.updateData("bills.checkChange", bill);
 		    	}
 		    	
 			
@@ -626,11 +630,22 @@ public class RestApiTest {
 	
 	@RequestMapping("/dyAdmin/bills/billsInfoUpdate.do")
 	@ResponseBody
-	public String billsInfoUpdateAjax(HttpServletRequest req,billDTO bill) throws Exception {
+	public String billsInfoUpdateAjax(HttpServletRequest req, billDTO bill) throws Exception {
 		
+		String chkYN = Component.getData("bills.checkYNselect", bill);
+		String msg = "";
 		
-		Component.updateData("bills.billsInfoUpdate", bill);
-		 String msg = "세금계산서 정보 수정 완료";
+	
+		if(chkYN.equals("Y")) {
+			
+			msg = "국세청에 전송된 세금계산서는 수정할 수 없습니다.";
+			
+		}else {
+			
+			Component.updateData("bills.billsInfoUpdate", bill);
+			msg = "세금계산서 정보 수정 완료";
+			
+		}
 
 
 		return msg;
@@ -804,4 +819,33 @@ public class RestApiTest {
 		return msg;
 	}
 	
+	
+	@RequestMapping("/dyAdmin/bills/prodelete.do")
+	@ResponseBody
+	public String prodelete(HttpServletRequest req,
+			@RequestParam(value="dbp_keyno")String dbp_keyno) throws Exception {
+		
+		
+	
+		Component.deleteData("bills.proDelete", dbp_keyno);
+		
+		String msg = "공급자 삭제 완료";
+	
+		return msg;
+	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/supdelete.do")
+	@ResponseBody
+	public String supdelete(HttpServletRequest req,
+			@RequestParam(value="dbs_keyno")String dbs_keyno) throws Exception {
+			
+		
+		Component.deleteData("bills.supDelete", dbs_keyno);
+		
+		String msg = "공급받는자 삭제 완료";
+	
+		return msg;
+	
+	}
 }

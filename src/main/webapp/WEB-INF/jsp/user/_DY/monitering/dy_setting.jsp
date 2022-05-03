@@ -71,7 +71,7 @@
  <script>
  
 //화면 호출시 가장 먼저 호출되는 부분 
- $(document).ready(function() {
+/*  $(document).ready(function() {
  	
  	$("#Form").validate({
 
@@ -136,7 +136,7 @@
 
      });
  	
- });
+ }); */
  
 
 //휴대폰번호

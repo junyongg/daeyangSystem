@@ -154,4 +154,16 @@
 		</if>
 	</select>
 	
+	<insert id="excelsuppl" parameterType="list">
+		INSERT INTO dy_bills_supplied
+		(
+			dbs_biztype , dbs_bizclassification , dbs_name, dbs_co_num, dbs_ceoname, dbs_email1, dbs_cell1 ,dbs_address
+		)VALUES
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</insert>
+	
+	
+	
 </mapper>

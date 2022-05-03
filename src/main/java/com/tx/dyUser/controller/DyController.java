@@ -1,5 +1,8 @@
 package com.tx.dyUser.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.extractor.ExcelExtractor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +37,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.SettingData;
+import com.tx.common.config.tld.SiteProperties;
+import com.tx.common.file.FileReadTools;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
@@ -46,6 +59,8 @@ public class DyController {
 	@Autowired MyPasswordEncoder passwordEncoder;
 	
 	@Autowired requestAPIservice requestAPI;
+	
+	@Autowired FileReadTools filetool;
 	
    /**
     *@return 관리자 종합현황 페이지 
@@ -94,6 +109,7 @@ public class DyController {
 	   ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_overallStatus_ajax");
 	   
 	   HashMap<String,Object> type = new HashMap<String, Object>();
+	   HashMap<String,Object> premap = new HashMap<String, Object>();
 	   
 	   Map<String, Object> user = CommonService.getUserInfo(req);
 	   type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
@@ -101,6 +117,7 @@ public class DyController {
 	   
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
+	   premap.put("keyno",keyno);
 	   
 	   String sql = "main.select_MainData";
 	   //삼환관리자 처리부분
@@ -110,6 +127,11 @@ public class DyController {
 	   
 	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   String area = ob.get("DPP_AREA").toString(); //지역
+	   premap.put("area",area);
+	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
+	   
+	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
+	   
 	   
 	   mv.addObject("detail_Data",ob);
 	   
@@ -1044,7 +1066,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남"};
+	   String[] regionL = {"나주","광주","해남","화성"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {
@@ -1056,6 +1078,74 @@ public class DyController {
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
 //		Component.getData("sub.inserthourDetail",list);
    }
+   
+   
+
+   /**
+   * @return 날씨 등록 테스트
+   */
+  @RequestMapping("/testxlsx.do")
+  public void testxlsx(HttpServletRequest req) throws Exception{
+	  String path = "D:/workspace/dysystem/src/main/webapp/resources/temp/b.xlsx";
+	  //String text = filetool.excelRead();
+      // check file
+      File file = new File(path);
+      if (!file.exists() || !file.isFile() || !file.canRead()) {
+           throw new IOException(path);
+      }
+ 
+      // Workbook
+      XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
+
+      // Text Extraction
+      ExcelExtractor extractor = new XSSFExcelExtractor(wb);
+      extractor.setFormulasNotResults(true);
+      extractor.setIncludeSheetNames(false);
+      System.out.println( extractor.getText() );
+
+      // Getting cell contents
+      for( int i=0; i<wb.getNumberOfSheets(); i++) {
+          for( Row row : wb.getSheetAt(i) ) {
+        	  if (row.getRowNum() > 2) {
+        		  System.out.print("row : " + row.getRowNum());
+        		  
+        		  ArrayList<String> list = new ArrayList<String>();
+        		  list.add("전기업");
+        		  list.add("태양광 발전업");
+        		  for( Cell cell : row ) {
+                      System.out.print(cell.getColumnIndex());
+                      System.out.print(" - ");
+                      
+                      String value = "";
+                      System.out.println(cell.getCellType());
+    	                  if(cell.getCellType() == CellType.NUMERIC) {
+    	                	  Long roundVal = Math.round(cell.getNumericCellValue());
+    	                      Double doubleVal = cell.getNumericCellValue();
+    	                      if (doubleVal.equals(roundVal.doubleValue())) {
+    	                    	  value = String.valueOf(roundVal);
+    	                      } else {
+    	                    	  value = String.valueOf(doubleVal);
+    	                      }
+    	                  }else {
+    	                	  	  value = cell.getRichStringCellValue().toString();
+    	                  }
+    	                  
+    	                  if(cell.getColumnIndex() == 1) {
+    	                	  value = value.replace("-","");
+    	                  }
+    	                  
+    	                  list.add(value);
+    	                  System.out.println(value);
+                      } 
+        		  Component.createData("sub.excelsuppl", list);
+        		  
+          		}
+         }
+      }
+	      
+  }
+   
+   
    
    public void WeatherOrganize(ArrayList<String> weatherList) {
 	   //혹시모를 갯수 체크

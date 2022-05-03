@@ -176,10 +176,6 @@ public class FileCommonToolsImpl extends EgovAbstractServiceImpl implements File
 				fileContent = FileReadTools.excelRead(filePath);
 			} else if (fileExt.toLowerCase().equals("xls")) {
 				fileContent = FileReadTools.excelReadXls(filePath);
-			} else if (fileExt.toLowerCase().equals("ppt")) {
-				fileContent = FileReadTools.readPpt(filePath);
-			} else if (fileExt.toLowerCase().equals("pptx")) {
-				fileContent = FileReadTools.readPptx(filePath);
 			} else if (fileExt.toLowerCase().equals("doc")) {
 				fileContent = FileReadTools.readDoc(filePath);
 			} else if (fileExt.toLowerCase().equals("docx")) {

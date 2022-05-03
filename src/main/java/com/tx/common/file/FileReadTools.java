@@ -18,15 +18,7 @@ public interface FileReadTools {
 	
 	public String excelReadXls(String path) throws Exception;
 	
-	
-	public String readPpt(String path) throws Exception;
-	
-	
-	public String readPptx(String path) throws Exception;
-	
-	
 	public String readDoc(String path) throws Exception;
-	
 	
 	public String readDocx(String path) throws Exception;
 	

@@ -82,31 +82,6 @@ public class FileReadToolsImpl extends EgovAbstractServiceImpl implements FileRe
 	  return content;
 	}
 	
-	public String readPpt(String path){
-	  String content = "";
-	  try (   POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(path));
-			  PowerPointExtractor extractor = new PowerPointExtractor(fs);
-			 ){
-		  content = extractor.getText();
-	  } catch (Exception exception) {
-		  System.out.println("readPpt 에러");
-	  }
-	  return content;
-	}
-	
-	public String readPptx(String path){
-	  String content = "";
-	  try(	FileInputStream fs = new FileInputStream(new File(path));
-		    OPCPackage d = OPCPackage.open(fs);
-			  ) {
-		 XSLFPowerPointExtractor xp = new XSLFPowerPointExtractor(d);
-		 content = xp.getText();
-		 xp.close();
-	  } catch (Exception exception) {
-		  System.out.println("readPptx 에러");
-	  }
-	  return content;
-	}
 	
 	public String readDoc(String path){
 	  String content = "";

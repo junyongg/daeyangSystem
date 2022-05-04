@@ -187,7 +187,7 @@ public class ScheduleService {
 		   Component.createData("Weather.Daily_WeatherData", map);
 	  }
 
-	
+   }
    
    /*	//에러 체크 알림 10시에 몰아서 한번
   	@Scheduled(cron="0 0 10 * * ?")  

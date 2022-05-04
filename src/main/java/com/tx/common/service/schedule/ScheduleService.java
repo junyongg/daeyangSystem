@@ -352,8 +352,7 @@ public class ScheduleService {
 		   map.put("sunset",weatherList.get((weatherList.size()-1)).toString());
 		   
 		   Component.createData("Weather.Daily_WeatherData", map);
-	   }
-   }
+	  }
 
 	
    

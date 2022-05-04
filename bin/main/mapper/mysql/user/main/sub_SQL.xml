@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sub"> 
+	
+	<!-- 시간별 데이터 등록 -->
+	<select id="hourData" resultType="hashmap">
+		SELECT AA.*
+		FROM (	
+			SELECT * , DATE_FORMAT(Conn_date,'%Y-%m-%d %H:00') AS DATETIEMS   
+			FROM dy_inverter_data  
+			WHERE DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+			ORDER BY DI_NAME , Conn_date DESC
+		)AA
+		GROUP BY  DI_NAME, DATETIEMS, DP_KEYNO
+	</select>
+	
+	<!-- 시간별 데이터 등록 -->
+	<insert id="inserthourDetail">
+		INSERT INTO dy_detail_data 
+		(
+			DP_KEYNO,DI_NAME,Vpv1,Ipv1,Vpv2,Ipv2,Vpv3,Ipv3,Vpv4,Ipv4,Vpv5,Ipv5,Vpv6,Ipv6,Vpv7,Ipv7,Vpv8,Ipv8,Vpv9,Ipv9,Vpv10,Ipv10,Vpv11,Ipv11,Vpv12,Ipv12,Vpv13,Ipv13,Vpv14,Ipv14,Vpv15,Ipv15,Vpv16,Ipv16,Vpv17,Ipv17,Vpv18,Ipv18,Vpv19,Ipv19,Vpv20,Ipv20,Vpv21,Ipv21,Vpv22,Ipv22,Vpv23,Ipv23,Vpv24,Ipv24,voltage_of_phase_A_to_B,voltage_of_phase_B_to_C,voltage_of_phase_C_to_A,Phase_voltage_of_phase_A,Phase_voltage_of_phase_B,Phase_voltage_of_phase_C,Current_of_phase_A,Current_of_phase_B,Current_of_phase_C,Active_Power,Grid_Frequency,Internal_temperature,Cumulative_Generation,Daily_Generation,Cabinet_Temperature_2,DSP_Error_Code,DSP_Alarm_Code,PV_String_Fault_Bit,Temperature_Fault_Bit,Slave_DSP_ErrorCode,Total_Generation_Hour,Safety_Code,Work_Mode,Conn_date
+		) 
+		VALUES
+		<foreach item="l" collection="list" separator=","> 
+		(
+			#{l.DP_KEYNO},#{l.DI_NAME},#{l.Vpv1},#{l.Ipv1},#{l.Vpv2},#{l.Ipv2},#{l.Vpv3},#{l.Ipv3},#{l.Vpv4},#{l.Ipv4},#{l.Vpv5},#{l.Ipv5},#{l.Vpv6},#{l.Ipv6},#{l.Vpv7},#{l.Ipv7},#{l.Vpv8},#{l.Ipv8},#{l.Vpv9},#{l.Ipv9},#{l.Vpv10},#{l.Ipv10},#{l.Vpv11},#{l.Ipv11},#{l.Vpv12},#{l.Ipv12},#{l.Vpv13},#{l.Ipv13},#{l.Vpv14},#{l.Ipv14},#{l.Vpv15},#{l.Ipv15},#{l.Vpv16},#{l.Ipv16},#{l.Vpv17},#{l.Ipv17},#{l.Vpv18},#{l.Ipv18},#{l.Vpv19},#{l.Ipv19},#{l.Vpv20},#{l.Ipv20},#{l.Vpv21},#{l.Ipv21},#{l.Vpv22},#{l.Ipv22},#{l.Vpv23},#{l.Ipv23},#{l.Vpv24},#{l.Ipv24},#{l.voltage_of_phase_A_to_B},#{l.voltage_of_phase_B_to_C},#{l.voltage_of_phase_C_to_A},#{l.Phase_voltage_of_phase_A},#{l.Phase_voltage_of_phase_B},#{l.Phase_voltage_of_phase_C},#{l.Current_of_phase_A},#{l.Current_of_phase_B},#{l.Current_of_phase_C},#{l.Active_Power},#{l.Grid_Frequency},#{l.Internal_temperature},#{l.Cumulative_Generation},#{l.Daily_Generation},#{l.Cabinet_Temperature_2},#{l.DSP_Error_Code},#{l.DSP_Alarm_Code},#{l.PV_String_Fault_Bit},#{l.Temperature_Fault_Bit},#{l.Slave_DSP_ErrorCode},#{l.Total_Generation_Hour},#{l.Safety_Code},#{l.Work_Mode},#{l.DATETIEMS}
+		)
+		</foreach>
+	</insert>
+	
+	<!-- 세달 뒤 삭제 -->
+	<delete id="deletehourData">
+		DELETE FROM dy_detail_data
+		<![CDATA[
+			WHERE DATE_FORMAT(Conn_date, '%Y-%m') < DATE_FORMAT(now() - interval 3 month ,'%Y-%m')
+		]]>
+	</delete>
+	
+	
+	<!-- 각 데이터 뽑기 -->
+	<select id="select_hourData" resultType="hashmap" parameterType="hashmap">
+		
+		SELECT *
+		FROM(
+			SELECT DP_KEYNO,
+  DI_NAME,
+  Vpv1,
+  Ipv1,
+  Vpv2,
+  Ipv2,
+  Vpv3,
+  Ipv4,
+  Vpv5,
+  Ipv5,
+  Vpv6,
+  Ipv6,
+  Vpv7,
+  Ipv7,
+  Vpv8,
+  Ipv8,
+  Vpv9,
+  Ipv9,
+  Vpv10,
+  Ipv10,
+  Vpv11,
+  Ipv11,
+  Vpv12,
+  Ipv12,
+  Vpv13,
+  Ipv13,
+  Vpv14,
+  Ipv14,
+  Vpv15,
+  Ipv15,
+  Vpv16,
+  Ipv16,
+  Vpv17,
+  Ipv17,
+  Vpv18,
+  Ipv18,
+  Vpv19,
+  Ipv19,
+  Vpv20,
+  Ipv20,
+  Vpv21,
+  Ipv21,
+  Vpv22,
+  Ipv22,
+  Vpv23,
+  Ipv23,
+  Vpv24,
+  Ipv24,
+  voltage_of_phase_A_to_B,
+  voltage_of_phase_B_to_C,
+  voltage_of_phase_C_to_A,
+  Phase_voltage_of_phase_A,
+  Phase_voltage_of_phase_B,
+  Phase_voltage_of_phase_C,
+  Current_of_phase_A,
+  Current_of_phase_B,
+  Current_of_phase_C,
+  Active_Power,
+  Grid_Frequency,
+  Internal_temperature,
+  Cumulative_Generation,
+  Daily_Generation,
+  Cabinet_Temperature_2,
+  DSP_Error_Code,
+  DSP_Alarm_Code,
+  PV_String_Fault_Bit,
+  Temperature_Fault_Bit,
+  Slave_DSP_ErrorCode,
+  Total_Generation_Hour,
+  Safety_Code,
+  Work_Mode,
+  Conn_date,
+  Ipv3,
+  Vpv4 
+			FROM dy_detail_data
+			WHERE DP_KEYNO = #{type}
+			<if test="searchBeginDate != null and searchBeginDate != ''">
+	 		<![CDATA[
+	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+	 		]]>
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+			ORDER BY Conn_date DESC
+			LIMIT 1000
+		)A
+		WHERE 1=1
+		<if test="InverterType != null and InverterType != '' and !InverterType.equals('0') and InverterType != 0">
+			AND A.DI_NAME = '인버터 ${InverterType}호' 
+		</if>
+		<if test="searchEndDate != null and searchEndDate != '' and searchEndDate.equals(now)">
+			UNION ALL
+			SELECT *
+			FROM(
+				SELECT DP_KEYNO, DI_NAME ,Vpv1 ,Ipv1 ,Vpv2 ,Ipv2 ,Vpv3 ,Ipv4 ,Vpv5 ,Ipv5 ,Vpv6 ,Ipv6 ,Vpv7 ,Ipv7 ,Vpv8 ,Ipv8 ,Vpv9 ,Ipv9 ,Vpv10 ,Ipv10 ,Vpv11 ,Ipv11 ,Vpv12 ,Ipv12 ,Vpv13 ,Ipv13 ,Vpv14 ,Ipv14 ,Vpv15 ,Ipv15 ,Vpv16 ,Ipv16 ,Vpv17 ,Ipv17 ,Vpv18 ,Ipv18 ,Vpv19 ,Ipv19  ,Vpv20  ,Ipv20  ,Vpv21  ,Ipv21  ,Vpv22  ,Ipv22  ,Vpv23  ,Ipv23  ,Vpv24  ,Ipv24  ,voltage_of_phase_A_to_B  ,voltage_of_phase_B_to_C  ,voltage_of_phase_C_to_A  ,Phase_voltage_of_phase_A  ,Phase_voltage_of_phase_B  ,Phase_voltage_of_phase_C  ,Current_of_phase_A  ,Current_of_phase_B  ,Current_of_phase_C  ,Active_Power  ,Grid_Frequency  ,Internal_temperature  ,Cumulative_Generation  ,Daily_Generation  ,Cabinet_Temperature_2  ,DSP_Error_Code  ,DSP_Alarm_Code  ,PV_String_Fault_Bit  ,Temperature_Fault_Bit  ,Slave_DSP_ErrorCode  ,Total_Generation_Hour  ,Safety_Code  ,Work_Mode  , DATE_FORMAT(Conn_date,'%Y-%m-%d %H:00') as Conn_date  ,Ipv3  ,Vpv4 
+				FROM dy_inverter_data
+				WHERE DP_KEYNO = #{type}
+		 		AND	DATE_FORMAT(Conn_date,'%Y-%m-%d') 	=	DATE_FORMAT(now(),'%Y-%m-%d')
+				ORDER BY Conn_date DESC
+			)A
+			WHERE 1=1
+			<if test="InverterType != null and InverterType != '' and !InverterType.equals('0') and InverterType != 0">
+				AND A.DI_NAME = '인버터 ${InverterType}호' 
+			</if>
+			GROUP BY Conn_date , DI_NAME
+			ORDER BY Conn_date DESC
+		</if>
+	</select>
+	
+	<insert id="excelsuppl" parameterType="list">
+		INSERT INTO dy_bills_supplied
+		(
+			dbs_biztype , dbs_bizclassification , dbs_name, dbs_co_num, dbs_ceoname, dbs_email1, dbs_cell1 ,dbs_address
+		)VALUES
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</insert>
+	
+		<update id="excelupdate" parameterType="hashmap">
+		UPDATE dy_bills_supplied
+		SET dbs_name = #{pname},
+			dbs_ceoname = #{name},
+			dbs_address = #{add},
+			dbs_email1 = #{em}
+		WHERE dbs_keyno = #{key}
+	</update>
+	
+	
+	
+</mapper>

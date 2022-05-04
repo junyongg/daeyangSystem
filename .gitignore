@@ -3,9 +3,9 @@
 
 .gradle/
 .settings/
-# bin/
-# build/
-# *_back.jsp
+bin/
+build/
+*_back.jsp
 # src/main/webapp/index.jsp
 # src/main/webapp/robots.txt
 # src/main/webapp/WEB-INF/jsp/publish/

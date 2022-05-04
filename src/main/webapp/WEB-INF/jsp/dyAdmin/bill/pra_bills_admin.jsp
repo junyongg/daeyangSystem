@@ -233,7 +233,9 @@ form .error {color:red}
 											</tr>
 											<tr>	
 <!-- 											<td><input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%; float: left;" >/<input type="text" class="form-control" id="ie_companyaddress" name="ie_companyaddress" style = "width: 30%;"></td> -->
-												<td><input type="text" class="form-control check2" id="sub_issuedate" name="sub_issuedate" value="${nowDate }"</td>
+												<td>
+													<input type="text" class="form-control check2" id="sub_issuedate" name="sub_issuedate" value="${nowDate }">
+												</td>
 												<td><input type="text" class="form-control check2" id="subject" name="subject" value="${itemName }"></td>	
 												<td><input type="text" class="form-control" id="unit" name="unit"></td>
 												<td><input type="text" class="form-control" id="quantity" name="quantity"></td>

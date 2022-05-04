@@ -123,7 +123,7 @@ form .error {color:red}
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 유저선택</label>
 														<div class="col-md-6">
-															<select class="form-control input-sm select2 DPP_USERS" id="DPP_USER" name="DPP_USERS">
+															<select class="form-control DPP_USER" id="DPP_USER" name="DPP_USER">
 																<c:forEach items="${member }" var="member">
 																	<option value="${member.UI_KEYNO }">${member.UI_ID }</option>
 																</c:forEach>

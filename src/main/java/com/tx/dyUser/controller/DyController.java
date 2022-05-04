@@ -117,7 +117,7 @@ public class DyController {
 	   
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
-	   premap.put("keyno",keyno);
+//	   premap.put("keyno",keyno);
 	   
 	   String sql = "main.select_MainData";
 	   //삼환관리자 처리부분
@@ -127,10 +127,10 @@ public class DyController {
 	   
 	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   String area = ob.get("DPP_AREA").toString(); //지역
-	   premap.put("area",area);
-	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
-	   
-	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
+//	   premap.put("area",area);
+//	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
+//	   
+//	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
 	   
 	   
 	   mv.addObject("detail_Data",ob);

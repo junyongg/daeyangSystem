@@ -164,6 +164,15 @@
 		</foreach>
 	</insert>
 	
+		<update id="excelupdate" parameterType="hashmap">
+		UPDATE dy_bills_supplied
+		SET dbs_name = #{pname},
+			dbs_ceoname = #{name},
+			dbs_address = #{add},
+			dbs_email1 = #{em}
+		WHERE dbs_keyno = #{key}
+	</update>
+	
 	
 	
 </mapper>

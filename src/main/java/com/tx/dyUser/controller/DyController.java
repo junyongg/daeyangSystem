@@ -1086,7 +1086,7 @@ public class DyController {
    */
   @RequestMapping("/testxlsx.do")
   public void testxlsx(HttpServletRequest req) throws Exception{
-	  String path = "D:/workspace/dysystem/src/main/webapp/resources/temp/b.xlsx";
+	  String path = "D:/dy/src/main/webapp/resources/aa.xlsx";
 	  //String text = filetool.excelRead();
       // check file
       File file = new File(path);
@@ -1106,42 +1106,45 @@ public class DyController {
       // Getting cell contents
       for( int i=0; i<wb.getNumberOfSheets(); i++) {
           for( Row row : wb.getSheetAt(i) ) {
-        	  if (row.getRowNum() > 2) {
-        		  System.out.print("row : " + row.getRowNum());
-        		  
-        		  ArrayList<String> list = new ArrayList<String>();
-        		  list.add("전기업");
-        		  list.add("태양광 발전업");
-        		  for( Cell cell : row ) {
-                      System.out.print(cell.getColumnIndex());
-                      System.out.print(" - ");
-                      
-                      String value = "";
-                      System.out.println(cell.getCellType());
-    	                  if(cell.getCellType() == CellType.NUMERIC) {
-    	                	  Long roundVal = Math.round(cell.getNumericCellValue());
-    	                      Double doubleVal = cell.getNumericCellValue();
-    	                      if (doubleVal.equals(roundVal.doubleValue())) {
-    	                    	  value = String.valueOf(roundVal);
-    	                      } else {
-    	                    	  value = String.valueOf(doubleVal);
-    	                      }
-    	                  }else {
-    	                	  	  value = cell.getRichStringCellValue().toString();
-    	                  }
-    	                  
-    	                  if(cell.getColumnIndex() == 1) {
-    	                	  value = value.replace("-","");
-    	                  }
-    	                  
-    	                  list.add(value);
-    	                  System.out.println(value);
-                      } 
-        		  Component.createData("sub.excelsuppl", list);
-        		  
-          		}
+    		  System.out.print("row : " + row.getRowNum());
+    		  
+    		  HashMap<String, Object> map= new HashMap<String, Object>();
+    		  for( Cell cell : row ) {
+                  System.out.print(cell.getColumnIndex());
+                  System.out.print(" - ");
+                  
+                  String value = "";
+                  System.out.println(cell.getCellType());
+	                  if(cell.getCellType() == CellType.NUMERIC) {
+	                	  Long roundVal = Math.round(cell.getNumericCellValue());
+	                      Double doubleVal = cell.getNumericCellValue();
+	                      if (doubleVal.equals(roundVal.doubleValue())) {
+	                    	  value = String.valueOf(roundVal);
+	                      } else {
+	                    	  value = String.valueOf(doubleVal);
+	                      }
+	                  }else {
+	                	  	  value = cell.getRichStringCellValue().toString();
+	                  }
+	                  
+	                  if(cell.getColumnIndex() == 0) {
+	                	  map.put("pname", value);
+	                  }else if(cell.getColumnIndex() == 1) {
+	                	  map.put("name", value);
+	                  }else if(cell.getColumnIndex() == 2) {
+	                	  map.put("add", value);
+	                  }else if(cell.getColumnIndex() == 3) {
+	                	  map.put("em", value);
+	                  }else if(cell.getColumnIndex() == 4) {
+	                	  map.put("key", value);
+	                  }
+	                  
+	                  System.out.println(value);
+                  } 
+    		  Component.updateData("sub.excelupdate", map);
+    		  
+      		}
          }
-      }
 	      
   }
    

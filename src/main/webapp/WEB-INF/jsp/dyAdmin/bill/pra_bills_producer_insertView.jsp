@@ -65,11 +65,11 @@
 												<td>사업자등록번호</td>
 												<td><input type="text" class="form-control check" id="ir_companynumber" name="ir_companynumber"></td>
 												<td>업태</td>
-												<td><input type="text" class="form-control check" id="ir_biztype" name="ir_biztype" value="${iiee2 }"></td>
+												<td><input type="text" class="form-control check" id="ir_biztype" name="ir_biztype" ></td>
 												<td>상호</td>
-												<td><input type="text" class="form-control check" id="ir_companyname" name="ir_companyname" value="${iiee }"></td>
+												<td><input type="text" class="form-control check" id="ir_companyname" name="ir_companyname" ></td>
 												<td>업종</td>
-												<td><input type="text" class="form-control check" id="ir_bizclassification" name="ir_bizclassification" value="${iiee3 }"></td>
+												<td><input type="text" class="form-control check" id="ir_bizclassification" name="ir_bizclassification" ></td>
 											</tr>
 											<tr>
 												<td>대표자성명</td>
@@ -169,11 +169,11 @@
 												<td>사업자등록번호</td>
 												<td><input type="text" class="form-control check2" id="ie_companynumber" name="ie_companynumber"  required oninvalid="this.setCustomValidity('Please select the item.')"  oninput="this.setCustomValidity('')"></td>
 												<td>업태</td>
-												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype" value ="전기"></td>
+												<td><input type="text" class="form-control check2" id="ie_biztype" name="ie_biztype" ></td>
 												<td>사업체명</td>
-												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname" value="${iiee }"></td>
+												<td><input type="text" class="form-control check2" id="ie_companyname" name="ie_companyname" ></td>
 												<td>업종</td>
-												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification" value="태양광발전"></td>
+												<td><input type="text" class="form-control check2" id="ie_bizclassification" name="ie_bizclassification" ></td>
 											</tr>
 											<tr>
 												<td>종사업장번호</td>

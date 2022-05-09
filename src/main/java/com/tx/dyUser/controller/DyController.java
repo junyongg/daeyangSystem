@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -1086,7 +1087,7 @@ public class DyController {
    */
   @RequestMapping("/testxlsx.do")
   public void testxlsx(HttpServletRequest req) throws Exception{
-	  String path = "D:/dy/src/main/webapp/resources/aa.xlsx";
+	  String path = "D:/workspace/dysystem/src/main/webapp/resources/temp/b.xlsx";
 	  //String text = filetool.excelRead();
       // check file
       File file = new File(path);
@@ -1108,7 +1109,10 @@ public class DyController {
           for( Row row : wb.getSheetAt(i) ) {
     		  System.out.print("row : " + row.getRowNum());
     		  
-    		  HashMap<String, Object> map= new HashMap<String, Object>();
+    		  ArrayList<String> list = new ArrayList<String>();
+    		  
+    		  list.add("전기업");
+    		  list.add("태양광발전업");
     		  for( Cell cell : row ) {
                   System.out.print(cell.getColumnIndex());
                   System.out.print(" - ");
@@ -1126,23 +1130,9 @@ public class DyController {
 	                  }else {
 	                	  	  value = cell.getRichStringCellValue().toString();
 	                  }
-	                  
-	                  if(cell.getColumnIndex() == 0) {
-	                	  map.put("pname", value);
-	                  }else if(cell.getColumnIndex() == 1) {
-	                	  map.put("name", value);
-	                  }else if(cell.getColumnIndex() == 2) {
-	                	  map.put("add", value);
-	                  }else if(cell.getColumnIndex() == 3) {
-	                	  map.put("em", value);
-	                  }else if(cell.getColumnIndex() == 4) {
-	                	  map.put("key", value);
-	                  }
-	                  
-	                  System.out.println(value);
+	                  list.add(value);
                   } 
-    		  Component.updateData("sub.excelupdate", map);
-    		  
+    		  Component.updateData("sub.excelsuppl", list);
       		}
          }
 	      
@@ -1179,6 +1169,38 @@ public class DyController {
 		   Component.createData("Weather.Daily_WeatherData", map);
 	   }
    }
+   
+   
+//   @RequestMapping("/ttest.do")
+//   @Transactional
+//   public void ttest(HttpServletRequest req) throws Exception{
+//	
+//	   List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+//		
+//		for(HashMap<String,Object> l : list) {
+//			
+//			for (int i=4; i>0; i--) {
+//				HashMap<String,Object> map = new HashMap<String, Object>();
+//				
+//				String keyno = l.get("DPP_KEYNO").toString();
+//				
+//				map.put("day", i);
+//				map.put("keyno", keyno);
+//				
+//				Component.deleteData("ttest.deleteMain",map);
+//				
+//				List<String> slist = Component.getList("ttest.recent_date", map);
+//				
+//				map.put("list", slist);
+//				if(slist.size() > 0) {
+//					Component.deleteData("ttest.deleteToday", map);
+//				}
+//			}
+//		}
+//   }
+//   
+   
+   
    
   /* @RequestMapping("/allimTalkSend.do")
    @ResponseBody

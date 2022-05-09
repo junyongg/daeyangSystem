@@ -129,7 +129,7 @@
 		 	]]>
 		 	</if>
 			ORDER BY Conn_date DESC
-			LIMIT 1000
+			LIMIT 10000000000
 		)A
 		WHERE 1=1
 		<if test="InverterType != null and InverterType != '' and !InverterType.equals('0') and InverterType != 0">

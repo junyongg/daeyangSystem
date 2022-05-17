@@ -306,8 +306,8 @@ table{
 
 	<section class="base_pop_wrapper">
             <div class="pop_base_calculation" style="top: 50%; width: 690px; left: calc(44% - 231px);" >
-                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')"><i class="xi-close"></i></button>
-
+                
+                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')" style="position: sticky; top: 0px; "><i class="xi-close"></i></button>
                 <div class="form_box">
 				       <table class="tbl_normal fixed" style="width: auto;">
 				           <colgroup>
@@ -650,10 +650,10 @@ function pf_setTwoDigit(value){
 
 function select(type){
 	if(type == '2'){
-		if($("#DaliyType").val() != '1'){
+		/* if($("#DaliyType").val() != '1'){
 			alert("당일만 조회가 가능합니다.")
 			return false
-		}
+		} */
 		$("#InverterType").val("1")
 		$("#selectInverter").attr("disabled",false)
 	}else{

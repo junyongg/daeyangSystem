@@ -16,7 +16,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 
 
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.SettingData;
+import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.dto.Common;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.security.rsa.service.RsaService;
@@ -45,6 +48,7 @@ import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 import com.tx.dyAdmin.member.dto.UserDTO;
+import com.tx.dyAdmin.statistics.dto.LogDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -103,9 +107,18 @@ public class RestApiTest {
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   String year2 = year.substring(2, year.length());
 		   
+		   
+		   Calendar cal = Calendar.getInstance();
+		   String format = "yyyy-MM-dd";
+		   String format2 = format.replace("-", "");
+		   SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		   cal.add(cal.MONTH, -1); //월을 한달 뺀다.
+		   String date = sdf.format(cal.getTime());
+		   String month2 = date.substring(4,6);
+		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
+		   mv.addObject("itemName",year2+"."+month2+"월분 발전대금");
 		
 	      return mv;
 	  }
@@ -128,9 +141,18 @@ public class RestApiTest {
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   String year2 = year.substring(2, year.length());
 		   
+		   Calendar cal = Calendar.getInstance();
+		   String format = "yyyy-MM-dd";
+		   String format2 = format.replace("-", "");
+		   SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		   cal.add(cal.MONTH, -1); //월을 1달 뺀다.
+		   String date = sdf.format(cal.getTime());
+		   String month2 = date.substring(4,6);
+		   
+		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
+		   mv.addObject("itemName",year2+"."+month2+"월분 발전대금");
 		   
 	      return mv;
 	  }
@@ -196,6 +218,7 @@ public class RestApiTest {
 				String codeapi = map.get("dbp_apikey").toString();
                 String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
+
 
 			  }
 		 
@@ -434,12 +457,12 @@ public class RestApiTest {
 			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
-//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
 			
@@ -483,6 +506,8 @@ public class RestApiTest {
 		    			String subject = bill.getDbl_subject();
 		    			String grandtotal = bill.getDbl_grandtotal();
 		    			String issuedate = bill.getDbl_issuedate();
+		    			String admin = "대양기업 이시연";
+		    			String adminphone = "061-332-8086";
 
 	
 //		    			String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
@@ -491,7 +516,7 @@ public class RestApiTest {
     							+"\n□ 공급받는자: "+sname
     							+"\n□ 품목명 : "+subject
     							+"\n□ 합계금액 : "+grandtotal+"원"
-    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : 대양기업 이시연\n연락처 : 010-9385-6811";
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
 
 			    		//토큰받기
 			    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
@@ -500,7 +525,7 @@ public class RestApiTest {
 			    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 			    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 			    		org.json.simple.JSONArray jsonObj_a = (org.json.simple.JSONArray) jsonObj2.get("list");
-			    		jsonObj2 = (JSONObject) jsonObj_a.get(8); //템플릿 리스트
+			    		jsonObj2 = (JSONObject) jsonObj_a.get(9); //템플릿 리스트
 			    		
 			    		String list = Component.getData("bills.AlimSelect",bill);
 			    		String Sendurl  = "http://dymonitering.co.kr/"; 
@@ -516,6 +541,8 @@ public class RestApiTest {
 		    			String subject = bill.getDbl_subject();
 		    			String grandtotal = bill.getDbl_grandtotal();
 		    			String issuedate = bill.getDbl_issuedate();
+		    			String admin = "대양기업 이시연";
+		    			String adminphone = "061-332-8086";
 			       		
 			       		
 
@@ -525,7 +552,7 @@ public class RestApiTest {
     							+"\n□ 공급받는자: "+sname
     							+"\n□ 품목명 : "+subject
     							+"\n□ 합계금액 : "+grandtotal+"원"
-    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : 대양기업 이시연\n연락처 : 010-9385-6811";
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
 		    					
 					    		//토큰받기
 					    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
@@ -534,7 +561,7 @@ public class RestApiTest {
 					    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 					    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
 					    		org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
-					    		jsonObj2 = (JSONObject) jsonObj_a2.get(8); //템플릿 리스트
+					    		jsonObj2 = (JSONObject) jsonObj_a2.get(9); //템플릿 리스트
 					    		
 					    		String list = Component.getData("bills.AlimSelect2",bill);
 					    		String Sendurl  = "http://dymonitering.co.kr/"; 
@@ -800,6 +827,7 @@ public class RestApiTest {
 		mv.addObject("search", search);
 		return mv;
 	}
+	
 
 	
 	//실패 로그 확인 메세지
@@ -845,4 +873,5 @@ public class RestApiTest {
 		return msg;
 	
 	}
+	
 }

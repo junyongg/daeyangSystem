@@ -266,7 +266,44 @@ function pf_settingSearchDate(value){
 		}else{
 			stdt = yyyy + "-" + pf_setTwoDigit(mm) + "-01";
 		}
-	}else{
+	}else if(value == 13){
+		stdt = yyyy+"-01"+"-01";
+		endt = yyyy+"-01"+"-31";
+ 	}else if(value == 14){
+		stdt = yyyy+"-02"+"-01";
+		endt = yyyy+"-02"+"-28";
+ 	}else if(value == 15){
+		stdt = yyyy+"-03"+"-01";
+		endt = yyyy+"-03"+"-31";
+ 	}else if(value == 16){
+		stdt = yyyy+"-04"+"-01";
+		endt = yyyy+"-04"+"-30";
+ 	}else if(value == 17){
+		stdt = yyyy+"-05"+"-01";
+		endt = yyyy+"-05"+"-31";
+ 	}else if(value == 18){
+		stdt = yyyy+"-06"+"-01";
+		endt = yyyy+"-06"+"-30";
+ 	}else if(value == 19){
+		stdt = yyyy+"-07"+"-01";
+		endt = yyyy+"-07"+"-31";
+ 	}else if(value == 20){
+		stdt = yyyy+"-08"+"-01";
+		endt = yyyy+"-08"+"-31";
+ 	}else if(value == 21){
+		stdt = yyyy+"-09"+"-01";
+		endt = yyyy+"-09"+"-30";
+ 	}else if(value == 22){
+		stdt = yyyy+"-10"+"-01";
+		endt = yyyy+"-10"+"-31";
+ 	}else if(value == 23){
+		stdt = yyyy+"-11"+"-01";
+		endt = yyyy+"-11"+"-30";
+ 	}else if(value == 24){
+		stdt = yyyy+"-12"+"-01";
+		endt = yyyy+"-12"+"-31";
+ 	}	
+	else{
 		return false;
 	}
 	

@@ -1175,6 +1175,68 @@ public class DyController {
          }
 	      
   }
+  
+  
+  @RequestMapping("/exceltext.do")
+  public void exceltext(HttpServletRequest req) throws Exception{
+      String path = "D:/dy/src/main/webapp/resources/aa.xlsx";
+      //String text = filetool.excelRead();
+      // check file
+      File file = new File(path);
+      if (!file.exists() || !file.isFile() || !file.canRead()) {
+           throw new IOException(path);
+      }
+ 
+      // Workbook
+      XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
+
+      // Text Extraction
+      ExcelExtractor extractor = new XSSFExcelExtractor(wb);
+      extractor.setFormulasNotResults(true);
+      extractor.setIncludeSheetNames(false);
+      System.out.println( extractor.getText() );
+
+      // Getting cell contents
+      for( int i=0; i<wb.getNumberOfSheets(); i++) {
+          for( Row row : wb.getSheetAt(i) ) {
+              if (row.getRowNum() > 2) {
+                  System.out.print("row : " + row.getRowNum());
+                  
+                  ArrayList<String> list = new ArrayList<String>();
+                  list.add("전기업");
+                  list.add("태양광 발전업");
+                  for( Cell cell : row ) {
+                      System.out.print(cell.getColumnIndex());
+                      System.out.print(" - ");
+                      
+                      String value = "";
+                      System.out.println(cell.getCellType());
+                          if(cell.getCellType() == CellType.NUMERIC) {
+                              Long roundVal = Math.round(cell.getNumericCellValue());
+                              Double doubleVal = cell.getNumericCellValue();
+                              if (doubleVal.equals(roundVal.doubleValue())) {
+                                  value = String.valueOf(roundVal);
+                              } else {
+                                  value = String.valueOf(doubleVal);
+                              }
+                          }else {
+                                    value = cell.getRichStringCellValue().toString();
+                          }
+                          
+                          if(cell.getColumnIndex() == 1) {
+                              value = value.replace("-","");
+                          }
+                          
+                          list.add(value);
+                          System.out.println(value);
+                      } 
+                  Component.createData("sub.excelsuppl", list);
+                  
+                  }
+         }
+      }
+          
+  }
    
    
    

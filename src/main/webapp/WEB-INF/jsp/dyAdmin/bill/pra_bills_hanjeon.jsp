@@ -471,10 +471,16 @@ function supliedSelect(value){
 
 
 function validationCheck(){
+	
 	if($("#supplyprice").val() == ''){
-		alert("공급가액을 입력해주세요");
+		alert("공급가액을 입력해주세요1111");
 		return false
-	}return true
+	}else if($("#dbs_keyno").val() == '' || $("#dbs_keyno").val() == null ){
+		alert("사업자 등록을 해주세요");
+		return false
+	}
+	
+	return true
 }
 	
 function loadBillInfo(){
@@ -610,32 +616,41 @@ function detailView(keyno){
 
 function sendNTS(){
 	
-	if(confirm("전송하시겠습니까?")){
+	
 		
-	var array = new Array(); 
-	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
-	    array.push(this.value);
-	});
-	
-	$("#chkvalue").val(array);
-	$("#checkYN").val("Y");
-	
-	 $.ajax({
-			type: "POST",
-			url: "/dyAdmin/bills/sendNTS.do",
-			data: $('#Form').serializeArray(),
-			async: false,
-			success : function(data){
-				
-				alert("전송 완료");
-				location.reload();
-			}, 
-			error: function(){
-				
+		var array = new Array(); 
+		$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+		    array.push(this.value);
+		});
+		
+		$("#chkvalue").val(array);
+		$("#checkYN").val("Y");
+		
+		
+		if(array.length > 0){
+			if(confirm("전송하시겠습니까?")){
+				$.ajax({
+						type: "POST",
+						url: "/dyAdmin/bills/sendNTS.do",
+						data: $('#Form').serializeArray(),
+						async: false,
+						success : function(data){
+							
+							alert("전송 완료");
+							location.reload();
+						}, 
+						error: function(){
+							
+						}
+				});
+			}else{
+				cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
 			}
-	}); 
-	}else
-		return false;
+		}else{
+			alert("전송할 세금계산서를 선택해주세요.")
+		}
+	
+	return false;
 }
 
 

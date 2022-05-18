@@ -241,7 +241,9 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 		File newFile = new File(filePath);
 		file.transferTo(newFile);
 		
-		if("tronix".equals(STORAGE)){
+		LocalFileService.create(filePath,fsVO,fileSub);
+		
+		/*if("tt".equals(STORAGE)){
 			if(fsVO.getIS_MAKE_BOARDTHUMB()){
 				fileSub.setFS_PUBLIC_PATH(TronixStorageService.create(filePath,"temp",fileSub.getFS_FOLDER()));
 			}else{
@@ -250,9 +252,8 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 			newFile.delete();	//로컬에 저장된 파일 삭제
 			
 		}else if("none".equals(STORAGE)){
-			
 			LocalFileService.create(filePath,fsVO,fileSub);
-		}
+		}*/
 		
 		fileSub.setFS_STORAGE(STORAGE);
 		

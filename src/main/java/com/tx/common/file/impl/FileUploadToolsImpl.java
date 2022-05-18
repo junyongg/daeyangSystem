@@ -60,8 +60,6 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 @Service("FileUploadTools")
 public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements FileUploadTools{
 	
-//	private static final Logger logger = LoggerFactory.getLogger(FileUploadToolsImpl.class);
-	
 	/** 공통 컴포넌트 */
 	@Autowired ComponentService Component;
 	@Autowired CommonService CommonService;
@@ -367,6 +365,8 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 	public FileSub FileUpload(MultipartFile file, String REGNM, FileSub fsVO, HttpServletRequest req) {
 		
 		if( fsVO == null ) fsVO = new FileSub();
+		
+		fsVO.setFM_KEYNO("none");
 		
 		//프로퍼티 경로 불러오기
 		String propertiespath = SiteProperties.getString("FILE_PATH");

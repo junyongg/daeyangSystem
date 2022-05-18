@@ -16,7 +16,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 
 
@@ -105,9 +107,18 @@ public class RestApiTest {
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   String year2 = year.substring(2, year.length());
 		   
+		   
+		   Calendar cal = Calendar.getInstance();
+		   String format = "yyyy-MM-dd";
+		   String format2 = format.replace("-", "");
+		   SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		   cal.add(cal.MONTH, -1); //월을 한달 뺀다.
+		   String date = sdf.format(cal.getTime());
+		   String month2 = date.substring(4,6);
+		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
+		   mv.addObject("itemName",year2+"."+month2+"월분 발전대금");
 		
 	      return mv;
 	  }
@@ -130,9 +141,18 @@ public class RestApiTest {
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   String year2 = year.substring(2, year.length());
 		   
+		   Calendar cal = Calendar.getInstance();
+		   String format = "yyyy-MM-dd";
+		   String format2 = format.replace("-", "");
+		   SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		   cal.add(cal.MONTH, -1); //월을 1달 뺀다.
+		   String date = sdf.format(cal.getTime());
+		   String month2 = date.substring(4,6);
+		   
+		   
 		   mv.addObject("mmdd",mmdd);
 		   mv.addObject("nowDate",nowdate2);
-		   mv.addObject("itemName",year2+"."+month+"월분 발전대금");
+		   mv.addObject("itemName",year2+"."+month2+"월분 발전대금");
 		   
 	      return mv;
 	  }
@@ -198,6 +218,7 @@ public class RestApiTest {
 				String codeapi = map.get("dbp_apikey").toString();
                 String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
+
 
 			  }
 		 
@@ -436,12 +457,12 @@ public class RestApiTest {
 			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
-//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
 			
@@ -853,5 +874,4 @@ public class RestApiTest {
 	
 	}
 	
-
 }

@@ -35,11 +35,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.SettingData;
 import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.file.FileReadTools;
+import com.tx.common.file.FileUploadTools;
+import com.tx.common.file.dto.FileSub;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
@@ -61,8 +65,8 @@ public class DyController {
 	
 	@Autowired requestAPIservice requestAPI;
 	
-	@Autowired FileReadTools filetool;
-	
+	/** 파일업로드 툴*/
+	@Autowired private FileUploadTools FileUploadTools;	
    /**
     *@return 관리자 종합현황 페이지 
    */
@@ -572,6 +576,40 @@ public class DyController {
     	return mv;
     }
 
+    
+    /**
+     * @return 파일 등록 
+     */
+    @RequestMapping("/dy/moniter/filedown.do")
+    public ModelAndView filedown(HttpServletRequest req) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_filedown");
+    	
+    	return mv;
+    }
+    /**
+     * @return 파일 등록 
+     */
+    @RequestMapping("/dy/moniter/DownAction.do")
+    public void filedownAction(HttpServletRequest req,
+    		MultipartHttpServletRequest request
+    		) throws Exception{
+//    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_filedown");
+    	ArrayList<String> fkey = new ArrayList<String>();
+    	List<MultipartFile> files = request.getFiles("file");
+    	
+//    	FileSub fsVo = new FileSub();
+    	
+    	for(MultipartFile m : files) {
+    		
+    		FileSub file = FileUploadTools.FileUpload(m, "UserKEYNO", null, req);
+    		fkey.add(file.getFS_KEYNO().toString());
+    		
+    	}
+    	
+//    	return mv;
+    }
+
+    
     
    /**
      * @return 모바일 부분

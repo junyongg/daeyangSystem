@@ -400,25 +400,25 @@
 	<if test="searchList != null">
 	 	<foreach collection="searchList" item="item">
 	 		<choose>
-	 			<when test='item.searchIndex.equals("0")'>
+	 			<when test='item.searchIndex.equals("1")'>
  		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("1")'>
+	 			<when test='item.searchIndex.equals("2")'>
  		AND		dbl_p_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("2")'>
+	 			<when test='item.searchIndex.equals("3")'>
  		AND		dbl_s_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("3")'>
+	 			<when test='item.searchIndex.equals("4")'>
  		AND		dbl_subject			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("4")'>
+	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("5")'>
+	 			<when test='item.searchIndex.equals("6")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("6")'>
+	 			<when test='item.searchIndex.equals("7")'>
  		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
@@ -447,25 +447,25 @@
     	SELECT	* 
 		<include  refid="Log_getListBody1"/>
 		<choose>
-			<when test="orderBy == 0">
+			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 1">
+	 		<when test="orderBy == 2">
 	 		ORDER BY	dbl_p_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 2">
+	 		<when test="orderBy == 3">
 	 		ORDER BY	dbl_s_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 3">
+	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_subject ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 5">
+	 		<when test="orderBy == 6">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 6">
+	 		<when test="orderBy == 7">
 	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
@@ -495,25 +495,25 @@
 	<if test="searchList != null">
 	 	<foreach collection="searchList" item="item">
 	 		<choose>
-	 			<when test='item.searchIndex.equals("0")'>
+	 			<when test='item.searchIndex.equals("1")'>
  		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("1")'>
+	 			<when test='item.searchIndex.equals("2")'>
  		AND		dbl_p_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("2")'>
+	 			<when test='item.searchIndex.equals("3")'>
  		AND		dbl_s_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("3")'>
+	 			<when test='item.searchIndex.equals("4")'>
  		AND		dbl_subject			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("4")'>
+	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("5")'>
+	 			<when test='item.searchIndex.equals("6")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("6")'>
+	 			<when test='item.searchIndex.equals("7")'>
  		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
@@ -542,25 +542,25 @@
     	SELECT	* 
 		<include  refid="Log_getListBody2"/>
 		<choose>
-			<when test="orderBy == 0">
+			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 1">
+	 		<when test="orderBy == 2">
 	 		ORDER BY	dbl_p_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 2">
+	 		<when test="orderBy == 3">
 	 		ORDER BY	dbl_s_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 3">
+	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_subject ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 5">
+	 		<when test="orderBy == 6">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 6">
+	 		<when test="orderBy == 7">
 	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
@@ -589,25 +589,25 @@
 	<if test="searchList != null">
 	 	<foreach collection="searchList" item="item">
 	 		<choose>
-	 			<when test='item.searchIndex.equals("0")'>
+	 			<when test='item.searchIndex.equals("1")'>
  		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("1")'>
+	 			<when test='item.searchIndex.equals("2")'>
  		AND		dbl_p_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("2")'>
+	 			<when test='item.searchIndex.equals("3")'>
  		AND		dbl_s_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("3")'>
+	 			<when test='item.searchIndex.equals("4")'>
  		AND		dbl_subject			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("4")'>
+	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("5")'>
+	 			<when test='item.searchIndex.equals("6")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("6")'>
+	 			<when test='item.searchIndex.equals("7")'>
  		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')			
 	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
@@ -636,25 +636,25 @@
     	SELECT	* 
 		<include  refid="Log_getListBody3"/>
 		<choose>
-			<when test="orderBy == 0">
+			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 1">
+	 		<when test="orderBy == 2">
 	 		ORDER BY	dbl_p_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 2">
+	 		<when test="orderBy == 3">
 	 		ORDER BY	dbl_s_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 3">
+	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_subject ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 5">
+	 		<when test="orderBy == 6">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 6">
+	 		<when test="orderBy == 7">
 	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>
@@ -697,28 +697,28 @@
 	<if test="searchList != null">
 	 	<foreach collection="searchList" item="item">
 	 		<choose>
-	 			<when test='item.searchIndex.equals("0")'>
+	 			<when test='item.searchIndex.equals("1")'>
  		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("1")'>
+	 			<when test='item.searchIndex.equals("2")'>
  		AND		dbl_sub_keyno 		LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("2")'>
+	 			<when test='item.searchIndex.equals("3")'>
  		AND		dbl_p_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("3")'>
+	 			<when test='item.searchIndex.equals("4")'>
  		AND		dbl_s_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("4")'>
+	 			<when test='item.searchIndex.equals("5")'>
  		AND		dbl_subject			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("5")'>
+	 			<when test='item.searchIndex.equals("6")'>
  		AND		dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("6")'>
+	 			<when test='item.searchIndex.equals("7")'>
  		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
-	 			<when test='item.searchIndex.equals("7")'>
+	 			<when test='item.searchIndex.equals("8")'>
  		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')			
 	 			</when>
 	 			<when test='item.searchIndex.equals("all")'>
@@ -753,28 +753,28 @@
     	SELECT	* 
 		<include  refid="Log_getListBody4"/>
 		<choose>
-			<when test="orderBy == 0">
+			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
 	 		</when>
-			<when test="orderBy == 1">
+			<when test="orderBy == 2">
 	 		ORDER BY	dbl_sub_keyno ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 2">
+	 		<when test="orderBy == 3">
 	 		ORDER BY	dbl_p_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 3">
+	 		<when test="orderBy == 4">
 	 		ORDER BY	dbl_s_name ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 4">
+	 		<when test="orderBy == 5">
 	 		ORDER BY	dbl_subject ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 5">
+	 		<when test="orderBy == 6">
 	 		ORDER BY	dbl_grandtotal ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 6">
+	 		<when test="orderBy == 7">
 	 		ORDER BY	dbl_issuedate ${sortDirect}
 	 		</when>
-	 		<when test="orderBy == 7">
+	 		<when test="orderBy == 8">
 	 		ORDER BY	dbl_status ${sortDirect}
 	 		</when>
 	 		<otherwise>

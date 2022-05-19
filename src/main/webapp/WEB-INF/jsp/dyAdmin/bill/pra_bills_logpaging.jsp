@@ -62,42 +62,42 @@
 										</colgroup>
 										<tr>
 											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="0"
+												class="form-control search-control" data-searchindex="1"
 												placeholder="번호 검색" /></th>
 											<th class="hasinput"><select class="form-control search-control"
-												data-searchindex="1" style="width: 100%;" onchange="pf_LinkPage()">
+												data-searchindex="2" style="width: 100%;" onchange="pf_LinkPage()">
 													<option value="">전체</option>
 													<option value="1">한전발행</option>
 													<option value="2">거래처 발행</option>
 													<option value="3">안전관리자 발행</option>
 											</select></th>
 											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="2"
+												class="form-control search-control" data-searchindex="3"
 												placeholder="공급자 검색" /></th>
 											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="3"
+												class="form-control search-control" data-searchindex="4"
 												placeholder="공급받는자 검색" /></th>
 											<th class="hasinput"><input type="text"
-												class="form-control search-control" data-searchindex="4"
+												class="form-control search-control" data-searchindex="5"
 												placeholder="품목명 검색" /></th>
 											<th class="hasinput" ><input type="text"
-												class="form-control search-control" data-searchindex="5"
+												class="form-control search-control" data-searchindex="6"
 												placeholder="합계금액 검색" /></th>
 											<th class="hasinput" ><input type="text"
-												class="form-control search-control" data-searchindex="6"
+												class="form-control search-control" data-searchindex="7"
 												placeholder="날짜 검색" /></th>
 											<th class="hasinput"></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
-											<th class="arrow" style="text-align: center;" data-index="0">번호</th>
-											<th class="arrow" style="text-align: center;" data-index="1">발행종류</th>
-											<th class="arrow" style="text-align: center;" data-index="2">공급자 명</th>
-											<th class="arrow" style="text-align: center;" data-index="3">공급받는자 명</th>
-											<th class="arrow" style="text-align: center;" data-index="4">품목명</th>
-											<th class="arrow" style="text-align: center;" data-index="5">합계금액</th>
-											<th class="arrow" style="text-align: center;" data-index="6">등록날짜</th>
-											<th class="arrow" style="text-align: center;" data-index="7">전송 상태</th>
+											<th class="arrow" style="text-align: center;" data-index="1">번호</th>
+											<th class="arrow" style="text-align: center;" data-index="2">발행종류</th>
+											<th class="arrow" style="text-align: center;" data-index="3">공급자 명</th>
+											<th class="arrow" style="text-align: center;" data-index="4">공급받는자 명</th>
+											<th class="arrow" style="text-align: center;" data-index="5">품목명</th>
+											<th class="arrow" style="text-align: center;" data-index="6">합계금액</th>
+											<th class="arrow" style="text-align: center;" data-index="7">등록날짜</th>
+											<th class="arrow" style="text-align: center;" data-index="8">전송 상태</th>
 										</tr>
 									
 									<tbody style="text-align: center;">

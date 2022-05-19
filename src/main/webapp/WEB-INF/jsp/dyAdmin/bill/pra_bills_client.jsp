@@ -90,7 +90,7 @@ form .error {color:red}
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
 									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelectMethod(this.value)">
-										<option>선택하세요</option>
+										<option value = "">선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
 										</c:forEach>
@@ -360,7 +360,7 @@ $(document).ready(function(){
 
 function providerSelectMethod(value){
 	console.log(value)
-	if(value == "선택하세요" ||value == "0"){
+	if(value == "선택하세요" ||value == "0"|| value == ""){
 		clear();
 		
 	}else{
@@ -468,13 +468,23 @@ function supliedSelect(value){
 
 
 function validationCheck(){
+	
 	if($("#supplyprice").val() == ''){
 		alert("공급가액을 입력해주세요");
 		return false
-	}return true
+	}else if($("#dbs_keyno").val() == '' || $("#dbs_keyno").val() == null ){
+		alert("공급받는자를 선택 해주세요");
+		return false
+	}else if($("#dbp_keyno").val() == '' || $("#dbp_keyno").val() == null ){
+		alert("공급자를 선택 해주세요");
+		return false
+	}
+	
+	return true
 }
 
 function loadBillInfo(){
+
 	if(!validationCheck()) return false
 	 $.ajax({
         url: '/dyAdmin/bills/billsInfoInsert2.do',
@@ -499,7 +509,7 @@ function loadBillInfo(){
         					}
         			}); 
         		}else false;
-        		
+        		location.reload();
         	}else {
         		alert("세금계산서 정보 저장 완료")
         		location.reload();
@@ -508,7 +518,7 @@ function loadBillInfo(){
         error: function(){
         	alert("저장 실패");
         }
-	});
+	}); 
 }
 
 function detailView(keyno){
@@ -606,8 +616,6 @@ function detailView(keyno){
 function sendNTS(){
 	
 	
-	if(confirm("전송하시겠습니까?")){
-		
 	var array = new Array(); 
 	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 	    array.push(this.value);
@@ -616,24 +624,31 @@ function sendNTS(){
 	$("#chkvalue").val(array);
 	$("#checkYN").val("Y");
 	
-	 $.ajax({
-			type: "POST",
-			url: "/dyAdmin/bills/sendNTS.do",
-			data: $('#Form').serializeArray(),
-			async: false,
-			success : function(data){
-			
-			alert("전송 완료");
-			location.reload();
-			
-			
-			}, 
-			error: function(){
-				
-			}
-	}); 
-	}else
-		return false;
+	
+	if(array.length > 0){
+		if(confirm("전송하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/sendNTS.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						
+						alert("전송 완료");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("전송할 세금계산서를 선택해주세요.")
+	}
+
+return false;
 }
 
 

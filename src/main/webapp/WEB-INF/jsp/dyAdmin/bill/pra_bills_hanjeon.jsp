@@ -91,7 +91,7 @@ form .error {color:red}
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
 									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelectMethod(this.value)">
-										<option>선택하세요</option>
+										<option value ="">선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
 										</c:forEach>
@@ -363,7 +363,7 @@ $(document).ready(function(){
 
 function providerSelectMethod(value){
 	console.log(value)
-	if(value == "선택하세요" ||value == "0"){
+	if(value == "선택하세요" ||value == "0"||value == ""){
 		clear();
 		
 	}else{
@@ -473,10 +473,13 @@ function supliedSelect(value){
 function validationCheck(){
 	
 	if($("#supplyprice").val() == ''){
-		alert("공급가액을 입력해주세요1111");
+		alert("공급가액을 입력해주세요");
 		return false
 	}else if($("#dbs_keyno").val() == '' || $("#dbs_keyno").val() == null ){
-		alert("사업자 등록을 해주세요");
+		alert("공급받는자를 선택 해주세요");
+		return false
+	}else if($("#dbp_keyno").val() == '' || $("#dbp_keyno").val() == null ){
+		alert("공급자를 선택 해주세요");
 		return false
 	}
 	

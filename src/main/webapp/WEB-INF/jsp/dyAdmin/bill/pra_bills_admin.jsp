@@ -90,7 +90,7 @@ form .error {color:red}
 									
 									<div class="col-md-6" style="padding-bottom: 20px;">
 									<select class="form-control input-sm select2 ir_keyno" id="dbp_keyno" name="dbp_keyno" onchange="providerSelectMethod(this.value)">
-										<option>선택하세요</option>
+										<option value = "">선택하세요</option>
 										<c:forEach items="${billList}" var="b">
 											<option value="${b.dbp_keyno}">${b.dbp_name}</option>
 										</c:forEach>
@@ -362,7 +362,7 @@ $(document).ready(function(){
 
 function providerSelectMethod(value){
 	console.log(value)
-	if(value == "선택하세요" ||value == "0"){
+	if(value == "선택하세요" ||value == "0" || value == ""){
 		clear();
 		
 	}else{
@@ -433,7 +433,6 @@ function providerSelect(){
 	}); 
 }
 
-
 // ---------------------------- 공급 받는자 --------------------------------------------------------
 
 function supliedSelect(value){
@@ -471,10 +470,19 @@ function supliedSelect(value){
 
 
 function validationCheck(){
+	
 	if($("#supplyprice").val() == ''){
 		alert("공급가액을 입력해주세요");
 		return false
-	}return true
+	}else if($("#dbs_keyno").val() == '' || $("#dbs_keyno").val() == null ){
+		alert("공급받는자를 선택 해주세요");
+		return false
+	}else if($("#dbp_keyno").val() == '' || $("#dbp_keyno").val() == null ){
+		alert("공급자를 선택 해주세요");
+		return false
+	}
+	
+	return true
 }
 
 
@@ -588,7 +596,7 @@ function detailView(keyno){
 			$("#ie_cell2").val(data.dbs_cell2)
 			
 			
-			if(data.dbl_checkYN == "N"){
+			if(data.dbl_checkYN == "N" || data.dbl_checkYN == "W"){
 				
 				$("#buttondiv").html("<button type='button' class='btn btn-default' onclick='window.location.reload()'><i class='fa fa-repeat'></i> 새로고침</button>")
 				$("#buttondiv").append("<button class='btn btn-sm btn-primary'  style='margin-left: 3%; width: 100px;'id='loadButton' type='button' onclick='loadBillInfo()' >저장</button>")
@@ -610,6 +618,46 @@ function detailView(keyno){
 
 function sendNTS(){
 	
+	
+	
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	$("#checkYN").val("Y");
+	
+	
+	if(array.length > 0){
+		if(confirm("전송하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/sendNTS.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						
+						alert("전송 완료");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("전송할 세금계산서를 선택해주세요.")
+	}
+
+return false;
+}
+
+
+function delaysend(){
+	
 	if(confirm("전송하시겠습니까?")){
 		
 	var array = new Array(); 
@@ -622,11 +670,11 @@ function sendNTS(){
 	
 	 $.ajax({
 			type: "POST",
-			url: "/dyAdmin/bills/sendNTS.do",
+			url: "/dyAdmin/bills/senddelay.do",
 			data: $('#Form').serializeArray(),
 			async: false,
 			success : function(data){
-				alert("전송 완료");
+				alert("전송대기상태로 변경되었습니다. 18시 00분에 일괄전송됩니다.");
 				location.reload();
 			}, 
 			error: function(){

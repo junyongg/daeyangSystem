@@ -259,9 +259,18 @@
 		WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
+	<!-- 전송완료(Y)로 업데이트 -->
 	<update id="checkYN" parameterType="billDTO">
 	UPDATE dy_bills_log
 	SET dbl_checkYN = 'Y'
+	WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
+	<!-- 전송대기(W)로 업데이트 -->
+	<update id="checkYW" parameterType="billDTO">
+	UPDATE dy_bills_log
+	SET dbl_checkYN = 'W',
+		dbl_status = '2'
 	WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
@@ -563,7 +572,7 @@
 		</if>  
     </select>
     
-    	<sql id="Log_getListBody3">
+    <sql id="Log_getListBody3">
 	from (
 		select B.*
 			, @ROWNUM:=@ROWNUM+1 as COUNT
@@ -657,6 +666,126 @@
 		</if>  
     </select>
     
+    <!-- 세금계산서 로그페이지 페이징, 정렬, 검색 -->
+    <sql id="Log_getListBody4">
+	from (
+		select B.*
+			, @ROWNUM:=@ROWNUM+1 as COUNT
+		from (
+			select *
+			from dy_bills_log
+			where dbl_checkYN = 'Y'
+			order by dbl_keyno
+		) B
+		where (@ROWNUM:=0)=0
+		<if test="AH_HOMEDIV_C != null and AH_HOMEDIV_C != ''">
+	 		AND			dbl_sub_keyno 	=	#{AH_HOMEDIV_C}
+		 	</if>
+		 	<if test="UI_ID != null and UI_ID != ''">
+	 		AND			dbl_p_name 			=	#{UI_ID}
+		 	</if>
+	        <if test="searchBeginDate != null and searchBeginDate != ''">
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+	)AA
+	where 1=1
+	<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("0")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		dbl_sub_keyno 		LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		dbl_p_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		dbl_s_name			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		dbl_subject			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		dbl_status			LIKE CONCAT( '%',#{item.searchKeyword},'%')			
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_p_name 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_sub_keyno 			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_s_name				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_subject				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_grandtotal			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_issuedate			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				dbl_status				LIKE CONCAT( '%',#{item.searchKeyword},'%')	
+ 				
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+	
+	
+	
+	<select id="Log_getListCnt4" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="Log_getListBody4"/>
+    </select>
+    
+    
+    
+    
+    <select id="Log_getList4" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="Log_getListBody4"/>
+		<choose>
+			<when test="orderBy == 0">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+			<when test="orderBy == 1">
+	 		ORDER BY	dbl_sub_keyno ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 2">
+	 		ORDER BY	dbl_p_name ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	dbl_s_name ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	dbl_subject ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	dbl_grandtotal ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 6">
+	 		ORDER BY	dbl_issuedate ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 7">
+	 		ORDER BY	dbl_status ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+    
     <update id="codemsgUpdate" parameterType="String" >
 		UPDATE dy_bills_log 
 			SET dbl_status = #{dbl_status},
@@ -728,6 +857,23 @@
 		DELETE  FROM dy_bills_supplied 
 		where dbs_keyno  = #{dbs_keyno}
 	</delete>
+	
+	<select id="LogSelect" parameterType="String" resultType="hashmap">
+			SELECT * 
+			FROM dy_bills_log l
+			left join dy_bills_provider p
+			on l.dbl_provider_key = p.dbp_keyno
+			left join dy_bills_supplied s
+			on l.dbl_supplied_key = s.dbs_keyno
+			where l.dbl_keyno = #{listtable}
+	</select>
+	
+	<!-- status 전송대기(2)인 keyno 뽑기 -->
+	<select id="status2select"  resultType="hashmap">
+			select dbl_keyno
+			from dy_bills_log
+			where dbl_status = '2'
+	</select>
 	
 </mapper>
  

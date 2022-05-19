@@ -16,6 +16,10 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import org.junit.Test;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyUser.wether.WetherService;
 import com.tx.test.dto.billDTO;
+
 
 /**
  * @author admin
@@ -43,6 +48,8 @@ public class ScheduleService {
 	@Autowired
 	requestAPIservice requestAPI;
 	
+
+
 	//날씨 데이터 매시 57분마다 
 	@Scheduled(cron="0 58 * * * ?")
 	@Transactional
@@ -335,12 +342,12 @@ public class ScheduleService {
 		 System.out.println(data);
 		 
 		 // 전자세금계산서 발행 후 리턴
-		//	         String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-		 String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+		 String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//		 String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 		 
 		 if(restapi.equals("fail")) {
-			 //	            System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-			 System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+			 System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//			 System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 			 return "서버문제장애";
 		 }
 	 
@@ -483,10 +490,7 @@ public class ScheduleService {
 		   
 		   Component.createData("Weather.Daily_WeatherData", map);
 	  }
-   
 
-   
-   
    /*	//에러 체크 알림 10시에 몰아서 한번
   	@Scheduled(cron="0 0 10 * * ?")  
  	public void ErrorDataSend() throws Exception {
@@ -528,5 +532,5 @@ public class ScheduleService {
  			}
  		}
  	}*/
-   }
+  }
 }

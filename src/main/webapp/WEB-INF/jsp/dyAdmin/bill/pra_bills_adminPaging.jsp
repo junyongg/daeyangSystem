@@ -94,24 +94,30 @@
 											<tr>
 												<c:if test="${b.dbl_checkYN eq 'N' }">
 												<td><input type="checkbox" name="chk" id ="chk" value = "${b.dbl_keyno}"></td>
+												</c:if>
+												<c:if test="${b.dbl_checkYN eq 'W' }">
+												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
 												</c:if>                         						
 												<c:if test="${b.dbl_checkYN eq 'Y' }">
 												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
 												</c:if>
 												<td>${b.COUNT}</td>
-												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}')">${b.dbl_p_name}</a></td>
+												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}'); focus_p();">${b.dbl_p_name}</a></td>
 												<td>${b.dbl_s_name}</td>
 												<td>${b.dbl_subject}</td>
 												<td>${b.dbl_grandtotal}</td>
 												<td>${b.dbl_issuedate}</td>
 												<c:if test="${b.dbl_status eq '1' }">
-												<td>전송대기</td>
-												</c:if>                         						
+												<td>전송준비</td>
+												</c:if>
+												<c:if test="${b.dbl_status eq '2' }">
+												<td style="color: #3333FF">전송대기</td>
+												</c:if>                      						
 												<c:if test="${b.dbl_status eq '0' }">
 												<td style="color: #00CC66">전송완료</td>
 												</c:if>
 												<c:if test="${b.dbl_status eq '-1' }">
-													<td><a href="javascript:;" onclick="logAlarm('${b.dbl_keyno}')" style="color: #FF0000">전송실패</a></td>
+													<td><a href="javascript:;" onclick="logAlarm('${b.dbl_keyno}');" style="color: #FF0000">전송실패</a></td>
 												</c:if>
 										</c:forEach>
 											</tr>
@@ -120,7 +126,9 @@
 							</div>
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">국세청 전송</button>
+								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">당일 전송</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="delaysend()" style="width : 100px;">지연 전송</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							</div>

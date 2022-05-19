@@ -204,6 +204,7 @@ public class RestApiTest {
 				codeStr = code1+code2+tempc;
 
 
+
 			  }
 		 
 		map.put("dbl_homeid", codeStr);
@@ -856,6 +857,24 @@ public class RestApiTest {
 	
 		return msg;
 	
+	}
+	
+	@RequestMapping("/dyAdmin/bills/senddelay.do")
+	@ResponseBody
+	public void delaysend(HttpServletRequest req, billDTO bill,
+			@RequestParam(value="chkvalue")String dbl_keyno,
+			@RequestParam(value="checkYN")String checkYN) throws Exception {
+		
+			String[] list = dbl_keyno.split(",");
+			String[] list1 = checkYN.split(",");
+		
+		for(int i= 0; i<list.length; i++) {
+			
+			//전송대기(W)로 변경, 전송대기 2로 변경
+			Component.updateData("bills.checkYW", list[i]);
+		
+		}
+		return;
 	}
 	
 }

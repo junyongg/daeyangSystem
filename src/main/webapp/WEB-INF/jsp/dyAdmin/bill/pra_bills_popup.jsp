@@ -59,7 +59,7 @@ a[class^="btn_"] {
 <div class="box_wrap sel_btn" style="float: left;">			
 					<div style="display: inline-block;float:left">
 						<span style="btn_wrap">				 					
-							<a href="#" class="btn_s navy" style="min-width:100px;" id="btn_sname" onclick="p_upinsert()">수정세금계산서</a>				
+<!-- 							<a href="#" class="btn_s navy" style="min-width:100px;" id="btn_sname" onclick="p_upinsert()">수정세금계산서</a>				 -->
 							<a href="#" class="btn_s navy" style="min-width:100px;" onclick="print_p()">PRINT</a>														
 						</span>
 					</div>

@@ -597,7 +597,7 @@ function detailView(keyno){
 			
 			
 			
-		if(data.dbl_checkYN == "N"){
+		if(data.dbl_checkYN == "N" || data.dbl_checkYN == "W"){
 			
 			$("#buttondiv").html("<button type='button' class='btn btn-default' onclick='window.location.reload()'><i class='fa fa-repeat'></i> 새로고침</button>")
 			$("#buttondiv").append("<button class='btn btn-sm btn-primary'  style='margin-left: 3%; width: 100px;'id='loadButton' type='button' onclick='loadBillInfo()' >저장</button>")
@@ -657,33 +657,77 @@ function sendNTS(){
 }
 
 
-function deleteInfo(){
+function delaysend(){
 	
-	if(confirm("삭제하시겠습니까?")){
-		
 	var array = new Array(); 
 	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 	    array.push(this.value);
 	});
 	
 	$("#chkvalue").val(array);
+	$("#checkYN").val("Y");
 	
-	$.ajax({
-		type: "POST",
-		url: "/dyAdmin/bills/deleteInfo.do",
-		async: false,
-		data: $('#Form').serializeArray(),
-		success : function(data){
-			location.reload();
-		}, 
-		error: function(){
-			
+	
+	if(array.length > 0){
+		if(confirm("전송하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/senddelay.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						alert("전송대기상태로 변경되었습니다. 19시 00분에 일괄전송됩니다.");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
 		}
-	}); 
+	}else{
+		alert("전송할 세금계산서를 선택해주세요.")
+	}
+
+return false;
+}
+
+
+function deleteInfo(){
 	
-	}else
-		return false;
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
 	
+	$("#chkvalue").val(array);
+	$("#checkYN").val("Y");
+	
+	
+	if(array.length > 0){
+		if(confirm("삭제하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/deleteInfo.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						alert("삭제가 완료되었습니다.");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("삭제할 세금계산서를 선택해주세요.")
+	}
+
+return false;
 }
 
 function detailViewUpdate(){
@@ -754,27 +798,9 @@ function Divison(obj){
 	}
  	
 }
-	
-	function pf_LinkPage(num){
 
-		num = num || $('#pageIndex').val() || 1;
-		
-		cf_loading();
-		
-		searchParamList = [];
-		$('.hiddenForm').remove();
-		
-		$(document).find('.search-control').each(function(){
-			if($(this).val()){
-				pf_addInput(this);
-			}
-		})
-		
-		$('#pageIndex').val(num);	
-		
-		setTimeout(pf_getList,200);	
-		
-	}
-	
+function focus_p(){
+	document.getElementById("supplyprice").focus();
+}	
 
 </script>

@@ -618,8 +618,6 @@ function detailView(keyno){
 
 function sendNTS(){
 	
-	
-	
 	var array = new Array(); 
 	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 	    array.push(this.value);
@@ -658,8 +656,6 @@ return false;
 
 function delaysend(){
 	
-	if(confirm("전송하시겠습니까?")){
-		
 	var array = new Array(); 
 	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 	    array.push(this.value);
@@ -668,51 +664,67 @@ function delaysend(){
 	$("#chkvalue").val(array);
 	$("#checkYN").val("Y");
 	
-	 $.ajax({
-			type: "POST",
-			url: "/dyAdmin/bills/senddelay.do",
-			data: $('#Form').serializeArray(),
-			async: false,
-			success : function(data){
-				alert("전송대기상태로 변경되었습니다. 18시 00분에 일괄전송됩니다.");
-				location.reload();
-			}, 
-			error: function(){
-				
-			}
-	}); 
-	}else
-		return false;
+	
+	if(array.length > 0){
+		if(confirm("전송하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/senddelay.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						alert("전송대기상태로 변경되었습니다. 19시 00분에 일괄전송됩니다.");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("전송할 세금계산서를 선택해주세요.")
+	}
+
+return false;
 }
 
 
 function deleteInfo(){
 	
-	if(confirm("삭제하시겠습니까?")){
-		
 	var array = new Array(); 
 	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 	    array.push(this.value);
 	});
 	
 	$("#chkvalue").val(array);
+	$("#checkYN").val("Y");
 	
-	$.ajax({
-		type: "POST",
-		url: "/dyAdmin/bills/deleteInfo.do",
-		async: false,
-		data: $('#Form').serializeArray(),
-		success : function(data){
-			location.reload();
-		}, 
-		error: function(){
-			
+	
+	if(array.length > 0){
+		if(confirm("삭제하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/dyAdmin/bills/deleteInfo.do",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						alert("삭제가 완료되었습니다.");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
 		}
-	}); 
-	
-	}else
-		return false;
-	
+	}else{
+		alert("삭제할 세금계산서를 선택해주세요.")
+	}
+
+return false;
 }
 
 function detailViewUpdate(){
@@ -783,5 +795,9 @@ function Divison(obj){
 		$("#taxtotal").val(tax)
 	}
 	
+}
+
+function focus_p(){
+	document.getElementById("supplyprice").focus();
 }
 </script>

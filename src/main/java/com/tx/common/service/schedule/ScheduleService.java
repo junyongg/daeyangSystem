@@ -342,12 +342,12 @@ public class ScheduleService {
 		 System.out.println(data);
 		 
 		 // 전자세금계산서 발행 후 리턴
-		//	         String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-		 String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+		 String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//		 String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 		 
 		 if(restapi.equals("fail")) {
-			 //	            System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-			 System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+			 System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//			 System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 			 return "서버문제장애";
 		 }
 	 

@@ -8,8 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +40,7 @@ import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
+import com.tx.test.RestApiSample_getpkey;
 import com.tx.test.dto.billDTO;
 
 
@@ -877,4 +881,79 @@ public class RestApiTest {
 		return;
 	}
 	
+	
+	//전송결과 확인
+	@RequestMapping("/billsResultTest.do")
+	public void billsResultTest(HttpServletRequest req) throws Exception {
+		
+		
+		
+		List<billDTO> result = Component.getListNoParam("bills.LogResultNeedData");
+		
+		for(billDTO r: result) {
+			
+			String msg = "";
+			String status = "-1";
+			String chYn = "N";
+			
+			// 입력할 세금계산서 정보를 배열에 추가(JSONObject객체와 순서가 일치해야함.)
+			List<List<String>> taxinfo = new ArrayList<>();
+			taxinfo.add(Arrays.asList(r.getDbp_id(),r.getDbp_pass(),r.getDbp_apikey(),r.getDbl_homeid()));
+			
+			// JSONObject객체 생성
+			JSONObject data = new JSONObject();
+			
+			// JSONObject객체에 세금계산서 정보를 추가
+			data.put("hometaxbill_id", taxinfo.get(0).get(0));			// 회사코드
+			data.put("spass", taxinfo.get(0).get(1));					// 패스워드
+			data.put("apikey", taxinfo.get(0).get(2));					// 인증키
+			data.put("homemunseo_id", taxinfo.get(0).get(3));			// 고유번호
+
+			// 전자세금계산서 발행 후 리턴
+			String restapi = RestApiSample_getpkey.Api("https://www.hometaxbill.com:8084/homtax/getpkey", data.toString());
+
+			if(restapi.equals("fail")) {
+				System.out.println("https://www.hometaxbill.com:8084/homtax/getpkey 서버에 문제가 발생했습니다.");
+				return;
+			}
+			
+			// Api에서 리턴받은 값으로 예외처리 및 출력
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(restapi);
+			JSONObject jsonObj = (JSONObject) obj;
+
+			HashMap<String,String> Hlist = new LinkedHashMap<>();
+			
+			Hlist.put("code",(String) jsonObj.get("code"));
+			Hlist.put("msg",(String) jsonObj.get("msg"));
+			Hlist.put("msg2",(String) jsonObj.get("msg2"));
+			Hlist.put("hometaxbill_id",(String) jsonObj.get("hometaxbill_id"));
+			Hlist.put("homemunseo_id",(String) jsonObj.get("homemunseo_id"));
+			Hlist.put("issueid",(String) jsonObj.get("issueid"));
+			Hlist.put("declarestatus",(String) jsonObj.get("declarestatus"));
+			
+			
+			if (!restapi.equals("fail")) {
+				if (Hlist.get("issueid") != null) {
+					System.out.println(r.getDbp_name() + ": 성공");
+					msg = Hlist.get("msg").toString() + Hlist.get("msg2").toString();
+					if(msg.contains("성공")) {
+						status = "0";
+						chYn = "Y";
+					}
+				} else {
+					System.out.println(r.getDbp_name() + ": 실패");
+					msg = (String) jsonObj.get("msg");
+					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+				}
+			}else {
+				msg = "서버 호출 실패";		
+			}
+			r.setDbl_status(status);
+			r.setDbl_errormsg(msg);
+			r.setDbl_checkYN(chYn);
+			Component.updateData("bills.ChangeLogmsg", r);
+		}
+
+	}
 }

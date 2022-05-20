@@ -841,9 +841,9 @@
 	
 	<!-- 전송실패시 checkYN N으로 변경 -->
 	<update id="checkChange" parameterType="billDTO">
-	UPDATE dy_bills_log
-	SET dbl_checkYN = 'N'
-	WHERE dbl_keyno = #{dbl_keyno}
+		UPDATE dy_bills_log
+		SET dbl_checkYN = 'N'
+		WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
 	<!-- 공급자 삭제 -->
@@ -874,6 +874,23 @@
 			from dy_bills_log
 			where dbl_status = '2'
 	</select>
+	
+	<!-- 	전송 결과값을 위한 쿼리 -->
+	<select id="LogResultNeedData" resultType="billDTO">
+		select a.dbl_keyno , b.dbp_id , b.dbp_pass , b.dbp_apikey , a.dbl_homeid ,b.dbp_name
+		from dy_bills_log a
+		left join dy_bills_provider b
+		on a.dbl_provider_key  = b.dbp_keyno 
+		where dbl_status = 0
+	</select>
+	
+	<update id="ChangeLogmsg" parameterType="billDTO">
+		update dy_bills_log
+		set dbl_status = #{dbl_status},
+			dbl_errormsg = #{dbl_errormsg},
+			dbl_checkYN = #{dbl_checkYN}
+		where dbl_keyno = #{dbl_keyno}
+	</update>
 	
 </mapper>
  

@@ -1,7 +1,6 @@
 package com.tx.test.controller;
 
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -9,23 +8,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-import java.util.HashMap;
 
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,22 +27,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.SettingData;
-import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.dto.Common;
-import com.tx.common.security.password.MyPasswordEncoder;
-import com.tx.common.security.rsa.service.RsaService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
-import com.tx.dyAdmin.member.dto.UserDTO;
-import com.tx.dyAdmin.statistics.dto.LogDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
-import com.tx.common.service.component.ComponentService;
 import com.tx.test.dto.billDTO;
 
 
@@ -103,7 +87,7 @@ public class RestApiTest {
 		   String nowdate = now.replace("-", "");
 		   String nowdate2 = nowdate.trim();
 		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
-		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+//		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		   String year2 = year.substring(2, year.length());
 		   

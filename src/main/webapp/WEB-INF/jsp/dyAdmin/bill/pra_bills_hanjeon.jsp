@@ -487,15 +487,16 @@ function validationCheck(){
 }
 	
 function loadBillInfo(){
-
-	if(!validationCheck()) return false
+ 	if(!validationCheck()) return false
 	 $.ajax({
         url: '/dyAdmin/bills/billsInfoInsert1.do',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(result) {
-        	if(result != "저장 완료"){
+       		if(result == "1"){
+       			alert("전송이 완료된 세금계산서는 등록/수정을 할 수 없습니다.")
+       		}else if(result != "1" && result != "저장 완료"){
         		if(confirm("동일한 공급자와 공급받는자가 이미 등록되어 있습니다."+ "\n" +"작성한 내용으로 수정하시겠습니까?")){
         			$("#dbl_keyno").val(result)
         			 $.ajax({
@@ -512,7 +513,7 @@ function loadBillInfo(){
         					}
         			}); 
         		}else false;
-        		location.reload();
+        		
         	}else {
         		alert("세금계산서 정보 저장 완료")
         		location.reload();

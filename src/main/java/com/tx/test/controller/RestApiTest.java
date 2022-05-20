@@ -218,7 +218,7 @@ public class RestApiTest {
 				String codeapi = map.get("dbp_apikey").toString();
                 String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
-
+	
 
 
 			  }
@@ -587,18 +587,25 @@ public class RestApiTest {
 	public String billsInfoIsnsertAjax1(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		
-		String msg = "";
-		//공급자 공급받는자 등록 확인 
+		 String msg = "";
 		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
-		 if(keyno != null && keyno != "") {
-			 msg = keyno;
-			 
-		 }else {
-			 Component.createData("bills.subkey1Insert", bill);
-			 Component.updateData("bills.registNumberUpdate", bill);
-			 Component.createData("bills.billsInfoInsert", bill);
-			 msg = "저장 완료";
+		//공급자 공급받는자 등록 확인 	
+			if(keyno != null && keyno != "") {	
+				
+				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+				String chkYN = Component.getData("bills.checkYNselect", keyno);
+				
+				if(chkYN.equals("Y")) {
+					msg = "1";
+				}else if(chkYN.equals("N")) {
+					msg = keyno;	
+				}	 
+			}else {
+				 Component.createData("bills.subkey1Insert", bill);
+				 Component.updateData("bills.registNumberUpdate", bill);
+				 Component.createData("bills.billsInfoInsert", bill);
+				 msg = "저장 완료";
 		 }
 
 
@@ -610,18 +617,25 @@ public class RestApiTest {
 	public String billsInfoIsnsertAjax2(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		
-		String msg = "";
-		//공급자 공급받는자 등록 확인 
+		 String msg = "";
 		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
-		 if(keyno != null && keyno != "") {
-			 msg = keyno;
-			 
-		 }else {
-			 Component.createData("bills.subkey2Insert", bill);
-			 Component.updateData("bills.registNumberUpdate", bill);
-			 Component.createData("bills.billsInfoInsert", bill);
-			 msg = "저장 완료";
+		//공급자 공급받는자 등록 확인 	
+			if(keyno != null && keyno != "") {	
+				
+				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+				String chkYN = Component.getData("bills.checkYNselect", keyno);
+				
+				if(chkYN.equals("Y")) {
+					msg = "1";
+				}else if(chkYN.equals("N")) {
+					msg = keyno;	
+				}	 
+			}else {
+				 Component.createData("bills.subkey2Insert", bill);
+				 Component.updateData("bills.registNumberUpdate", bill);
+				 Component.createData("bills.billsInfoInsert", bill);
+				 msg = "저장 완료";
 		 }
 
 
@@ -633,19 +647,26 @@ public class RestApiTest {
 	@ResponseBody
 	public String billsInfoIsnsertAjax3(HttpServletRequest req,billDTO bill) throws Exception {
 		
-		
 		String msg = "";
-		//공급자 공급받는자 등록 확인 
-		 String keyno = Component.getData("bills.billLogCount",bill);
-		 
-		 if(keyno != null && keyno != "") {
-			 msg = keyno;
-			 
-		 }else {
-			 Component.createData("bills.subkey3Insert", bill);
-			 Component.updateData("bills.registNumberUpdate", bill);
-			 Component.createData("bills.billsInfoInsert", bill);
-			 msg = "저장 완료";
+		String keyno = Component.getData("bills.billLogCount",bill);
+		
+		
+		//공급자 공급받는자 등록 확인 	
+		if(keyno != null && keyno != "") {	
+			
+			//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+			String chkYN = Component.getData("bills.checkYNselect", keyno);
+			
+			if(chkYN.equals("Y")) {
+				msg = "1";
+			}else if(chkYN.equals("N")) {
+				msg = keyno;	
+			}	 
+		 }else{
+			Component.createData("bills.subkey3Insert", bill);
+			Component.updateData("bills.registNumberUpdate", bill);
+			Component.createData("bills.billsInfoInsert", bill);
+			msg = "저장 완료";
 		 }
 
 
@@ -657,20 +678,11 @@ public class RestApiTest {
 	@ResponseBody
 	public String billsInfoUpdateAjax(HttpServletRequest req, billDTO bill) throws Exception {
 		
-		String chkYN = Component.getData("bills.checkYNselect", bill);
-		String msg = "";
+						
+		Component.updateData("bills.billsInfoUpdate", bill);
 		
-	
-		if(chkYN.equals("Y")) {
+		String msg = "세금계산서 정보 수정 완료";
 			
-			msg = "국세청에 전송된 세금계산서는 수정할 수 없습니다.";
-			
-		}else {
-			
-			Component.updateData("bills.billsInfoUpdate", bill);
-			msg = "세금계산서 정보 수정 완료";
-			
-		}
 
 
 		return msg;
@@ -683,6 +695,18 @@ public class RestApiTest {
 		
 		
 		bill = Component.getData("bills.selectAllView", bill);
+		
+		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect", bill);
+		String codeStr = "";
+		codeStr = code.get("dbl_homeid").toString();
+		String codenum = codeStr.substring(7,codeStr.length());
+		int tempc = Integer.parseInt(codenum) + 1 ;
+		String code1 =  bill.getDbp_co_num().toString().substring(3,6);
+		String codeapi = bill.getDbp_apikey().toString();
+		String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
+		codeStr = code1+code2+tempc;
+		
+		bill.setDbl_homeid(codeStr);
 		
 		
 		return bill;

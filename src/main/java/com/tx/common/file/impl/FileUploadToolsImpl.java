@@ -366,8 +366,6 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 		
 		if( fsVO == null ) fsVO = new FileSub();
 		
-		fsVO.setFM_KEYNO("none");
-		
 		//프로퍼티 경로 불러오기
 		String propertiespath = SiteProperties.getString("FILE_PATH");
 		FileSub FileSub = null;
@@ -1270,7 +1268,7 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 			String folder = thumnail.mainfolder(req);
 			String zipName = "";
 			
-			if(StringUtils.isNotEmpty((String)req.getAttribute("currentBn"))) zipName = (String)req.getAttribute("currentBn") + "attachments.zip";
+			if(StringUtils.isNotEmpty((String)req.getAttribute("currentBn"))) zipName = (String)req.getAttribute("currentBn") + ".zip";
 			 
 			String zipPath = StorageSelector.zip(fsVO,propertiespath,folder,zipName);
 			

@@ -154,7 +154,6 @@ public class AdminPowerController {
 	 * 
 	 */
 	@RequestMapping(value="/dyAdmin/powerPlant/Inverter_insert.do")
-	@Transactional
 	@ResponseBody
 	public void IveterInsert(HttpServletRequest req, PowerDTO pwdto) throws Exception {
 		Component.createData("power.Pw_insert", pwdto);
@@ -166,7 +165,6 @@ public class AdminPowerController {
 	 * 
 	 */
 	@RequestMapping(value="/dyAdmin/powerPlant/Inverter_update.do")
-	@Transactional
 	@ResponseBody
 	public void IveterUpdate(HttpServletRequest req, PowerDTO pwdto) throws Exception {
 		Component.updateData("power.Pw_update", pwdto);

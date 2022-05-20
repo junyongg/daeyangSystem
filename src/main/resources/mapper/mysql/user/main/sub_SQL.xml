@@ -173,6 +173,10 @@
 		WHERE dbs_keyno = #{key}
 	</update>
 	
-	
+	<update id="fileKeyInsert" parameterType="hashmap">
+		UPDATE dy_power_plant 
+		SET DPP_FM_KEYNO = #{FS_FM_KEYNO}
+		WHERE DPP_KEYNO = #{DPP_KEYNO} 
+	</update>
 	
 </mapper>

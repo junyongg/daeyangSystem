@@ -325,13 +325,10 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 		String uploadPath = SiteProperties.getString("FILE_PATH");
     	String path = uploadPath + fileMain.getFM_ZIP_PATH();
 	    String name = fileMain.getZIP_NAME()+"_첨부파일.zip";
-    	
-		if("tronix".equals(STORAGE)){
-			URL url = new URL(fileMain.getFM_ZIP_PATH());
-			
-			FileDownloadTools.FileDownload(url,name,request,response);
-			
-		}else if("none".equals(STORAGE)){
+    	if(fileMain.getZIP_NAME() == null) {
+    		name = fileMain.getFM_ZIP_PATH().toString().substring(fileMain.getFM_ZIP_PATH().toString().lastIndexOf("/")+1);
+    	}
+		if("none".equals(STORAGE)){
 		   
 	    	/** 경로 설정 */
 		    File uFile = new File(path);
@@ -382,12 +379,8 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 	public String zip(List<FileSub> fsVO, String propertiespath, String folder, String zipName) throws MalformedURLException, IOException {		
 		String zipPath = "";
 		
-		if("tronix".equals(STORAGE)){
-			zipPath = TronixStorageService.zip(fsVO,folder);
-			
-		}else if("none".equals(STORAGE)){
+		if("none".equals(STORAGE)){
 			zipPath = LocalFileService.zip(fsVO,propertiespath,folder,zipName);
-			
 		}
 		return zipPath;
 	}
@@ -398,14 +391,7 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 		String mimeType = "";
 		String rootFilePath = SiteProperties.getString("FILE_PATH");
 		
-		if("tronix".equals(STORAGE)){
-			try {
-				mimeType = TronixStorageService.getMimeType(rootFilePath, fileSub);
-			} catch (Exception e) {
-				System.out.println("mimeType 에러");
-			}
-			
-		}else if("none".equals(STORAGE)){
+		if("none".equals(STORAGE)){
 			String fileWebPath = fileSub.get("FS_FOLDER") + FilenameUtils.getName( fileSub.get("FS_CHANGENM") + "." + fileSub.get("FS_EXT") );
 			String filePath = rootFilePath + fileWebPath;
 			
@@ -424,20 +410,14 @@ public class StorageSelectorServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public void getImgPath(List<HashMap<String, Object>> boardNoticeDataList) {		
-		if("tronix".equals(STORAGE)){
-			getImgPath(boardNoticeDataList, "THUMBNAIL_PUBLIC_PATH", "THUMBNAIL_PATH");
-		}else if("none".equals(STORAGE)){
+		if("none".equals(STORAGE)){
 			getImgPath(boardNoticeDataList, "THUMBNAIL_PATH", "THUMBNAIL_PATH");
 		}
 	}
 	
 	@Override
 	public void getImgPath(List<HashMap<String, Object>> boardList, String requestName, String responseName) {		
-		if("tronix".equals(STORAGE)){
-			
-			TronixStorageService.getImgPath(boardList, requestName, responseName);
-			
-		}else if("none".equals(STORAGE)){
+		if("none".equals(STORAGE)){
 			
 			LocalFileService.getImgPath(boardList, requestName, responseName);
 		}

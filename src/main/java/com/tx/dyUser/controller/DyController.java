@@ -44,6 +44,7 @@ import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.file.FileReadTools;
 import com.tx.common.file.FileUploadTools;
 import com.tx.common.file.dto.FileSub;
+import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
@@ -581,32 +582,111 @@ public class DyController {
      * @return 파일 등록 
      */
     @RequestMapping("/dy/moniter/filedown.do")
-    public ModelAndView filedown(HttpServletRequest req) throws Exception{
+    public ModelAndView filedown(HttpServletRequest req,
+    		HttpSession session,
+    		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key
+    		) throws Exception{
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_filedown");
+    	
+    	
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+    	
+    	Map<String, Object> user = CommonService.getUserInfo(req);
+    	
+ 	    type.put("UI_KEYNO",user.get("UI_KEYNO").toString());
+ 	    type.put("UIA_NAME",user.get("UIA_NAME").toString());
+ 	    
+ 	    String sql = "main.select_MainData";
+	    String sql2 = "main.Power_SelectKEY";
+	    //삼환관리자 처리부분
+	    if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+		    sql = "main.select_MainData_Ad";
+		    sql2 = "main.Power_SelectKEY_Ad";
+	    }
+ 	    
+ 	    if(key.equals("0")) {
+		   key = (String) session.getAttribute("DPP_KEYNO");
+ 	    }
+ 	    if(key == null || StringUtils.isEmpty(key)) {
+		   key = Component.getData(sql2,type);
+ 	    }
+ 	    session.setAttribute("DPP_KEYNO", key);
+ 	    mv.addObject("list", Component.getList(sql,type));
+ 	    
+ 	    type.put("type",key);
+    	HashMap<String,Object> ob =  Component.getData(sql,type);
+    	
+    	mv.addObject("UI_KEYNO",user.get("UI_KEYNO").toString());
+    	System.out.println(ob.get("DPP_FM_KEYNO"));
+    	if(ob.get("DPP_FM_KEYNO") != null) {
+    		FileSub fsVo = new FileSub();
+        	fsVo.setFS_FM_KEYNO(ob.get("DPP_FM_KEYNO").toString());
+        	List<FileSub> list = Component.getList("File.AFS_SubFileselectpath",fsVo );
+        	
+        	ArrayList<String> keylist = new ArrayList<String>();
+        	for(FileSub l : list ) {
+        		keylist.add(l.getEncodeFsKey());
+        	}
+        	
+        	mv.addObject("RList",list);
+        	mv.addObject("KeynoList",keylist);
+        	
+        	ob.put("DPP_FM_KEYNO", AES256Cipher.encode(ob.get("DPP_FM_KEYNO").toString()));
+    	}
+    	
+    	mv.addObject("ob",ob);
     	
     	return mv;
     }
     /**
-     * @return 파일 등록 
+     * @return 파일 등록 or 수정
      */
     @RequestMapping("/dy/moniter/DownAction.do")
-    public void filedownAction(HttpServletRequest req,
-    		MultipartHttpServletRequest request
+    @Transactional
+    public ModelAndView filedownAction(HttpServletRequest req,
+    		MultipartHttpServletRequest request,
+    		@RequestParam(value="action" , defaultValue="insert")String action,
+    		@RequestParam(value="UI_KEYNO" , required=false)String UI_KEYNO,
+    		@RequestParam(value="DPP_KEYNO" , required=false)String DPP_KEYNO,
+    		@RequestParam(value="DPP_NAME" , required=false)String DPP_NAME,
+    		@RequestParam(value="DPP_FM_KEYNO", required=false)String DPP_FM_KEYNO
     		) throws Exception{
-//    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_filedown");
-    	ArrayList<String> fkey = new ArrayList<String>();
+    	DPP_FM_KEYNO = AES256Cipher.decode(DPP_FM_KEYNO);
+    	
+    	ModelAndView mv  = new ModelAndView("redirect:/dy/moniter/filedown.do");
+    	
+    	List<FileSub> fslist = new ArrayList<FileSub>();
+    	List<String> list = new ArrayList<String>();
     	List<MultipartFile> files = request.getFiles("file");
+    	FileSub fsVo = new FileSub();
+    	HashMap<String,Object> map = new HashMap<String, Object>();
     	
-//    	FileSub fsVo = new FileSub();
-    	
-    	for(MultipartFile m : files) {
-    		
-    		FileSub file = FileUploadTools.FileUpload(m, "UserKEYNO", null, req);
-    		fkey.add(file.getFS_KEYNO().toString());
-    		
+    	if(action.equals("insert")) {
+    		fsVo.setFS_FM_KEYNO(FileUploadTools.makeFileMainData(UI_KEYNO).toString());
+    	}else {
+    		fsVo.setFS_FM_KEYNO(DPP_FM_KEYNO);
+    		list = Component.getList("File.GetSubKey",DPP_FM_KEYNO );
     	}
     	
-//    	return mv;
+    	int i = 0;
+    	for(MultipartFile m : files) {
+    		if(action.equals("update")) {
+    			fsVo.setFS_KEYNO(list.get(i).toString());
+    		}
+    		
+    		fslist.add(FileUploadTools.FileUpload(m, UI_KEYNO, fsVo, req));
+    		i++;
+    	}
+    	
+    	map.put("DPP_KEYNO",DPP_KEYNO);
+    	map.put("FS_FM_KEYNO",fsVo.getFS_FM_KEYNO().toString());
+    	
+    	Component.updateData("sub.fileKeyInsert", map );
+    	
+    	req.setAttribute("currentBn", DPP_NAME);
+    	FileUploadTools.zip(req, fslist);
+    	
+    	return mv;
     }
 
     

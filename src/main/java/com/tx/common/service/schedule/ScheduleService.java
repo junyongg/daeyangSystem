@@ -130,9 +130,10 @@ public class ScheduleService {
 				Component.deleteData("main.deleteMain",keyno);
 				
 				List<String> slist = Component.getList("main.recent_date", keyno);
-				
-				map.put("list", slist);
-				map.put("keyno", keyno);
+				if(slist != null) {
+					map.put("list", slist);
+					map.put("keyno", keyno);
+				}
 				
 				Component.deleteData("main.deleteToday", map);
 			}

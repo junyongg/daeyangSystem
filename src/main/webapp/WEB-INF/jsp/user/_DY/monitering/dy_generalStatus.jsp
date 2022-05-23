@@ -393,7 +393,9 @@
                 <article class="artBoard top">
                     <h2 class="circle">인버터별 상태</h2>
 
-                    <span class="state_b pos">${ob.DPP_INVER }</span>
+                    <span class="state_b pos">
+                    	${ob.DPP_INVER }
+                    </span>
 
                     <div class="table_wrapper con_h">
                         <table class="tbl_normal fixed">
@@ -427,7 +429,21 @@
                             			</c:otherwise>
                             		</c:choose>
                             		<tr>
-    	                                <td>[${ob.DPP_AREA }] ${ob.DPP_NAME } | ${model.DI_NAME }</td>
+    	                                <td>
+    	                                	[${ob.DPP_AREA }]
+    	                                	<c:if test="${ob.DPP_KEYNO eq '51' }">
+    	                                		<c:if test="${status.index == 0}">
+    	                                			푸른 태양광 발전소| 인버터 1호
+    	                                		</c:if>
+    	                                		<c:if test="${status.index == 1}">
+    	                                			하늘 태양광 발전소| 인버터 1호
+    	                                		</c:if>
+    	                                	</c:if>
+    	                                	<c:if test="${ob.DPP_KEYNO ne '51' }">
+    	                                		${ob.DPP_NAME }| ${model.DI_NAME }
+    	                                	</c:if>
+    	                                	
+    	                                </td>
         	                            <td>${not empty model.Active_Power?model.Active_Power:0 }</td>
             	                        <td><span class="check_c ${type }"></span></td>
 	                                </tr>

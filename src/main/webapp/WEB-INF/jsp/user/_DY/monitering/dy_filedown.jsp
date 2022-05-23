@@ -16,6 +16,32 @@
 .file-chosen{
    padding-left: 65px;
 }
+.downClass{
+	float: right;
+}
+
+
+@media screen and (max-width: 900px) {
+	.buttonClass{
+		padding : 15px;		
+	    font-size: 14px;
+	    margin : -15px;
+	    float: left;
+	}
+	.file-chosen{
+		padding : 0px 0px 0px 45px;
+		width : 220px;
+		display: block;
+		float : left;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.tbl_private_se td{
+		padding: 20px;
+		height: 60px;
+	}
+}
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -53,24 +79,24 @@
                     <tbody>
                         <tr>
                             <th class="thClass">1. 발전사업허가증</th>
-                            <td>
+                            <td class="tdClass">
                             	<label class="buttonClass" for="file1"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
 	                            <input class="fileclass" type="file" id="file1" name="file" style="display: none;">
 	                            <span class="file-chosen">
 	                            		${fn:length(RList) > 0 ?  fn:substring(RList[0].FS_ORINM,0,13) : '파일없음'}. ${RList[0].FS_EXT }
-	                            	<button type="button" onclick="cf_download('${KeynoList[0]}')" style="display: ${fn:length(RList) > 0 ? '':'none'}">다운로드</button>
 	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[0]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
                             </td>
                         </tr>
                         <tr>
                             <th class="thClass">2. 사업자등록증 사본</th>
-                            <td>
+                            <td class="tdClass">
 	                            <label class="buttonClass" for="file2"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
 	                            <input class="fileclass" type="file" id="file2" name="file" style="display: none;">
 	                            <span class="file-chosen">
                             		${fn:length(RList) > 0 ? fn:substring(RList[1].FS_ORINM,0,13) : '파일없음'}. ${RList[1].FS_EXT }
 	                            </span>
-	                            <button type="button" onclick="cf_download('${KeynoList[1]}')" style="display: ${fn:length(RList) > 0 ? '':'none'}">다운로드</button>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[1]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
                             </td>
                         </tr>
                         <tr>
@@ -81,7 +107,7 @@
 	                            <span class="file-chosen" id="spans">
 		                            ${fn:length(RList) > 0 ? fn:substring(RList[2].FS_ORINM,0,13) : '파일없음'}. ${RList[0].FS_EXT }
 	                            </span>
-	                            <button type="button" onclick="cf_download('${KeynoList[2]}')" style="display: ${fn:length(RList) > 0 ? '':'none'}">다운로드</button>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[2]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
                             </td>
                         </tr>
                     </tbody>

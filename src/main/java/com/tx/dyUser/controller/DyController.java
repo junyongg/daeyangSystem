@@ -1185,7 +1185,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남","화성","세종"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {
@@ -1193,7 +1193,6 @@ public class DyController {
 		   list.addAll(w.Sunrise_setData(r));
 		   WeatherOrganize(list);
 	   }
-	   
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
 //		Component.getData("sub.inserthourDetail",list);
    }
@@ -1359,7 +1358,7 @@ public class DyController {
 //		
 //		for(HashMap<String,Object> l : list) {
 //			
-//			for (int i=4; i>0; i--) {
+//			for (int i=1; i>0; i--) {
 //				HashMap<String,Object> map = new HashMap<String, Object>();
 //				
 //				String keyno = l.get("DPP_KEYNO").toString();
@@ -1378,7 +1377,7 @@ public class DyController {
 //			}
 //		}
 //   }
-//   
+   
    
    
    

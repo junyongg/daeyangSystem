@@ -266,7 +266,7 @@ function pf_settingSearchDate(value){
 		}else{
 			stdt = yyyy + "-" + pf_setTwoDigit(mm) + "-01";
 		}
-	}else if(value == 13){
+	}else if(value == 13){         //1~12월
 		stdt = yyyy+"-01"+"-01";
 		endt = yyyy+"-01"+"-31";
  	}else if(value == 14){

@@ -82,6 +82,7 @@ width : 80px;
 							</div>
 						</div>
 						<div>
+										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="10"  ${search.orderCondition eq '10'? 'selected':'' }  onclick = "pf_searchDate(this.value)">전체</button>
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="13"  ${search.orderCondition eq '13'? 'selected':'' }  onclick = "pf_searchDate(this.value)">1월</button>
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="14"  ${search.orderCondition eq '14'? 'selected':'' }  onclick = "pf_searchDate(this.value)">2월</button>
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="15"  ${search.orderCondition eq '15'? 'selected':'' }  onclick = "pf_searchDate(this.value)">3월</button>

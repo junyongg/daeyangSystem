@@ -159,7 +159,15 @@ br      {mso-data-placement:same-cell;}
 		<c:forEach items="${resultList4 }" var="b" varStatus="status">
 		<tr>
 			<td class="tdName">${b.COUNT }</td>
-			<td class="tdName">${b.dbl_sub_keyno }</td>
+			<c:if test="${b.dbl_sub_keyno eq '1' }">
+			<td class="tdName">한전 발행</td>
+			</c:if>
+			<c:if test="${b.dbl_sub_keyno eq '2' }">
+			<td class="tdName">거래처 발행</td>
+			</c:if>
+			<c:if test="${b.dbl_sub_keyno eq '3' }">
+			<td class="tdName">안전관리자 발행</td>
+			</c:if>
 			<td class="tdName">${b.dbl_p_name }</td>
 			<td class="tdName">${b.dbl_s_name }</td>
 			<td class="tdName">${b.dbl_subject }</td>

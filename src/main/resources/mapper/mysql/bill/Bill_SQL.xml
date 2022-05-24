@@ -881,7 +881,6 @@
 		from dy_bills_log a
 		left join dy_bills_provider b
 		on a.dbl_provider_key  = b.dbp_keyno 
-		where dbl_status = 0
 	</select>
 	
 	<update id="ChangeLogmsg" parameterType="billDTO">

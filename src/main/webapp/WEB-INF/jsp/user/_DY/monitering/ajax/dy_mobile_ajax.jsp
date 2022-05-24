@@ -313,7 +313,8 @@ $(function(){
 				list_sub.push("${v}")
 				console.log("${v}")
 			</c:forEach>
-			list.push(list_sub.reverse())
+// 			list.push(list_sub.reverse())
+			list.push(list_sub)
 		</c:forEach>
 		
 		if(inverternum == '0'){

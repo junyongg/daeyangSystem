@@ -51,6 +51,7 @@
 		</thead>
 		<%-- 모든필드  ,  엑셀다운, 게시글 갯수 끝  --%>
 											<colgroup>
+											<col style="width: 5%; display: none;">
 											<col style="width: 5%;">
 											<col style="width: 10%;">
 											<col style="width: 10%;">
@@ -60,7 +61,9 @@
 											<col style="width: 10%;">
 											<col style="width: 10%;">
 										</colgroup>
+										<thead>
 										<tr>
+											<th class="hasinput" style="display: none;"></th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="1"
 												placeholder="번호 검색" /></th>
@@ -86,10 +89,17 @@
 											<th class="hasinput" ><input type="text"
 												class="form-control search-control" data-searchindex="7"
 												placeholder="날짜 검색" /></th>
-											<th class="hasinput"></th>
+											<th class="hasinput"><select class="form-control search-control"
+												data-searchindex="8" style="width: 100%;" onchange="pf_LinkPage()">
+													<option value="">전체</option>
+													<option value="-1">전송실패</option>
+													<option value="0">전송완료</option>
+													<option value="2">전송대기</option>
+											</select></th>
 										</tr>
 										<%-- 화살표 정렬 --%>
 										<tr>
+											<th style="text-align: center; display: none;">키값</th>
 											<th class="arrow" style="text-align: center;" data-index="1">번호</th>
 											<th class="arrow" style="text-align: center;" data-index="2">발행종류</th>
 											<th class="arrow" style="text-align: center;" data-index="3">공급자 명</th>
@@ -99,7 +109,7 @@
 											<th class="arrow" style="text-align: center;" data-index="7">등록날짜</th>
 											<th class="arrow" style="text-align: center;" data-index="8">전송 상태</th>
 										</tr>
-									
+									</thead>
 									<tbody style="text-align: center;">
 										<c:if test="${empty resultList4 }">
 											<tr>
@@ -107,7 +117,7 @@
 											</tr>
 										</c:if>
 										<c:forEach items="${resultList4 }" var="b">
-											<tr onclick = "taxpopup('${b.dbl_keyno}');" style="cursor: pointer;" id="listtable" name ="listtable" value ="${b.dbl_keyno}">
+											<tr>
 												<td style="display: none;">${b.dbl_keyno}</td>
 												<td>${b.COUNT}</td>
 												<c:if test="${b.dbl_sub_keyno eq '1' }">
@@ -119,13 +129,16 @@
 												<c:if test="${b.dbl_sub_keyno eq '3' }">
 												<td>안전관리자 발행</td>
 												</c:if>
-												<td>${b.dbl_p_name}</td>
+												<td><a onclick = "taxpopup('${b.dbl_keyno}');" style="cursor: pointer;" id="listtable" name ="listtable" value ="${b.dbl_keyno}">${b.dbl_p_name}</a></td>
 												<td>${b.dbl_s_name}</td>
 												<td>${b.dbl_subject}</td>
 												<td>${b.dbl_grandtotal}</td>
 												<td>${b.dbl_issuedate}</td>
 												<c:if test="${b.dbl_status eq '1' }">
-												<td>전송대기</td>
+												<td>전송준비</td>
+												</c:if>
+												<c:if test="${b.dbl_status eq '2' }">
+												<td style="color: #3333FF">전송대기</td>
 												</c:if>                         						
 												<c:if test="${b.dbl_status eq '0' }">
 												<td style="color: #00CC66">전송완료</td>
@@ -179,6 +192,20 @@ function taxpopup(value){
 	popOpen.focus();
 }
 
+function logAlarm(keyno){
+	$.ajax({
+		url: '/dyAdmin/bills/sendingAjax.do',
+		type: 'POST',
+		data: {
+			"keyno" : keyno
+		},
+		async: false,
+		success : function(data){
+			alert(data)
+		}
+	});
+	
+}
 // function senddata(){
 	
 // 	$.ajax({

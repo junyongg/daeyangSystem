@@ -674,7 +674,9 @@
 		from (
 			select *
 			from dy_bills_log
-			where dbl_checkYN = 'Y'
+			where dbl_status = "-1"
+			or dbl_status = "2"
+			or dbl_status = "0"
 			order by dbl_keyno
 		) B
 		where (@ROWNUM:=0)=0

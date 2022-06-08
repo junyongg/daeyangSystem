@@ -872,4 +872,34 @@
 		</foreach>
 	</insert>
 	
+	
+		<!-- 예측 부분 출력 -->
+	<select id="PrecSelect" resultType="hashmap">
+			SELECT B.* , C.Dday , ABS(((B.typeA-C.Dday)/Dday)*100) as perA, ABS(((B.typeB-C.Dday)/Dday)*100) as perB 
+			FROM (
+				SELECT IFNULL(avg(pt_power_next),0) as typeA, IFNULL(avg(pt_heazoom),0) as typeB , date_format(pt_date + interval 1 day,'%Y-%m-%d') as formatd, pt_area,pt_volum 
+				FROM predict_table
+				group by formatd
+				order by formatd DESC
+			)B
+			LEFT JOIN  (
+				SELECT *
+				FROM(
+					SELECT date_format(Conn_date,'%Y-%m-%d') as formatd , (Daily_Generation*2) as Dday ,DP_KEYNO , DI_NAME 
+					FROM dy_inverter_data
+					WHERE DP_KEYNO = #{keyno}
+					AND DI_NAME = '인버터 1호'
+					ORDER BY Conn_date desc
+					LIMIT 10000
+				)A
+				group by formatd 
+				order by formatd DESC
+			)C
+			on B.formatd = C.formatd
+			where pt_area = #{area}
+			and pt_volum = #{volum}
+			limit 5
+	</select>
+	
+	
 </mapper>

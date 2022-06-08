@@ -470,7 +470,15 @@
 	</select>
 	
 	<select id="select_inverterData_other" resultType="hashmap" parameterType="hashmap">
+	<choose>
+	<!-- 통계분석 1년 일때 월 단위로 뿌림 -->
+	<when test="DaliyType == 4">
+		SELECT * ,DATE_FORMAT(DDM_DATE,'%Y-%m') AS ddtt, sum(DDM_D_DATA) as sdata, sum(DDM_CUL_DATA) as cdata, sum(DDM_T_HOUR) as thour
+	</when>
+	<otherwise>
 		SELECT * ,DATE_FORMAT(DDM_DATE,'%Y-%m-%d') AS FORMATDATE
+	</otherwise>
+	</choose>
 		FROM(	
 			SELECT * 
 			FROM(
@@ -491,9 +499,14 @@
 			 	LIMIT 1000
 			 	)A
 			 	GROUP BY DATE_FORMAT(DDM_DATE,'%Y-%m-%d')
+			 	ORDER BY DDM_DATE DESC
 		 	)B
 		 	LEFT JOIN dy_power_plant C
 		 	ON B.DDM_DPP_KEYNO = C.DPP_KEYNO
+		 	<if test="DaliyType == 4">
+		 	group by ddtt
+		 	ORDER BY ddtt DESC
+		 	</if>
 	</select>
 	
 	<select id="select_inverterData_other_AVGSUM" resultType="hashmap" parameterType="hashmap">

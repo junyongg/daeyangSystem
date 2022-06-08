@@ -284,6 +284,17 @@ table{
 		                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 		                    <td>${result.Active_Power }</td>
 	                	</c:when>
+	                	<c:when test="${DaliyType eq '4' }">
+	                		<td>${result.ddtt }</td>
+		                    <td>${result.DPP_NAME }</td>
+		                    <td><fmt:formatNumber value="${result.sdata }" pattern="0.00"/></td>
+		                    <td><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
+		                    <td><fmt:formatNumber value="${result.thour }" pattern="0.00"/></td>
+		                    <td>
+									X
+<%-- 		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
+		                    </td>
+	                	</c:when>
 	                	<c:otherwise>
 	                		<td><fmt:formatDate value="${result.DDM_DATE }" pattern="yyyy-MM-dd"/></td>
 		                    <td>${result.DPP_NAME }</td>
@@ -553,33 +564,49 @@ $(function(){
 		var datelist = new Array();
 		var datalist = new Array();
 		var hourlist = new Array();
+		
+		// 통계분석 1년 탭
+		if("${DaliyType}" == "4"){
 		<c:forEach items="${result}" var="result">
+			datelist.push("${result.ddtt}")
+			var data = "${result.sdata}";
+			datalist.push(parseFloat(data).toFixed(2))
+			var hour = "${result.thour}";
+			hourlist.push(parseFloat(hour).toFixed(2))
+		</c:forEach>
+		}else{
+			<c:forEach items="${result}" var="result">
 			datelist.push("${result.FORMATDATE}")
 			var data = "${result.DDM_D_DATA}";
 			datalist.push(parseFloat(data).toFixed(2))
 			var hour = "${result.DDM_T_HOUR}";
 			hourlist.push(parseFloat(hour).toFixed(2))
 		</c:forEach>
-		 
+		}
+		
 		var aJson = new Object();
 		aJson.name = "발전량";
 		aJson.type = "line";
 		aJson.showSymbol = false;
 		aJson.stack = "a1";
-		aJson.data = datalist;
+// 		aJson.data = datalist;
+		aJson.data = datalist.reverse();
 		aJsonArray.push(aJson);
+
+
 		
 		var aJson2 = new Object();
 		aJson2.name = "발전시간";
 		aJson2.type = "line";
-		aJson.showSymbol = false;
+		aJson2.showSymbol = false;
 		aJson2.stack = "a2";
-		aJson2.data = hourlist;
-		
-		
+// 		aJson2.data = hourlist;
+		aJson2.data = hourlist.reverse();
 		aJsonArray.push(aJson2);
+
 		
-		chartGraph2(datelist,aJsonArray);
+// 		chartGraph2(datelist,aJsonArray);
+		chartGraph2(datelist.reverse(),aJsonArray);
 	}
 		console.log(aJson)
 })
@@ -755,9 +782,10 @@ function chartGraph2(list,aJsonArray){
         color: ['#F31614', '#38C146', '#3A37FF','#ffeb3b','#ff9800'],
         tooltip: {
             show: true,
+            trigger: 'axis'
         },
         legend: {
-            show: true,
+            show: false,
         },
         legend: {
             show: true,

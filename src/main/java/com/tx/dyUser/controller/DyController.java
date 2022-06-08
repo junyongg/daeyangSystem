@@ -468,6 +468,7 @@ public class DyController {
     	type.put("searchBeginDate",searchBeginDate);
     	type.put("searchEndDate",searchEndDate);
     	type.put("InverterType",InverterType);
+    	type.put("DaliyType",DaliyType);
     	
     	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
     	
@@ -853,6 +854,7 @@ public class DyController {
     	type.put("searchBeginDate",searchBeginDate);
     	type.put("searchEndDate",searchEndDate);
     	type.put("InverterType",InverterType);
+    	type.put("DaliyType",DaliyType);
     	
     	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
     	//당일일때만 오늘날짜 데이터 뽑는것 

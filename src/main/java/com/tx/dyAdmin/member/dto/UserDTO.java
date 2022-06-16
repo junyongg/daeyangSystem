@@ -57,7 +57,7 @@ public class UserDTO extends Common implements UserDetails  {
 					UI_SNS_ID,
 					UI_SNS_TYPE,
 					UI_DORMANCY,
-			
+					UI_ALIMYN,
 					
 					// U_USERINFO_AUTHORITY 테이블
 					UIA_KEYNO,

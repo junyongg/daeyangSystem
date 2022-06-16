@@ -20,6 +20,7 @@ form .error {color:red}
 <form:form id="Form" name="Form" method="post" action="">
 <input type="hidden" name="PASSWORD_REGEX" id="PASSWORD_REGEX" value="${userInfoSetting.SC_CODEVAL01}">
 <input type="hidden" name="id" value="${id }">
+<input type="hidden" name="chkvalue" id="chkvalue">
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -47,6 +48,12 @@ form .error {color:red}
 									<button class="btn btn-sm btn-primary" type="button" onclick="pf_openInsertPopup()">
 										<i class="fa fa-plus"></i> 회원 등록
 									</button> 
+<!-- 									<button class="btn btn-sm btn-primary" type="button" onclick="AlimTalkSend()" style = "margin-right: 10px; margin-top: 10px;"> -->
+<!-- 										 카카오톡 전송 -->
+<!-- 									</button> -->
+<!-- 									<button class="btn btn-sm btn-primary" id="deleteButton" -->
+<!-- 								type="button" onclick="deleteAlim()" style="background-color: #E53935; margin-top: 10px;">예약 취소</button> -->
+							</div>
 								</div>
 							</div>
 						</div>
@@ -90,5 +97,111 @@ function noSpaceForm(obj) { // 공백사용못하게
         obj.value = obj.value.replace(' ',''); // 공백제거
         return false;
     }
+}
+function checkcheck(value){
+	$.ajax({
+		url: '/dyAdmin/person/AlimSelect.do',
+		type: 'POST',
+		data: {
+        	"UI_KEYNO": value
+        },
+		async: false,
+		success : function(data){
+			
+			console.log(data[0].UI_ALIMYN);
+			
+			if(data[0].UI_ALIMYN == "Y"){
+				$.ajax({
+					url: '/dyAdmin/person/ailimcancle.do',
+					type: 'POST',
+					data: {
+			        	"UI_KEYNO": value
+			        },
+					async: false,
+					success : function(data){
+					}
+				});
+			}else if(data[0].UI_ALIMYN == "N"){
+				$.ajax({
+					url: '/dyAdmin/person/sendchk.do',
+					type: 'POST',
+					data: {
+			        	"UI_KEYNO": value
+			        },
+					async: false,
+					success : function(data){
+					}
+				});	
+			}
+		}
+	});
+}
+
+
+function seletAll(){
+	
+	if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+	else $("input[name=chk]").prop("checked", false);
+}
+
+function AlimTalkSend() {
+	
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	if(array.length > 0){
+		if(confirm("전송예약 하시겠습니까?")){
+			$.ajax({
+				url: '/dyAdmin/person/ailim.do',
+				type: 'POST',
+				data: $('#Form').serialize(),
+				async: false,
+				success : function(data){
+					alert("카카오톡 알림은 매일 15시에 전송됩니다.");
+					location.reload();
+				}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("전송할 발전소를 선택해주세요.")
+	}
+return false;
+}
+
+
+function deleteAlim() {
+	
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	if(array.length > 0){
+		if(confirm("예약취소 하시겠습니까?")){
+			$.ajax({
+				url: '/dyAdmin/person/ailimcancle.do',
+				type: 'POST',
+				data: $('#Form').serialize(),
+				async: false,
+				success : function(data){
+					alert(data);
+					location.reload();
+				}
+			});
+		}else{
+			cf_smallBox('error', "취소되었습니다.", 3000,'#d24158');
+		}
+	}else{
+		alert("취소할 발전소를 선택해주세요.")
+	}
+	return false;
 }
 </script>

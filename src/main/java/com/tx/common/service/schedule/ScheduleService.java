@@ -52,7 +52,6 @@ public class ScheduleService {
 
 	//날씨 데이터 매시 57분마다 
 	@Scheduled(cron="0 58 * * * ?")
-	@Transactional
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
@@ -114,7 +113,6 @@ public class ScheduleService {
 	
 	//20시30분에 데이터 합치기   
 	@Scheduled(cron="0 30 21 * * ?")
-	@Transactional
 	public void scheduleTest() throws Exception {
 		
 		try {
@@ -145,7 +143,6 @@ public class ScheduleService {
 
 	//21시에 데이터 추가   
 	@Scheduled(cron="0 0 21 * * ?")
-	@Transactional
 	public void Insertforpredict() throws Exception {
 		
 	   String[] keylist = {"23","31","33","40"};
@@ -159,7 +156,6 @@ public class ScheduleService {
 	
 	//시간별 데이터 추출 세달 전까지만 수집   
 	@Scheduled(cron="0 30 20 * * ?")
-	@Transactional
 	public void InsertDetail() throws Exception {
 		
 		Component.deleteData("sub.deletehourData");

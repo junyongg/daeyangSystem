@@ -38,7 +38,6 @@ import com.tx.common.service.weakness.WeaknessService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyAdmin.member.dto.UserSettingDTO;
-import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 

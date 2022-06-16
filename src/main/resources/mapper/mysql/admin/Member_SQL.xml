@@ -61,6 +61,7 @@
 					, M.UI_NAME
 					, M.UI_EMAIL
 					, M.UI_PHONE
+					, M.UI_ALIMYN
 					, LEFT(M.UI_LASTLOGIN,19) AS UI_LASTLOGIN
 					, LEFT(M.UI_REGDT,19) AS UI_REGDT
 					, IF( M.UI_AUTH_YN = 'Y', 'O','X') AS UI_AUTH_YN
@@ -588,5 +589,39 @@
 		WHERE UI_DELYN = 'N'
 		AND UI_NAME != '개발자'
     </select>
+    
+    <!-- 카카오톡 예약전송 Y/N 업데이트 -->
+    <update id="ALimTalkUD">
+		UPDATE 		U_USERINFO 
+		SET 		UI_ALIMYN		=	'Y'
+		WHERE       UI_KEYNO        =   #{UI_KEYNO}
+    </update>
+    
+    <update id="updateN">
+		UPDATE 		U_USERINFO 
+		SET 		UI_ALIMYN		=	'N'
+		WHERE       UI_KEYNO        =   #{UI_KEYNO}
+    </update>
+    
+    <select id="AlimKeySelect" resultType="String">
+    	SELECT UI_KEYNO
+		FROM u_userinfo
+		WHERE UI_ALIMYN = 'Y'
+    </select>
+    
+    <select id="PhoneSelect" resultType="USER" parameterType="hashmap">
+    	SELECT UI_PHONE, UI_KEYNO
+		FROM u_userinfo
+		WHERE 
+		<foreach item = "l" index="index" collection="list" open="(" close=")" separator="or">
+		UI_KEYNO = #{l}
+		</foreach>
+    </select>
+        <select id="AlimInfoSelect" resultType="USER" parameterType="String">
+    	SELECT *
+		FROM u_userinfo
+		WHERE UI_KEYNO   =   #{UI_KEYNO}
+    </select>
+    
 </mapper>
  

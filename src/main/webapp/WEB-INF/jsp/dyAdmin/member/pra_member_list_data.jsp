@@ -78,6 +78,7 @@
 		            <option value="탈퇴">탈퇴회원</option>
 		         </select>
 			</th>
+			<th class="hasinput">카카오톡 전송 여부</th>
 		</tr>
 		<%-- 화살표 정렬 --%>
 		<tr>
@@ -91,6 +92,7 @@
 			<th class="arrow min200" data-index="5">가입날짜</th>
 			<th class="arrow min200" data-index="6">마지막 로그인</th>
 			<th class="arrow" data-index="7">인증여부</th>
+			<th style="text-align: center;"><input type="checkbox" id="cbx_chkAll" onclick="seletAll()"></td>
 		</tr>
 	</thead>
 	<tbody>
@@ -133,6 +135,12 @@
 				</c:choose>
 				<font color="${color }"><b>${model.AUTH}</b></font>
 			</td>
+				<c:if test="${model.UI_ALIMYN eq 'Y'}">
+				<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${model.UI_KEYNO}" onChange="checkcheck(this.value)" checked></td>
+				</c:if>
+				<c:if test="${model.UI_ALIMYN eq 'N'}">
+				<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${model.UI_KEYNO}" onChange="checkcheck(this.value)"></td>
+				</c:if>				
 		</tr>
 		</c:forEach>
 	</tbody>

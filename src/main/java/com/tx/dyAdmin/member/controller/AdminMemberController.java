@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +42,7 @@ import com.tx.dyAdmin.member.dto.UserSettingDTO;
 import com.tx.dyAdmin.program.application.dto.ApplicationDTO;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import javaxt.utils.Array;
 
 @Controller
 public class AdminMemberController {
@@ -568,7 +570,98 @@ public class AdminMemberController {
 		mv.addObject("authList",Component.getListNoParam("Authority.UIA_GetList_kakao"));
 		mv.addObject("kakao",Component.getListNoParam("main.Kakaotalk"));
 		return mv;
+	}
+	
+	
+	/**
+	 * 카카오톡 예약 전송
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dyAdmin/person/ailim.do")
+	public String AlimTalkSend(HttpServletRequest req
+			,@ModelAttribute UserDTO UserDTO
+			,@RequestParam(value="chkvalue",defaultValue="") String UI_KEYNO
+			) throws Exception {
+		
+		String[] list = UI_KEYNO.split(",");
+		
+		
+		String msg = "";
+		for(int i = 0; i<list.length; i++) {
+			Component.updateData("member.ALimTalkUD", list[i]);
+			msg = "카카오톡 알림은 매일 오후 9시에 전송 됩니다.";
+		}
+		
+		
+		return msg;
 	}	
+	
+	
+	/**
+	 * 카카오톡 전송 여부 check N
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dyAdmin/person/ailimcancle.do")
+	public String AlimTalkCancle(HttpServletRequest req
+			,@ModelAttribute UserDTO UserDTO
+			,@RequestParam(value="UI_KEYNO",defaultValue="") String UI_KEYNO
+			) throws Exception {
+		
+		String[] list = UI_KEYNO.split(",");
+		
+		
+		String msg = "";
+		for(int i = 0; i<list.length; i++) {
+			Component.updateData("member.updateN", list[i]);
+			msg = "알림 전송 예약이 취소되었습니다.";
+		}
+		
+		
+		return msg;
+	}
+	
+	/**
+	 * 카카오톡 전송 여부 check Y
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dyAdmin/person/sendchk.do")
+	public String AlimTalkCheck(HttpServletRequest req
+			,@ModelAttribute UserDTO UserDTO
+			,@RequestParam(value="UI_KEYNO",defaultValue="") String UI_KEYNO
+			) throws Exception {
+		
+		String[] list = UI_KEYNO.split(",");
+		
+		
+		String msg = "";
+		for(int i = 0; i<list.length; i++) {
+			Component.updateData("member.ALimTalkUD", list[i]);
+			msg = "알림 전송 예약이 취소되었습니다.";
+		}
+		
+		
+		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/dyAdmin/person/AlimSelect.do")
+	public List AlimTalkSelect(HttpServletRequest req
+			,@ModelAttribute UserDTO UserDTO
+			,@RequestParam(value="UI_KEYNO",defaultValue="") String UI_KEYNO
+			) throws Exception {
+		
+		String[] list = UI_KEYNO.split(",");
+		List userlist = null;
+		
+		for(int i = 0; i<list.length; i++) {
+//			map.put("list", Component.getData("member.AlimInfoSelect", list[i]));
+			List<UserDTO> list2 = Component.getList("member.AlimInfoSelect", list[i]);
+			userlist = list2;
+		}
+		
+		
+		return userlist;
+	}
 }
 
 

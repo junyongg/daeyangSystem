@@ -95,6 +95,7 @@ width : 80px;
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="22"  ${search.orderCondition eq '22'? 'selected':'' }  onclick = "pf_searchDate(this.value)">10월</button>
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="23"  ${search.orderCondition eq '23'? 'selected':'' }  onclick = "pf_searchDate(this.value)">11월</button>
 										<button type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value ="24"  ${search.orderCondition eq '24'? 'selected':'' }  onclick = "pf_searchDate(this.value)">12월</button>
+										<button style ="width : 100px;"type="button" class="btn btn-sm btn-default" name="mon01" id="mon01" value =""    onclick = "sendstatus()">전송 상태 확인</button>
 							          
 						</div>
 						<div class="table-responsive">
@@ -125,5 +126,20 @@ renderCalender(thisMonth); });
 // 다음달로 이동 
 $('.go-next').on('click', function() { thisMonth = new Date(currentYear+1, currentMonth, 1); 
 renderCalender(thisMonth); });
+
+function sendstatus() {
+	 $.ajax({
+			type: "POST",
+			url: "/billsResultTest.do",
+			async: false,
+			data: $('#Form').serializeArray(),
+			success : function(data){
+				location.reload();
+			}, 
+			error: function(){
+				
+			}
+	}); 
+}
 
 </script>

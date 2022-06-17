@@ -193,18 +193,25 @@ public class RestApiTest {
 		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect",dbp_keyno);
 		String codeStr = "";
 		if(code == null) { 
-            String code1 =  map.get("dbp_co_num").toString().substring(3,6);
+            String code1 =  map.get("dbp_co_num").toString().substring(4,7);
 			String codeapi = map.get("dbp_apikey").toString();
             String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 			codeStr = code1+code2+"1";
 
 		 }else { 
-			 	codeStr = code.get("dbl_homeid").toString();
-			 	String codenum = codeStr.substring(7,codeStr.length());
-			 	int tempc = Integer.parseInt(codenum) + 1 ;
-                String code1 =  map.get("dbp_co_num").toString().substring(3,6);
+//			 	codeStr = code.get("dbl_homeid").toString();
+//			 	String codenum = codeStr.substring(7,codeStr.length());
+//			 	int tempc = Integer.parseInt(codenum) + 1 ;
+//                String code1 =  map.get("dbp_co_num").toString().substring(3,6);
+//				String codeapi = map.get("dbp_apikey").toString();
+//                String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
+//				codeStr = code1+code2+tempc;
+				codeStr = code.get("dbl_homeid").toString();
+				String codenum = codeStr.substring(7,codeStr.length());
+				int tempc = Integer.parseInt(codenum) + 1 ;
+				String code1 =  map.get("dbp_co_num").toString().substring(4,7);
 				String codeapi = map.get("dbp_apikey").toString();
-                String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
+				String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
 	
 
@@ -446,12 +453,12 @@ public class RestApiTest {
 			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
-			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
-				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
 			
@@ -908,9 +915,10 @@ public class RestApiTest {
 	
 	//전송결과 확인
 	@RequestMapping("/billsResultTest.do")
-	public void billsResultTest(HttpServletRequest req) throws Exception {
+	@ResponseBody
+	public String billsResultTest(HttpServletRequest req) throws Exception {
 		
-		
+		String msg2 = "";
 		
 		List<billDTO> result = Component.getListNoParam("bills.LogResultNeedData");
 		
@@ -938,7 +946,6 @@ public class RestApiTest {
 
 			if(restapi.equals("fail")) {
 				System.out.println("https://www.hometaxbill.com:8084/homtax/getpkey 서버에 문제가 발생했습니다.");
-				return;
 			}
 			
 			// Api에서 리턴받은 값으로 예외처리 및 출력
@@ -978,6 +985,6 @@ public class RestApiTest {
 			r.setDbl_checkYN(chYn);
 			Component.updateData("bills.ChangeLogmsg", r);
 		}
-
+		return msg2;
 	}
 }

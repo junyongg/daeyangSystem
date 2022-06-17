@@ -193,7 +193,7 @@ public class RestApiTest {
 		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect",dbp_keyno);
 		String codeStr = "";
 		if(code == null) { 
-            String code1 =  map.get("dbp_co_num").toString().substring(4,7);
+            String code1 =  map.get("dbp_co_num").toString().substring(3,6);
 			String codeapi = map.get("dbp_apikey").toString();
             String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 			codeStr = code1+code2+"1";
@@ -447,12 +447,12 @@ public class RestApiTest {
 			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
-//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
 			

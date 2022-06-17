@@ -879,10 +879,12 @@
 	
 	<!-- 	전송 결과값을 위한 쿼리 -->
 	<select id="LogResultNeedData" resultType="billDTO">
-		select a.dbl_keyno , b.dbp_id , b.dbp_pass , b.dbp_apikey , a.dbl_homeid ,b.dbp_name
+		select a.dbl_keyno , b.dbp_id , b.dbp_pass , b.dbp_apikey , a.dbl_homeid ,b.dbp_name, a.dbl_s_name
 		from dy_bills_log a
 		left join dy_bills_provider b
-		on a.dbl_provider_key  = b.dbp_keyno 
+		on a.dbl_provider_key  = b.dbp_keyno
+		where dbl_status = 0
+		or dbl_status = -1
 	</select>
 	
 	<update id="ChangeLogmsg" parameterType="billDTO">

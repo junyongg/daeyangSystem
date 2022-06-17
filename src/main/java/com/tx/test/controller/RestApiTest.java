@@ -199,20 +199,14 @@ public class RestApiTest {
 			codeStr = code1+code2+"1";
 
 		 }else { 
-//			 	codeStr = code.get("dbl_homeid").toString();
-//			 	String codenum = codeStr.substring(7,codeStr.length());
-//			 	int tempc = Integer.parseInt(codenum) + 1 ;
-//                String code1 =  map.get("dbp_co_num").toString().substring(3,6);
-//				String codeapi = map.get("dbp_apikey").toString();
-//                String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
-//				codeStr = code1+code2+tempc;
-				codeStr = code.get("dbl_homeid").toString();
-				String codenum = codeStr.substring(7,codeStr.length());
-				int tempc = Integer.parseInt(codenum) + 1 ;
-				String code1 =  map.get("dbp_co_num").toString().substring(4,7);
+			 	codeStr = code.get("dbl_homeid").toString();
+			 	String codenum = codeStr.substring(7,codeStr.length());
+			 	int tempc = Integer.parseInt(codenum) + 1 ;
+                String code1 =  map.get("dbp_co_num").toString().substring(3,6);
 				String codeapi = map.get("dbp_apikey").toString();
-				String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
+                String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
+
 	
 
 

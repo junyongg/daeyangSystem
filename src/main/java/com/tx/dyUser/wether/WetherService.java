@@ -337,6 +337,7 @@ public class WetherService {
 		   else if(region.equals("세종")) {nx="67"; ny="104";}
 		   else if(region.equals("영암")) {nx="55"; ny="68";}
 		   else if(region.equals("김제")) {nx="61"; ny="88";}
+
 		   
 			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
 					+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
@@ -455,7 +456,7 @@ public class WetherService {
 					list.add(getTagValue("sunrise", eElement));
 					list.add(getTagValue("sunset", eElement));
 				}	
-			}	
+			}
 			return list;
 		   }
 		   

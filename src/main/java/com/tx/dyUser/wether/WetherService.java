@@ -336,6 +336,7 @@ public class WetherService {
 		   else if(region.equals("화성")) {nx="59"; ny="120";}
 		   else if(region.equals("세종")) {nx="67"; ny="104";}
 		   else if(region.equals("영암")) {nx="55"; ny="68";}
+		   else if(region.equals("김제")) {nx="61"; ny="88";}
 		   
 			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
 					+ "serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D"
@@ -431,6 +432,7 @@ public class WetherService {
 		   if(region.equals("화성")) area = URLEncoder.encode("화성", "utf-8");
 		   if(region.equals("세종")) area = URLEncoder.encode("세종", "utf-8");
 		   if(region.equals("영암")) area = URLEncoder.encode("목포", "utf-8");
+		   if(region.equals("김제")) area = URLEncoder.encode("부안", "utf-8");
 
 		   String urlstr = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo?serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D&locdate="+dates+"&location="+area;
 		   

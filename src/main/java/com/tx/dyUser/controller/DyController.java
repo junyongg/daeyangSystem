@@ -123,7 +123,7 @@ public class DyController {
 	   
 	   //단일 데이터 (금일, 전일, 현재발전, 설치용량)
 	   type.put("type",keyno);
-//	   premap.put("keyno",keyno);
+	   premap.put("keyno",keyno);
 	   
 	   String sql = "main.select_MainData";
 	   //삼환관리자 처리부분
@@ -133,10 +133,11 @@ public class DyController {
 	   
 	   HashMap<String,Object> ob =  Component.getData(sql,type);
 	   String area = ob.get("DPP_AREA").toString(); //지역
-//	   premap.put("area",area);
-//	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
-//	   
-//	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
+	   
+	   premap.put("area",area);
+	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
+	   
+	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
 	   
 	   
 	   mv.addObject("detail_Data",ob);
@@ -1187,7 +1188,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {
@@ -1202,7 +1203,7 @@ public class DyController {
    
 
    /**
-   * @return 날씨 등록 테스트
+   * @return
    */
   @RequestMapping("/testxlsx.do")
   public void testxlsx(HttpServletRequest req) throws Exception{
@@ -1360,7 +1361,7 @@ public class DyController {
 //		
 //		for(HashMap<String,Object> l : list) {
 //			
-//			for (int i=1; i>0; i--) {
+//			for (int i=2; i>0; i--) {
 //				HashMap<String,Object> map = new HashMap<String, Object>();
 //				
 //				String keyno = l.get("DPP_KEYNO").toString();
@@ -1383,25 +1384,54 @@ public class DyController {
    
    
    
-  /* @RequestMapping("/allimTalkSend.do")
-   @ResponseBody
-   public String allimTalkSend(HttpServletRequest req) throws Exception{
+//   @RequestMapping("/allimTalkSend.do")
+//   @ResponseBody
+//   public void allimTalkSend(HttpServletRequest req) throws Exception{
    	
-   	String msg = "성공";
-   	
-   	//토큰받기
-   	String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-   	tocken = URLEncoder.encode(tocken, "UTF-8");
-   	
-   	//리스트 뽑기 - 현재 게시물 알림은 index=1
-   	JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
-   	JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
-   	jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
-   	
-   	//받은 토큰으로 알림톡 전송		
-//   	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
-   	
-   	return msg;
-   }*/
+//   	String msg = "성공";
+//   	
+//   	//토큰받기
+//   	String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+//   	tocken = URLEncoder.encode(tocken, "UTF-8");
+//   	
+//   	//리스트 뽑기 - 현재 게시물 알림은 index=1
+//   	JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+//   	JSONArray jsonObj_a = (JSONArray) jsonObj.get("list");
+//   	jsonObj = (JSONObject) jsonObj_a.get(1); //발전소 게시물 확인
+//   	
+//   	//받은 토큰으로 알림톡 전송		
+////   	requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,"");
+//   	
+//   	return msg;
+	   
+	   
+//	   try {
+//			List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+//			
+//			for(HashMap<String,Object> l : list) {
+//				
+//				
+//				HashMap<String,Object> map = new HashMap<String, Object>();
+//				
+//				String keyno = l.get("DPP_KEYNO").toString();
+//				
+//				Component.deleteData("main.deleteMain",keyno);
+//				
+//				List<String> slist = Component.getList("main.recent_date", keyno);
+//				
+//				if(slist != null && slist.size() > 0) {
+//					map.put("list", slist);
+//					map.put("keyno", keyno);
+//					
+//					Component.deleteData("main.deleteToday", map);
+//				}
+//				
+//				
+//			}
+//		}catch (Exception e) {
+//			System.out.println(e);
+//		}
+//	   
+//   }
    
 }

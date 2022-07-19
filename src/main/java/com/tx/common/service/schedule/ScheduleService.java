@@ -169,15 +169,15 @@ public class ScheduleService {
 	
 	//오후 7시에 국세청 전송
 	@Scheduled(cron="0 0 19 * * ?")
-	@Transactional
 	public void senddelay() throws Exception {
 	  
 	  billDTO bill = new billDTO();
 	  
 	  List<HashMap<String,Object>> list = Component.getListNoParam("bills.status2select");
 	  
-	      for(HashMap<String,Object> l : list) {
-	     
+	  if (list != null ) {
+		  for(HashMap<String,Object> l : list) {
+			     
 	    	  String keyno = l.get("dbl_keyno").toString();
 	 
 	    	  Component.updateData("bills.checkYN", keyno);
@@ -185,6 +185,7 @@ public class ScheduleService {
 	    	  bill = Component.getData("bills.selectAllView", keyno);
 	     
 	     sendApi(bill);
+		  }
 	  }
 	}
 	   

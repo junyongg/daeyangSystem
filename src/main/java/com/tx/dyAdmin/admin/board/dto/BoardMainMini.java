@@ -6,7 +6,7 @@ import lombok.Data;
  * @BoardMainMini
  * 메인미니게시판의 컬럼정보관리를 담당한다.
  * 
- * @author 주지은
+ * @author chul
  * @version 1.0
  * @since 2019-05-16
  */ 

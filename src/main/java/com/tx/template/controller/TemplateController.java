@@ -1,10 +1,7 @@
 package com.tx.template.controller;
 
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ibatis.common.logging.Log;
 import com.tx.common.config.SettingData;
 import com.tx.common.config.annotation.CheckActivityHistory;
 import com.tx.common.dto.TilesDTO;
@@ -50,7 +46,6 @@ public class TemplateController {
 			, @RequestParam(value="inverter", defaultValue="all")String inverter
 			) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		HashMap<String, Object> map = new HashMap<String, Object>();
 
 		if("user".equals(tiles)){
 			tiles = new TilesDTO().checkNull(null, req);

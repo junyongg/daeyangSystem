@@ -24,14 +24,13 @@ import com.tx.common.service.publish.CommonPublishService;
 import com.tx.common.storage.service.StorageSelectorService;
 import com.tx.dyAdmin.admin.board.dto.BoardColumn;
 import com.tx.dyAdmin.admin.board.dto.BoardMainMini;
-import com.tx.dyAdmin.homepage.menu.dto.MenuHeaderTemplate;
 import com.tx.dyAdmin.homepage.popupzone.dto.PopupZoneCategoryDTO;
 
 /**
  * 
  * @FileName: CommonPublishController.java
  * @Date    : 2019. 06. 10. 
- * @Author  : 주지은	
+ * @Author  : chul	
  * @Version : 1.0
  */
 @Controller

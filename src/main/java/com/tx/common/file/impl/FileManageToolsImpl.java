@@ -21,7 +21,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
  * @FileManageTools
  * @Service : FileManageTools
  * 파일 생성 및 삭제 관리 하는 툴 클래스 
- * @author 주지은
+ * @author chul
  * @version 1.0
  * @since 2019-06-05
  */

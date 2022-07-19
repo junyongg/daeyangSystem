@@ -431,18 +431,27 @@
                             		<tr>
     	                                <td>
     	                                	[${ob.DPP_AREA }]
-    	                                	<c:if test="${ob.DPP_KEYNO eq '51' }">
-    	                                		<c:if test="${status.index == 0}">
-    	                                			푸른 태양광 발전소| 인버터 1호
-    	                                		</c:if>
-    	                                		<c:if test="${status.index == 1}">
-    	                                			하늘 태양광 발전소| 인버터 1호
-    	                                		</c:if>
-    	                                	</c:if>
-    	                                	<c:if test="${ob.DPP_KEYNO ne '51' }">
-    	                                		${ob.DPP_NAME }| ${model.DI_NAME }
-    	                                	</c:if>
-    	                                	
+    	                                	<c:choose>
+    	                                		<c:when test="${ob.DPP_KEYNO eq '51' }">
+	    	                                		<c:if test="${status.index == 0}">
+	    	                                			푸른 태양광 발전소| 인버터 1호
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 1}">
+	    	                                			하늘 태양광 발전소| 인버터 1호
+	    	                                		</c:if>
+    	                                		</c:when>
+    	                                		<c:when test="${ob.DPP_KEYNO eq '56' }">
+	    	                                		<c:if test="${status.index == 0}">
+	    	                                			하랑 태양광 2호| 인버터 1호
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 1}">
+	    	                                			하랑 태양광 3호| 인버터 1호
+	    	                                		</c:if>
+    	                                		</c:when>
+    	                                		<c:otherwise>
+    	                                			${ob.DPP_NAME }| ${model.DI_NAME }
+    	                                		</c:otherwise>
+    	                                	</c:choose>
     	                                </td>
         	                            <td>${not empty model.Active_Power?model.Active_Power:0 }</td>
             	                        <td><span class="check_c ${type }"></span></td>

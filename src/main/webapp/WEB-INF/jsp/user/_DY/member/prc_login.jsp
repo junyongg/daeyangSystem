@@ -16,7 +16,6 @@
             <p class="log"><input type="text" class="log_txt id" placeholder="ID(아이디)" name="UI_ID" id="UI_IDs" ></p>
             <p class="log"><input type="password" class="log_txt pwd" placeholder="PW(비밀번호)" name="UI_PASSWORD" id="UI_PASSWORD" autocomplete="off"></p>
             <input type="checkbox" id="idSave" /> <label for="idSave">아이디저장</label>
-            <p class="samllChar" style="margin-top: 15px; color: red;">${customExceptionmsg}</p>
             <button type="submit" class="btn_login" id="login_button" onclick="validateLoginForm(); return false;" >로그인</button>
     </section>
 </div>  
@@ -29,9 +28,9 @@
 
 
 //화면 호출시 가장 먼저 호출되는 부분 
-$(document).ready(function() {
- 		var location_origin = location.origin;
-});
+// $(document).ready(function() {
+//  		var location_origin = location.origin;
+// });
 
 
 

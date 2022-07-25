@@ -94,7 +94,7 @@ function sendkakao() {
 	
 	$.ajax({
 		type : "post",
-		url : "/userkakakoAjax.do",
+		url : "/sendMessage.do",
 		data: $('#Form').serializeArray(),
 		success: function(data){
 // 			alert(data)

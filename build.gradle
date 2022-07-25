@@ -111,6 +111,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.itextpdf/itext7-core
 	
 	
+	// MultipartEntityBuilder (문자 api연동시 필요한 선언)
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+	implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.13'
 	
 	
 	

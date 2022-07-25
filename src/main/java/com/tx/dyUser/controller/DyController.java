@@ -2,6 +2,7 @@ package com.tx.dyUser.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.extractor.ExcelExtractor;
@@ -32,6 +35,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -1353,34 +1357,68 @@ public class DyController {
    }
    
    
-//   @RequestMapping("/ttest.do")
-//   @Transactional
-//   public void ttest(HttpServletRequest req) throws Exception{
-//	
-//	   List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
-//		
-//		for(HashMap<String,Object> l : list) {
-//			
-//			for (int i=2; i>0; i--) {
-//				HashMap<String,Object> map = new HashMap<String, Object>();
-//				
-//				String keyno = l.get("DPP_KEYNO").toString();
-//				
-//				map.put("day", i);
-//				map.put("keyno", keyno);
-//				
-//				Component.deleteData("ttest.deleteMain",map);
-//				
-//				List<String> slist = Component.getList("ttest.recent_date", map);
-//				
-//				map.put("list", slist);
-//				if(slist.size() > 0) {
-//					Component.deleteData("ttest.deleteToday", map);
-//				}
-//			}
-//		}
-//   }
+   @RequestMapping("/ttest.do")
+   @Transactional
+   public void ttest(HttpServletRequest req) throws Exception{
+	
+	   List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+		
+		for(HashMap<String,Object> l : list) {
+			
+			for (int i=5; i>0; i--) {
+				HashMap<String,Object> map = new HashMap<String, Object>();
+				
+				String keyno = l.get("DPP_KEYNO").toString();
+				
+				map.put("day", i);
+				map.put("keyno", keyno);
+				
+				Component.deleteData("ttest.deleteMain",map);
+				
+				List<String> slist = Component.getList("ttest.recent_date", map);
+				
+				map.put("list", slist);
+				if(slist.size() > 0) {
+					Component.deleteData("ttest.deleteToday", map);
+				}
+			}
+		}
+   }
    
+   
+   @RequestMapping(value="/imageCreate.do")
+   @ResponseBody
+   public ModelMap ImgSaveTest(@RequestParam HashMap<Object, Object> param, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+		ModelMap map = new ModelMap();
+		
+		String binaryData = request.getParameter("imgSrc");
+		FileOutputStream stream = null;
+		try{
+			System.out.println("binary file   "  + binaryData);
+			if(binaryData == null || binaryData.trim().equals("")) {
+			    throw new Exception();
+			}
+			binaryData = binaryData.replaceAll("data:image/png;base64,", "");
+			byte[] file = Base64.decodeBase64(binaryData);
+			String fileName=  UUID.randomUUID().toString();
+			
+			stream = new FileOutputStream("D:/"+fileName+".png");
+			stream.write(file);
+			stream.close();
+			System.out.println("캡처 저장");
+		    
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("에러 발생");
+		}finally{
+			if(stream != null) {
+				stream.close();
+			}
+		}
+		
+		map.addAttribute("resultMap", "");
+		return map;
+	}
    
    
    

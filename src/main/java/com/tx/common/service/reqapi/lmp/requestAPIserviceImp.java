@@ -2,15 +2,28 @@ package com.tx.common.service.reqapi.lmp;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.HttpClients;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -176,5 +189,74 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 	    
 	}
 	
+	public void sendMessage(String userid, String api, String destination, String receiver ,String msg) throws Exception{
+		try 
+		{
+			String sms_url = "https://apis.aligo.in/send/";
+			Map<String, String> sms = new HashMap<String, String>();			
+			
+			sms.put("user_id", userid); // SMS 아이디
+			sms.put("key", api); //인증키
+			
+			/******************** 전송정보 ********************/
+			sms.put("msg", msg); // 메세지 내용
+			sms.put("receiver", receiver); // 수신번호
+			sms.put("destination", destination); // 수신인 %고객명% 치환
+			sms.put("sender", ""); // 발신번호
+			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
+			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
+			sms.put("testmode_yn", "N"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
+			sms.put("title", "제목입력"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+			
+			String image = "";
+			//image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
+			
+			/******************** 전송정보 ********************/
+	
+			
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			
+			builder.setBoundary("____boundary____");
+			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+			builder.setCharset(Charset.forName("utf-8"));
+			
+			for(Iterator<String> i = sms.keySet().iterator(); i.hasNext();){
+				String key = i.next();
+				builder.addTextBody(key, sms.get(key)
+						, ContentType.create("Multipart/related", "utf-8"));
+			}
+			
+			File imageFile = new File(image);
+			if(image!=null && image.length()>0 && imageFile.exists()){
+		
+				builder.addPart("image",
+						new FileBody(imageFile, ContentType.create("application/octet-stream"),
+								URLEncoder.encode(imageFile.getName(), "utf-8")));
+			}
+			
+			HttpEntity entity = builder.build();
+			
+			HttpClient client = HttpClients.createDefault();
+			HttpPost post = new HttpPost(sms_url);
+			post.setEntity(entity);
+			
+			HttpResponse res = client.execute(post);
+			
+			String result = "";
+			if(res != null){
+				BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), "utf-8"));
+				String buffer = null;
+				while((buffer = in.readLine())!=null){
+					result += buffer;
+				}
+				in.close();
+			}
+			
+			System.out.println(result);
+		
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
 	
 }

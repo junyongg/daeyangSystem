@@ -12,4 +12,7 @@ public interface requestAPIservice {
 	
 	//알림톡 전송
 	public void KakaoAllimTalkSend(String apikey, String userid,  String sendkey ,String token, JSONObject jsonObj, String contents,String phone,String Sendurl ) throws Exception;
+	
+	//문자 전송
+	public void sendMessage(String userid, String api, String destination, String receiver ,String msg) throws Exception;
 }

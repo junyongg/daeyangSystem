@@ -336,9 +336,11 @@ public class WetherService {
 		   else if(region.equals("화성")) {nx="59"; ny="120";}
 		   else if(region.equals("세종")) {nx="67"; ny="104";}
 		   else if(region.equals("영암")) {nx="55"; ny="68";}
-		   else if(region.equals("김제")) {nx="61"; ny="88";}
-		   else if(region.equals("남원")) {nx="68	"; ny="80";}
+		   else if(region.equals("김제")) {nx="59"; ny="88";}
 		   else if(region.equals("곡성")) {nx="66"; ny="77";}
+		   else if(region.equals("남원")) {nx="68"; ny="80";}
+		   
+		 
 
 		   
 			String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"

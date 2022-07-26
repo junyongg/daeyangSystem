@@ -1,9 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
+
+<script src="/resources/common/js/html2canvas.js"></script>
+
 <form:form action="/dy/moniter/general.do" method="POST" id="Form">
+
 <input type="hidden" name="keyno" value="${DPP_KEYNO }" id="keyno">
 <!-- COMTAINER -->
+
+
+<button type="button" id="capture" onclick="">캡처</button>
+
 <div id="container" class="heightFix2">
     
     <div class="flex_wrapper">
@@ -966,5 +974,35 @@ function chartOption(v1, v2, s1){
 		 	
 }
 
+$("#capture").on("click", function() {
+	sreenShot($("#container"));
+});
+
+function sreenShot(target) {
+	console.log(target);
+	if (target != null && target.length > 0) {
+		var t = target[0];
+		console.log(t);
+		html2canvas(t).then(function(canvas) {
+			var myImg = canvas.toDataURL("image/png");
+			myImg = myImg.replace("data:image/png;base64,", "");
+
+			$.ajax({
+				type : "POST",
+				data : {
+					"imgSrc" : myImg
+				},
+				dataType : "text",
+				url : "/imageCreate.do",
+				success : function(data) {
+					console.log(data);
+				},
+				error : function(a, b, c) {
+					alert("error");
+				}
+			});
+		});
+	}
+}
 
 </script>

@@ -580,22 +580,22 @@ public class RestApiTest {
 		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
 		//공급자 공급받는자 등록 확인 	
-			if(keyno != null && keyno != "") {	
-				
-				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
-				String chkYN = Component.getData("bills.checkYNselect", keyno);
-				
-				if(chkYN.equals("Y")) {
-					msg = "1";
-				}else if(chkYN.equals("N")) {
-					msg = keyno;	
-				}	 
-			}else {
+//			if(keyno != null && keyno != "") {
+//				
+//				msg = keyno;	
+//				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+//				String chkYN = Component.getData("bills.checkYNselect", keyno);
+//				
+//				if(chkYN.equals("Y")) {
+//					msg = "1";
+//				}else if(chkYN.equals("N")) {
+//				}	 
+//			}else {
 				 Component.createData("bills.subkey1Insert", bill);
 				 Component.updateData("bills.registNumberUpdate", bill);
 				 Component.createData("bills.billsInfoInsert", bill);
 				 msg = "저장 완료";
-		 }
+//		 }
 
 
 		return msg;
@@ -610,22 +610,23 @@ public class RestApiTest {
 		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
 		//공급자 공급받는자 등록 확인 	
-			if(keyno != null && keyno != "") {	
+//			if(keyno != null && keyno != "") {	
+//				
+//				msg = keyno;
 				
-				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
-				String chkYN = Component.getData("bills.checkYNselect", keyno);
-				
-				if(chkYN.equals("Y")) {
-					msg = "1";
-				}else if(chkYN.equals("N")) {
-					msg = keyno;	
-				}	 
-			}else {
+//				//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+//				String chkYN = Component.getData("bills.checkYNselect", keyno);
+//				
+//				if(chkYN.equals("Y")) {
+//					msg = "1";
+//				}else if(chkYN.equals("N")) {
+//				}	 
+//			}else {
 				 Component.createData("bills.subkey2Insert", bill);
 				 Component.updateData("bills.registNumberUpdate", bill);
 				 Component.createData("bills.billsInfoInsert", bill);
 				 msg = "저장 완료";
-		 }
+//		 }
 
 
 		return msg;
@@ -641,22 +642,23 @@ public class RestApiTest {
 		
 		
 		//공급자 공급받는자 등록 확인 	
-		if(keyno != null && keyno != "") {	
-			
-			//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
-			String chkYN = Component.getData("bills.checkYNselect", keyno);
-			
-			if(chkYN.equals("Y")) {
-				msg = "1";
-			}else if(chkYN.equals("N")) {
-				msg = keyno;	
-			}	 
-		 }else{
+//		if(keyno != null && keyno != "") {
+//			
+//			msg = keyno;	
+//			//공급자 공급받는자 중복된 것중 국세청 전송여부 확인
+//			String chkYN = Component.getData("bills.checkYNselect", keyno);
+//			
+//			if(chkYN.equals("Y")) {
+//				msg = "1";
+//			}else if(chkYN.equals("N")) {
+//				
+//			}	 
+//		 }else{
 			Component.createData("bills.subkey3Insert", bill);
 			Component.updateData("bills.registNumberUpdate", bill);
 			Component.createData("bills.billsInfoInsert", bill);
 			msg = "저장 완료";
-		 }
+//		 }
 
 
 		return msg;

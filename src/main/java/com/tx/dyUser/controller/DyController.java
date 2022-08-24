@@ -198,6 +198,14 @@ public class DyController {
 	   //알림테이블 부분
 	   mv.addObject("ResultList",Component.getList("main.select_errorData", keyno));
 	   
+	   if(area.equals("나주")) {
+		   mv.addObject("area",area);
+		   mv.addObject("SensorData",Component.getListNoParam("main.sensorData"));
+	   }
+	   
+	   
+	   
+	   
 	   return mv;
    }
    
@@ -1230,7 +1238,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {
@@ -1403,7 +1411,7 @@ public class DyController {
 		
 		for(HashMap<String,Object> l : list) {
 			
-			for (int i=5; i>0; i--) {
+			for (int i=100; i>0; i--) {
 				HashMap<String,Object> map = new HashMap<String, Object>();
 				
 				String keyno = l.get("DPP_KEYNO").toString();

@@ -58,9 +58,9 @@
 	    <csrf/>
   	</http>
 	
-	
+	<!-- 여기 로그인 정보 저장 하는 곳 -->
 	<beans:bean id="rememberMeServices" class="com.tx.common.security.rememberMe.CustomTokenBasedRememberMeServices" >
-	    <beans:constructor-arg index="0" value="CTCMS-REMEMBER-ME"/>
+	    <beans:constructor-arg index="0" value="REMEMBER-ME"/>
 	    <beans:constructor-arg index="1" ref="customUserDetailsService"/>
 	    <beans:property name="tokenValiditySeconds" value="864000"/>
 	    <beans:property name="cookieName" value="SPRING_RM"/>

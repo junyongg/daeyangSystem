@@ -10,8 +10,6 @@
 <!-- COMTAINER -->
 
 
-<button type="button" id="capture" onclick="">캡처</button>
-
 <div id="container" class="heightFix2">
     
     <div class="flex_wrapper">

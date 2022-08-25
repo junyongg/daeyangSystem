@@ -198,10 +198,10 @@ public class DyController {
 	   //알림테이블 부분
 	   mv.addObject("ResultList",Component.getList("main.select_errorData", keyno));
 	   
-	   if(area.equals("나주")) {
-		   mv.addObject("area",area);
-		   mv.addObject("SensorData",Component.getListNoParam("main.sensorData"));
-	   }
+//	   if(area.equals("나주")) {
+//		   mv.addObject("area",area);
+//		   mv.addObject("SensorData",Component.getListNoParam("main.sensorData"));
+//	   }
 	   
 	   
 	   

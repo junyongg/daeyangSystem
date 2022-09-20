@@ -914,5 +914,18 @@
 			limit 5
 	</select>
 	
+	<!-- 온습도 센서값 -->
+	<select id="sensorData" resultType="hashmap">
+			SELECT * , date_format(insert_date,'%Y-%m-%d %H:00') as datetimes
+			FROM sensortable
+			order by insert_date desc
+	</select>
+	
+	
+	<select id="pospump_data" resultType="hashmap">
+		SELECT * FROM korea_pospump_data 
+		ORDER BY kpd_conn DESC
+		LIMIT 5
+	</select>
 	
 </mapper>

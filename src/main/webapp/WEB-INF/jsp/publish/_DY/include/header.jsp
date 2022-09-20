@@ -12,6 +12,7 @@
                 <li class="${currentMenu.MN_NAME eq '발전 현황' ? 'on':''}"><a href="/dy/moniter/general.do">발전현황</a></li>
                 <li class="${currentMenu.MN_NAME eq '통계 분석' ? 'on':''}"><a href="/dy/moniter/stastics.do">통계분석</a></li>
                 <li  class="${currentMenu.MN_NAME eq '안전 관리' ? 'on':''}"><a href="/dy/moniter/safe.do">게시판</a></li>
+                <li class="${currentMenu.MN_NAME eq '파일관리' ? 'on':''}"><a href="/dy/moniter/filedown.do">파일관리</a></li>
                 <li class="${currentMenu.MN_NAME eq '설정' ? 'on':''}"><a href="/dy/moniter/setting.do">설정</a></li>
                 <li class="mobile"><a href="javascript:;" class="logout">Logout</a></li>
             </ul>

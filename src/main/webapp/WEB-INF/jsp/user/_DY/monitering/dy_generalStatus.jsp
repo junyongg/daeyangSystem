@@ -43,7 +43,42 @@
                 <h2 class="location">발전소 현장정보</h2>
 				
                 <div class="power_preview">
-                    <div class="imgs" id="map" style="height: 200px"></div> <!-- 카카오맵 -->
+                	<c:if test="${DPP_KEYNO eq '63' }">
+                		<table class="tbl_normal fixed">
+                            <colgroup>
+                                <col width="50">
+                                <!-- <col width="21%">
+                                <col width="21%">
+                                <col width="21%"> -->
+                                <col width="50%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>DateTime</th>
+                                    <!-- <th>Phase A Watts</th>
+                                    <th>Phase B Watts</th>
+                                    <th>Phase C Watts</th> -->
+                                    <th>3 Phase Watts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            		<c:forEach items="${pospump }" var="pos">
+                            			<tr>
+	                            			<td>${pos.kpd_conn }</td>
+	                            			<%-- <td><fmt:formatNumber value="${pos.kpd_data1/1000000}" pattern="0.0000"/></td>
+	                            			<td><fmt:formatNumber value="${pos.kpd_data2/1000000}" pattern="0.0000"/></td>
+	    	                                <td><fmt:formatNumber value="${pos.kpd_data3/1000000}" pattern="0.0000"/></td> --%>
+	        	                            <td><fmt:formatNumber value="${pos.kpd_data4/6553800.003051851}" pattern="0.0000"/></td>
+	        	                            <!-- 6,553,800.003051851  -->
+		                                </tr>
+                            		</c:forEach>
+                            		
+                            </tbody>
+                        </table>
+                	</c:if>
+                	<c:if test="${DPP_KEYNO ne '63' }">
+                		<div class="imgs" id="map" style="height: 200px"></div> <!-- 카카오맵 -->
+                	</c:if>
                 </div>
 
                 <p class="power_addr">${fn:substringAfter(ob.DPP_LOCATION,'//')} </p>
@@ -672,7 +707,9 @@
 
 <script>
 $(function(){
-	pf_setMap();
+	if ("${DPP_KEYNO}" != '63'){
+		pf_setMap();	
+	} 
  	ajaxData();
  	
  	//5분마다 F5
@@ -684,6 +721,7 @@ $(function(){
 
 function DPPDataAjax(keyno){
 	$("#keyno").val(keyno);
+	
 	$("#Form").submit();
 }
 

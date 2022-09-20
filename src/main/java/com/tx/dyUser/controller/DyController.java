@@ -359,6 +359,11 @@ public class DyController {
 		   mv.addObject("weather",weather);
 	   }
 	   mv.addObject("ob",ob);
+		 //추가 그런포스펌프 데이터 추출
+	   if(key.equals("63")) {
+		   mv.addObject("pospump",Component.getListNoParam("main.pospump_data") );
+	   }
+	   
 	   return mv;
    }
    

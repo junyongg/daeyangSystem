@@ -706,6 +706,7 @@
 			WHERE date_format(B.Conn_date, '%m-%d-%h') = date_format(now(),'%m-%d-%h')
 			) B
 		ON A.DPP_KEYNO = B.DP_KEYNO
+		WHERE A.DPP_STATUS = 'Y'
 		GROUP BY A.DPP_NAME
 	</select>
 	

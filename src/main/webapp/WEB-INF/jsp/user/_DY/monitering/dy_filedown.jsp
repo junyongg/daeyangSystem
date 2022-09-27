@@ -78,7 +78,7 @@
                     <caption>파일 등록</caption>
                     <tbody>
                         <tr>
-                            <th class="thClass">1. 발전사업허가증</th>
+                            <th class="thClass">1. 사업자등록증</th>
                             <td class="tdClass">
                             	<label class="buttonClass" for="file1"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
 	                            <input class="fileclass" type="file" id="file1" name="file" style="display: none;">
@@ -89,7 +89,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="thClass">2. 사업자등록증 사본</th>
+                            <th class="thClass">2. 발전사업허가증 </th>
                             <td class="tdClass">
 	                            <label class="buttonClass" for="file2"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
 	                            <input class="fileclass" type="file" id="file2" name="file" style="display: none;">
@@ -105,9 +105,163 @@
                             	<label class="buttonClass" for="file3"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
 	                            <input class="fileclass" type="file" id="file3" name="file" style="display: none;">
 	                            <span class="file-chosen" id="spans">
-		                            ${fn:length(RList) > 0 ? fn:substring(RList[2].FS_ORINM,0,13) : '파일없음'}. ${RList[0].FS_EXT }
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[2].FS_ORINM,0,13) : '파일없음'}. ${RList[2].FS_EXT }
 	                            </span>
 	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[2]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">4. 단선결선도</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file4"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file4" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[3].FS_ORINM,0,13) : '파일없음'}. ${RList[3].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[3]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">5. 모듈인증서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file5"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file5" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[4].FS_ORINM,0,13) : '파일없음'}. ${RList[4].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[4]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">6. 인버터인증서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file6"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file6" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[5].FS_ORINM,0,13) : '파일없음'}. ${RList[5].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[5]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">7. 토지대장 및 지적도</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file7"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file7" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[6].FS_ORINM,0,13) : '파일없음'}. ${RList[6].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[6]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">8. 도면</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file8"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file8" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[7].FS_ORINM,0,13) : '파일없음'}. ${RList[7].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[7]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">9. 토지등기부등본</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file9"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file9" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[8].FS_ORINM,0,13) : '파일없음'}. ${RList[8].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[8]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">10. 농영경영체등록 확인서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file10"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file10" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[9].FS_ORINM,0,13) : '파일없음'}. ${RList[9].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[9]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">11. 공사계획신고필증</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file11"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file11" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[10].FS_ORINM,0,13) : '파일없음'}. ${RList[10].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[10]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">12. 현장점검포</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file12"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file12" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[11].FS_ORINM,0,13) : '파일없음'}. ${RList[11].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[11]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">13. 접속반인증서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file13"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file13" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[12].FS_ORINM,0,13) : '파일없음'}. ${RList[12].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[12]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">14. 인발재하시험 및 지반조사보고서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file14"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file14" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[13].FS_ORINM,0,13) : '파일없음'}. ${RList[13].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[13]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">15. 구조검토서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file15"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file15" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[14].FS_ORINM,0,13) : '파일없음'}. ${RList[14].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[14]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">16. 준공검사신청서</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file16"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file16" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[15].FS_ORINM,0,13) : '파일없음'}. ${RList[15].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[15]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thClass">17. 개발행위허가증</th>
+                            <td class="tdClass">
+                            	<label class="buttonClass" for="file17"><i class="fa-solid fa-download" style="padding-right: 10px;"></i>등록</label>
+	                            <input class="fileclass" type="file" id="file17" name="file" style="display: none;">
+	                            <span class="file-chosen" id="spans">
+		                            ${fn:length(RList) > 0 ? fn:substring(RList[16].FS_ORINM,0,13) : '파일없음'}. ${RList[16].FS_EXT }
+	                            </span>
+	                            <button type="button" class="downClass" onclick="cf_download('${KeynoList[16]}')" style="display: ${fn:length(RList) > 0 ? 'block':'none'}">다운로드</button>
                             </td>
                         </tr>
                     </tbody>

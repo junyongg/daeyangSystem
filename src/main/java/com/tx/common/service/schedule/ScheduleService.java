@@ -55,7 +55,7 @@ public class ScheduleService {
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천"};
 	   
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
@@ -66,6 +66,50 @@ public class ScheduleService {
 		   WeatherOrganize(list);
 	   }
     }
+	
+	// 매시간 40분 마다 inverter값 들어오는지 체크
+	@Scheduled(cron="0 40 8-17 * * 1-5")
+	public void TimeDataInputCheck() throws Exception {
+		List<HashMap<String,Object>> list = Component.getListNoParam("main.DataInputCheck");
+		
+		for(HashMap<String,Object> l : list) {
+			String ch = l.get("checked").toString();
+			if(ch.equals("N")) { 
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("HH시 mm분");
+				Calendar c1 = Calendar.getInstance(); 
+				
+				String today = sdf.format(c1.getTime());
+				String dpName = l.get("DPP_NAME").toString();
+				String inverter = "인버터";  
+				String warn = "통신";
+				
+				String Contents = "현재 "+dpName+"의 "+inverter+"에서 "+today+"에 "+warn+"에 대한 에러가 발생했습니다."; 
+				
+				
+				//토큰받기
+				String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+				tocken = URLEncoder.encode(tocken, "UTF-8");
+		    	
+				//리스트 뽑기 - 현재 게시물 알림은 index=1
+				JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+				org.json.simple.JSONArray jsonObj_a = (org.json.simple.JSONArray) jsonObj.get("list");
+				jsonObj = (JSONObject) jsonObj_a.get(2); //발전소 게시물 확인
+
+		    	
+		    	//전송할 회원 리스트 - 관리자만
+		    	String [] ls = {"010-4531-3246","010-9860-1540"};
+				
+				for(String ll : ls) {
+					
+		    		String phone = ll.replace("-", "");
+		    		String url = "http://dymonitering.co.kr/";
+		    		//받은 토큰으로 알림톡 전송
+		    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,Contents,phone,url);
+		    	}
+			}
+		}
+	}
 	
 	//오전 8시 30분에 통신 체크 한번
 	@Scheduled(cron="0 0 9 * * ?")

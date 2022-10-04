@@ -46,30 +46,29 @@
                 	<c:if test="${DPP_KEYNO eq '63' }">
                 		<table class="tbl_normal fixed">
                             <colgroup>
-                                <col width="50">
+                                <col width="30">
                                 <!-- <col width="21%">
-                                <col width="21%">
                                 <col width="21%"> -->
-                                <col width="50%">
+                                <col width="30%">
+                                <col width="30%">
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>DateTime</th>
+                                    <th>날짜</th>
                                     <!-- <th>Phase A Watts</th>
-                                    <th>Phase B Watts</th>
-                                    <th>Phase C Watts</th> -->
-                                    <th>3 Phase Watts</th>
+                                    <th>Phase B Watts</th> -->
+                                    <th>소비 전력(KW)</th>
+                                    <th>잉여 전력(KW)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            		<c:forEach items="${pospump }" var="pos">
+                            		<c:forEach items="${pospump2 }" var="pos">
                             			<tr>
-	                            			<td>${pos.kpd_conn }</td>
+	                            			<td>${pos.kpd_Date }</td>
 	                            			<%-- <td><fmt:formatNumber value="${pos.kpd_data1/1000000}" pattern="0.0000"/></td>
-	                            			<td><fmt:formatNumber value="${pos.kpd_data2/1000000}" pattern="0.0000"/></td>
-	    	                                <td><fmt:formatNumber value="${pos.kpd_data3/1000000}" pattern="0.0000"/></td> --%>
-	        	                            <td><fmt:formatNumber value="${pos.kpd_data4/6553800.003051851}" pattern="0.0000"/></td>
-	        	                            <!-- 6,553,800.003051851  -->
+	                            			<td><fmt:formatNumber value="${pos.kpd_data2/1000000}" pattern="0.0000"/></td> --%>
+	    	                                <td><fmt:formatNumber value="${pos.a4}" pattern="0.000"/></td>
+	        	                            <td><fmt:formatNumber value="${pos.a5}" pattern="0.000"/></td>
 		                                </tr>
                             		</c:forEach>
                             		

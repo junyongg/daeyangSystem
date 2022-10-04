@@ -922,11 +922,11 @@
 	</select>
 	
 	
-	<select id="pospump_data" resultType="hashmap">
-		SELECT * FROM korea_pospump_data 
-		ORDER BY kpd_conn DESC
-		LIMIT 5
-	</select>
+<!-- 	<select id="pospump_data" resultType="hashmap"> -->
+<!-- 		SELECT * FROM korea_pospump_data  -->
+<!-- 		ORDER BY kpd_conn DESC -->
+<!-- 		LIMIT 5 -->
+<!-- 	</select> -->
 	
 	<select id="pospump_data_main" resultType="hashmap">
 		<![CDATA[

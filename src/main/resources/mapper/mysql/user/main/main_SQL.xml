@@ -936,10 +936,21 @@
 	</select>
 	
 	
-	<select id="pospump_data" resultType="hashmap">
-		SELECT * FROM korea_pospump_data 
-		ORDER BY kpd_conn DESC
-		LIMIT 5
+<!-- 	<select id="pospump_data" resultType="hashmap"> -->
+<!-- 		SELECT * FROM korea_pospump_data  -->
+<!-- 		ORDER BY kpd_conn DESC -->
+<!-- 		LIMIT 5 -->
+<!-- 	</select> -->
+	
+	<select id="pospump_data_main" resultType="hashmap">
+		<![CDATA[
+			select date_format(kpd_conn,'%Y-%m-%d') as kpd_Date , 
+			sum(format((if(kpd_data4 > 0 , kpd_data4 , 0) /3600*60)*0.001,3)) as a4  , sum(format((if(kpd_data4 < 0 , kpd_data4 , 0) /3600*60)*-0.001,3)) as a5 
+			FROM monitering.korea_pospump_data
+			group by date_format(kpd_conn,'%Y-%m-%d') 
+			order by kpd_conn DESC
+			LIMIT 5
+		]]>	
 	</select>
 	
 </mapper>

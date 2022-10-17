@@ -95,6 +95,9 @@
                             			<c:when test="${model.DDM_STATUS eq '장애' }">
                             				<c:set var="status" value="circle_statue red"/>
                             			</c:when>
+                            			<c:when test="${model.DDM_STATUS eq '대기' }">
+                            				<c:set var="status" value="circle_statue orange"/>
+                            			</c:when>
                             			<c:otherwise>
                             				<c:set var="status" value="circle_statue black"/>
                             			</c:otherwise>

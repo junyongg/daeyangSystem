@@ -17,8 +17,11 @@
         <section class="one_row left2">
             <article class="artBoard top2">
                 <h2 class="circle">발전소</h2>
-
-                <p class="power_tit">[${ob.DPP_AREA }] ${ob.DPP_NAME }</p>
+						
+                <p class="power_tit" style="float: left;">[${ob.DPP_AREA }] ${ob.DPP_NAME }</p>
+                <c:if test="${DPP_KEYNO eq '23' }">
+<!--                 	<a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px; float: right;" onclick="moreTable();">예측량 확인</a> -->
+               	</c:if>
 
 				<div class="power_select">
                     <select class="select_nor sm3 w100" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax(this.value);">
@@ -465,6 +468,9 @@
                             			<c:when test="${model.Work_Mode eq 'Wait'}">
                             				<c:set var="type" value="blue"/>
                             			</c:when>
+                            			<c:when test="${model.Work_Mode eq 'noData'}">
+                            				<c:set var="type" value="gray"/>
+                            			</c:when>
                             			<c:otherwise>
                             				<c:set var="type" value="black"/>
                             			</c:otherwise>
@@ -694,6 +700,57 @@
                 </article>  
             </div>
 
+        </section>
+        
+        <section class="base_pop_wrapper2">
+            <div class="pop_base_calculation" style="top: 50%; width: 690px; left: calc(44% - 231px);" >
+                
+                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper2').removeClass('on')" style="position: sticky; top: 0px;float:right;"><i class="xi-close" style="margin: 10px;"></i></button>
+<!--                 <button type="button" class="a_box_line" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Excel();">엑셀</button> -->
+                <div class="form_box">
+				       <table class="tbl_normal fixed" style="width: auto; margin-left: auto; margin-right: auto;">
+				           <colgroup>
+				               <!-- <col style="width: 10%;">
+				               <col style="width: 15%;">
+				               <col style="width: 20%;">
+				               <col style="width: 20%;">
+				               <col style="width: 15%;">
+				               <col style="width: 15%;"> -->
+				            </colgroup>
+				            <thead>
+				                <tr>
+				                    <th>일시</th>
+				                    <th>지역</th>
+				                    <th>실제 발전량(kWh)</th>
+				                    <th>자사 예측량(kWh)</th>
+				                    <th>해줌 예측량(kWh)</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <c:forEach items="${predict}" var="predict">
+					                <tr>
+					                    <td>${predict.pre_date }</td>
+					                    <td>나주</td>
+					                    <td><fmt:formatNumber value="${predict.pre_actval}" pattern="0.00"/></td>
+					                    <td><fmt:formatNumber value="${predict.pre_avg}" pattern="0.00"/></td>
+					                    <td><fmt:formatNumber value="${predict.pre_act_haezoom}" pattern="0.00"/></td>
+<%-- 					                    <td><fmt:formatNumber value="${result1.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td> --%>
+					               </tr>
+				                </c:forEach>
+				            </tbody>
+				            	<tr>
+				            	 	<td colspan="3">대양기업 오차율(%)</td>
+				            	 	<td colspan="2">0.63</td>
+				            	</tr>
+				            	<tr>
+				            	 	<td colspan="3">해줌 오차율(%)</td>
+				            	 	<td colspan="2">1.77</td>
+				            	</tr>
+				        </table>
+				       
+                </div>
+
+            </div>
         </section>
 
         
@@ -1039,6 +1096,10 @@ function sreenShot(target) {
 			});
 		});
 	}
+}
+
+function moreTable(){
+	$('.base_pop_wrapper2').addClass('on')
 }
 
 </script>

@@ -219,6 +219,7 @@ select.sel_nor::-ms-expand {display:none}
 .circle_statue.red{background-color: #ED1C24;}
 .circle_statue.blue{background-color: #1E9DD8;}
 .circle_statue.black{background-color: #444;}
+.circle_statue.orange{background-color: #FF8000;}
 /* 기상정보 */
 .weather_infomation{width: 100%; display: flex; justify-content: space-between; align-items: center;}
 .weather_infomation > .icons{width: 113px;}
@@ -343,6 +344,7 @@ select.sel_nor::-ms-expand {display:none}
 .check_c.blue{background-color: #0b52bd;}
 .check_c.red{background-color: #ED1C24;}
 .check_c.black{background-color: #111;}
+.check_c.gray{background-color: #C0C0C0;}
 .gb_txt{background-color: #EFEFEF; border: 1px solid #ddd; display: block; text-align: center; padding: 12px 20px; font-size: 16px; color: #555; letter-spacing: -0.02em;}
 .all_static_b{display: flex; flex-wrap: wrap; justify-content: space-between;  align-content: space-between; height: calc(100% - 60px);} 
 .all_static_b .st_dl{width: 49%; padding: 10px;}
@@ -463,6 +465,8 @@ input.a_box_line{width: 120px;}
 }/* 수익계산 팝업 */
 .base_pop_wrapper{position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; background-color: rgba(0,0,0,.7); display: none;}
 .base_pop_wrapper.on{display: block;}
+.base_pop_wrapper2{position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; background-color: rgba(0,0,0,.7); display: none;}
+.base_pop_wrapper2.on{display: block;}
 .pop_base_calculation{width: 463px; left: calc(50% - 231px); top: 50%; position: absolute; transform: translateY(-50%); max-height: 95%; overflow-y: auto; background-color: #fff; border-radius: 15px; box-shadow: 0 5px 10px rgba(0,0,0,.15); padding: 23px 25px; text-align: center;}
 .pop_base_calculation > .btn_close{width: 40px; height: 40px; border-radius: 50%; background-color: #253e83; color: #fff; font-size: 20px; transition: all .25s ease; margin-bottom: 15px;}
 .pop_base_calculation > .btn_close:hover{background-color: #0e2052;}

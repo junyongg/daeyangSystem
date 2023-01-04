@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +24,10 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.extractor.ExcelExtractor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
@@ -44,8 +43,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.common.config.SettingData;
-import com.tx.common.config.tld.SiteProperties;
-import com.tx.common.file.FileReadTools;
 import com.tx.common.file.FileUploadTools;
 import com.tx.common.file.dto.FileSub;
 import com.tx.common.security.aes.AES256Cipher;
@@ -497,6 +494,7 @@ public class DyController {
     	if(DaliyType.equals("1")) {
     		
     		result =  Component.getList("main.select_inverterData",type);
+    		result = changeDailyData(result);
     		result1 = result;
     		
     		//당일일때만 오늘날짜 데이터 뽑는것 
@@ -511,7 +509,7 @@ public class DyController {
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
             		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
-            		System.out.println(subList.size());
+            		//System.out.println(subList.size());
             		MainList.add(subList);
             	}
         	}else {
@@ -889,7 +887,7 @@ public class DyController {
     	if(DaliyType.equals("1")) {
     		
     		result =  Component.getList("main.select_inverterData",type);
-    		
+    		result =  changeDailyData(result);
     		//당일일때만 오늘날짜 데이터 뽑는것 
         	type.put("minmax","min");
         	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
@@ -1012,6 +1010,7 @@ public class DyController {
     	
     	
     	List<HashMap<String,Object>> result =  Component.getList("main.select_inverterData",type);
+    	result = changeDailyData(result);
     	
     	List<HashMap<String,Object>> charList = Component.getList("main.Statics_Two",type);
     	
@@ -1133,7 +1132,7 @@ public class DyController {
 		return msg;
     }
     
-    @RequestMapping("/sendMessage.do")
+/*    @RequestMapping("/sendMessage.do")
     @ResponseBody
     public <E> String kakakosendAjax(HttpServletRequest req,
     		@RequestParam(value="UI_KEYNO",required=false)String user,
@@ -1154,7 +1153,6 @@ public class DyController {
 		String destination = user;
 		String receiver = "";
 		String msg = content;
-		String img = "";
     	
 		List<UserDTO> list = Component.getList("main.Kakaotalk_ad",map);
 		
@@ -1162,13 +1160,12 @@ public class DyController {
     		l.decode();
     		receiver = l.getUI_PHONE().toString().replace("-", "");	
     		destination = l.getUI_NAME().toString();
-    		requestAPI.sendMessage(userid, api, destination, receiver, msg, img);
-    		
+    		//requestAPI.sendMessage(userid, api, destination,receiver, msg);
     	}
     	
     	
     	return msg1;
-    	}
+    	}*/
 		
 		
 		
@@ -1212,31 +1209,6 @@ public class DyController {
 //    	return msg;
 //    }
     
-    @RequestMapping("/userkakakoselectAjax.do")
-    @ResponseBody
-    public List<UserDTO> kakakouserselectAjax(HttpServletRequest req,
-    		@RequestParam(value="UIA_KEYNO",required=false)String UIA_KEYNO
-    		) throws Exception{
-    	
-    	List userlist;
-    	
-    	if(UIA_KEYNO.equals("") || UIA_KEYNO == null) {
-    		List<UserDTO> list = Component.getListNoParam("main.Group_select_all");
-    		userlist = list;
-    		
-    	}else {
-    		List<UserDTO> list = Component.getList("main.Group_select",UIA_KEYNO);
-    		userlist = list;
-    	}
-    	
-//    	List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
-//    	HashMap<String, Object> map = new HashMap<String, Object>();
-    	
-		
-		return userlist;
-    }
-    
-    
 
     /**
     * @return 날씨 등록 테스트
@@ -1246,7 +1218,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천","부산"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {
@@ -1263,7 +1235,7 @@ public class DyController {
    /**
    * @return
    */
-  @RequestMapping("/testxlsx.do")
+ /* @RequestMapping("/testxlsx.do")
   public void testxlsx(HttpServletRequest req) throws Exception{
 	  String path = "D:/workspace/dysystem/src/main/webapp/resources/temp/b.xlsx";
 	  //String text = filetool.excelRead();
@@ -1376,7 +1348,7 @@ public class DyController {
          }
       }
           
-  }
+  }*/
    
    
    
@@ -1474,6 +1446,36 @@ public class DyController {
 		return map;
 	}
    
+   
+   
+   public List<HashMap<String,Object>> changeDailyData(List<HashMap<String,Object>> result) {
+	   HashMap<String,Object> result_d = new HashMap<String,Object>();
+
+	   Collections.reverse(result);
+
+	   for(HashMap<String,Object> r : result) {
+		   
+		   String diname = r.get("DI_NAME").toString();
+		   float cData = 0;
+		   
+		   if(result_d.containsKey(diname)) {
+			   float FirstData = Float.parseFloat(result_d.get(diname).toString());
+			   float nowData = Float.parseFloat(r.get("Cumulative_Generation").toString());
+			   
+			   float dailyData = Math.round((nowData - FirstData)*100/100.0);
+			   r.put("daily", dailyData);
+		   }else {
+			   cData = Float.parseFloat(r.get("Cumulative_Generation").toString());
+			   result_d.put(diname, cData);
+			   r.put("daily", 0);
+		   }
+		   System.out.println(r);
+	   }
+	   
+	   Collections.reverse(result);
+	   
+	   return result;
+   }
    
    
 //   @RequestMapping("/allimTalkSend.do")

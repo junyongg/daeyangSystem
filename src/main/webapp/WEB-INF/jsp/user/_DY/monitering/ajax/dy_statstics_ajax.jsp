@@ -279,7 +279,7 @@ table{
 	                	<c:when test="${DaliyType eq '1' }">
 		                    <td>${result.Conn_date }</td>
 		                    <td>${result.DI_NAME }</td>
-		                    <td>${result.Daily_Generation }</td>
+		                    <td>${result.daily }</td>
 		                    <td>${result.Cumulative_Generation }</td>
 		                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 		                    <td>${result.Active_Power }</td>

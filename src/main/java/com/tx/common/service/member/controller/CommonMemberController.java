@@ -68,7 +68,8 @@ public class CommonMemberController {
 			) throws Exception {
 		String tiles = TilesDTO.getTiles(req);
 		
-		if(tiles == null || tiles.equals("cf")) tiles = "dy";
+		if(tiles == null || tiles.equals("cf") ||tiles.equals("sfa")) tiles = "dy";
+		
 		
 		ModelAndView mv  = new ModelAndView("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
 		
@@ -99,9 +100,9 @@ public class CommonMemberController {
 		
 		//리턴페이지 셋팅
 		if(req.getParameter("returnPage") != null){
-			session.setAttribute("returnPage", req.getParameter("returnPage"));
+//			session.setAttribute("returnPage", req.getParameter("returnPage"));
 		}else if(session.getAttribute("referrerPage") == null){
-			session.setAttribute("referrerPage", req.getHeader("Referer"));
+//			session.setAttribute("referrerPage", req.getHeader("Referer"));
 		}
 		
 		//에러메세지 셋팅
@@ -112,7 +113,15 @@ public class CommonMemberController {
 		
 		//RsaService.setRsa(req);
 		mv.addObject("tiles",tiles);
-		mv.addObject("mirrorPage", "/"+tiles+"/member/login.do");
+		
+		
+		mv.addObject("mirrorPage", "/"+tiles+"/member/login.do");	
+		/*
+		 * if(tiles.equals("sfa")) { mv.addObject("mirrorPage", "/dy/member/login.do");
+		 * }else {
+		 * 
+		 * }
+		 */
 		
 		
 		return mv;

@@ -64,8 +64,18 @@ table.pagingTable>thead>tr>th.arrow.desc{
     color: red;
 }
 
+table.pagingTable>thead>tr>td>div>a.arrow.desc{
+    background-position-x: calc(100% - 5px);
+    color: red;
+}
+
 table.pagingTable>thead>tr>th.arrow.asc{
     background: url(/resources/img/table/table_arow_up.png) no-repeat center right;
+    background-position-x: calc(100% - 5px);
+    color: blue;
+}
+
+table.pagingTable>thead>tr>td>div>a.arrow.asc{  
     background-position-x: calc(100% - 5px);
     color: blue;
 }

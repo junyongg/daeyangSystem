@@ -189,7 +189,7 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 	    
 	}
 	
-	public void sendMessage(String userid, String api, String destination, String receiver ,String msg) throws Exception{
+	public void sendMessage(String userid, String api, String destination, String receiver ,String msg, String image) throws Exception{
 		try 
 		{
 			String sms_url = "https://apis.aligo.in/send/";
@@ -206,9 +206,8 @@ public class requestAPIserviceImp extends EgovAbstractServiceImpl implements req
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
 			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
 			sms.put("testmode_yn", "N"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-			sms.put("title", "제목입력"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+			sms.put("title", ""); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 			
-			String image = "";
 			//image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
 			
 			/******************** 전송정보 ********************/

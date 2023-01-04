@@ -341,6 +341,7 @@ public class WetherService {
 		   else if(region.equals("남원")) {nx="68"; ny="80";}
 		   else if(region.equals("음성")) {nx="74"; ny="113";}
 		   else if(region.equals("진천")) {nx="68"; ny="111";}
+		   else if(region.equals("부산")) {nx="98"; ny="76";}
 		   
 		 
 
@@ -444,6 +445,7 @@ public class WetherService {
 		   if(region.equals("곡성")) area = URLEncoder.encode("남원", "utf-8");
 		   if(region.equals("음성")) area = URLEncoder.encode("충주", "utf-8");
 		   if(region.equals("진천")) area = URLEncoder.encode("충주", "utf-8");
+		   if(region.equals("부산")) area = URLEncoder.encode("부산", "utf-8");
 
 		   String urlstr = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo?serviceKey=dQsCZl8ZlcJHAjjmit2miCTpY042aQYG2P%2Bbnq%2BuVToDqFAVoVv%2Bdx%2FUbDLF6RvjVqVdYHAw%2FGrlbMyCSbdbHA%3D%3D&locdate="+dates+"&location="+area;
 		   

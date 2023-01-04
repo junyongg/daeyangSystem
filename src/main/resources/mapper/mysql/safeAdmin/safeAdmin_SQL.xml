@@ -1,0 +1,999 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="sfa">
+
+<!-- 안전관리 양식 select -->
+<select id="jspselect" parameterType="String" resultType="hashmap">
+select *
+from t_popupinfo_sub
+</select>
+
+<!-- 안전관리 양식 select해서 뿌리기 -->
+<select id="jspselect2" parameterType="String" resultType="hashmap">
+select *
+from t_popupinfo_sub
+where PC_PI_KEYNO = #{PC_PI_KEYNO}
+</select>
+
+<select id="userinfo" parameterType="String" resultType="hashmap">
+select UI_NAME
+from t_userinfo
+where UI_KEYNO = 'UI_HMWNH'
+</select>
+
+<!-- 그룹전체선택 -->
+<select id = "Group_select_all" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM t_userinfo A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN t_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO
+</select>
+
+<!-- 그룹개별선택 -->	
+<select id = "Group_select" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM t_userinfo A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN t_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = #{l}
+</select>
+
+<!-- 문자전송 이름, 전화번호 뽑기(관리자 페이지) -->
+<select id="Message_ad" resultType="USER" parameterType="hashmap">
+		SELECT A.UIA_KEYNO,C.UI_NAME, C.UI_PHONE
+		FROM t_userinfo_authority A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UIA_KEYNO = B.UIA_KEYNO
+		LEFT JOIN t_userinfo C
+		ON C.UI_KEYNO = B.UI_KEYNO
+		WHERE 
+		<foreach item = "l" index="index" collection="userlist" open="(" close=")" separator="or">
+		C.UI_KEYNO = #{l}
+		</foreach>
+	</select>
+
+<!-- 전기 설비 점검결과 기록표 정보 저장 -->
+<insert id="sapaperInsert" parameterType="safeAdminDTO">
+			INSERT INTO dy_sa_paper
+			(
+				sa_sulbi,
+				sa_date,
+				sa_gyuljae1,
+				sa_gyuljae2,
+				sa_gyuljae3,
+				sa_sujeonv,
+				sa_sujeonkw,
+				sa_balv,
+				sa_balkw,
+				sa_solarv,
+				sa_solarkw,
+				sa_transvolum,
+				sa_admintype,
+				sa_admincount,
+				sa_admincheck1,
+				sa_admincheck2,
+				sa_admincheck3,
+				sa_admincheck4,
+				sa_admincheck5,
+				sa_admincheck6,
+				sa_admincheck7,
+				sa_admincheck8,
+				sa_admincheck9,
+				sa_admincheck10,
+				sa_admincheck11,
+				sa_admincheck12,
+				sa_admincheck13,
+				sa_admincheck14,
+				sa_admincheck15,
+				sa_admincheck16,
+				sa_admincheck17,
+				sa_admincheck18,
+				sa_admincheck19,
+				sa_admincheck20,
+				sa_admincheck21,
+				sa_admincheck22,
+				sa_admincheck23,
+				sa_admincheck24,
+				sa_admincheck25,
+				sa_admincheck26,
+				sa_admincheck27,
+				sa_admincheck28,
+				sa_admincheck29,
+				sa_admincheck30,
+				sa_measureAV1,
+				sa_measureAV2,
+				sa_measureAV3,
+				sa_measureAA1,
+				sa_measureAA2,
+				sa_measureAA3,
+				sa_measureAC1,
+				sa_measureAC2,
+				sa_measureAC3,
+				sa_measureBV1,
+				sa_measureBV2,
+				sa_measureBV3,
+				sa_measureBA1,
+				sa_measureBA2,
+				sa_measureBA3,
+				sa_measureBC1,
+				sa_measureBC2,
+				sa_measureBC3,
+				sa_measureCV1,
+				sa_measureCV2,
+				sa_measureCV3,
+				sa_measureCA1,
+				sa_measureCA2,
+				sa_measureCA3,
+				sa_measureCC1,
+				sa_measureCC2,
+				sa_measureCC3,
+				sa_measureNV1,
+				sa_measureNV2,
+				sa_measureNV3,
+				sa_measureNA1,
+				sa_measureNA2,
+				sa_measureNA3,
+				sa_measureNC1,
+				sa_measureNC2,
+				sa_measureNC3,
+				sa_opinion,
+				sa_ceoname,
+				sa_adminname,
+				sa_writetype
+				
+			)VALUES(
+				#{sa_sulbi},
+				#{sa_date},
+				#{sa_gyuljae1},
+				#{sa_gyuljae2},
+				#{sa_gyuljae3},
+				#{sa_sujeonv},
+				#{sa_sujeonkw},
+				#{sa_balv},
+				#{sa_balkw},
+				#{sa_solarv},
+				#{sa_solarkw},
+				#{sa_transvolum},
+				#{sa_admintype},
+				#{sa_admincount},
+				#{sa_admincheck1},
+				#{sa_admincheck2},
+				#{sa_admincheck3},
+				#{sa_admincheck4},
+				#{sa_admincheck5},
+				#{sa_admincheck6},
+				#{sa_admincheck7},
+				#{sa_admincheck8},
+				#{sa_admincheck9},
+				#{sa_admincheck10},
+				#{sa_admincheck11},
+				#{sa_admincheck12},
+				#{sa_admincheck13},
+				#{sa_admincheck14},
+				#{sa_admincheck15},
+				#{sa_admincheck16},
+				#{sa_admincheck17},
+				#{sa_admincheck18},
+				#{sa_admincheck19},
+				#{sa_admincheck20},
+				#{sa_admincheck21},
+				#{sa_admincheck22},
+				#{sa_admincheck23},
+				#{sa_admincheck24},
+				#{sa_admincheck25},
+				#{sa_admincheck26},
+				#{sa_admincheck27},
+				#{sa_admincheck28},
+				#{sa_admincheck29},
+				#{sa_admincheck30},
+				#{sa_measureAV1},
+				#{sa_measureAV2},
+				#{sa_measureAV3},
+				#{sa_measureAA1},
+				#{sa_measureAA2},
+				#{sa_measureAA3},
+				#{sa_measureAC1},
+				#{sa_measureAC2},
+				#{sa_measureAC3},
+				#{sa_measureBV1},
+				#{sa_measureBV2},
+				#{sa_measureBV3},
+				#{sa_measureBA1},
+				#{sa_measureBA2},
+				#{sa_measureBA3},
+				#{sa_measureBC1},
+				#{sa_measureBC2},
+				#{sa_measureBC3},
+				#{sa_measureCV1},
+				#{sa_measureCV2},
+				#{sa_measureCV3},
+				#{sa_measureCA1},
+				#{sa_measureCA2},
+				#{sa_measureCA3},
+				#{sa_measureCC1},
+				#{sa_measureCC2},
+				#{sa_measureCC3},
+				#{sa_measureNV1},
+				#{sa_measureNV2},
+				#{sa_measureNV3},
+				#{sa_measureNA1},
+				#{sa_measureNA2},
+				#{sa_measureNA3},
+				#{sa_measureNC1},
+				#{sa_measureNC2},
+				#{sa_measureNC3},
+				#{sa_opinion},
+				#{sa_ceoname},
+				#{sa_adminname},
+				#{sa_writetype}
+			)
+		</insert>
+		
+		<!-- 전기 설비 점검결과 기록표 정보 수정 -->
+		<update id="sapaperUpdate" parameterType="safeAdminDTO">
+			UPDATE dy_sa_paper 
+			SET sa_sulbi = #{sa_sulbi},
+				sa_date = #{sa_date},
+				sa_gyuljae1 = #{sa_gyuljae1},
+				sa_gyuljae2 = #{sa_gyuljae2},
+				sa_gyuljae3 = #{sa_gyuljae3},
+				sa_sujeonv = #{sa_sujeonv},
+				sa_sujeonkw = #{sa_sujeonkw},
+				sa_balv = #{sa_balv},
+				sa_balkw = #{sa_balkw},
+				sa_solarv = #{sa_solarv},
+				sa_solarkw = #{sa_solarkw},
+				sa_transvolum = #{sa_transvolum},
+				sa_admintype = #{sa_admintype},
+				sa_admincount = #{sa_admincount},
+				sa_admincheck1 = #{sa_admincheck1},
+				sa_admincheck2 = #{sa_admincheck2},
+				sa_admincheck3 = #{sa_admincheck3},
+				sa_admincheck4 = #{sa_admincheck4},
+				sa_admincheck5 = #{sa_admincheck5},
+				sa_admincheck6 = #{sa_admincheck6},
+				sa_admincheck7 = #{sa_admincheck7},
+				sa_admincheck8 = #{sa_admincheck8},
+				sa_admincheck9 = #{sa_admincheck9},
+				sa_admincheck10 = #{sa_admincheck10},
+				sa_admincheck11 = #{sa_admincheck11},
+				sa_admincheck12 = #{sa_admincheck12},
+				sa_admincheck13 = #{sa_admincheck13},
+				sa_admincheck14 = #{sa_admincheck14},
+				sa_admincheck15 = #{sa_admincheck15},
+				sa_admincheck16 = #{sa_admincheck16},
+				sa_admincheck17 = #{sa_admincheck17},
+				sa_admincheck18 = #{sa_admincheck18},
+				sa_admincheck19 = #{sa_admincheck19},
+				sa_admincheck20 = #{sa_admincheck20},
+				sa_admincheck21 = #{sa_admincheck21},
+				sa_admincheck22 = #{sa_admincheck22},
+				sa_admincheck23 = #{sa_admincheck23},
+				sa_admincheck24 = #{sa_admincheck24},
+				sa_admincheck25 = #{sa_admincheck25},
+				sa_admincheck26 = #{sa_admincheck26},
+				sa_admincheck27 = #{sa_admincheck27},
+				sa_admincheck28 = #{sa_admincheck28},
+				sa_admincheck29 = #{sa_admincheck29},
+				sa_admincheck30 = #{sa_admincheck30},
+				sa_measureAV1 = #{sa_measureAV1},
+				sa_measureAV2 = #{sa_measureAV2},
+				sa_measureAV3 = #{sa_measureAV3},
+				sa_measureAA1 = #{sa_measureAA1},
+				sa_measureAA2 = #{sa_measureAA2},
+				sa_measureAA3 = #{sa_measureAA3},
+				sa_measureAC1 = #{sa_measureAC1},
+				sa_measureAC2 = #{sa_measureAC2},
+				sa_measureAC3 = #{sa_measureAC3},
+				sa_measureBV1 = #{sa_measureBV1},
+				sa_measureBV2 = #{sa_measureBV2},
+				sa_measureBV3 = #{sa_measureBV3},
+				sa_measureBA1 = #{sa_measureBA1},
+				sa_measureBA2 = #{sa_measureBA2},
+				sa_measureBA3 = #{sa_measureBA3},
+				sa_measureBC1 = #{sa_measureBC1},
+				sa_measureBC2 = #{sa_measureBC2},
+				sa_measureBC3 = #{sa_measureBC3},
+				sa_measureCV1 = #{sa_measureCV1},
+				sa_measureCV2 = #{sa_measureCV2},
+				sa_measureCV3 = #{sa_measureCV3},
+				sa_measureCA1 = #{sa_measureCA1},
+				sa_measureCA2 = #{sa_measureCA2},
+				sa_measureCA3 = #{sa_measureCA3},
+				sa_measureCC1 = #{sa_measureCC1},
+				sa_measureCC2 = #{sa_measureCC2},
+				sa_measureCC3 = #{sa_measureCC3},
+				sa_measureNV1 = #{sa_measureNV1},
+				sa_measureNV2 = #{sa_measureNV2},
+				sa_measureNV3 = #{sa_measureNV3},
+				sa_measureNA1 = #{sa_measureNA1},
+				sa_measureNA2 = #{sa_measureNA2},
+				sa_measureNA3 = #{sa_measureNA3},
+				sa_measureNC1 = #{sa_measureNC1},
+				sa_measureNC2 = #{sa_measureNC2},
+				sa_measureNC3 = #{sa_measureNC3},
+				sa_opinion = #{sa_opinion},
+				sa_ceoname = #{sa_ceoname},
+				sa_adminname = #{sa_adminname}
+				
+			WHERE sa_keyno = #{sa_keyno}
+		</update>
+		
+		<update id="sapaperUpdate2" parameterType="safeAdminDTO">
+			UPDATE dy_sa2_paper 
+			SET sa2_title = #{sa2_title},
+				sa2_date = #{sa2_date},
+				sa2_wether = #{sa2_wether},
+				sa2_adminname = #{sa2_adminname},
+				sa2_inverternumtype = #{sa2_inverternumtype},
+				sa2_nowpower = #{sa2_nowpower},
+				sa2_todaypower = #{sa2_todaypower},
+				sa2_accpower = #{sa2_accpower},
+				sa2_periodpower = #{sa2_periodpower},
+				sa2_ACVL1_N = #{sa2_ACVL1_N},
+				sa2_ACVL2_N = #{sa2_ACVL2_N},
+				sa2_ACVL3_N = #{sa2_ACVL3_N},
+				sa2_ACAL1 = #{sa2_ACAL1},
+				sa2_ACAL2 = #{sa2_ACAL2},
+				sa2_ACAL3 = #{sa2_ACAL3},
+				sa2_ACBV = #{sa2_ACBV},
+				sa2_ACBA = #{sa2_ACBA},
+				sa2_VCBKV = #{sa2_VCBKV},
+				sa2_VCBA = #{sa2_VCBA},
+				sa2_palntKW = #{sa2_palntKW},
+				sa2_palntV = #{sa2_palntV},
+				sa2_palntCT = #{sa2_palntCT},
+				sa2_date2 = #{sa2_date2},
+				sa2_meternum1 = #{sa2_meternum1},
+				sa2_meternum2 = #{sa2_meternum2},
+				sa2_meter1KWh = #{sa2_meter1KWh},
+				sa2_meter2KWh = #{sa2_meter2KWh},
+				sa2_meter1period = #{sa2_meter1period},
+				sa2_meter2period = #{sa2_meter2period},
+				sa2_inverterperiod = #{sa2_inverterperiod},
+				sa2_meter1date = #{sa2_meter1date},
+				sa2_meter2date = #{sa2_meter2date},
+				sa2_inverterdate = #{sa2_inverterdate},
+				sa2_meter1allKWh = #{sa2_meter1allKWh},
+				sa2_meter2allKWh = #{sa2_meter2allKWh},
+				sa2_inverterallKWh = #{sa2_inverterallKWh},
+				sa2_meter1dayKWh = #{sa2_meter1dayKWh},
+				sa2_meter2dayKWh = #{sa2_meter2dayKWh},
+				sa2_inverterdayKWh = #{sa2_inverterdayKWh},
+				sa2_meter1dayhour = #{sa2_meter1dayhour},
+				sa2_meter2dayhour = #{sa2_meter2dayhour},
+				sa2_inverterdayhour = #{sa2_inverterdayhour},
+				sa2_opinion = #{sa2_opinion},
+				sa2_problem = #{sa2_problem},			
+				changenum = #{changenum},			
+				sa2_nowpowertype = #{sa2_nowpowertype},
+				sa2_todaypowertype = #{sa2_todaypowertype},
+				sa2_accpowertype = #{sa2_accpowertype},
+	 			sa2_periodpowertype = #{sa2_periodpowertype},
+				sa2_annacc = #{sa2_annacc},
+				sa2_preannacc = #{sa2_preannacc},
+				sa2_peridev = #{sa2_peridev}
+				
+			WHERE sa2_keyno = #{sa2_keyno}
+		</update>
+	
+	<!-- 전기 설비 점검결과 기록표 정보 삭제 -->
+	<delete id="sapaperdelete2" parameterType="arraylist">
+			DELETE  FROM dy_sa2_paper 
+			where
+			<foreach item = "l" index="index" collection="array" open="(" close=")" separator="or">
+			sa2_keyno = #{l}
+			</foreach>
+	</delete>
+	
+	
+	<!-- 페이징, 정렬, 검색 처리 sql -->
+	<sql id="Safe_getListBody">
+	from (
+		select B.*
+			, @ROWNUM:=@ROWNUM+1 as COUNT
+		from (
+			select *
+			from dy_sa2_paper
+			order by sa2_keyno
+		) B
+		where (@ROWNUM:=0)=0
+		<if test="AH_HOMEDIV_C != null and AH_HOMEDIV_C != ''">
+	 		AND			sa2_problem 	=	#{AH_HOMEDIV_C}
+		 	</if>
+		 	<if test="UI_ID != null and UI_ID != ''">
+	 		AND			sa2_title 			=	#{UI_ID}
+		 	</if>
+	        <if test="searchBeginDate != null and searchBeginDate != ''">
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+	)AA
+	where 1=1
+	<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		sa2_problem 		LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		sa2_title			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		sa2_date				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		sa2_opinion			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa2_problem 			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa2_title 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa2_date				LIKE CONCAT( '%',#{item.searchKeyword},'%')     OR
+ 				sa2_opinion				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+ 				
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+	
+	<select id="Safe_getListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="Safe_getListBody"/>
+    </select>
+    
+    <select id="Safe_getList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="Safe_getListBody"/>
+		<choose>
+			<when test="orderBy == 1">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+			<when test="orderBy == 2">
+	 		ORDER BY	sa2_problem ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	sa2_title ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	sa2_date ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	sa2_opinion ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+	
+	<!-- 안전관리 양식 select -->
+	<select id="boardlist" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_paper  
+    </select>
+    
+    <!-- 안전관리 발전소 전체 select -->
+    <select id="safeuserselect" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_user
+    </select>
+    
+    <!-- 안전관리 발전소 개별 select -->
+    <select id="safeuserselect_one" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>
+    
+    <!-- 문자 전송을 위한 데이터 뽑기(이름, 전화번호) -->
+    <select id="safeuserselect_alim" parameterType="String" resultType="safeUserDTO">
+	    SELECT *
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>
+	
+	 <select id="safeuserselect_phone" parameterType="String" resultType="safeUserDTO">
+	    SELECT SU_SA_SULBI, SU_SA_PHONE
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>
+    
+    <!-- 안전관리 양식 개별 select -->
+    <select id="safepaperselect_one" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_paper
+	    where sa_keyno = #{sa_keyno}
+    </select>
+    <select id="safepaperselect2_one" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_sa2_paper
+	    where sa2_keyno = #{sa2_keyno}
+    </select>
+    
+     <select id="inverterNumSelect" parameterType="String" resultType="String">
+		select SU_SA_INVERTERNUM
+		from dy_sa_user
+		where SU_SA_SULBI = 
+			(select sa2_title 
+			from dy_sa2_paper
+			where sa2_keyno = #{sa2_keyno})
+    </select>
+    
+	<!--     모니터링 연동 시 발전소 select -->
+    <select id="monitering_Select" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_power_plant
+    </select>
+    
+    <!--     모니터링 연동 시 발전소 select -->
+    <select id="InverterData_Select" parameterType="String" resultType="hashmap">
+	   	select *
+		from(
+			select * from dy_inverter_data A
+			join dy_sa_user B
+			on A.DP_KEYNO = B.SU_DPP_KEYNO
+			where B.SU_KEYNO = #{SU_KEYNO}
+			ORDER BY A.Conn_date desc
+			LIMIT 9999
+		)ID
+		group by ID.DI_NAME
+    </select>
+    
+    <select id="InverterDPP_Select" parameterType="String" resultType="hashmap">
+		SELECT *
+		FROM dy_power_plant
+		where DPP_KEYNO = #{DPP_KEYNO}
+    </select>
+   
+    
+    <!-- 안전관리 발전소 등록(관리자 페이지) -->
+    <insert id="safeUserInsert" parameterType="safeUserDTO">
+		INSERT INTO dy_sa_user
+		(
+			SU_SA_SULBI,
+			SU_DPP_KEYNO,
+			SU_SA_AD,
+			SU_SA_RG,
+			SU_SA_VOLUM,
+			SU_SA_VOLT,
+			SU_SA_CT,
+			SU_SA_INVERTERNUM,
+			SU_SA_ADMINDATE,	
+			SU_SA_METER1,
+			SU_SA_METER2,
+			SU_SA_PHONE1,
+			SU_SA_PHONE2,
+			SU_SA_PHONE3,
+			SU_SA_PHONE4,
+			SU_SA_PHONE5
+			
+		)VALUES(
+			#{SU_SA_SULBI},
+			#{SU_DPP_KEYNO},
+			#{SU_SA_AD},
+			#{SU_SA_RG},
+			#{SU_SA_VOLUM},
+			#{SU_SA_VOLT},
+			#{SU_SA_CT},
+			#{SU_SA_INVERTERNUM},
+			#{SU_SA_ADMINDATE},
+			#{SU_SA_METER1},
+			#{SU_SA_METER2},
+			#{SU_SA_PHONE1},
+			#{SU_SA_PHONE2},
+			#{SU_SA_PHONE3},
+			#{SU_SA_PHONE4},
+			#{SU_SA_PHONE5}
+		)
+	</insert>
+	
+	<!-- 안전관리 발전소 정보 수정(관리자 페이지) -->
+	<update id="safeUserUPdate" parameterType="safeUserDTO">
+		UPDATE dy_sa_user
+		SET SU_SA_SULBI = #{SU_SA_SULBI},
+			SU_DPP_KEYNO = #{SU_DPP_KEYNO},
+			SU_SA_AD = #{SU_SA_AD},
+			SU_SA_RG = #{SU_SA_RG},
+			SU_SA_VOLUM = #{SU_SA_VOLUM},
+			SU_SA_VOLT = #{SU_SA_VOLT},
+			SU_SA_CT = #{SU_SA_CT},
+			SU_SA_INVERTERNUM = #{SU_SA_INVERTERNUM},
+			SU_SA_ADMINDATE = #{SU_SA_ADMINDATE},
+			SU_SA_METER1 = #{SU_SA_METER1},
+			SU_SA_METER2 = #{SU_SA_METER2},
+			SU_SA_PHONE1 = #{SU_SA_PHONE1},
+			SU_SA_PHONE2 = #{SU_SA_PHONE2},
+			SU_SA_PHONE3 = #{SU_SA_PHONE3},
+			SU_SA_PHONE4 = #{SU_SA_PHONE4},
+			SU_SA_PHONE5 = #{SU_SA_PHONE5}
+			
+		WHERE SU_KEYNO = #{SU_KEYNO}
+	</update>
+	
+	<!-- 안전관리 발전소 정보 삭제(관리자 페이지) -->
+	<delete id="safeUserDelete" parameterType="String">
+		DELETE  FROM dy_sa_user
+		where SU_KEYNO  = #{SU_KEYNO}
+	</delete>
+    
+    <!-- 안전관리 발전소 카톡, 문자 전송 여부 체크용 페이징, 검색, 정렬 sql -->
+       <sql id="safeUser_getListBody">
+	from (
+		select B.*
+			, @ROWNUM:=@ROWNUM+1 as COUNT
+		from (
+			select *
+			from dy_sa_user 
+			order by SU_KEYNO
+		) B
+		where (@ROWNUM:=0)=0
+	)AA
+	where 1=1
+	<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		SU_SA_SULBI			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		SU_SA_PHONE			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		SU_SA_KAKAOYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		SU_SA_MSGYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT						LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_SULBI 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_PHONE					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_KAKAOYN				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_MSGYN					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+	
+	<select id="safeUser_getListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="safeUser_getListBody"/>
+    </select>
+    
+    <select id="safeUser_getList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="safeUser_getListBody"/>
+		<choose>
+			<when test="orderBy == 1">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 2">
+	 		ORDER BY	SU_SA_SULBI ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	SU_SA_PHONE ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	SU_SA_KAKAOYN ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	SU_SA_MSGYN ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+    
+    <!-- 카카오톡 전송 여부 Y/N 업데이트 -->
+    <update id="kakaoupdateY">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_KAKAOYN		=	'Y'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <update id="kakaoupdateN">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_KAKAOYN		=	'N'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <!-- 문자 전송 여부 Y/N 업데이트 -->
+    <update id="msgupdateY">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_MSGYN		=	'Y'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <update id="msgupdateN">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_MSGYN		=	'N'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+   <!-- 안전관리 양식 이전 정보 조회(연,월별) -->
+	<select id="preview" parameterType="DateDTO" resultType="hashmap">
+		SELECT * 
+		FROM dy_sa_paper a 
+		join dy_sa_user b
+		on a.sa_sulbi = b.SU_SA_SULBI
+		where date_format(a.Conn_date, '%Y') =  #{Year}
+		and date_format(a.Conn_date, '%m') = #{Month}
+		and b.SU_KEYNO = #{su_keyno}
+	</select>
+	
+	<select id="preview2" parameterType="DateDTO" resultType="hashmap">
+		SELECT * 
+		FROM dy_sa2_paper a 
+		join dy_sa_user b
+		on a.sa2_title = b.SU_SA_SULBI
+		where date_format(a.Conn_date, '%Y') =  #{Year}
+		and date_format(a.Conn_date, '%m') = #{Month}
+		and b.SU_KEYNO = #{su_keyno}
+	</select>
+	
+	<!-- 이전정보 placeholder조회 sql(keyno, 일자 뽑기) -->
+	<select id="previewData" parameterType="DateDTO" resultType="hashmap">
+		SELECT sa2_keyno, date_format(a.Conn_date, '%d일') datenum
+		FROM dy_sa2_paper a 
+		join dy_sa_user b
+		on a.sa2_title = b.SU_SA_SULBI
+		where date_format(a.Conn_date, '%Y') =  #{Year}
+		and date_format(a.Conn_date, '%m') = #{Month}
+		and b.SU_KEYNO = #{su_keyno}
+	</select>
+    
+    <!-- 대양에스코 안전관리 양식 정보저장 -->
+<insert id="sapaper2Insert" parameterType="safeAdminDTO">
+			INSERT INTO dy_sa2_paper
+			(
+				sa2_title,
+				sa2_date,
+				sa2_wether,
+				sa2_adminname,
+				sa2_inverternumtype,
+				sa2_nowpower,
+				sa2_todaypower,
+				sa2_accpower,
+				sa2_periodpower,
+				sa2_ACVL1_N,
+				sa2_ACVL2_N,
+				sa2_ACVL3_N,
+				sa2_ACAL1,
+				sa2_ACAL2,
+				sa2_ACAL3,
+				sa2_ACBV,
+				sa2_ACBA,
+				sa2_VCBKV,
+				sa2_VCBA,
+				sa2_palntKW,
+				sa2_palntV,
+				sa2_palntCT,
+				sa2_date2,
+				sa2_meternum1,
+				sa2_meternum2,
+				sa2_meter1KWh,
+				sa2_meter2KWh,
+				sa2_meter1period,
+				sa2_meter2period,
+				sa2_inverterperiod,
+				sa2_meter1date,
+				sa2_meter2date,
+				sa2_inverterdate,
+				sa2_meter1allKWh,
+				sa2_meter2allKWh,
+				sa2_inverterallKWh,
+				sa2_meter1dayKWh,
+				sa2_meter2dayKWh,
+				sa2_inverterdayKWh,
+				sa2_meter1dayhour,
+				sa2_meter2dayhour,
+				sa2_inverterdayhour,
+				sa2_opinion,
+				sa_writetype,
+				sa2_problem,
+				changenum,
+				changenum2,
+				sa2_nowpowertype,
+				sa2_todaypowertype,
+				sa2_accpowertype,
+				sa2_periodpowertype,
+				sa2_annacc,
+				sa2_preannacc,
+				sa2_peridev
+				
+			)VALUES(
+				#{sa2_title},
+				#{sa2_date},
+				#{sa2_wether},
+				#{sa2_adminname},
+				#{sa2_inverternumtype},
+				#{sa2_nowpower},
+				#{sa2_todaypower},
+				#{sa2_accpower},
+				#{sa2_periodpower},
+				#{sa2_ACVL1_N},
+				#{sa2_ACVL2_N},
+				#{sa2_ACVL3_N},
+				#{sa2_ACAL1},
+				#{sa2_ACAL2},
+				#{sa2_ACAL3},
+				#{sa2_ACBV},
+				#{sa2_ACBA},
+				#{sa2_VCBKV},
+				#{sa2_VCBA},
+				#{sa2_palntKW},
+				#{sa2_palntV},
+				#{sa2_palntCT},
+				#{sa2_date2},
+				#{sa2_meternum1},
+				#{sa2_meternum2},
+				#{sa2_meter1KWh},
+				#{sa2_meter2KWh},
+				#{sa2_meter1period},
+				#{sa2_meter2period},
+				#{sa2_inverterperiod},
+				#{sa2_meter1date},
+				#{sa2_meter2date},
+				#{sa2_inverterdate},
+				#{sa2_meter1allKWh},
+				#{sa2_meter2allKWh},
+				#{sa2_inverterallKWh},
+				#{sa2_meter1dayKWh},
+				#{sa2_meter2dayKWh},
+				#{sa2_inverterdayKWh},
+				#{sa2_meter1dayhour},
+				#{sa2_meter2dayhour},
+				#{sa2_inverterdayhour},
+				#{sa2_opinion},
+				#{sa_writetype},
+				#{sa2_problem},
+				#{changenum},
+				#{changenum2},
+				#{sa2_nowpowertype},
+				#{sa2_todaypowertype},
+				#{sa2_accpowertype},
+				#{sa2_periodpowertype},
+				#{sa2_annacc},
+				#{sa2_preannacc},
+				#{sa2_peridev}
+			)
+		</insert>
+		
+		<!-- 발전소별 가장 최신 데이터 키값 뽑기(자동저장 기능에 필요) -->
+		<select id="paperpreview" parameterType="String" resultType="String">
+			select sa2_keyno
+			from dy_sa2_paper
+			where Conn_date =
+			(select max(Conn_date)
+			from dy_sa2_paper
+			where sa2_title = #{sa2_title}
+			)
+		</select>
+		
+		<select id="placeholderView" parameterType="String" resultType="hashmap">
+			select *
+			from dy_sa2_paper
+			where sa2_keyno = #{selectgroup}
+		</select>
+		
+		<!-- 현재월 양식 작성 횟수 -->
+		<select id="safeWritecount" parameterType="String" resultType="hashmap">
+		select count(*) count
+		from(
+				SELECT sa2_keyno, date_format(a.Conn_date, '%d일') datenum
+				FROM dy_sa2_paper a 
+				join dy_sa_user b
+				on a.sa2_title = b.SU_SA_SULBI
+				where date_format(a.Conn_date, '%Y-%m') =  date_format(now() , '%Y-%m')
+				and b.SU_KEYNO = #{su_keyno}
+			)sa
+		</select>
+		
+		<!-- 가장최근 작성일자 뽑기 -->
+		<select id="preDateSelect" parameterType="String" resultType="hashmap">
+			SELECT ifnull(date_format(max(b.Conn_date), '%m/%d'),'') predate
+			FROM dy_sa_user a
+			join dy_sa2_paper b
+			on a.SU_SA_SULBI  = b.sa2_title
+			where SU_KEYNO = #{su_keyno}
+		</select>
+		
+		<!-- 가장최근 작성일자와 현재 시간 일차이 뽑기-->
+		<select id="dateDiff" parameterType="String" resultType="hashmap">
+			select ifnull(datediff(now(),max(b.Conn_date)),0) diff
+			FROM dy_sa_user a
+			join dy_sa2_paper b
+			on a.SU_SA_SULBI  = b.sa2_title
+			where SU_KEYNO = #{su_keyno}
+		</select>
+		
+		<!-- 전달 마지막날 뽑기-->
+		<select id="lastday" resultType="String">
+			select date_format(LAST_DAY(now()-interval 1 month),'%d') lastday
+		</select>
+		
+		<!-- 바로 전회차 데이터 뽑기-->
+		<select id="preDataSelect" resultType="hashmap">
+			select *
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%m/%d/%h/%i') =
+			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where SU_KEYNO = #{su_keyno}
+			)
+		</select>
+		
+		<select id="placeholderPreView" resultType="hashmap">
+			select *
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%m/%d/%h/%i') =
+			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where sa2_keyno = #{selectgroup}
+			)
+		</select>
+		
+		 <!-- 이전달 가장 마지막 전월유효전력량 데이터 뽑기(자동계산) -->
+		<select id="preWattSelect" resultType="String">
+			select max(a.sa2_meter1KWh) prewatt
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%Y-%m') =
+				(select date_format(max(now()-interval 1 month),'%Y-%m')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where SU_KEYNO = #{su_keyno}
+				)
+		</select>
+
+		
+		
+		<insert id="ExcelInsert"  parameterType="hashmap">
+			INSERT INTO dy_sa_user (
+				SU_SA_SULBI, SU_SA_AD, SU_SA_RG, SU_SA_VOLUM, SU_SA_VOLT, SU_SA_CT, SU_SA_INVERTERNUM,SU_SA_ADMINDATE,SU_SA_METER1,SU_SA_METER2, SU_SA_PHONE1, SU_SA_PHONE2,SU_SA_PHONE3, SU_SA_PHONE4, SU_SA_PHONE5 
+			)VALUES
+			(
+				#{a},#{b},#{c},#{d},#{e},#{f},#{g},#{h},#{i},#{j},#{k},#{l},#{m},#{n},#{o}
+			)
+		</insert>
+		
+		
+</mapper>

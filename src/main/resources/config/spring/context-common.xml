@@ -20,6 +20,22 @@
     <util:properties id="config" location="classpath:/config.properties" />
     <context:property-placeholder properties-ref="config" />
     
+    
+     <bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+		<property name="properties">
+	        <map>
+	        <!-- 	<entry key="FileExt" value="${file.ext}"/>
+	        	<entry key="FilePath" value="${fileupload.filePath}"/>
+	        	<entry key="resourcePath" value="${resource.path}"/>
+	        	<entry key="jspPath" value="${jsp.path}"/>
+	        	<entry key="pageUnit" value="20"/>
+	        	<entry key="pageSize" value="10"/>
+	        	<entry key="mailName" value="${email.name}"/>
+	        	<entry key="mailAddress" value="${email.username}"/> -->
+	        </map>
+		</property>
+	</bean>
+	
 	<!-- 메일 발송 -->
 	<bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
 	    <property name="host" value="smtp.gmail.com" />
@@ -34,11 +50,13 @@
 	</bean>
 	
 	<bean id="NormalRenderer" class="com.tx.common.service.page.NormalPagination"/>
+	<bean id="ManagerRenderer" class="com.tx.common.service.page.ManagerPagination"/>
 	
 	<bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
 		<property name="rendererType">
 			<map>
 				<entry key="normal" value-ref="NormalRenderer"/>
+				<entry key="Manager" value-ref="ManagerRenderer"/>
 			</map>
 		</property> 
 	</bean>

@@ -2,15 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 
-<script src="/resources/common/js/html2canvas.js"></script>
-
 <form:form action="/dy/moniter/general.do" method="POST" id="Form">
 
 <input type="hidden" name="keyno" value="${DPP_KEYNO }" id="keyno">
 <!-- COMTAINER -->
 
 
-<div id="container" class="heightFix2">
+<div id="container" class="heightFix2" style="padding-top: 10px;">
     
     <div class="flex_wrapper">
         
@@ -439,8 +437,14 @@
                     <span class="state_b pos">
                     	${ob.DPP_INVER }
                     </span>
-
-                    <div class="table_wrapper con_h">
+					
+					<c:if test="${ob.DPP_KEYNO eq '74'}">
+						<c:set var="css_type" value="mr"/>
+					</c:if>
+					<c:if test="${ob.DPP_KEYNO ne '74'}">
+						<c:set var="css_type" value="con_h"/>
+					</c:if>
+                    <div class="table_wrapper ${css_type }">
                         <table class="tbl_normal fixed">
                             <colgroup>
                                 <col width="55%">
@@ -758,10 +762,16 @@
 </div>
 <!-- COMTAINER END -->
 </form:form>
+
+
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
+
 <script>
+
+
 $(function(){
 	if ("${DPP_KEYNO}" != '63'){
 		pf_setMap();	
@@ -1100,5 +1110,8 @@ function sreenShot(target) {
 function moreTable(){
 	$('.base_pop_wrapper2').addClass('on')
 }
+
+
+
 
 </script>

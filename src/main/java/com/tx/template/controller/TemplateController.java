@@ -73,7 +73,11 @@ public class TemplateController {
 
 		if (mobile1 || mobile2) {
 			mv.setViewName("redirect:/"+tiles+"/mobile.do");
-		} else {
+		}
+		else if("sfa".equals(tiles)) {
+			mv.setViewName("redirect:/"+tiles+"/safe/safe.do");
+		}
+		else {
 			mv.setViewName("redirect:/"+tiles+"/moniter/general.do");
 		}
 		

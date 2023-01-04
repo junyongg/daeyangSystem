@@ -146,6 +146,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		
 		<!-- 세금 계산서 -->
 		<typeAlias alias="billDTO" type="com.tx.test.dto.billDTO"/>
+		
+		<!-- 안전관리 -->
+		<typeAlias alias="safeAdminDTO" type="com.tx.SafeAdmin.dto.safeAdminDTO"/>
+		<typeAlias alias="safebillDTO" type="com.tx.SafeAdmin.dto.safebillDTO"/>
+		<typeAlias alias="safeUserDTO" type="com.tx.SafeAdmin.dto.safeUserDTO"/>
+		<typeAlias alias="DateDTO" type="com.tx.SafeAdmin.dto.DateDTO"/>
+		
 	</typeAliases>
 	
 	<typeHandlers>

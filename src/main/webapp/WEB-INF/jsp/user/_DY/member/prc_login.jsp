@@ -8,10 +8,10 @@
     <div class="bg"></div>
     <section class="in_login">
         <h1 class="logo"><a href="/" title="대양기업"><img src="/resources/img/sub/logo_login.jpg" alt="DAEYANG"></a></h1>
-        <h2><b>SOLAR</b> MONITORING SERVICE</h2>
+        <h2><b>SOLAR</b> ManageMent SERVICE</h2>
 
-        <h3>태양광 모니터링 서비스</h3>
-        <h4>대양기업 태양광 모니터링 서비스 로그인 페이지입니다.</h4>
+        <h3>태양광  종합관리 서비스</h3>
+        <h4>대양기업 태양광 종합관리 서비스 로그인 페이지입니다.</h4>
 
             <p class="log"><input type="text" class="log_txt id" placeholder="ID(아이디)" name="UI_ID" id="UI_IDs" ></p>
             <p class="log"><input type="password" class="log_txt pwd" placeholder="PW(비밀번호)" name="UI_PASSWORD" id="UI_PASSWORD" autocomplete="off"></p>

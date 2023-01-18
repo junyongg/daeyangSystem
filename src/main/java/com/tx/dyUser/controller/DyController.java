@@ -386,9 +386,20 @@ public class DyController {
  	   
 	   type.put("type",key);
 	   type.put("name",name);
- 	   
+	   type.put("number","A");
 	   //개별데이터
 	   HashMap<String,Object> data =  Component.getData("main.select_inverterData_ONE",type);
+	   type.put("number","B");
+	   HashMap<String,Object> data2 =  Component.getData("main.select_inverterData_ONE",type);
+	   if(data != null) {
+		   float a = Float.parseFloat(data.get("Cumulative_Generation").toString());
+		   float b = Float.parseFloat(data2.get("Cumulative_Generation").toString()) ;
+		   
+		   float daily = a-b;
+		   daily = (float)Math.round((daily*100))/100;
+		   data.put("Daily_Generation", daily);
+	   }
+			   
 	   
 	   map.put("invertData", data);
 	   map.put("name", name);
@@ -1447,7 +1458,6 @@ public class DyController {
 	}
    
    
-   
    public List<HashMap<String,Object>> changeDailyData(List<HashMap<String,Object>> result) {
 	   HashMap<String,Object> result_d = new HashMap<String,Object>();
 
@@ -1462,20 +1472,21 @@ public class DyController {
 			   float FirstData = Float.parseFloat(result_d.get(diname).toString());
 			   float nowData = Float.parseFloat(r.get("Cumulative_Generation").toString());
 			   
-			   float dailyData = Math.round((nowData - FirstData)*100/100.0);
+			   float dailyData = (nowData - FirstData);
 			   r.put("daily", dailyData);
 		   }else {
 			   cData = Float.parseFloat(r.get("Cumulative_Generation").toString());
 			   result_d.put(diname, cData);
 			   r.put("daily", 0);
 		   }
-		   System.out.println(r);
 	   }
 	   
 	   Collections.reverse(result);
 	   
 	   return result;
    }
+   
+   
    
    
 //   @RequestMapping("/allimTalkSend.do")

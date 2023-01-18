@@ -139,7 +139,7 @@
 		ORDER BY DIE_DATE DESC
 	</select>
 	
-	<!-- 인버터 개별데이터 한개 -->
+	<!-- 인버터 개별데이터 한개   하랑인버터 2호의 시간 초기화 문제로 인해 당일 발전량 계산을 위한 sql 추가-->
 	<select id="select_inverterData_ONE" resultType="hashmap" parameterType="hashmap">
 		SELECT *
 		FROM(
@@ -148,12 +148,18 @@
 			WHERE DP_KEYNO = #{type}
 			AND DI_NAME = #{name}
 			AND DATE_FORMAT(Conn_date,'%Y-%m-%d') =  DATE_FORMAT(now(),'%Y-%m-%d')
-			ORDER BY Conn_date DESC
+			ORDER BY Conn_date 
+			<if test='number.equals("A")'>
+				DESC
+			</if> 
+			<if test='number.equals("B")'>
+				ASC
+			</if>
 			LIMIT 1000
 		)A
 		GROUP BY A.DI_NAME
 	</select>
-	
+		
 	<!-- 인버터 개별데이터 -->
 	<select id="select_inverterData" resultType="hashmap" parameterType="hashmap">
 		SELECT *

@@ -91,8 +91,9 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 
 				if (row != null) {
 					cells = row.getPhysicalNumberOfCells();    // 열의 수
-					for (columnindex = 0; columnindex <= cells; columnindex++) {	// 열의 수만큼 반복
-						XSSFCell cell_filter = row.getCell(columnindex);	// 셀값을 읽는다
+					
+					for (columnindex = 1; columnindex <= cells; columnindex++) {	// 열의 수만큼 반복
+						XSSFCell cell_filter = row.getCell(columnindex-1);	// 셀값을 읽는다
 						String value = "";
 						
 						// 셀이 빈값일경우를 위한 널체크
@@ -104,8 +105,17 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 							case FORMULA:
 								value = cell_filter.getCellFormula();
 								break;
-							case NUMERIC:
+							case NUMERIC:		
+								
 								value = cell_filter.getNumericCellValue() + "";
+								int val = value.indexOf(".");
+								
+								if(value.substring(val, value.length()).equals(".0")){
+									value = value.substring(0, val);
+								}else{
+									value = value;
+								}
+								
 								break;
 							case STRING:
 								value = cell_filter.getStringCellValue() + "";

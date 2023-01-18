@@ -1755,8 +1755,8 @@ public class safeAdminController {
 			for(ArrayList<String> re : result) {
 				HashMap<String , Object> m = new HashMap<String, Object>();
 				
-				m.put("a",re.get(0));
-				m.put("b",re.get(1));
+				m.put("a",re.get(0));				
+				m.put("b",re.get(1));				
 				m.put("c",re.get(2));
 				m.put("d",re.get(3));
 				m.put("e",re.get(4));
@@ -1766,10 +1766,6 @@ public class safeAdminController {
 				m.put("i",re.get(8));
 				m.put("j",re.get(9));
 				m.put("k",re.get(10));
-				m.put("l",re.get(11));
-				m.put("m",re.get(12));
-				m.put("n",re.get(13));
-				m.put("o",re.get(14));
 			
 				
 				Component.createData("sfa.ExcelInsert", m);

@@ -129,14 +129,14 @@
 											<tr>
 												<td>인버터 대수</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_INVERTERNUM" name="SU_SA_INVERTERNUM"></td>
-												<td>점검일</td>
+												<td>계량기 검침일</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_ADMINDATE" name="SU_SA_ADMINDATE"></td>
 												<td>계량기 번호1</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_METER1" name="SU_SA_METER1"></td>
+												<td><input type="text" class="form-control check2" id="SU_SA_METER1" name="SU_SA_METER1" value="계량기#"></td>
 											</tr>
 											<tr>
 												<td>계량기 번호2</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_METER2" name="SU_SA_METER2"></td>
+												<td><input type="text" class="form-control check2" id="SU_SA_METER2" name="SU_SA_METER2" value="계량기#"></td>
 												<td>사업주 전화번호 1</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_PHONE1" name="SU_SA_PHONE1"></td>
 												<td>사업주 전화번호 2</td>
@@ -199,6 +199,11 @@ function providerSelect2(value){
 		
 		$("#buttionType2").val("insert");
 	}else{
+		$("#user").val(value)
+		var target = document.getElementById("user");
+		//console.log(userText)
+		$("#select2-user-container").text(target.options[target.selectedIndex].text);
+		$("#select2-SU_DPP_KEYNO-container").text(target.options[target.selectedIndex].text);
 		providerSelectmethod2(value);
 	}
 }

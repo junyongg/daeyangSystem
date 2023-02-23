@@ -377,6 +377,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_annacc = #{sa2_annacc},
 				sa2_preannacc = #{sa2_preannacc},
 				sa2_peridev = #{sa2_peridev}
+				sa2_AC_Change = #{AC_sangsun}
 				
 			WHERE sa2_keyno = #{sa2_keyno}
 		</update>
@@ -750,8 +751,8 @@ where UI_KEYNO = 'UI_HMWNH'
 	</select>
 	
 	<select id="preview2" parameterType="DateDTO" resultType="hashmap">
-		SELECT * 
-		FROM dy_sa2_paper a 
+		SELECT *
+		FROM dy_sa2_paper a
 		join dy_sa_user b
 		on a.sa2_title = b.SU_SA_SULBI
 		where date_format(a.Conn_date, '%Y') =  #{Year}
@@ -827,6 +828,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_periodpowertype,
 				sa2_annacc,
 				sa2_preannacc,
+				sa2_AC_Change,
 				sa2_peridev
 				
 			)VALUES(
@@ -883,6 +885,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa2_periodpowertype},
 				#{sa2_annacc},
 				#{sa2_preannacc},
+				#{AC_sangsun},
 				#{sa2_peridev}
 			)
 		</insert>

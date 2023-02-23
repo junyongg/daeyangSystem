@@ -73,7 +73,7 @@
            <div class="mt-5 mb-3 flex flex-wrap">
              <label for="month_0"
                class="text-black bg-badge-green py-2 px-3 rounded-full mx-2 mb-2 text-xs cursor-pointer flex-shrink-0">전체</label>
-             <input type="checkbox" name="month_0" id="month_0" value ="10"  ${search.orderCondition eq '10'? 'selected':'' }  onclick = "pf_searchDate(this.value)" class="hidden month_btn" >
+             <input type="checkbox" name="month_0" id="month_0" value ="10"  ${search.orderCondition eq '10'? 'selected':'' }  onclick = "pf_searchDate(this.value)" class="hidden month_btn" checked>
              <label for="month_1"
                class="text-black bg-badge-green py-2 px-3 rounded-full mx-2 mb-2 text-xs cursor-pointer flex-shrink-0">1월</label>
              <input type="checkbox" name="month_1" id="month_1" value ="13"  ${search.orderCondition eq '13'? 'selected':'' }  onclick = "pf_searchDate(this.value)" class="hidden month_btn">
@@ -125,6 +125,11 @@
 </form:form>
 
 <script type="text/javascript">
+$(function() {
+	
+	$("#month_0").trigger("click");
+	
+});
 function pf_searchDate(object){
 	pf_settingSearchDate(object);
 	pf_LinkPage();

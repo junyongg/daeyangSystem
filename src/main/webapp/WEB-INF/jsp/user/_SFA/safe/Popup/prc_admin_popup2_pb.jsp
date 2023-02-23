@@ -197,8 +197,14 @@
                   <tr class="etcTr" data-html2canvas-ignore="true">
                     <td class="tg-0lax px-4 py-3" colspan="1" rowspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       AC전압 [V]</td>
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
-                      L1 - N</td>
+            		<c:if test="${list.sa2_AC_Change eq '02' }">
+                    	<td class="SunAC1 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                      	L1 - N</td>
+                     </c:if>
+            		<c:if test="${list.sa2_AC_Change eq '01' }">
+                    	<td class="SunAC1 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                      	L1 - L2</td>
+                     </c:if>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                     <label id="sa2_label5">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -219,8 +225,14 @@
                     </td>
                   </tr>
                   <tr class="etcTr">
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                  <c:if test="${list.sa2_AC_Change eq '02' }">
+                   	 <td class="SunAC2 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       L2 - N</td>
+                  </c:if>
+                  <c:if test="${list.sa2_AC_Change eq '01' }">
+                   	 <td class="SunAC2 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                      L2 - L3</td>
+                  </c:if>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                      <label id="sa2_label7">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -239,8 +251,14 @@
                     </td>
                   </tr>
                   <tr class="etcTr">
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                  <c:if test="${list.sa2_AC_Change eq '02' }">
+                    <td class="SunAC3 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       L3 - N</td>
+				  </c:if>
+                  <c:if test="${list.sa2_AC_Change eq '01' }">
+                    <td class="SunAC3 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                      L3 - L1</td>
+				  </c:if>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                      <label id="sa2_label9">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -421,8 +439,7 @@
           <div class="w-full border">
 			<tr class="esco">
                     <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
-                      <input type="text"
-							readonly="readonly" value="${list.sa2_opinion }" name="sa2_opinion" id="sa2_opinion" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
+                      <textarea rows="5" readonly="readonly" name="sa2_opinion" id="sa2_opinion" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">${list.sa2_opinion }</textarea>
                     </td> 
                   </tr>
           </div>
@@ -451,9 +468,9 @@
             
           </div>
         </div>
-        <input type="hidden" id="buttionType" name="buttionType" value="insert"> 
-		<input type="hidden" id="sa2_keyno" name="sa2_keyno" value=""> 
-		<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="${num }">
+        <input type="hidden" id="buttionType" name="buttionType" value="insert">
+		<input type="hidden" id="sa2_keyno" name="sa2_keyno" value="">
+		<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="${num}">
 		<input type="hidden" id="sa_writetype" name="sa_writetype" value="2">
 		<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
 		<input type="hidden" id="imgSrc" name="imgSrc" value="">
@@ -655,7 +672,7 @@ function inverterNumber(){
 					nowpowerlist[i] = 0		
 					todaypowerlist[i] = 0									
 					accpowerlist[i] = 0
-					periodpowerlist[i] = 0
+					periodpowerlist[i] = periodpowerlist[i]
 				}else{
 					nowpowerlist[i] =  nowpowerlist[i]		
 					todaypowerlist[i] =  todaypowerlist[i]
@@ -674,10 +691,10 @@ function inverterNumber(){
 		
 		
 		$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">1</td>');
-		$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 <input id="sa2_nowpowertype" name="sa2_nowpowertype" value="KWh" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower" readonly="readonly"></td>');
-		$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="KWh" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
-		$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="KWh" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
-		$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="KWh" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
+		$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 <input id="sa2_nowpowertype" name="sa2_nowpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower" readonly="readonly"></td>');
+		$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
+		$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
+		$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
 		
 	
 		for(var i=1; i<=num-1; i++){	

@@ -147,6 +147,7 @@ public class safeAdminDTO {
 	 sa2_periodpowertype,
 	 sa2_annacc,
 	 sa2_preannacc,
+	 AC_sangsun,
 	 sa2_peridev = "";
 
 	

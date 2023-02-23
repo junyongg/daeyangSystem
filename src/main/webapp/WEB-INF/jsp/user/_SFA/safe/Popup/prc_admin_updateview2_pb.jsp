@@ -33,7 +33,6 @@
 <script type="text/javascript" src="/resources/publish/_SFA/js/common.js"></script>
 </head>
 <body>
-
 <form:form id="Form" name="Form" method="post">
 <main id="esco" class="h-full overflow-y-auto ">
   <div class="container grid px-6 mx-auto">
@@ -187,7 +186,13 @@
                   <tr class="etcTr" data-html2canvas-ignore="true">
                     <td class="tg-0lax px-4 py-3" colspan="1" rowspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       AC전압 [V]</td>
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                     <td rowspan="3" style="text-align: center;">
+						<label class="AC_value" style="display: block;">선간전압<input type="radio" id="AC_sangsun" name="AC_sangsun"
+							value="01" onchange="AC_Change(this.value)" checked></label>
+						<label class="AC_value" style="display: block; margin-top: 20px;">상전압 <input type="radio" id="AC_sangsun" name="AC_sangsun"
+							value="02" onchange="AC_Change(this.value)"></label>
+					</td>
+                    <td class="AC_cl1 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       L1 - N</td>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                     <label id="sa2_label5">
@@ -209,7 +214,7 @@
                     </td>
                   </tr>
                   <tr class="etcTr">
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                    <td class="AC_cl2 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       L2 - N</td>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                      <label id="sa2_label7">
@@ -229,7 +234,7 @@
                     </td>
                   </tr>
                   <tr class="etcTr">
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
+                    <td class="AC_cl3 tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       L3 - N</td>
                     <td class="tg-0lax px-4 py-3  " colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                      <label id="sa2_label9">
@@ -278,12 +283,9 @@
                   <tr class="">
                     <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       전월 누적 송전 유효전력량[kwh] - 전체</td>
-                    <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
+                    <td class="tg-0lax px-4 py-3" colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text"   value="${list.sa2_meternum1 }"
 						name="sa2_meternum1" id="sa2_meternum1" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
-                    </td>
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
-                      <input type="text" class="w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
                     </td>
                     <td class="tg-0lax px-4 py-3  " colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -295,12 +297,9 @@
                   <tr class="">
                     <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       현재 누적 송전 유효전력량[kwh] - 전체</td>
-                    <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
+                    <td class="tg-0lax px-4 py-3" colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text"   value="${list.sa2_meternum2 }"
 						name="sa2_meternum2" id="sa2_meternum2" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
-                    </td>
-                    <td class="tg-0lax px-4 py-3" colspan="1" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
-                      <input type="text" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
                     </td>
                     <td class="tg-0lax px-4 py-3  " colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -450,6 +449,7 @@
 		<input type="hidden" id="predataMeter1" name="predataMeter1" value="">
 		<input type="hidden" id="predataMeter2" name="predataMeter2" value="">
 		<input type="hidden" id="prewatt" name="prewatt" value="">
+		<input type="hidden" id="sang_AC" value="${list.sa2_AC_Change }">
     </div>
   </div>
 </main>
@@ -460,6 +460,10 @@ $(function() {
 	
 	inverterNumber()
 	seletbox_value()
+	var AC_value = $("#sang_AC").val();
+	alert(AC_value);
+	AC_Change(AC_value)
+	
 	
 });
 
@@ -615,7 +619,6 @@ function inverterNumber(){
 	}else{
 		
 		var nowpower = "${list.sa2_nowpower}";
-		
 		var todaypower = "${list.sa2_todaypower}";
 		var accpower = "${list.sa2_accpower}";
 		var periodpower = "${list.sa2_periodpower}";
@@ -638,7 +641,7 @@ function inverterNumber(){
 					nowpowerlist[i] = 0
 					todaypowerlist[i] = 0									
 					accpowerlist[i] = 0
-					periodpowerlist[i] = 0
+					periodpowerlist[i] = periodpowerlist[i]
 				}else{
 					nowpowerlist[i] =  nowpowerlist[i]		
 					todaypowerlist[i] =  todaypowerlist[i]
@@ -657,7 +660,7 @@ function inverterNumber(){
 		
 		
 		$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">1</td>');
-		$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력<select id="sa2_nowpowertype" name="sa2_nowpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower"></td>');
+		$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kw]</td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower"></td>');
 		$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<select id="sa2_todaypowertype" name="sa2_todaypowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower"></td>');
 		$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower"></td>');
 		$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower"></td>');
@@ -709,16 +712,37 @@ function UpdateInfo(){
 function seletbox_value(){
 	
 	var accpowertype = "${list.sa2_accpowertype}";
-	var nowpowertype = "${list.sa2_nowpowertype}";
+// 	var nowpowertype = "${list.sa2_nowpowertype}";
 	var todaypowertype = "${list.sa2_todaypowertype}";
 	var periodpowertype = "${list.sa2_periodpowertype}";
 	var adminname = "${list.sa2_adminname}";
 	
 	$("#sa2_accpowertype").val(accpowertype);
-	$("#sa2_nowpowertype").val(nowpowertype);
+// 	$("#sa2_nowpowertype").val(nowpowertype);
 	$("#sa2_todaypowertype").val(todaypowertype);
 	$("#sa2_periodpowertype").val(periodpowertype);
 	$("#sa2_adminname").val(adminname);
 	
 }
+
+//상전압 선간전압 변경
+function AC_Change(value){
+
+	if(value == "01"){
+		$(".AC_cl1").text('L1-L2')
+		$(".AC_cl2").text('L2-L3')
+		$(".AC_cl3").text('L3-L1')
+	}else{
+		$(".AC_cl1").text('L1-N')
+		$(".AC_cl2").text('L2-N')
+		$(".AC_cl3").text('L3-N')
+	}
+}
+
+
+// function AC_value_write(){
+	
+// 	var AC_value = "${list.sa2_annacc}";
+	
+// }
 </script>

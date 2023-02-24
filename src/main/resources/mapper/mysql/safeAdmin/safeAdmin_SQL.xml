@@ -376,7 +376,7 @@ where UI_KEYNO = 'UI_HMWNH'
 	 			sa2_periodpowertype = #{sa2_periodpowertype},
 				sa2_annacc = #{sa2_annacc},
 				sa2_preannacc = #{sa2_preannacc},
-				sa2_peridev = #{sa2_peridev}
+				sa2_peridev = #{sa2_peridev},
 				sa2_AC_Change = #{AC_sangsun}
 				
 			WHERE sa2_keyno = #{sa2_keyno}

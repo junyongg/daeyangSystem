@@ -110,6 +110,9 @@ public class safeAdminLogController {
 			
 			Map<String,Object> map = CommonService.ConverObjectToMap(search);
 			
+			Map<String, Object> user = CommonService.getUserInfo(req);
+			String UI_KEYNO = user.get("UI_KEYNO").toString();
+			
 			if(searchList != null){
 				map.put("searchList", searchList);
 			}
@@ -118,6 +121,8 @@ public class safeAdminLogController {
 			
 			map.put("AH_HOMEDIV_C", AH_HOMEDIV_C);
 			map.put("UI_ID", UI_ID);
+			map.put("SU_UI_KEYNO", UI_KEYNO);
+			
 			
 			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfa.Safe_getListCnt",map, search.getPageUnit(), 10);
 			

@@ -452,14 +452,17 @@ where UI_KEYNO = 'UI_HMWNH'
 	 	</if>
 	</sql>
 	
-	<select id="Safe_getListCnt" resultType="int">
+	<select id="Safe_getListCnt" resultType="int" parameterType="String">
 		SELECT	COUNT(*)
 		<include  refid="Safe_getListBody"/>
+		and sa2_UI_KEYNO = #{SU_UI_KEYNO}
+		
     </select>
     
-    <select id="Safe_getList" resultMap="ResultMap.rownumHashMap">
+    <select id="Safe_getList" resultMap="ResultMap.rownumHashMap" parameterType="String">
     	SELECT	* 
 		<include  refid="Safe_getListBody"/>
+		and sa2_UI_KEYNO = #{SU_UI_KEYNO}
 		<choose>
 			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
@@ -488,13 +491,14 @@ where UI_KEYNO = 'UI_HMWNH'
 	<!-- 안전관리 양식 select -->
 	<select id="boardlist" resultType="hashmap">
 	    SELECT *
-	    from dy_sa_paper  
+	    from dy_sa_paper
     </select>
     
     <!-- 안전관리 발전소 전체 select -->
-    <select id="safeuserselect" resultType="hashmap">
+    <select id="safeuserselect" resultType="hashmap" parameterType="String">
 	    SELECT *
 	    from dy_sa_user
+	    where SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
     <!-- 안전관리 발전소 개별 select -->
@@ -584,7 +588,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			SU_SA_PHONE2,
 			SU_SA_PHONE3,
 			SU_SA_PHONE4,
-			SU_SA_PHONE5
+			SU_SA_PHONE5,
+			SU_UI_KEYNO
 			
 		)VALUES(
 			#{SU_SA_SULBI},
@@ -602,7 +607,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			#{SU_SA_PHONE2},
 			#{SU_SA_PHONE3},
 			#{SU_SA_PHONE4},
-			#{SU_SA_PHONE5}
+			#{SU_SA_PHONE5},
+			#{SA_UI_KEYNO}
 		)
 	</insert>
 	
@@ -642,7 +648,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			, @ROWNUM:=@ROWNUM+1 as COUNT
 		from (
 			select *
-			from dy_sa_user 
+			from dy_sa_user
 			order by SU_KEYNO
 		) B
 		where (@ROWNUM:=0)=0
@@ -680,14 +686,16 @@ where UI_KEYNO = 'UI_HMWNH'
 	 	</if>
 	</sql>
 	
-	<select id="safeUser_getListCnt" resultType="int">
+	<select id="safeUser_getListCnt" resultType="int" parameterType="hashmap">
 		SELECT	COUNT(*)
 		<include  refid="safeUser_getListBody"/>
+		and SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
-    <select id="safeUser_getList" resultMap="ResultMap.rownumHashMap">
+    <select id="safeUser_getList" resultMap="ResultMap.rownumHashMap" parameterType="hashmap">
     	SELECT	* 
 		<include  refid="safeUser_getListBody"/>
+		and SU_UI_KEYNO = #{SU_UI_KEYNO}
 		<choose>
 			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
@@ -829,7 +837,8 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_annacc,
 				sa2_preannacc,
 				sa2_AC_Change,
-				sa2_peridev
+				sa2_peridev,
+				sa2_UI_KEYNO
 				
 			)VALUES(
 				#{sa2_title},
@@ -886,7 +895,8 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa2_annacc},
 				#{sa2_preannacc},
 				#{AC_sangsun},
-				#{sa2_peridev}
+				#{sa2_peridev},
+				#{SA_UI_KEYNO}
 			)
 		</insert>
 		

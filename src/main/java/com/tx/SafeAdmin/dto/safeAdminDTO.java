@@ -148,7 +148,8 @@ public class safeAdminDTO {
 	 sa2_annacc,
 	 sa2_preannacc,
 	 AC_sangsun,
-	 sa2_peridev = "";
+	 sa2_peridev,
+	 SA_UI_KEYNO= "";
 
 	
 }

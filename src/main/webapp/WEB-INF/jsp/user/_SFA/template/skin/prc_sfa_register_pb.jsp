@@ -701,7 +701,7 @@
 				<div data-html2canvas-ignore="true"
 					class="flex items-center justify-center text-sm md:text-sm lg:text-base font-bold my-4 md:md-4 lg:my-7">
 					<button type="button" onclick="SendAlim()"
-						class=" text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">알림전송
+						class="KAKAOMSG text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">알림전송
 						후 저장</button>
 					<button type="button" onclick="loadInfo()"
 						class="text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">저장</button>
@@ -711,19 +711,17 @@
 							class="mr-1">초기화
 					</button>
 				</div>
-				<input type="hidden" id="buttionType" name="buttionType"
-					value="insert"> <input type="hidden" id="sa2_keyno"
-					name="sa2_keyno" value=""> <input type="hidden"
-					id="SU_DPP_KEYNO" name="SU_DPP_KEYNO" value=""> <input
-					type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype"
-					value=""> <input type="hidden" id="sa_writetype"
-					name="sa_writetype" value="2"> <input type="hidden"
-					id="SU_KEYNO" name="SU_KEYNO" value=""> <input
-					type="hidden" id="imgSrc" name="imgSrc" value=""> <input
-					type="hidden" id="predataMeter1" name="predataMeter1" value="">
-				<input type="hidden" id="predataMeter2" name="predataMeter2"
-					value=""> <input type="hidden" id="prewatt" name="prewatt"
-					value="">
+				<input type="hidden" id="buttionType" name="buttionType" value="insert">
+				<input type="hidden" id="sa2_keyno" name="sa2_keyno" value="">
+				<input type="hidden" id="SU_DPP_KEYNO" name="SU_DPP_KEYNO" value=""> 
+				<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="">
+				<input type="hidden" id="sa_writetype" name="sa_writetype" value="2">
+				<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
+				<input type="hidden" id="imgSrc" name="imgSrc" value="">
+				<input type="hidden" id="predataMeter1" name="predataMeter1" value="">
+				<input type="hidden" id="predataMeter2" name="predataMeter2" value="">
+				<input type="hidden" id="prewatt" name="prewatt" value="">
+				<input type="hidden" id="SA_UI_KEYNO" name="SA_UI_KEYNO" value="${UI_KEYNO }">
 			</div>
 		</div>
 	</main>
@@ -733,6 +731,8 @@
 $(function() {
 	$(".hiddenTr").hide();
 	$(".imgdelete").hide();
+	
+	
 	
 	
 	//선간전압Change 실행
@@ -1301,7 +1301,6 @@ function changesulbi(keyno) {
         			}
         	    }
         		
-        		console.log(accpowerlist);
         		var conutt = count + 1
         		var put = "inputplus3";
         		var put2 = "inputplus4";
@@ -1329,8 +1328,15 @@ function changesulbi(keyno) {
         		
         		//자동계산(기간발전량 총합, 전월누적 계산) 
         		method_2(put,put2,conutt)
-        		var meter1KWh = result.preData.sa2_meter1KWh
-        		Divison(meter1KWh)
+				
+        		//자동계산(전월 누적으로 총발전량, 1일평균 계산 및 첫 작성일때 분기처리)
+        		if(result.preData == null){
+        			Divison(0)
+        		}else{
+        			Divison(result.preData.sa2_meter1KWh)
+        		}
+        		
+	       		
         			
         		
         		for(var i=1; i<=num-1; i++){	
@@ -1370,7 +1376,12 @@ function changesulbi(keyno) {
         	
         	//division 함수 데이터처리(Division의 인수 값 넣어줌)
         	var meter1KWh = $("#sa2_meter1KWh").val()
-        		
+        	
+        	
+        	//카카오, 메시지 체크안할시 알림 후 저장 버튼 hide
+        	if(result.data.SU_SA_KAKAOYN == "N" && result.data.SU_SA_MSGYN == "N"){
+        		$(".KAKAOMSG").hide();
+        	}
 
         	
         },

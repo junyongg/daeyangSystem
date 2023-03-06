@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="sfabill">
 	
-		<select id="billsSelect" resultType="hashmap" >
+		<select id="billsSelect" resultType="hashmap" parameterType="String">
 			SELECT * 
 			FROM sa_bill_provider
+			where dbp_UI_KEYNO = #{dbp_UI_KEYNO}
 		</select>
 
 		<select id="billsSelect_one" resultType="hashmap" parameterType="String">
@@ -29,7 +30,8 @@
 				dbp_ir_name,
 				dbp_ir_cell,
 				dbp_email,
-				dbp_address
+				dbp_address,
+				dbp_UI_KEYNO
 			)VALUES(
 				#{hometaxbill_id},
 				#{spass},
@@ -43,7 +45,8 @@
 				#{ir_name},
 				#{ir_cell},
 				#{ir_email},
-				#{ir_companyaddress}
+				#{ir_companyaddress},
+				#{dbp_UI_KEYNO}
 			)
 		</insert>
 		
@@ -73,12 +76,15 @@
 		
 		<!-- 사업등록번호 카운팅 -->
 		<select id="billCount" resultType="int" parameterType="safebillDTO">
-			SELECT COUNT(*) FROM sa_bill_provider WHERE dbp_co_num = #{ir_companynumber}
+			SELECT COUNT(*) FROM sa_bill_provider 
+			WHERE dbp_co_num = #{ir_companynumber}
+			and dbp_UI_KEYNO = #{dbp_UI_KEYNO}
 		</select>
 
-		<select id="SuppliedSelect" resultType="hashmap">
+		<select id="SuppliedSelect" resultType="hashmap" parameterType="String">
 			SELECT *
 			FROM sa_bill_supplied
+			where dbs_UI_KEYNO = #{dbs_UI_KEYNO}
 		</select>
 		<select id="SuppliedSelect_one" resultType="hashmap" parameterType="String">
 			SELECT * 
@@ -104,7 +110,8 @@
 			dbs_name2,
 			dbs_cell2,
 			dbs_email2,
-			dbs_address
+			dbs_address,
+			dbs_UI_KEYNO
 		)VALUES(
 			#{ie_companynumber},
 			#{ie_biztype},
@@ -120,7 +127,8 @@
 			#{ie_name2},
 			#{ie_cell2},
 			#{ie_email2},
-			#{ie_companyaddress}
+			#{ie_companyaddress},
+			#{dbs_UI_KEYNO}
 		)
 	</insert>
 	
@@ -146,7 +154,9 @@
 	
 	<!-- 사업등록번호 카운팅 공급받는자 -->
 	<select id="billCount2" resultType="int" parameterType="safebillDTO">
-		SELECT COUNT(*) FROM sa_bill_supplied WHERE dbs_co_num = #{ie_companynumber}
+		SELECT COUNT(*) FROM sa_bill_supplied 
+		WHERE dbs_co_num = #{ie_companynumber}
+		and dbs_UI_KEYNO = #{dbs_UI_KEYNO} 
 	</select>
 	
 	<select id="billLogCount" resultType="String" parameterType="safebillDTO">
@@ -193,7 +203,8 @@
 				dbl_sub_issuedate,
 				dbl_sub_keyno,
 				dbl_si_hcnt,
-				dbl_homeid
+				dbl_homeid,
+				dbl_UI_KEYNO
 				
 			)VALUES(
 				#{dbp_keyno},
@@ -224,7 +235,8 @@
 				#{sub_issuedate},
 				#{dbl_sub_keyno},
 				#{si_hcnt},
-				#{homemunseo_id}
+				#{homemunseo_id},
+				#{dbl_UI_KEYNO}
 				
 			)
 	</insert>
@@ -277,6 +289,7 @@
 	<select id="billslogselect" resultType="hashmap" >
 			SELECT * 
 			FROM sa_bill_log
+			where dbl_UI_KEYNO = #{UI_KEYNO}
 	</select>
 	
 	<select id="selectAllView" parameterType="safebillDTO" resultType="safebillDTO">
@@ -310,11 +323,12 @@
 	and date_format(Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
 	</select>
 	
-	<select id="logList3" resultType="hashmap">
+	<select id="logList3" resultType="hashmap" parameterType="String">
 	select *
 	from sa_bill_log
 	where dbl_sub_keyno = 3
 	and date_format(Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
+	and dbl_UI_KEYNO = #{UI_KEYNO}
 	</select>
 	
 	<update id="subkey1Insert" parameterType="String" >
@@ -627,14 +641,16 @@
 	 	</if>
 	</sql>
 	
-	<select id="Log_getListCnt3" resultType="int">
+	<select id="Log_getListCnt3" resultType="int" parameterType="hashmap">
 		SELECT	COUNT(*)
 		<include  refid="Log_getListBody3"/>
+		and dbl_UI_KEYNO = #{UI_KEYNO}
     </select>
     
-    <select id="Log_getList3" resultMap="ResultMap.rownumHashMap">
+    <select id="Log_getList3" resultMap="ResultMap.rownumHashMap" parameterType="hashmap">
     	SELECT	* 
 		<include  refid="Log_getListBody3"/>
+		and dbl_UI_KEYNO = #{UI_KEYNO}
 		<choose>
 			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
@@ -739,17 +755,16 @@
 	
 	
 	
-	<select id="Log_getListCnt4" resultType="int">
+	<select id="Log_getListCnt4" resultType="int" parameterType="hashmap">
 		SELECT	COUNT(*)
 		<include  refid="Log_getListBody4"/>
-    </select>
-    
-    
-    
-    
-    <select id="Log_getList4" resultMap="ResultMap.rownumHashMap">
+		AND dbl_UI_KEYNO = #{UI_KEYNO}
+		
+    </select>   
+    <select id="Log_getList4" resultMap="ResultMap.rownumHashMap" parameterType="hashmap">
     	SELECT	* 
 		<include  refid="Log_getListBody4"/>
+		AND dbl_UI_KEYNO = #{UI_KEYNO}
 		<choose>
 			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}

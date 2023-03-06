@@ -102,6 +102,10 @@ public class safeBillsLogController {
 				) throws Exception {
 			
 			ModelAndView mv  = new ModelAndView("/user/_SFA/bill/pra_bills_logpaging_pb");
+			
+			Map<String, Object> user = CommonService.getUserInfo(req);
+			String UI_KEYNO = user.get("UI_KEYNO").toString();
+
 
 			List<HashMap<String,Object>> searchList = Component.getSearchList(req);
 			
@@ -115,6 +119,7 @@ public class safeBillsLogController {
 			
 			map.put("AH_HOMEDIV_C", AH_HOMEDIV_C);
 			map.put("UI_ID", UI_ID);
+			map.put("UI_KEYNO", UI_KEYNO);
 			
 			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfabill.Log_getListCnt4",map, search.getPageUnit(), 10);
 			

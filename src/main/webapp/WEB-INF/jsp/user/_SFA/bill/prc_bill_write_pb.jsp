@@ -36,6 +36,7 @@
 <input type="hidden" name="si_hcnt" id="si_hcnt" value = "0">
 <input type="hidden" name="checkYN" id="checkYN" value = "N">
 <input type="hidden" name="dbp_subkey3" id="dbp_subkey3">
+<input type="hidden" id="dbl_UI_KEYNO" name="dbl_UI_KEYNO" value="${UI_KEYNO }">
 <main class="h-full overflow-y-auto ">
             <div class="container grid px-6 mx-auto">
               <div class="relative">

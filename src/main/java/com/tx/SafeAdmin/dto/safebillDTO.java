@@ -24,6 +24,7 @@ public class safebillDTO {
 	public String dbp_subkey1;	
 	public String dbp_subkey2;	
 	public String dbp_subkey3;
+	public String dbp_UI_KEYNO;
 	
 	//공급 받는자 정보
 	public String dbs_keyno;
@@ -44,6 +45,7 @@ public class safebillDTO {
 	public String dbs_address;
 	public String dbs_date;
 	public String dbs_homeid;
+	public String dbs_UI_KEYNO;
 	
 	
 	//로그정보
@@ -81,6 +83,7 @@ public class safebillDTO {
 	public String  dbl_status;
 	public String  dbl_errormsg;	
 	public String  dbl_homeid;
+	public String  dbl_UI_KEYNO;
 	
 	//세금계산서 정보
 	public String hometaxbill_id;
@@ -272,6 +275,25 @@ public class safebillDTO {
 	}
 	public void setDbp_subkey3(String dbp_subkey3) {
 		this.dbp_subkey3 = dbp_subkey3;
+	}
+	
+	public String getDbp_UI_KEYNO() {
+		return dbp_UI_KEYNO;
+	}
+	public void setDbp_UI_KEYNO(String dbp_UI_KEYNO) {
+		this.dbp_UI_KEYNO = dbp_UI_KEYNO;
+	}
+	public String getDbs_UI_KEYNO() {
+		return dbs_UI_KEYNO;
+	}
+	public void setDbs_UI_KEYNO(String dbs_UI_KEYNO) {
+		this.dbs_UI_KEYNO = dbs_UI_KEYNO;
+	}
+	public String getDbl_UI_KEYNO() {
+		return dbl_UI_KEYNO;
+	}
+	public void setDbl_UI_KEYNO(String dbl_UI_KEYNO) {
+		this.dbl_UI_KEYNO = dbl_UI_KEYNO;
 	}
 	public String getDbs_keyno() {
 		return dbs_keyno;

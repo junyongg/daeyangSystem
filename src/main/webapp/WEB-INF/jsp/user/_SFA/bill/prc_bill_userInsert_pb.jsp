@@ -114,6 +114,7 @@
                   <div id = "buttondiv1">
 					  <input type="hidden" id="buttionType" name="buttionType" value="insert"> 
 					  <input type="hidden" id="dbp_keyno" name="dbp_keyno" value=""> 
+					  <input type="hidden" id="dbp_UI_KEYNO" name="dbp_UI_KEYNO" value="${UI_KEYNO }"> 
 	                  <button type="button" id="ActionType" onclick="providerInsert();"
 	                    class=" text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue">저장</button>
 				  </div>                
@@ -232,6 +233,7 @@
 					  <input type="hidden" id="buttionType" name="buttionType" value="insert"> 
 					  <input type="hidden" id="dbp_keyno" name="dbp_keyno" value=""> 
 					  <input type="hidden" id="dbp_keyno2" name="dbp_keyno2" value=""> 
+					  <input type="hidden" id="dbs_UI_KEYNO" name="dbs_UI_KEYNO" value="${UI_KEYNO }">
 	                  <button type="button" id="ActionType2" onclick="providerInsert2();"
 	                    class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue">저장</button>
 				  </div>
@@ -242,6 +244,12 @@
         </main>
         
 <script type="text/javascript">
+
+$(function() {
+
+	
+});
+
 
 function providerSelect(value){
 	console.log(value)

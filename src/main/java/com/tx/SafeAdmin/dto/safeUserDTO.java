@@ -21,6 +21,8 @@ public class safeUserDTO {
 	public String SU_SA_PHONE5;
 	public String SU_SA_KAKAOYN;
 	public String SU_SA_MSGYN;
+	public String SA_UI_KEYNO;
+	
 	public String getSU_KEYNO() {
 		return SU_KEYNO;
 	}
@@ -134,6 +136,12 @@ public class safeUserDTO {
 	}
 	public void setSU_SA_PHONE5(String sU_SA_PHONE5) {
 		SU_SA_PHONE5 = sU_SA_PHONE5;
+	}
+	public String getSA_UI_KEYNO() {
+		return SA_UI_KEYNO;
+	}
+	public void setSA_UI_KEYNO(String sA_UI_KEYNO) {
+		SA_UI_KEYNO = sA_UI_KEYNO;
 	}
 	
 	

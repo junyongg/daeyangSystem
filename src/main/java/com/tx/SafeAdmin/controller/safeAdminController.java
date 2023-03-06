@@ -110,15 +110,20 @@ public class safeAdminController {
 	public ModelAndView safeAdmin(HttpServletRequest req) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/template/skin/prc_sfa_register_pb");
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
 
 		List<HashMap<String, Object>> result = Component.getListNoParam("sfa.jspselect");
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분").format(Calendar.getInstance().getTime());
 		
 		
-		mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
+		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("now", now);
 
 		mv.addObject("result", result);
+		mv.addObject("UI_KEYNO", UI_KEYNO);
 
 		return mv;
 	}
@@ -146,9 +151,14 @@ public class safeAdminController {
 	public ModelAndView safebilluser(HttpServletRequest req) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/bill/prc_bill_userInsert_pb");
+		
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
 
-		mv.addObject("billList", Component.getListNoParam("sfabill.billsSelect"));
-		mv.addObject("billList_sub", Component.getListNoParam("sfabill.SuppliedSelect"));
+		mv.addObject("UI_KEYNO", UI_KEYNO);
+		mv.addObject("billList", Component.getList("sfabill.billsSelect", UI_KEYNO));
+		mv.addObject("billList_sub", Component.getList("sfabill.SuppliedSelect", UI_KEYNO));
 
 		return mv;
 	}
@@ -161,9 +171,13 @@ public class safeAdminController {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/bill/prc_bill_write_pb");
 
-		mv.addObject("billList", Component.getListNoParam("sfabill.billsSelect"));
-		mv.addObject("SuppliedList", Component.getListNoParam("sfabill.SuppliedSelect"));
-		mv.addObject("loglist", Component.getListNoParam("sfabill.billslogselect"));
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		mv.addObject("billList", Component.getList("sfabill.billsSelect", UI_KEYNO));
+		mv.addObject("SuppliedList", Component.getList("sfabill.SuppliedSelect", UI_KEYNO));
+		mv.addObject("loglist", Component.getList("sfabill.billslogselect",UI_KEYNO));
 		mv.addObject("loglist3", Component.getListNoParam("sfabill.logList3"));
 
 		String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
@@ -177,6 +191,7 @@ public class safeAdminController {
 		mv.addObject("mmdd", mmdd);
 		mv.addObject("nowDate", nowdate2);
 		mv.addObject("itemName", year2 + "." + month + "월분 전기안전관리비");
+		mv.addObject("UI_KEYNO", UI_KEYNO);
 
 		return mv;
 	}
@@ -213,6 +228,10 @@ public class safeAdminController {
 
 		ModelAndView mv = new ModelAndView();
 		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+
+		
 		String url = "";
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분").format(Calendar.getInstance().getTime());
 		String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
@@ -226,7 +245,7 @@ public class safeAdminController {
 		if(PC_PI_KEYNO.equals("UI_JUN")){
 			url = "/user/_SFA/template/skin/prc_sfa_electro";
 		}
-		mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
+		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("now", now);
 		mv.setViewName(url);
 		return mv;
@@ -498,10 +517,15 @@ public class safeAdminController {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/bill/pra_bills_writePaging_pb");
 
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
 		List<HashMap<String, Object>> searchList = Component.getSearchList(req);
 
 		Map<String, Object> map = CommonService.ConverObjectToMap(search);
 
+		map.put("UI_KEYNO", UI_KEYNO);
+		
 		if (searchList != null) {
 			map.put("searchList", searchList);
 		}
@@ -512,6 +536,7 @@ public class safeAdminController {
 		map.put("firstIndex", pageInfo.getFirstRecordIndex());
 		map.put("lastIndex", pageInfo.getLastRecordIndex());
 		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+		
 
 		mv.addObject("paginationInfo", pageInfo);
 
@@ -715,9 +740,14 @@ public class safeAdminController {
 	public ModelAndView UserInsert(HttpServletRequest req, @ModelAttribute UserDTO UserDTO) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_admin_userInsert.adm");
-
-		mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		
+		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("monitering", Component.getListNoParam("sfa.monitering_Select"));
+		mv.addObject("UI_KEYNO", UI_KEYNO);
+		
 		return mv;
 	}
 	
@@ -802,6 +832,11 @@ public class safeAdminController {
 			
 			Map<String,Object> map = CommonService.ConverObjectToMap(search);
 			
+			Map<String, Object> user = CommonService.getUserInfo(req);
+			String UI_KEYNO = user.get("UI_KEYNO").toString();
+			
+			
+			
 			if(searchList != null){
 				map.put("searchList", searchList);
 			}
@@ -810,6 +845,7 @@ public class safeAdminController {
 			
 			map.put("AH_HOMEDIV_C", AH_HOMEDIV_C);
 			map.put("UI_ID", UI_ID);
+			map.put("SU_UI_KEYNO", UI_KEYNO);
 			
 			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfa.safeUser_getListCnt",map, search.getPageUnit(), 10);
 			

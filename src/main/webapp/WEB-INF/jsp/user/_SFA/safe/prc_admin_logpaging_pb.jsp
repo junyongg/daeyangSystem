@@ -218,7 +218,7 @@
     </div>
   </div>
 </div>
-  
+<input type="hidden" id="UIKEYNO" name="UIKEYNO" value="${SU_UI_KEYNO}">
 
 <script type="text/javascript">
 
@@ -231,11 +231,14 @@ $(function(){
 
 function taxpopup(value){
     
+	var UIKEYNO = $("#UIKEYNO").val();
+	
 	$.ajax({
 		url: '/sfa/safeAdmin/log/inverterNum.do?${_csrf.parameterName}=${_csrf.token}',
 		type: 'POST',
 		data: {
-			"keyno" : value
+			"keyno" : value,
+			"UIKEYNO" : UIKEYNO
 		},
 		async: false,
 		success : function(data){

@@ -1068,6 +1068,7 @@ function changesulbi(keyno) {
 	$("#SU_KEYNO").val(keyno);
 	$("#Month").val("");
 	$("#selectgroup").empty();
+	var UIKEYNO = $("#SA_UI_KEYNO").val();
 	
 
 	var date = new Date();
@@ -1078,7 +1079,8 @@ function changesulbi(keyno) {
         url: '/sfa/safe/safeuserselect.do?${_csrf.parameterName}=${_csrf.token}',
         type: 'POST',
         data: {
-			SU_KEYNO : keyno
+			SU_KEYNO : keyno,
+			UIKEYNO : UIKEYNO
 		},
         async: false,  
         success: function(result) {
@@ -1088,6 +1090,7 @@ function changesulbi(keyno) {
         	var lastday = Number(result.lastday);
         	var diff = Number(result.datediff.diff);
         	var admincount = result.count.count;
+        	
         	
         	$("#sa2_count2").text(result.count.count)
         	$("#sa2_count").text(result.data.SU_SA_RG);
@@ -1268,6 +1271,7 @@ function changesulbi(keyno) {
 	
         	}else{
         		
+        		console.log(result.preData);
         		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
         			
 	        		var nowpower = 0
@@ -1330,7 +1334,7 @@ function changesulbi(keyno) {
         		method_2(put,put2,conutt)
 				
         		//자동계산(전월 누적으로 총발전량, 1일평균 계산 및 첫 작성일때 분기처리)
-        		if(result.preData == null){
+        		if(result.preData == null || result.preData == 'undefined'){
         			Divison(0)
         		}else{
         			Divison(result.preData.sa2_meter1KWh)
@@ -1432,7 +1436,7 @@ function changetext(value){
 
 
 function Divison(obj){
-
+	
 	var ctb = $("#sa2_palntCT").val()
 	var day = $("#sa2_meter1date").val()
 	var vol = $("#sa2_palntKW").val()
@@ -1573,13 +1577,15 @@ function method_1(a,b,c,d){
 		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(aa-bb);			
 	}
 	
+	
+	var periodpower = aa-bb
 	var sum = 0;
 		
 	list[d-2] = aa-bb;
 	
 		
 	for(var i=0;i<list.length;i++){
-		sum += list[i]
+			sum += list[i]	
 	}
 	
 	
@@ -1611,6 +1617,7 @@ function method_1(a,b,c,d){
 function method_2(a,b,c){
 	
 	var inverterdate = $("#sa2_inverterdate").val()
+	
 	var palntKW = $("#sa2_palntKW").val()
 	var palntCT = $("#sa2_palntCT").val()
 	
@@ -1618,8 +1625,10 @@ function method_2(a,b,c){
 	//현재 누적= aa, 전회차 누적 = bb, aa-bb
 	var aa = $("#"+ a +" > td:nth-child("+ c +") > input").val();
 	var bb = $("#"+ a +" > td:nth-child("+ c +") > input[type=hidden]:nth-child(2)").val();
+
 	
 	var periodpower = aa-bb
+	
 	//인버터 10대이하 기간발전량 계산
 	if(periodpower == aa){
 		//bb = 누적 발전량 = 0, 맨처음 작성하는 발전소일 경우
@@ -1632,22 +1641,23 @@ function method_2(a,b,c){
 	
 	var sum = 0;
 	
-	list[c-2] = aa-bb;		
+	list[c-2] = aa-bb;
 	
 	//기간발전량 합처리
 	for(var i=0;i<list.length;i++){
-		sum += list[i]
+			sum += list[i]	
 	}
 	
 	//소수점 2번째 자리까지 자름
 	var sumfix = sum.toFixed(2)
-		
-		
+	
+	console.log(sumfix)
 	if(inverterdate == 0){
 		inverterdate = 1
 	}else{
 		inverterdate = $("#sa2_inverterdate").val()
 	}
+	
 	
 	var v1 = Number(sumfix)
 	var vv1 = Number(inverterdate)

@@ -533,13 +533,14 @@ where UI_KEYNO = 'UI_HMWNH'
 	    where sa2_keyno = #{sa2_keyno}
     </select>
     
-     <select id="inverterNumSelect" parameterType="String" resultType="String">
+     <select id="inverterNumSelect" parameterType="hashmap" resultType="String">
 		select SU_SA_INVERTERNUM
 		from dy_sa_user
 		where SU_SA_SULBI = 
 			(select sa2_title 
 			from dy_sa2_paper
-			where sa2_keyno = #{sa2_keyno})
+			where sa2_keyno = #{keyno})
+		and SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
 	<!--     모니터링 연동 시 발전소 select -->
@@ -774,6 +775,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		FROM dy_sa2_paper a 
 		join dy_sa_user b
 		on a.sa2_title = b.SU_SA_SULBI
+		and a.sa2_UI_KEYNO = b.SU_UI_KEYNO 
 		where date_format(a.Conn_date, '%Y') =  #{Year}
 		and date_format(a.Conn_date, '%m') = #{Month}
 		and b.SU_KEYNO = #{su_keyno}
@@ -925,6 +927,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				FROM dy_sa2_paper a 
 				join dy_sa_user b
 				on a.sa2_title = b.SU_SA_SULBI
+				and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 				where date_format(a.Conn_date, '%Y-%m') =  date_format(now() , '%Y-%m')
 				and b.SU_KEYNO = #{su_keyno}
 			)sa
@@ -936,6 +939,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			FROM dy_sa_user a
 			join dy_sa2_paper b
 			on a.SU_SA_SULBI  = b.sa2_title
+			and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 			where SU_KEYNO = #{su_keyno}
 		</select>
 		
@@ -945,6 +949,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			FROM dy_sa_user a
 			join dy_sa2_paper b
 			on a.SU_SA_SULBI  = b.sa2_title
+			and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 			where SU_KEYNO = #{su_keyno}
 		</select>
 		
@@ -959,20 +964,24 @@ where UI_KEYNO = 'UI_HMWNH'
 			FROM dy_sa2_paper a
 			join dy_sa_user b
 			on a.sa2_title = b.SU_SA_SULBI
+			and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 			where date_format(a.Conn_date, '%m/%d/%h/%i') =
 			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
 				FROM dy_sa_user a
 				join dy_sa2_paper b
 				on a.SU_SA_SULBI  = b.sa2_title
+				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 				where SU_KEYNO = #{su_keyno}
 			)
 		</select>
 		
+		<!-- 이전데이터 조회  -->
 		<select id="placeholderPreView" resultType="hashmap">
 			select *
 			FROM dy_sa2_paper a
 			join dy_sa_user b
 			on a.sa2_title = b.SU_SA_SULBI
+			and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 			where date_format(a.Conn_date, '%m/%d/%h/%i') =
 			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
 				FROM dy_sa_user a
@@ -993,8 +1002,10 @@ where UI_KEYNO = 'UI_HMWNH'
 				FROM dy_sa_user a
 				join dy_sa2_paper b
 				on a.SU_SA_SULBI  = b.sa2_title
-				where SU_KEYNO = #{su_keyno}
+				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
+				where a.SU_KEYNO = #{su_keyno}
 				)
+			and b.SU_KEYNO = #{su_keyno}
 		</select>
 
 		

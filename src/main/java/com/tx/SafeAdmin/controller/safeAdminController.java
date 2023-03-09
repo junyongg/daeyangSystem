@@ -1106,10 +1106,14 @@ public class safeAdminController {
 	@RequestMapping("/sfa/safe/safeuserselect.do")
 	@ResponseBody
 	public HashMap<String, Object> SafeUserInfoSelect(HttpServletRequest req, safeAdminDTO bill,
-			@RequestParam(value = "SU_KEYNO") String SU_KEYNO) throws Exception {
+			@RequestParam(value = "SU_KEYNO") String SU_KEYNO
+			,@RequestParam(value = "UIKEYNO") String UIKEYNO
+			) throws Exception {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-				
+		HashMap<String, Object> map2 = new HashMap<String, Object>();
+//		map2.put("su_keyno",SU_KEYNO);
+//		map2.put("UIKEYNO",UIKEYNO);
 		
 		map.put("data", Component.getData("sfa.safeuserselect_one", SU_KEYNO));		
 		map.put("count", Component.getData("sfa.safeWritecount",SU_KEYNO));		

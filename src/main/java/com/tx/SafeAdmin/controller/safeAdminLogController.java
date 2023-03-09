@@ -135,6 +135,7 @@ public class safeAdminLogController {
 			List<HashMap<String,Object>> resultList = Component.getList("sfa.Safe_getList", map); 
 			mv.addObject("resultList4", resultList);
 			mv.addObject("search", search);
+			mv.addObject("SU_UI_KEYNO", UI_KEYNO);
 			return mv;
 		}
 	
@@ -248,11 +249,17 @@ public class safeAdminLogController {
 		@ResponseBody
 		public String inverterNum(HttpServletRequest req
 				, @RequestParam(value="keyno", required = false) String keyno
+				, @RequestParam(value="UIKEYNO", required = false) String SU_UI_KEYNO
 				) throws Exception {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			String num  = "";
 			
-			num = Component.getData("sfa.inverterNumSelect", keyno);  //object로 보냄 getList는 배열, getData는 object
+			map.put("keyno", keyno);
+			map.put("SU_UI_KEYNO", SU_UI_KEYNO);
+			
+			num = Component.getData("sfa.inverterNumSelect", map);  //object로 보냄 getList는 배열, getData는 object
 				
 			
 			return num;

@@ -13,13 +13,11 @@
     </button>
     <c:set var = "str" value = "${currentMenu.MN_NAME}"/>
 	<c:if test="${fn:contains(str,'안전') }">
-    <div class="relative w-full max-w-xl text-base md:text-base lg:text-lg text-left hidden lg:block">안전관리
-      대시보드</div>
+    <div class="relative w-full max-w-xl text-base md:text-base lg:text-lg text-left hidden lg:block"><b>${userInfo.UI_NAME }</b> 님</div>
     </c:if>
     <c:set var = "str" value = "${currentMenu.MN_NAME}"/>
 	<c:if test="${fn:contains(str,'세금') }">
-	 <div class="relative w-full max-w-xl text-base md:text-base lg:text-lg text-left hidden lg:block">세금계산서
-      대시보드</div>
+	<div class="relative w-full max-w-xl text-base md:text-base lg:text-lg text-left hidden lg:block"><b>${userInfo.UI_NAME }</b> 님</div>
 	</c:if>
     <ul class="flex items-center flex-shrink-0 space-x-6">
       <li class="relative">

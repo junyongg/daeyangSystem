@@ -204,8 +204,14 @@ public class ScheduleService {
 		
 		Component.deleteData("sub.deletehourData");
 		
-		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
-		Component.getData("sub.inserthourDetail",list);
+		/* 시간단위 데이터 뽑기 */
+//		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
+//		Component.getData("sub.inserthourDetail",list);
+		
+		
+		/* 10분단위 데이터 뽑기 */
+		List<HashMap<String, Object>> list = Component.getListNoParam("sub.10minutes_Data");
+		Component.getData("sub.insert_10minutes_Detail",list);
 
 	}
 	

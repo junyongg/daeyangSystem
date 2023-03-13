@@ -55,7 +55,7 @@ public class ScheduleService {
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천","부산"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천","부산","부안"};
 	   
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
@@ -199,10 +199,10 @@ public class ScheduleService {
 
 	
 	//시간별 데이터 추출 세달 전까지만 수집   
-	@Scheduled(cron="0 30 20 * * ?")
+	@Scheduled(cron="0 0 11 * * ?")
 	public void InsertDetail() throws Exception {
 		
-		Component.deleteData("sub.deletehourData");
+//		Component.deleteData("sub.deletehourData");
 		
 		/* 시간단위 데이터 뽑기 */
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");

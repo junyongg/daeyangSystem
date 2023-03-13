@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/javascript ; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
+
 
 <form:form action="/dy/moniter/general.do" method="POST" id="Form">
 
@@ -356,56 +357,7 @@
                 </article>  
 				
 				
-                <%-- <article class="artBoard bott">
-                    <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
-						
-                    <div class="graph_b_gaue">
-						<div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
-						<div class="guage_txt">
-                            <span>총 금일 발전량(%)</span>
-                            <p><b id="AllPower">0KW / 0h</b></p>
-                        </div>
-                        <!-- <div class="g_gauge totalEP">
-                            <div class="guage_area">
-                                <div class="guage_container">
-                                    <div class="gauge-a"></div>
-                                    <div class="gauge-b"></div>
-                                    <div class="gauge-c"  id="AllPower_g" style="background-color: #f13a3a; transform: rotate(0deg);"></div>
-                                </div>
-                            </div>
-
-                            <div class="guage_txt">
-                                <span>총 금일 발전량(%)</span>
-                                <p><b id="AllPower">0KW / 0h</b></p>
-                            </div>
-                        </div> -->
-						<p style="float: right;margin-right: 35px;margin-top: 12px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
-                    </div>
-                    
-
-                    <div class="gab30"></div>
-                    
-                    <h2 class="circle mgSm">현재 발전량</h2>
-                    
-                    <div class="graph_b_gaue">
-
-                        <div class="g_gauge totalEP">
-                            <div class="guage_area">
-                                <div class="guage_container">
-                                    <div class="gauge-a"></div>
-                                    <div class="gauge-b"></div>
-                                    <div class="gauge-c" id="Active_g" style="background-color: #ff7d53; transform: rotate(0deg);"></div>
-                                </div>
-                            </div>
-
-                            <div class="guage_txt">
-                                <span>발전 전력(%)</span>
-                                <p><b id="Active">0</b>KW</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </article> --%>  
+                
                 <article class="artBoard bott">
                      <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
                     
@@ -488,6 +440,17 @@
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
 	    	                                			하늘 태양광 발전소| 인버터 1호
+	    	                                		</c:if>
+    	                                		</c:when>
+    	                                		<c:when test="${ob.DPP_KEYNO eq '54' }">
+	    	                                		<c:if test="${status.index == 0}">
+	    	                                			순옥 2호 태양광 발전소| 인버터 1호
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 1}">
+	    	                                			순옥 2호 태양광 발전소| 인버터 2호
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 2}">
+	    	                                			순옥 3호 태양광 발전소| 인버터 1호
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '56' }">
@@ -768,10 +731,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
-
 <script>
-
-
 $(function(){
 	if ("${DPP_KEYNO}" != '63'){
 		pf_setMap();	

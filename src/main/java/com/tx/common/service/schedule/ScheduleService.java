@@ -66,6 +66,21 @@ public class ScheduleService {
 		   WeatherOrganize(list);
 	   }
     }
+
+	//10분 마다 연결체크 
+	@Scheduled(cron="0 10 7-19 * * ?")
+	public void Internet_Conn() throws Exception{
+	   List<String> list = Component.getListNoParam("sub.Conect_Status_sel");
+	   System.out.println(list);
+	   if(list.size()>0) {
+		   for(String l : list) {
+			   //i -> keyno
+			   Component.updateData("sub.con_main_update", l);
+			   Component.updateData("sub.con_sub_update", l);
+			   
+		   }
+	   }
+	}
 	
 	// 매시간 40분 마다 inverter값 들어오는지 체크
 	@Scheduled(cron="0 40 8-17 * * 1-5")

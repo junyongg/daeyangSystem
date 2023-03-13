@@ -199,4 +199,50 @@
 		WHERE DPP_KEYNO = #{DPP_KEYNO} 
 	</update>
 	
+	
+	<!-- 인터넷 연결 체크 -->
+	<select id="Conect_Status_sel" resultType="String">
+		<![CDATA[
+		SELECT C.DDM_DPP_KEYNO
+			FROM(SELECT *
+				FROM(SELECT * FROM dy_inverter_data_main
+					WHERE date_format(DDM_DATE,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+					ORDER BY DDM_DATE DESC
+					LIMIT 100000
+				)A
+			LEFT JOIN dy_power_plant B
+			ON A.DDM_DPP_KEYNO = B.DPP_KEYNO 
+			WHERE DPP_STATUS = 'Y'
+			GROUP BY A.DDM_DPP_KEYNO
+		)C
+		WHERE C.DDM_DATE < now()- INTERVAL 20 MINUTE
+		AND C.DDM_STATUS != '연결 끊김'
+		]]>
+	</select>
+	
+	<!-- main update -->
+	<update id="con_main_update" parameterType="String">
+		UPDATE dy_inverter_data_main
+		SET DDM_STATUS = '연결 끊김'
+		WHERE DDM_DPP_KEYNO in (#{l})
+		ORDER BY DDM_DATE DESC
+		limit 1 
+	</update>
+	
+	<!-- sub update -->
+	<update id="con_sub_update" parameterType="String">
+		UPDATE dy_inverter_data a, (
+			SELECT C.*
+			FROM(SELECT * 
+				FROM dy_inverter_data
+				WHERE DP_KEYNO IN (#{l})
+				ORDER BY Conn_date DESC
+				LIMIT 100
+				)C
+			GROUP BY C.DI_NAME
+		)B
+		SET A.Work_Mode = 'noData'
+		WHERE A.Conn_date = B.Conn_date
+		AND A.DP_KEYNO IN (#{l})
+	</update>
 </mapper>

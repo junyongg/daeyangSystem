@@ -96,13 +96,19 @@
                			<c:when test="${ob.DDM_STATUS eq '장애' }">
                				<c:set var="statusT" value="red"/>
                			</c:when>
-               			<c:otherwise>
+               			<c:when test="${ob.DDM_STATUS eq '연결 끊김' }">
                				<c:set var="statusT" value="black"/>
+               			</c:when>
+               			<c:when test="${ob.DPP_STATUS eq 'Y' }">
+               				<c:set var="statusT" value="gray"/>
+               			</c:when>
+               			<c:otherwise>
+               				<c:set var="statusT" value="gray"/>
                			</c:otherwise>
                		</c:choose>
                     <li>
                         <p class="lb invert">인버터상태</p>
-                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '기타':ob.DDM_STATUS }</p>
+                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '연결 끊김':ob.DDM_STATUS }</p>
                     </li>
                     <li>
                         <p class="lb time">발전소등록 날짜 / 시간</p>

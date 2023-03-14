@@ -108,7 +108,7 @@
                		</c:choose>
                     <li>
                         <p class="lb invert">인버터상태</p>
-                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '연결 끊김':ob.DDM_STATUS }</p>
+                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '미개통':ob.DDM_STATUS }</p>
                     </li>
                     <li>
                         <p class="lb time">발전소등록 날짜 / 시간</p>

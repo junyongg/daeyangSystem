@@ -138,7 +138,7 @@ public class DyController {
 	   premap.put("area",area);
 	   premap.put("volum", Float.parseFloat(ob.get("DPP_VOLUM").toString())/Float.parseFloat(ob.get("DPP_INVER_COUNT").toString()) );
 	   
-	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
+//	   mv.addObject("predata",Component.getList("main.PrecSelect",premap));
 	   
 	   
 	   mv.addObject("detail_Data",ob);

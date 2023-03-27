@@ -68,11 +68,11 @@ public class ScheduleService {
     }
 
 	//10분 마다 연결체크 
-	@Scheduled(cron="0 10 7-19 * * ?")
+	@Scheduled(cron="* 10 7-19 * * ?")
 	public void Internet_Conn() throws Exception{
 	   List<String> list = Component.getListNoParam("sub.Conect_Status_sel");
 	   System.out.println(list);
-	   if(list.size()>0) {
+	   if(list.size() > 0) {
 		   for(String l : list) {
 			   //i -> keyno
 			   Component.updateData("sub.con_main_update", l);
@@ -82,7 +82,7 @@ public class ScheduleService {
 	   }
 	}
 	
-	// 매시간 40분 마다 inverter값 들어오는지 체크
+	// 매시간 40분에 inverter값 들어오는지 체크
 	@Scheduled(cron="0 40 8-17 * * 1-5")
 	public void TimeDataInputCheck() throws Exception {
 		List<HashMap<String,Object>> list = Component.getListNoParam("main.DataInputCheck");

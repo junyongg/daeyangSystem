@@ -214,7 +214,7 @@ public class ScheduleService {
 
 	
 	//시간별 데이터 추출 세달 전까지만 수집   
-	@Scheduled(cron="0 0 11 * * ?")
+	@Scheduled(cron="0 30 20 * * ?")
 	public void InsertDetail() throws Exception {
 		
 //		Component.deleteData("sub.deletehourData");

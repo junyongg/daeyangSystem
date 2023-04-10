@@ -553,6 +553,7 @@ public class DyController {
     	mv.addObject("result1",result1);
     	
 		if(excel != null){
+			mv.addObject("DaliyType","1");
 			mv.addObject("DPP_NAME",ob.get("DPP_NAME"));
 			mv.addObject("now",now);
 			
@@ -1420,6 +1421,8 @@ public class DyController {
 				}
 			}
 		}
+	   
+	   
    }
    
    

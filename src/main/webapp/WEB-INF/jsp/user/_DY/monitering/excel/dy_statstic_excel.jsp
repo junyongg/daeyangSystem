@@ -225,7 +225,7 @@ br      {mso-data-placement:same-cell;}
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items="${result }" var="result">
+		<c:forEach items="${result1 }" var="result">
 			<c:choose>
 	         	<c:when test="${DaliyType eq '1' }">
 	         	<tr>

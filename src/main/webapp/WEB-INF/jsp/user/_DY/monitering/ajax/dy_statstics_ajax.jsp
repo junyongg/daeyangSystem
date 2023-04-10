@@ -279,9 +279,9 @@ table{
 	                	<c:when test="${DaliyType eq '1' }">
 		                    <td>${result.Conn_date }</td>
 		                    <td>${result.DI_NAME }</td>
-		                    <td>${result.daily }</td>
+		                    <td><fmt:formatNumber value="${result.daily }" pattern="0.0"/></td>
 		                    <td>${result.Cumulative_Generation }</td>
-		                    <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+		                    <td><fmt:formatNumber value="${result.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 		                    <td>${result.Active_Power }</td>
 	                	</c:when>
 	                	<c:when test="${DaliyType eq '4' }">
@@ -407,9 +407,9 @@ table{
 					                    <td>${fn:substring(result1.Conn_date,11,16)}</td>
 					                    <td>${ob.DPP_NAME }</td>
 					                    <td>${result1.DI_NAME }</td>
-					                    <td>${result1.Daily_Generation }</td>
+					                    <td>${result1.daily }</td>
 					                    <td>${result1.Cumulative_Generation }</td>
-					                    <td><fmt:formatNumber value="${result1.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+					                    <td><fmt:formatNumber value="${result1.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 					                    <td>${result1.Active_Power }</td>
 					                    <td>${result1.Vpv1}</td>
 							            <td>${result1.Ipv1}</td>
@@ -819,8 +819,6 @@ function moreTable(){
 }
 
 function Detail_Excel(){
-	$("#DaliyType").val("1");
-	$("#InverterType").val("0");
 	pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}');
 }
 </script>

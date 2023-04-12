@@ -41,14 +41,17 @@
                			<c:when test="${ob.DDM_STATUS eq '장애' }">
                				<c:set var="statusT" value="red"/>
                			</c:when>
-               			<c:otherwise>
+               			<c:when test="${ob.DDM_STATUS eq '연결 끊김' }">
                				<c:set var="statusT" value="black"/>
+               			</c:when>
+               			<c:otherwise>
+               				<c:set var="statusT" value="gray"/>
                			</c:otherwise>
                		</c:choose>
                     
                     <li>
                         <p class="lb invert">인버터상태</p>
-                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '기타':ob.DDM_STATUS }</p>
+                        <p class="rb"><span class="check_c ${statusT }"></span> ${empty ob.DDM_STATUS? '미개통':ob.DDM_STATUS }</p>
                     </li>
                     <li>
                         <p class="lb time">발전소등록 날짜 / 시간</p>
@@ -77,9 +80,39 @@
     
 </div>
 </form:form>
+
+<button type="button" onclick="print($('#Form'));" >저장</button>
+<div class="card-body" style="height: 300px;">
+   	<canvas id="bar2"></canvas>
+  	<div id='customLegend_humi' class='customLegend'></div>
+</div>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+
+<script src="/resources/common/js/html2canvas.js"></script>
+
 <script type="text/javascript">
+
+
+
+//이미지(png)로 다운로드
+function print(div){
+	div = div[0]
+	html2canvas(div).then(function(canvas){
+		var myImage = canvas.toDataURL();
+		downloadURI(myImage, "D://ttest.png") 
+	});
+}
+function downloadURI(uri, name){
+	var link = document.createElement("a")
+	link.download = name;
+	link.href = uri;
+	document.body.appendChild(link);
+	link.click();
+}
+
 
 $(function(){
 	pf_setMap();

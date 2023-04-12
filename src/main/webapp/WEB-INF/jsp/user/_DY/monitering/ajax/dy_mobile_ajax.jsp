@@ -241,9 +241,9 @@
              	<c:when test="${DaliyType eq '1' }">
                   <td>${result.Conn_date }</td>
                   <td>${result.DI_NAME }</td>
-                  <td>${result.Daily_Generation }</td>
+                  <td><fmt:formatNumber value="${result.daily }" pattern="0.0"/></td>
                   <td>${result.Cumulative_Generation }</td>
-                  <td><fmt:formatNumber value="${result.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
+                  <td><fmt:formatNumber value="${result.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
                   <td>${result.Active_Power }</td>
              	</c:when>
              	<c:when test="${DaliyType eq '4' }">

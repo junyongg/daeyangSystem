@@ -54,12 +54,18 @@
                             <option value="all">전체</option>
                             <option value="광주">광주</option>
                             <option value="나주">나주</option>
+                            <option value="진천">진천</option>
+                            <option value="부산">부산</option>
+                            <option value="김제">김제</option>
+                            <option value="해남">해남</option>
+                            <option value="부안">부안</option>
                         </select>
                         
                         <select class="sel_nor wAuto" id="status" name="status">
                             <option value="status">전체</option>
                             <option value="정상">정상</option>
                             <option value="장애">장애</option>
+                            <option value="연결 끊김">연결 끊김</option>
                             <option value="미개통">미개통</option>
                         </select>
                         
@@ -97,6 +103,9 @@
                             			</c:when>
                             			<c:when test="${model.DDM_STATUS eq '대기' }">
                             				<c:set var="status" value="circle_statue orange"/>
+                            			</c:when>
+                            			<c:when test="${model.DDM_STATUS eq '연결 끊김' }">
+                            				<c:set var="status" value="circle_statue blue"/>
                             			</c:when>
                             			<c:otherwise>
                             				<c:set var="status" value="circle_statue black"/>

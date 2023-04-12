@@ -129,6 +129,10 @@
 							style="border-radius: 0px;">
 							<div class="w-full overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
+									<colgroup>
+				                        <col width="15%">
+				                        <col width="85%">
+				                    </colgroup>
 									<thead
 										class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
 									</thead>
@@ -143,7 +147,7 @@
 										</tr>
 										<tr id="inputplus0" class="">
 											<td
-												class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet"
+												class="width-o tg-0lax px-4 py-3 text-left font-semibold bg-table-violet"
 												style="min-width: 19rem; max-width: 25rem; width: 20rem; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
 												인버터 번호</td>
 											<td class="tg-0lax px-4 py-3 bg-table-violet"
@@ -154,7 +158,7 @@
 											</td>
 										</tr>
 										<tr id="inputplus1" class="">
-											<td class="tg-0lax px-4 py-3 text-left font-semibold"
+											<td class="width-o tg-0lax px-4 py-3 text-left font-semibold"
 												style="min-width: 19rem; max-width: 25rem; width: 20rem; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
 												현재 출력</td>
 											<td class="la2 px-4 py-3"
@@ -168,7 +172,7 @@
 											</td>
 										</tr>
 										<tr id="inputplus2" class="">
-											<td class="tg-0lax px-4 py-3 text-left font-semibold"
+											<td class="width-o tg-0lax px-4 py-3 text-left font-semibold"
 												style="min-width: 19rem; max-width: 25rem; width: 20rem; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
 												금일 발전량[kwh]</td>
 											<td class="la3 px-4 py-3"
@@ -180,7 +184,7 @@
 											</td>
 										</tr>
 										<tr id="inputplus3" class="">
-											<td class="tg-0lax px-4 py-3 text-left font-semibold"
+											<td class="width-o tg-0lax px-4 py-3 text-left font-semibold"
 												style="min-width: 19rem; max-width: 25rem; width: 20rem; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding-top: 0.5rem; padding-bottom: 0.5rem;">
 												누적 발전량[kwh]</td>
 											<td class="la4 px-4 py-3"
@@ -192,7 +196,7 @@
 											</td>
 										</tr>
 										<tr id="inputplus4" class="">
-											<td class="tg-0lax px-4 py-3 text-left font-semibold"
+											<td class="width-o tg-0lax px-4 py-3 text-left font-semibold"
 												style="min-width: 19rem; max-width: 25rem; width: 20rem; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding-top: 0.5rem; padding-bottom: 0.5rem;">
 												기간 발전량[kwh]</td>
 											<td class="la5 px-4 py-3"
@@ -274,7 +278,7 @@
 					<div class="esco" data-html2canvas-ignore="true">
 						<div class="px-5 my-4 text-bold text-base md:text-base lg:text-lg">
 							<div class="flex items-center" data-html2canvas-ignore="true">
-								<span>*기타 데이터 부분 캡쳐</span> <input type="checkbox"
+								<rspan>*기타 데이터 부분 캡쳐</span> <input type="checkbox"
 									class="check ml-2 w-6 h-6" onclick="checkboxEvent(this)"
 									style="border-radius: 4px;">
 							</div>
@@ -284,6 +288,15 @@
 							style="border-radius: 0px;">
 							<div class="w-full overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
+									<colgroup>
+				                        <col width="10%">
+				                        <col width=10%">
+				                        <col width="10%">
+				                        <col width="10%">
+				                        <col width="10%">
+				                        <col width="1%">
+				                        <col width="35%">
+				                    </colgroup>
 									<tbody
 										class="esco bg-white divide-y text-gray-700 text-xs font-semibold">
 										<tr class="etcTr">
@@ -300,8 +313,8 @@
 											<td class="AC_cl1 tg-0lax px-4 py-3" colspan="1"
 												style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
 												L1 - N</td>
-											<td class=" tg-0lax px-4 py-3  " colspan="2"
-												style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
+											<td class=" aaw-width tg-0lax px-4 py-3  " colspan="2"
+												style=" min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
 												<label id="sa2_label5"> <input type="text"
 													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 													name="sa2_ACVL1_N" id="sa2_ACVL1_N"
@@ -315,8 +328,8 @@
 											<td class="tg-0lax px-4 py-3" colspan="1"
 												style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
 												L1</td>
-											<td class="tg-0lax px-4 py-3  " colspan="2"
-												style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
+											<td class="aaw-width tg-0lax px-4 py-3  " colspan="2"
+												style=" min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
 												<label id="sa2_label6"> <input type="text"
 													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 													name="sa2_ACAL1" id="sa2_ACAL1"

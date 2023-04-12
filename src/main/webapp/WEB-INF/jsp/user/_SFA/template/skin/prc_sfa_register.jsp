@@ -99,6 +99,7 @@ select{ height: 30px; }
 				</tbody>
 			</table>
 			<table class="tg" style="width: 80%; border: 3px solid black; text-align: center;">
+					
 					<thead></thead>
 					<tbody class="esco">
 						  	<tr data-html2canvas-ignore="true">

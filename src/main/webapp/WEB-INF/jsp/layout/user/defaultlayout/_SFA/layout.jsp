@@ -15,6 +15,8 @@
     <meta property="og:site_name" content="DAEYANG">
 
     <link rel="stylesheet" type="text/css" href="/resources/publish/_SFA/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/resources/publish/_SFA/css/mobile.css">
+    
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <!-- ✅ load jQuery ✅ -->
 

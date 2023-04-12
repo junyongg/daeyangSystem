@@ -114,13 +114,16 @@
 .auto_wrapper .inner{max-width: 1200px; margin: 0 auto;}
 /* CONTENTS */
 article.artBoard{background-color: #fff; border-radius: 8px; box-shadow: 2px 2px 3px rgba(68, 68, 68, .2); padding: 20px 25px 10px; position: relative; overflow-y: auto;}
-article.artBoard h2{font-size: 18px; font-weight: 500; color: #333; margin-bottom: 20px; background-repeat: no-repeat; background-position: 0 7px; padding: 2px 0 2px 25px;}
+article.artBoard h2{font-size: 17px; font-weight: 500; color: #333; margin-bottom: 20px; background-repeat: no-repeat; background-position: 0 7px; padding: 2px 0 2px 25px;}
 article.artBoard h2.mgSm{margin-bottom: 10px;}
 article.artBoard h2.circle{background-image: url('/resources/img/sub/ic_bullet_01.png');}
 article.artBoard h2.location{background-image: url('/resources/img/sub/ic_loaction_1.png');}
 .title h2.circle{background-image: url('/resources/img/sub/ic_bullet_01.png'); font-size: 20px; font-weight: 500; color: #333; margin-bottom: 20px; background-repeat: no-repeat; background-position: 0 7px; padding: 2px 0 2px 25px;}
 article.artBoard .r_c{position: absolute; right: 25px; top: 20px;}
-.con_h{width:100%; max-height: calc(100% - 60px); overflow-y: auto;}
+.con_h{width:100%; max-height: calc(100% - 60px); overflow-y: auto; }
+
+.mr{width:100%; max-height: calc(100% - 60px); overflow-y: auto; height:230px;font-size: 10px;}
+
 .con_h.fix{height: calc(100% - 60px);}
 .con_h.n02{max-height: calc(100% - 120px);}
 /* FORM */
@@ -135,7 +138,7 @@ select.sel_nor::-ms-expand {display:none}
 .tbl_normal{width: 100%; border-collapse: separate; border-top: 1px solid #222; position: relative;}
 .tbl_normal th{text-align: center; font-size: 15px; font-weight: 500; color:#222; padding: 10px 5px; background-color: #F6F7F9; border-left: 1px solid #ddd; border-bottom: 1px solid #ddd;}
 .tbl_normal th:first-of-type{border-left: none;}
-.tbl_normal td{font-size: 14px; font-weight: 400; color:#444; padding: 10px 5px; border-left: 1px solid #ddd; text-align: center; border-bottom: 1px solid #ddd;}
+.tbl_normal td{font-size: 12px; font-weight: 400; color:#444; padding: 4px 5px; border-left: 1px solid #ddd; text-align: center; border-bottom: 1px solid #ddd;}
 .tbl_normal td:first-of-type{border-left: none;}
 .tbl_normal .txtL{text-align: left;}
 .tbl_normal .txtR{text-align: right;}

@@ -42,11 +42,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		
 		String message = exception.getMessage();
 
-		if("cf".equals(tiles)){
+		/*if("tiles".equals(tiles)){
 			if("DORMANCY".equals(message)){	
 				defaultFailureUrl = "/" + tiles + "/member/dormancy.do";
 			}
-		}
+		}*/
 		
         request.getSession().setAttribute("customExceptionmsg", message);
         

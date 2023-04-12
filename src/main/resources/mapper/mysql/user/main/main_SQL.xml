@@ -8,9 +8,9 @@
 			SELECT *
 			FROM(
 				SELECT * FROM dy_inverter_data_main 
-				WHERE DATE_FORMAT(DDM_DATE,'%Y-%m-%d') =  DATE_FORMAT(now(),'%Y-%m-%d')
+				WHERE DATE(DDM_DATE) =  DATE(now())
 				ORDER BY DDM_DATE DESC
-				LIMIT 9999
+				LIMIT 500
 			)A
 			GROUP BY A.DDM_DPP_KEYNO
 		)B
@@ -46,6 +46,7 @@
 			<choose>
 				<when test="status.equals('정상')">AND B.DDM_STATUS = '정상'</when>
 				<when test="status.equals('장애')">AND B.DDM_STATUS = '장애'</when>
+				<when test="status.equals('연결 끊김')">AND B.DDM_STATUS = '연결 끊김'</when>
 				<otherwise>AND B.DDM_STATUS IS NULL</otherwise>
 			</choose>
 		</if>
@@ -196,7 +197,7 @@
 			SELECT * 
 			FROM dy_inverter_data
 			WHERE DP_KEYNO = #{type}
- 			AND	DATE_FORMAT(Conn_date,'%Y-%m-%d') 	=	DATE_FORMAT(now(),'%Y-%m-%d') 
+ 			AND	DATE(Conn_date) 	=	DATE(now()) 
 			ORDER BY Conn_date DESC
 			LIMIT 1000
 		)A
@@ -212,10 +213,9 @@
 			FROM dy_inverter_data
 			WHERE DP_KEYNO = #{type}
 			AND CAST(Active_Power as DECIMAL(10,6)) > 0
-	 		AND	DATE_FORMAT(Conn_date,'%Y-%m-%d') 	=	DATE_FORMAT(now(),'%Y-%m-%d')
+	 		AND	DATE(Conn_date) =	DATE(now())
 			ORDER BY Conn_date DESC
 		)
-		LIMIT 1
 	</select>
 	
 	
@@ -765,7 +765,7 @@
 				    SELECT DI_NAME 
 				    FROM dy_inverter_data 
 				    WHERE DP_KEYNO = #{type} 
-				    AND DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d') group by DI_NAME
+				    AND DATE(Conn_date) = DATE(NOW()) group by DI_NAME
 			 ) B
 		   	 LEFT JOIN dy_inverter_data A
 			 ON A.DI_NAME = B.DI_NAME

@@ -279,7 +279,7 @@ public class DyController {
 		   return mv;
 	   }
 	   
-	   mv.addObject("list", Component.getList(sql,type));
+	   mv.addObject("list",m_list);
 	   
 	   type.put("type",key);
 	   type.put("name",name);

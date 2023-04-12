@@ -727,7 +727,7 @@
 	</main>
 </form:form>
 <script type="text/javascript">
-
+var list = [];
 $(function() {
 	$(".hiddenTr").hide();
 	$(".imgdelete").hide();
@@ -1268,10 +1268,9 @@ function changesulbi(keyno) {
 	            	}
 	       			
 	       		}
-	
+	       		list.length = 0;
         	}else{
         		
-        		console.log(result.preData);
         		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
         			
 	        		var nowpower = 0
@@ -1367,8 +1366,10 @@ function changesulbi(keyno) {
         			}
 		       			//자동계산	       			
 	            		method_2(put,put2,conuttt)
-	       			}	
-        			
+
+	       			}
+        				list.length = 0;
+        				
         		
 //         		$("#sa2_nowpower").val(result.preData.sa2_nowpower)
 //             	$("#sa2_todaypower").val(result.preData.sa2_todaypower)
@@ -1386,7 +1387,8 @@ function changesulbi(keyno) {
         	if(result.data.SU_SA_KAKAOYN == "N" && result.data.SU_SA_MSGYN == "N"){
         		$(".KAKAOMSG").hide();
         	}
-
+        	
+        	
         	
         },
         error: function(){
@@ -1553,7 +1555,8 @@ function qwe() {
 	location.reload()
 }
 
-var list = [];
+
+
 
 
 function method_1(a,b,c,d){
@@ -1617,7 +1620,6 @@ function method_1(a,b,c,d){
 function method_2(a,b,c){
 	
 	var inverterdate = $("#sa2_inverterdate").val()
-	
 	var palntKW = $("#sa2_palntKW").val()
 	var palntCT = $("#sa2_palntCT").val()
 	
@@ -1643,6 +1645,7 @@ function method_2(a,b,c){
 	
 	list[c-2] = aa-bb;
 	
+	
 	//기간발전량 합처리
 	for(var i=0;i<list.length;i++){
 			sum += list[i]	
@@ -1651,7 +1654,6 @@ function method_2(a,b,c){
 	//소수점 2번째 자리까지 자름
 	var sumfix = sum.toFixed(2)
 	
-	console.log(sumfix)
 	if(inverterdate == 0){
 		inverterdate = 1
 	}else{

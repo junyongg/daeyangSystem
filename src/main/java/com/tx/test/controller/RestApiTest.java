@@ -206,10 +206,6 @@ public class RestApiTest {
 				String codeapi = map.get("dbp_apikey").toString();
                 String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
 				codeStr = code1+code2+tempc;
-
-	
-
-
 			  }
 		 
 		map.put("dbl_homeid", codeStr);
@@ -347,7 +343,7 @@ public class RestApiTest {
 	
 
 	@SuppressWarnings("unchecked")
-	public String sendApi( billDTO bill)
+	public String sendApi( billDTO bill , String tocken)
 			throws Exception {
 
 			// JSONObject객체 생성
@@ -443,8 +439,6 @@ public class RestApiTest {
 
 			// 세금계산서 detail정보를 JSONObject객체에 추가
 			data.put("taxdetailList", jArray);// 배열을 넣음
-
-			System.out.println(data);
 			
 			// 전자세금계산서 발행 후 리턴
 			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
@@ -508,9 +502,6 @@ public class RestApiTest {
     							+"\n□ 합계금액 : "+grandtotal+"원"
     							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
 
-			    		//토큰받기
-			    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-			    		tocken = URLEncoder.encode(tocken, "UTF-8");
 			    		
 			    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 			    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
@@ -543,10 +534,6 @@ public class RestApiTest {
     							+"\n□ 품목명 : "+subject
     							+"\n□ 합계금액 : "+grandtotal+"원"
     							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
-		    					
-					    		//토큰받기
-					    		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-					    		tocken = URLEncoder.encode(tocken, "UTF-8");
 					    		
 					    		//리스트 뽑기 - 현재 게시물 알림은 index=1
 					    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
@@ -707,27 +694,26 @@ public class RestApiTest {
 	@RequestMapping("/dyAdmin/bills/sendNTS.do")
 	@ResponseBody
 	public void sendNTS(HttpServletRequest req,billDTO bill,
-			@RequestParam(value="chkvalue")String dbl_keyno,
-			@RequestParam(value="checkYN")String checkYN) throws Exception {
-		
+			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
 		
 		String[] list = dbl_keyno.split(",");
-		String[] list1 = checkYN.split(",");
 		
-
+		//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
 		
-		for(int i= 0; i<list.length; i++) {
-		
-			//전송 Y/N 체크
-			Component.updateData("bills.checkYN", list[i]);
-			
-			bill = Component.getData("bills.selectAllView", list[i]);
-			
-			sendApi(bill);
-			
-		}
-		
-		return;
+		if(tocken.length() > 0) {
+			for(int i= 0; i<list.length; i++) {
+				
+				//전송 Y/N 체크
+				Component.updateData("bills.checkYN", list[i]);
+				
+				bill = Component.getData("bills.selectAllView", list[i]);
+				
+				sendApi(bill,tocken);
+				
+			}
+		}		
 	}
 	
 	

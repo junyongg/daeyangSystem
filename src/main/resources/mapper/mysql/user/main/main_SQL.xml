@@ -192,16 +192,10 @@
 	
 	<!-- 당일 통계 -->
 	<select id="daily_statistics_MinMax" resultType="hashmap" parameterType="hashmap">
-		SELECT A.*
-		FROM(
-			SELECT * 
-			FROM dy_inverter_data
-			WHERE DP_KEYNO = #{type}
- 			AND	DATE(Conn_date) 	=	DATE(now()) 
-			ORDER BY Conn_date DESC
-			LIMIT 1000
-		)A
-		WHERE 1=1
+		SELECT * 
+		FROM dy_inverter_data
+		WHERE DP_KEYNO = #{type}
+ 		AND	DATE(Conn_date) 	=	DATE(now()) 
 		AND CAST(Active_Power as DECIMAL(10,6)) = (
 			SELECT
 				<if test="minmax.equals('min')"> 
@@ -216,6 +210,7 @@
 	 		AND	DATE(Conn_date) =	DATE(now())
 			ORDER BY Conn_date DESC
 		)
+		LIMIT 1
 	</select>
 	
 	

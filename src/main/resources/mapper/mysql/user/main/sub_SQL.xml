@@ -140,16 +140,16 @@
 			WHERE DP_KEYNO = #{type}
 			<if test="searchBeginDate != null and searchBeginDate != ''">
 	 		<![CDATA[
-	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+	 			AND			DATE(Conn_date) 	>=	#{searchBeginDate}
 	 		]]>
 		 	</if>
 		 	<if test="searchEndDate != null and searchEndDate != ''">
 		 	<![CDATA[
-	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+	 		AND			DATE(Conn_date) 	<=	#{searchEndDate}
 		 	]]>
 		 	</if>
 			ORDER BY Conn_date DESC
-			LIMIT 10000000000
+			LIMIT 10000
 		)A
 		WHERE 1=1
 		<if test="InverterType != null and InverterType != '' and !InverterType.equals('0') and InverterType != 0">
@@ -162,7 +162,7 @@
 				SELECT DP_KEYNO, DI_NAME ,Vpv1 ,Ipv1 ,Vpv2 ,Ipv2 ,Vpv3 ,Ipv4 ,Vpv5 ,Ipv5 ,Vpv6 ,Ipv6 ,Vpv7 ,Ipv7 ,Vpv8 ,Ipv8 ,Vpv9 ,Ipv9 ,Vpv10 ,Ipv10 ,Vpv11 ,Ipv11 ,Vpv12 ,Ipv12 ,Vpv13 ,Ipv13 ,Vpv14 ,Ipv14 ,Vpv15 ,Ipv15 ,Vpv16 ,Ipv16 ,Vpv17 ,Ipv17 ,Vpv18 ,Ipv18 ,Vpv19 ,Ipv19  ,Vpv20  ,Ipv20  ,Vpv21  ,Ipv21  ,Vpv22  ,Ipv22  ,Vpv23  ,Ipv23  ,Vpv24  ,Ipv24  ,voltage_of_phase_A_to_B  ,voltage_of_phase_B_to_C  ,voltage_of_phase_C_to_A  ,Phase_voltage_of_phase_A  ,Phase_voltage_of_phase_B  ,Phase_voltage_of_phase_C  ,Current_of_phase_A  ,Current_of_phase_B  ,Current_of_phase_C  ,Active_Power  ,Grid_Frequency  ,Internal_temperature  ,Cumulative_Generation  ,Daily_Generation  ,Cabinet_Temperature_2  ,DSP_Error_Code  ,DSP_Alarm_Code  ,PV_String_Fault_Bit  ,Temperature_Fault_Bit  ,Slave_DSP_ErrorCode  ,Total_Generation_Hour  ,Safety_Code  ,Work_Mode  , DATE_FORMAT(Conn_date,'%Y-%m-%d %H:00') as Conn_date  ,Ipv3  ,Vpv4 
 				FROM dy_inverter_data
 				WHERE DP_KEYNO = #{type}
-		 		AND	DATE_FORMAT(Conn_date,'%Y-%m-%d') 	=	DATE_FORMAT(now(),'%Y-%m-%d')
+		 		AND	DATE(Conn_date) 	=	DATE(now())
 				ORDER BY Conn_date DESC
 			)A
 			WHERE 1=1

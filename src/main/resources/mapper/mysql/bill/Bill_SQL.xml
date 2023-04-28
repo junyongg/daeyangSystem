@@ -229,6 +229,73 @@
 			)
 	</insert>
 	
+	<insert id="billInfoInsertAuto" parameterType="Hashmap">
+			INSERT INTO dy_bills_log
+			(
+				dbl_provider_key,
+				dbl_supplied_key,
+				dbl_cash,
+				dbl_scheck,
+				dbl_draft,
+				dbl_uncollected,
+				dbl_chargetotal,
+				dbl_taxtotal,
+				dbl_grandtotal,
+				dbl_subject,
+				dbl_unit,
+				dbl_quantity,
+				dbl_unitprice,
+				dbl_supplyprice,
+				dbl_tax,
+				dbl_description,
+				dbl_p_name,
+				dbl_s_name,
+				dbl_purposetype,
+				dbl_partytypecode,
+				dbl_issueid,
+				dbl_typecode1,
+				dbl_typecode2,
+				dbl_sub_description,
+				dbl_issuedate,
+				dbl_sub_issuedate,
+				dbl_sub_keyno,
+				dbl_si_hcnt,
+				dbl_homeid
+				
+			)VALUES(
+				#{dbl_provider_key},
+				#{dbl_supplied_key},
+				#{dbl_cash},
+				#{dbl_scheck},
+				#{dbl_draft},
+				#{dbl_uncollected},
+				#{dbl_chargetotal},
+				#{dbl_taxtotal},
+				#{dbl_grandtotal},
+				#{dbl_subject},
+				#{dbl_unit},
+				#{dbl_quantity},
+				#{dbl_unitprice},
+				#{dbl_supplyprice},
+				#{dbl_tax},
+				#{dbl_description},
+				#{dbl_p_name},
+				#{dbl_s_name},
+				#{dbl_purposetype},
+				#{dbl_partytypecode},
+				#{dbl_issueid},
+				#{dbl_typecode1},
+				#{dbl_typecode2},
+				#{dbl_sub_description},
+				#{dbl_issuedate},
+				#{dbl_sub_issuedate},
+				#{dbl_sub_keyno},
+				#{dbl_si_hcnt},
+				#{dbl_homeid}
+				
+			)
+	</insert>
+	
 	<update id="billsInfoUpdate" parameterType="billDTO">
 		UPDATE dy_bills_log
 		SET dbl_provider_key = #{dbp_keyno},
@@ -876,6 +943,26 @@
 			from dy_bills_log
 			where dbl_status = '2'
 	</select>
+	
+	<!-- 자동등록을 위한 전달 전송리스트 뽑기 -->
+	<select id="PreMonthData"  resultType="hashmap">
+			SELECT * 
+			FROM dy_bills_log
+			where date_format(Conn_date, '%Y-%m') = date_format(now()-interval 1 month, '%Y-%m')
+	</select>
+	
+	<!-- 고유번호 설정을 위한 homekey테이블 조회 -->
+	<select id="homekey"  resultType="String">
+			SELECT homekey
+			FROM dy_bill_keytable
+	</select>
+	
+	<!-- 고유번호 설정을 위한 homekey테이블 조회 -->
+	<update id="changeHomekey" parameterType="String">
+		update dy_bill_keytable
+		set homekey = #{key}
+	</update>
+	
 	
 	<!-- 	전송 결과값을 위한 쿼리 -->
 	<select id="LogResultNeedData" resultType="billDTO">

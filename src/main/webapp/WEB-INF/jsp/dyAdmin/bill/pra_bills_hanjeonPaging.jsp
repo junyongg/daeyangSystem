@@ -46,6 +46,10 @@
 														type="button" onclick="pf_LinkPage()"
 														style="margin-right: 10px;">
 														<i class="fa fa-plus"></i> 검색
+													<button class="btn btn-sm btn-primary smallBtn"
+														type="button" onclick="TaxListUpdate_DY()"
+														style="margin-right: 10px;">
+														<i class="fa fa-plus"></i> 세금계산서 리스트 업데이트
 													</button>
 												</div>
 											</th>
@@ -105,7 +109,12 @@
 												<td><a href="javascript:;" onclick="detailView('${b.dbl_keyno}'); focus_p();">${b.dbl_p_name}</a></td>
 												<td>${b.dbl_s_name}</td>
 												<td>${b.dbl_subject}</td>
+												<c:if test="${empty b.dbl_grandtotal}">
+												<td style="color: red;">공급가를 입력해 주세요</td>
+												</c:if>
+												<c:if test="${not empty b.dbl_grandtotal}">
 												<td>${b.dbl_grandtotal}</td>
+												</c:if>
 												<td>${b.dbl_issuedate}</td>
 												<c:if test="${b.dbl_status eq '1' }">
 												<td>전송준비</td>
@@ -169,6 +178,27 @@ function logAlarm(keyno){
 		async: false,
 		success : function(data){
 			alert(data)
+		}
+	});
+	
+}
+
+function TaxListUpdate_DY() {
+	
+	$.ajax({
+		url: '/autolist.do',
+		type: 'POST',
+		data: $('#Form').serializeArray(),
+		async: false,
+		success : function(data){
+			
+			if(data.length > 0){
+				alert("세금계산서 발행 리스트 업데이트 완료");
+				location.reload();
+			}else{
+				alert("첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다.");
+			}
+			
 		}
 	});
 	

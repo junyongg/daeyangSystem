@@ -75,7 +75,93 @@ public class RestApiTest {
 	
 	     return mv;
 	}
-	 
+	
+	
+	@RequestMapping("/autolist.do")
+	@ResponseBody
+	public ArrayList<HashMap<String,Object>> autolist(HttpServletRequest req) throws Exception {
+		
+		  String codeStr = "";
+		  String msg = "";
+		  
+		  
+		  List<HashMap<String, Object>> list = Component.getListNoParam("bills.PreMonthData");
+		  ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String,Object>>();
+		  
+		  String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		  String nowdate = now.replace("-", "");
+		  String nowdate2 = nowdate.trim();
+		  
+		  String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		  String year2 = year.substring(2, year.length());
+		  
+		  Calendar cal = Calendar.getInstance();
+		  String format = "yyyy-MM-dd";
+		  String format2 = format.replace("-", "");
+		  SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		  cal.add(cal.MONTH, -1);
+		  String date = sdf.format(cal.getTime());
+		  String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		  String month2 = date.substring(4,6);
+		  
+		  if (list.size() > 0) {
+			  
+			  String homekey = Component.getData("bills.homekey");
+			  int num = 0;
+			  
+			  for(HashMap<String, Object> l : list) {
+				  
+				  String codenum = homekey.substring(7,homekey.length());
+				  int tempc = Integer.parseInt(codenum) + 1 ;
+				  String code =  homekey.substring(0,7);
+				  codeStr = code+tempc;
+				  homekey = codeStr;
+				  
+		    	  l.put("dbl_issuedate", nowdate2);
+		    	  l.put("dbl_checkYN", "N");
+		    	  l.put("dbl_errormsg", "");
+		    	  l.put("dbl_homeid", codeStr);
+		    	  l.put("dbl_status", "1");
+		    	  
+		    	  String sub_keybo = l.get("dbl_sub_keyno").toString();
+		    	  
+		    	  //
+		    	  if(sub_keybo.equals("1")) {
+		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
+		    		l.put("dbl_unitprice", "");
+		    		l.put("dbl_supplyprice", "");
+		    		l.put("dbl_tax", "");
+		    		l.put("dbl_chargetotal", "");
+					l.put("dbl_taxtotal", "");
+					l.put("dbl_grandtotal", "");
+		    	  }else if(sub_keybo.equals("2")) {
+		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
+		    		l.put("dbl_unitprice", "");
+		    		l.put("dbl_supplyprice", "");
+		    		l.put("dbl_tax", "");
+		    		l.put("dbl_chargetotal", "");
+					l.put("dbl_taxtotal", "");
+					l.put("dbl_grandtotal", "");
+		    	  }else {
+		    		l.put("dbl_subject",year2+"."+month+"월분 전기안전관리비");
+		    	  }
+		    	  
+		    	  Component.createData("bills.billInfoInsertAuto", l);
+		    	  map.add(num, l);
+		    	  
+		    	  num =+ 1;
+			  }
+			  
+			//Keytable에 가장 마지막 숫자 업데이트
+			 Component.updateData("bills.changeHomekey", codeStr);
+			 
+			 msg = "세금계산서 발행 리스트 업데이트 완료";
+		  } else {
+			 msg = "첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다."; 
+		  }
+		  
+		return map;
+	}
 	 
 
 	 @RequestMapping("/dyAdmin/bills/hanjeon.do")
@@ -190,24 +276,20 @@ public class RestApiTest {
 			map = Component.getData("bills.proAndSupSelect3",dbp_keyno);
 		}
 		
-		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect",dbp_keyno);
+		
+		//homeid 조합식
 		String codeStr = "";
-		if(code == null) { 
-            String code1 =  map.get("dbp_co_num").toString().substring(3,6);
-			String codeapi = map.get("dbp_apikey").toString();
-            String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
-			codeStr = code1+code2+"1";
-
-		 }else { 
-			 	codeStr = code.get("dbl_homeid").toString();
-			 	String codenum = codeStr.substring(7,codeStr.length());
-			 	int tempc = Integer.parseInt(codenum) + 1 ;
-                String code1 =  map.get("dbp_co_num").toString().substring(3,6);
-				String codeapi = map.get("dbp_apikey").toString();
-                String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
-				codeStr = code1+code2+tempc;
-			  }
-		 
+		String homekey = Component.getData("bills.homekey");
+		String codenum = homekey.substring(7,homekey.length());
+		int tempc = Integer.parseInt(codenum) + 1 ;
+		String code =  homekey.substring(0,7);
+		codeStr = code+tempc;
+		
+		//homekey 테이블 업데이트
+		Component.updateData("bills.changeHomekey", codeStr);
+		
+		
+		
 		map.put("dbl_homeid", codeStr);
 		 
 		
@@ -674,16 +756,21 @@ public class RestApiTest {
 		
 		bill = Component.getData("bills.selectAllView", bill);
 		
-		HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect", bill);
+		//homeid 조합식
 		String codeStr = "";
-		codeStr = code.get("dbl_homeid").toString();
-		String codenum = codeStr.substring(7,codeStr.length());
+		String homekey = Component.getData("bills.homekey");
+		String codenum = homekey.substring(7,homekey.length());
 		int tempc = Integer.parseInt(codenum) + 1 ;
-		String code1 =  bill.getDbp_co_num().toString().substring(3,6);
-		String codeapi = bill.getDbp_apikey().toString();
-		String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
-		codeStr = code1+code2+tempc;
+		String code =  homekey.substring(0,7);
+		codeStr = code+tempc;
 		
+		//homekey 테이블 +1수치 업데이트
+		Component.updateData("bills.changeHomekey", codeStr);
+		
+		
+		//homeid select(수정 전)
+		//HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect", bill);
+	
 		bill.setDbl_homeid(codeStr);
 		
 		

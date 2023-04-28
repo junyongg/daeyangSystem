@@ -175,6 +175,21 @@ public class safeAdminController {
 		Map<String, Object> user = CommonService.getUserInfo(req);
 		String UI_KEYNO = user.get("UI_KEYNO").toString();
 		
+		//homekey 조합 후 table에 Insert
+		String homekey = Component.getData("sfabill.KeyTable_YN", UI_KEYNO);
+		
+		//id에 homekey가 없으면 Insert
+		if(homekey == null) {
+			HashMap<String, Object> keytable = new HashMap<String, Object>();
+			String UI_input = UI_KEYNO.replace("_", "");
+			String codestr =  UI_input+"1";	
+			
+			keytable.put("kt_UI_KEYNO", UI_KEYNO);
+			keytable.put("kt_homekey", codestr);
+			
+			Component.createData("sfabill.homekey_Insert", keytable);
+		}
+		
 		mv.addObject("billList", Component.getList("sfabill.billsSelect", UI_KEYNO));
 		mv.addObject("SuppliedList", Component.getList("sfabill.SuppliedSelect", UI_KEYNO));
 		mv.addObject("loglist", Component.getList("sfabill.billslogselect",UI_KEYNO));
@@ -376,8 +391,13 @@ public class safeAdminController {
 			@RequestParam(value = "dbp_keyno") String dbp_keyno,
 			@RequestParam(value = "dbl_sub_keyno") String dbl_sub_keyno) throws Exception {
 
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
 		HashMap<String, Object> map = new HashMap<String, Object>();
-
+		HashMap<String, Object> map2 = new HashMap<String, Object>();
+		
+		
 		if (dbl_sub_keyno.equals("1")) {
 			map = Component.getData("sfabill.proAndSupSelect1", dbp_keyno);
 		} else if (dbl_sub_keyno.equals("2")) {
@@ -386,32 +406,22 @@ public class safeAdminController {
 			map = Component.getData("sfabill.proAndSupSelect3", dbp_keyno);
 		}
 
-		HashMap<String, Object> code = Component.getData("sfabill.CodeNumberSelect", dbp_keyno);
+		//homeid 조합식
 		String codeStr = "";
-		if (code == null) {
-			String code1 = map.get("dbp_co_num").toString().substring(3, 6);
-			String codeapi = map.get("dbp_apikey").toString();
-			String code2 = codeapi.substring(codeapi.length() - 6, codeapi.length() - 2);
-			codeStr = code1 + code2 + "1";
-
-		} else {
-//			codeStr = code.get("dbl_homeid").toString();
-//			String codenum = codeStr.substring(7, codeStr.length());
-//			int tempc = Integer.parseInt(codenum) + 1;
-//			String code1 = map.get("dbp_co_num").toString().substring(3, 6);
-//			String codeapi = map.get("dbp_apikey").toString();
-//			String code2 = codeapi.substring(codeapi.length() - 6, codeapi.length() - 2);
-//			codeStr = code1 + code2 + tempc;
-			codeStr = code.get("dbl_homeid").toString();
-			String codenum = codeStr.substring(7,codeStr.length());
-			int tempc = Integer.parseInt(codenum) + 1 ;
-			String code1 =  map.get("dbp_co_num").toString().substring(4,7);
-			String codeapi = map.get("dbp_apikey").toString();
-			String code2 = codeapi.substring(codeapi.length()-6, codeapi.length()-2);
-			codeStr = code1+code2+tempc;
-
-		}
-
+		String homekey = Component.getData("sfabill.homekey", UI_KEYNO);
+		String codenum = homekey.substring(7,homekey.length());
+		int tempc = Integer.parseInt(codenum) + 1 ;
+		String code =  homekey.substring(0,7);
+		codeStr = code+tempc;
+		
+		
+		//homekey 테이블 업데이트
+		map2.put("key", codeStr);
+		map2.put("kt_UI_KEYNO", UI_KEYNO);
+		Component.updateData("sfabill.changeHomekey", map2);
+		
+		
+		
 		map.put("dbl_homeid", codeStr);
 
 		return map;
@@ -491,17 +501,41 @@ public class safeAdminController {
 	@ResponseBody
 	public safebillDTO selectAllView(HttpServletRequest req, safebillDTO bill) throws Exception {
 
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
 		bill = Component.getData("sfabill.selectAllView", bill);
-
-		HashMap<String, Object> code = Component.getData("sfabill.CodeNumberSelect", bill);
+		
+		
+		//homeid 조합식
 		String codeStr = "";
-		codeStr = code.get("dbl_homeid").toString();
-		String codenum = codeStr.substring(7, codeStr.length());
-		int tempc = Integer.parseInt(codenum) + 1;
-		String code1 = bill.getDbp_co_num().toString().substring(3, 6);
-		String codeapi = bill.getDbp_apikey().toString();
-		String code2 = codeapi.substring(codeapi.length() - 6, codeapi.length() - 2);
-		codeStr = code1 + code2 + tempc;
+		String homekey = Component.getData("sfabill.homekey",UI_KEYNO);
+		String codenum = homekey.substring(7,homekey.length());
+		int tempc = Integer.parseInt(codenum) + 1 ;
+		String code =  homekey.substring(0,7);
+		codeStr = code+tempc;
+		
+		//homekey 테이블 +1수치 업데이트
+		map.put("key", codeStr);
+		map.put("kt_UI_KEYNO", UI_KEYNO);
+		Component.updateData("sfabill.changeHomekey", map);
+		
+		
+		//homeid select(수정 전)
+		//HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect", bill);
+			
+		
+//		HashMap<String, Object> code = Component.getData("sfabill.CodeNumberSelect", bill);
+//		String codeStr = "";
+//		codeStr = code.get("dbl_homeid").toString();
+//		String codenum = codeStr.substring(7, codeStr.length());
+//		int tempc = Integer.parseInt(codenum) + 1;
+//		String code1 = bill.getDbp_co_num().toString().substring(3, 6);
+//		String codeapi = bill.getDbp_apikey().toString();
+//		String code2 = codeapi.substring(codeapi.length() - 6, codeapi.length() - 2);
+//		codeStr = code1 + code2 + tempc;
 
 		bill.setDbl_homeid(codeStr);
 
@@ -1664,12 +1698,12 @@ public class safeAdminController {
 		System.out.println(data);
 
 		// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-		String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//		String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 
 		if (restapi.equals("fail")) {
-//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-			System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//			System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 			return "서버문제장애";
 		}
 
@@ -1816,6 +1850,77 @@ public class safeAdminController {
 		return "redirect:/dyAdmin/safe/user.do";
 		
 		
+	}
+	
+	
+	@RequestMapping("/autolistsfa.do")
+	public String autolistSFA(HttpServletRequest req) throws Exception {
+		
+		  Map<String, Object> user = CommonService.getUserInfo(req);
+		  String UI_KEYNO = user.get("UI_KEYNO").toString();  
+		
+		  
+		  String msg = "";
+		  String codeStr = "";
+		  
+		  List<HashMap<String, Object>> list = Component.getList("sfabill.PreMonthData", UI_KEYNO);
+		  HashMap<String, Object> KeyUpdate = new HashMap<String, Object>();
+		  
+		  
+		  String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		  String nowdate = now.replace("-", "");
+		  String nowdate2 = nowdate.trim();
+		
+		  String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		  String year2 = year.substring(2, year.length());
+		
+		  Calendar cal = Calendar.getInstance();
+		  String format = "yyyy-MM-dd";
+		  String format2 = format.replace("-", "");
+		  SimpleDateFormat sdf = new SimpleDateFormat(format2);
+		  cal.add(cal.MONTH, -1);
+		  String date = sdf.format(cal.getTime());
+		  String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		  String month2 = date.substring(4,6);
+		  
+		  if (list.size() > 0) {
+			  
+			  String homekey = Component.getData("sfabill.homekey",UI_KEYNO);
+			  
+			  for(HashMap<String, Object> l : list) {
+				  
+				  
+				  String codenum = homekey.substring(7,homekey.length());
+				  int tempc = Integer.parseInt(codenum) + 1 ;
+				  String code =  homekey.substring(0,7);
+				  codeStr = code+tempc;
+				  homekey = codeStr;
+				  
+		    	  
+		    	  l.put("dbl_issuedate", nowdate2);
+		    	  l.put("dbl_checkYN", "N");
+		    	  l.put("dbl_errormsg", "");
+		    	  l.put("dbl_homeid", codeStr);
+		    	  l.put("dbl_status", "1");
+		    	  l.put("dbl_subject",year2+"."+month+"월분 전기안전관리비");
+		    	  
+		    	  
+		    	  Component.createData("sfabill.billInfoInsertAuto", l);
+			  }
+			  
+			  KeyUpdate.put("UI_KEYNO", UI_KEYNO);
+			  KeyUpdate.put("key", codeStr);
+			  
+			//Keytable에 가장 마지막 숫자 업데이트
+			 Component.updateData("sfabill.changeHomekey", KeyUpdate);
+			 
+			 msg = "세금계산서 발행리스트 업데이트 완료";
+			 
+		  } else {
+			  msg = "첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다.";
+		  }
+		  
+		return msg;
 	}
 	
 }

@@ -7,6 +7,8 @@
 	     style="background-color:#f0f2f5;border:none;border-radius:4px;margin-right:10px;font-size:12px;padding-top:4px;padding-bottom:4px">
 	    <button type="button"  onclick="pf_LinkPage();"
 	      class="text-xs inline-flex items-center px-3 py-1 md:px-3 md:py-1 lg:px-5 lg:py-2 border border-transparent rounded-lg text-white bg-black">검색</button>
+	      <button type="button"  onclick="TaxListUpdate();"
+      class="text-xs inline-flex items-center px-3 py-1 md:px-3 md:py-1 lg:px-5 lg:py-2 border border-transparent rounded-lg text-white bg-black">세금계산서 리스트 업데이트</button>
   </div>
   <div class="flex">
     <select name="pageUnit" id="pageUnit" onchange="pf_LinkPage();" class="default_input_style input_margin_x_10px input_padding_y_4px">
@@ -233,6 +235,22 @@ function logAlarm(keyno){
 		async: false,
 		success : function(data){
 			alert(data)
+		}
+	});
+	
+}
+
+function TaxListUpdate() {
+	
+	$.ajax({
+		url: '/autolistsfa.do?${_csrf.parameterName}=${_csrf.token}',
+		type: 'POST',
+		data: $('#Form').serializeArray(),
+		async: false,
+		success : function(data){
+			
+			alert(data)
+			
 		}
 	});
 	

@@ -903,5 +903,120 @@
 		where dbl_keyno = #{dbl_keyno}
 	</update>
 	
+	
+	<!-- ID별 homeid 유/무 검사 -->
+	<select id="KeyTable_YN" resultType="String" parameterType="String">
+		SELECT kt_homekey
+		from sa_bill_keytable
+		where kt_UI_KEYNO = #{UI_KEYNO}
+	</select>
+	
+	<!-- ID별 homeid Insert -->
+	<insert id="homekey_Insert" parameterType="hashmap">
+		INSERT INTO sa_bill_keytable
+			(
+				kt_UI_KEYNO,
+				kt_homekey
+			)VALUES(
+				#{kt_UI_KEYNO},
+				#{kt_homekey}
+			)
+	</insert>
+	
+	<!-- 자동등록을 위한 전달 전송리스트 뽑기 -->
+	<select id="PreMonthData"  resultType="hashmap" parameterType="String">
+			SELECT * 
+			FROM sa_bill_log
+			where dbl_UI_KEYNO = #{UI_KEYNO}
+			and date_format(Conn_date, '%Y-%m') = date_format(now()-interval 1 month, '%Y-%m')
+	</select>
+	
+	<!-- 고유번호 설정을 위한 homekey테이블 조회 -->
+	<select id="homekey"  resultType="String" parameterType="hashmap">
+			SELECT kt_homekey
+			FROM sa_bill_keytable
+			where kt_UI_KEYNO = #{UI_KEYNO}
+	</select>
+	
+	<insert id="billInfoInsertAuto" parameterType="Hashmap">
+			INSERT INTO sa_bill_log
+			(
+				dbl_provider_key,
+				dbl_supplied_key,
+				dbl_cash,
+				dbl_scheck,
+				dbl_draft,
+				dbl_uncollected,
+				dbl_chargetotal,
+				dbl_taxtotal,
+				dbl_grandtotal,
+				dbl_subject,
+				dbl_unit,
+				dbl_quantity,
+				dbl_unitprice,
+				dbl_supplyprice,
+				dbl_tax,
+				dbl_description,
+				dbl_sub_keyno,
+				dbl_p_name,
+				dbl_s_name,
+				dbl_purposetype,
+				dbl_partytypecode,
+				dbl_issueid,
+				dbl_typecode1,
+				dbl_typecode2,
+				dbl_sub_description,
+				dbl_issuedate,
+				dbl_sub_issuedate,
+				dbl_si_hcnt,
+				dbl_homeid,
+				dbl_UI_KEYNO
+			)VALUES(
+				#{dbl_provider_key},
+				#{dbl_supplied_key},
+				#{dbl_cash},
+				#{dbl_scheck},
+				#{dbl_draft},
+				#{dbl_uncollected},
+				#{dbl_chargetotal},
+				#{dbl_taxtotal},
+				#{dbl_grandtotal},
+				#{dbl_subject},
+				#{dbl_unit},
+				#{dbl_quantity},
+				#{dbl_unitprice},
+				#{dbl_supplyprice},
+				#{dbl_tax},
+				#{dbl_description},
+				#{dbl_sub_keyno},
+				#{dbl_p_name},
+				#{dbl_s_name},
+				#{dbl_purposetype},
+				#{dbl_partytypecode},
+				#{dbl_issueid},
+				#{dbl_typecode1},
+				#{dbl_typecode2},
+				#{dbl_sub_description},
+				#{dbl_issuedate},
+				#{dbl_sub_issuedate},
+				#{dbl_si_hcnt},
+				#{dbl_homeid},
+				#{dbl_UI_KEYNO}
+			)
+	</insert>
+	
+	<!-- 세금계산서 고유번호 설정을 위한 homekey테이블 조회 -->
+	<update id="changeHomekey" parameterType="hashmap">
+		update sa_bill_keytable
+		set kt_homekey = #{key}
+		where kt_UI_KEYNO = #{UI_KEYNO}
+	</update>
+	
+	
+	<!-- 자동등록을 위한 전달 전송리스트 뽑기 -->
+	<select id="UiKeynoSelect"  resultType="hashmap">
+			SELECT UI_KEYNO
+			FROM u_userinfo
+	</select>
 </mapper>
  

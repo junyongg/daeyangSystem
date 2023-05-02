@@ -185,10 +185,15 @@ function logAlarm(keyno){
 
 function TaxListUpdate_DY() {
 	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	
 	$.ajax({
 		url: '/autolist.do',
 		type: 'POST',
-		data: $('#Form').serializeArray(),
+		data: {
+			"subkey" : subkey
+		},
 		async: false,
 		success : function(data){
 			
@@ -200,7 +205,6 @@ function TaxListUpdate_DY() {
 			}
 			
 		}
-	});
-	
+	});	
 }
 </script>

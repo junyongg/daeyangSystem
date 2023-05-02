@@ -945,10 +945,11 @@
 	</select>
 	
 	<!-- 자동등록을 위한 전달 전송리스트 뽑기 -->
-	<select id="PreMonthData"  resultType="hashmap">
+	<select id="PreMonthData"  resultType="hashmap" parameterType="String">
 			SELECT * 
 			FROM dy_bills_log
 			where date_format(Conn_date, '%Y-%m') = date_format(now()-interval 1 month, '%Y-%m')
+			and dbl_sub_keyno = #{subkey}
 	</select>
 	
 	<!-- 고유번호 설정을 위한 homekey테이블 조회 -->

@@ -79,13 +79,14 @@ public class RestApiTest {
 	
 	@RequestMapping("/autolist.do")
 	@ResponseBody
-	public ArrayList<HashMap<String,Object>> autolist(HttpServletRequest req) throws Exception {
+	public ArrayList<HashMap<String,Object>> autolist(HttpServletRequest req,
+			@RequestParam(value="subkey")String subkey) throws Exception {
 		
 		  String codeStr = "";
 		  String msg = "";
 		  
 		  
-		  List<HashMap<String, Object>> list = Component.getListNoParam("bills.PreMonthData");
+		  List<HashMap<String, Object>> list = Component.getList("bills.PreMonthData", subkey);
 		  ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String,Object>>();
 		  
 		  String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
@@ -123,10 +124,8 @@ public class RestApiTest {
 		    	  l.put("dbl_homeid", codeStr);
 		    	  l.put("dbl_status", "1");
 		    	  
-		    	  String sub_keybo = l.get("dbl_sub_keyno").toString();
-		    	  
 		    	  //
-		    	  if(sub_keybo.equals("1")) {
+		    	  if(subkey.equals("1")) {
 		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
 		    		l.put("dbl_unitprice", "");
 		    		l.put("dbl_supplyprice", "");
@@ -134,7 +133,7 @@ public class RestApiTest {
 		    		l.put("dbl_chargetotal", "");
 					l.put("dbl_taxtotal", "");
 					l.put("dbl_grandtotal", "");
-		    	  }else if(sub_keybo.equals("2")) {
+		    	  }else if(subkey.equals("2")) {
 		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
 		    		l.put("dbl_unitprice", "");
 		    		l.put("dbl_supplyprice", "");

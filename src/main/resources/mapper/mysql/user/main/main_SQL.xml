@@ -189,7 +189,6 @@
 			GROUP BY A.DI_NAME
 		</if>
 	</select>
-	
 	<!-- 당일 통계 -->
 	<select id="daily_statistics_MinMax" resultType="hashmap" parameterType="hashmap">
 		SELECT * 
@@ -302,6 +301,7 @@
 			</if>
 			</if>
                AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
+               AND Active_Power > 0
                ORDER BY DI_NAME , Conn_date DESC
                LIMIT 100000
             )AA

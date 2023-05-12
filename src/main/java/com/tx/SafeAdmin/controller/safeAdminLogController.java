@@ -225,6 +225,36 @@ public class safeAdminLogController {
 		return mv;
 	}
 	
+	
+	//이전 양식 바로 조회
+	@RequestMapping(value="/sfa/sfaAdmin/log/RecentViewController.do")
+	@ResponseBody
+	public Object RecentViewController(HttpServletRequest req
+			, @RequestParam(value="SUKEYNO", required = false) String SU_KEYNO
+			) throws Exception {
+		ModelAndView mv  = new ModelAndView("/user/_SFA/safe/Popup/prc_admin_popup2_pb");
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("UI_KEYNO", UI_KEYNO);
+		map.put("SU_KEYNO", SU_KEYNO);
+		
+		//바로 전회차 양식 뽑기
+		map = Component.getData("sfa.SafeRecentPre", map);  //object로 보냄 getList는 배열, getData는 object 
+		
+		//인버터 갯수 뽑기
+		String num = Component.getData("sfa.inverterNum_Recent", SU_KEYNO);
+		
+		mv.addObject("list",map); //object로 보냄
+		mv.addObject("num", num);
+		
+		
+		return mv;
+	}
+	
 	//수정페이지
 		@RequestMapping(value="/sfa/safeAdmin/safeAdminUpdate.do")
 		public Object UpdatePage(HttpServletRequest req

@@ -119,6 +119,7 @@ public class safeAdminController {
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분").format(Calendar.getInstance().getTime());
 		
 		
+		mv.addObject("arialist", Component.getList("sfa.AreaSelect", UI_KEYNO));
 		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("now", now);
 
@@ -1858,7 +1859,6 @@ public class safeAdminController {
 		
 		  Map<String, Object> user = CommonService.getUserInfo(req);
 		  String UI_KEYNO = user.get("UI_KEYNO").toString();  
-		
 		  
 		  String msg = "";
 		  String codeStr = "";
@@ -1921,6 +1921,32 @@ public class safeAdminController {
 		  }
 		  
 		return msg;
+	}
+	
+	
+	
+	@RequestMapping("/sfa/safe/AreaChangeList.do")
+	@ResponseBody
+	public List AreaChangeList(HttpServletRequest req, 
+			@RequestParam(value = "area") String area) throws Exception {
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		List map2;
+		
+		
+		map.put("area", area);
+		map.put("UI_KEYNO", UI_KEYNO);
+		
+		if(area.equals("all")) {
+			map2 = Component.getList("sfa.safeuserselect", UI_KEYNO);
+		}else{
+			map2 = Component.getList("sfa.AreaPlantSelect", map);
+		}
+
+		return map2;
 	}
 	
 }

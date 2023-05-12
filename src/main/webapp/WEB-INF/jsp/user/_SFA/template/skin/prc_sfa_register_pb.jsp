@@ -21,13 +21,20 @@
 						</div>
 						<div class="flex items-center">
 							<div class="flex items-center ">
-								<select name="su_keyno" id="su_keyno"
+								<select name="su_area" onchange="AreaChange(this.value)"
+								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2">
+								<option value="all">전체</option>
+								<c:forEach items="${arialist}" var="b">
+										<option value="${b.SU_SA_AREA}">${b.SU_SA_AREA }</option>
+									</c:forEach>
+								</select>
+								<select name="su_name" id="su_name"
 									onchange="changesulbi(this.value)"
 									class="default_input_style input_margin_x_10px input_padding_y_4px mb-2">
 									<option value="">발전소 선택</option>
-									<c:forEach items="${safeuserlist}" var="b">
-										<option value="${b.SU_KEYNO}">${b.SU_SA_SULBI }</option>
-									</c:forEach>
+<%-- 									<c:forEach items="${safeuserlist}" var="b"> --%>
+<%-- 										<option value="${b.SU_KEYNO}">${b.SU_SA_SULBI }</option> --%>
+<%-- 									</c:forEach> --%>
 								</select> <span class="mr-3">발전소 명:</span> <span class="text-active-blue">
 									<input type="text" name="sa2_title" id="sa2_title"
 									class="w-full border-none text-xs" style="text-align: center;"
@@ -62,20 +69,26 @@
 					<div class="w-full border"></div>
 					<div class="px-5 text-bold text-sm md:text-sm lg:text-base my-2.5">
 
+<!-- 						<div class="flex flex-wrap items-center" -->
+<!-- 							data-html2canvas-ignore="true"> -->
+<!-- 							<span> 이전 인버터 데이터 비교 : </span> <select name="Year" id="Year" -->
+<!-- 								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2"> -->
+<!-- 								<option value="">연도 선택</option> -->
+<!-- 							</select> <select name="Month" id="Month" onchange="datanumselect()" -->
+<!-- 								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2"> -->
+<!-- 								<option value="">월 선택</option> -->
+<!-- 							</select> <select name="selectgroup" id="selectgroup" -->
+<!-- 								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2"> -->
+<!-- 								<option value="">일 선택</option> -->
+<!-- 							</select> -->
+<!-- 							<button type="button" id="autoInsert" onclick="view()" -->
+<!-- 								class="mx-3 text-xs font-semibold items-center w-16 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">조회</button> -->
+<!-- 						</div> -->
 						<div class="flex flex-wrap items-center"
 							data-html2canvas-ignore="true">
-							<span> 이전 데이터 조회 : </span> <select name="Year" id="Year"
-								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2">
-								<option value="">연도 선택</option>
-							</select> <select name="Month" id="Month" onchange="datanumselect()"
-								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2">
-								<option value="">월 선택</option>
-							</select> <select name="selectgroup" id="selectgroup"
-								class="default_input_style input_margin_x_10px input_padding_y_4px mb-2">
-								<option value="">일 선택</option>
-							</select>
-							<button type="button" id="autoInsert" onclick="view()"
-								class="mx-3 text-xs font-semibold items-center w-16 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">조회</button>
+<!-- 							<span> 이전 양식 조회 : </span> -->
+							<button type="button" id="autoInsert" onclick = "Recent_popup();"
+								class="mx-3 text-xs font-semibold items-center w-24 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">이전 양식 조회</button>
 						</div>
 					</div>
 					<div class="w-full border"></div>
@@ -129,10 +142,7 @@
 							style="border-radius: 0px;">
 							<div class="w-full overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
-									<colgroup>
-				                        <col width="15%">
-				                        <col width="85%">
-				                    </colgroup>
+									
 									<thead
 										class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
 									</thead>
@@ -288,15 +298,6 @@
 							style="border-radius: 0px;">
 							<div class="w-full overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
-									<colgroup>
-				                        <col width="10%">
-				                        <col width=10%">
-				                        <col width="10%">
-				                        <col width="10%">
-				                        <col width="10%">
-				                        <col width="1%">
-				                        <col width="35%">
-				                    </colgroup>
 									<tbody
 										class="esco bg-white divide-y text-gray-700 text-xs font-semibold">
 										<tr class="etcTr">
@@ -713,16 +714,17 @@
 				</div>
 				<div data-html2canvas-ignore="true"
 					class="flex items-center justify-center text-sm md:text-sm lg:text-base font-bold my-4 md:md-4 lg:my-7">
-					<button type="button" onclick="SendAlim()"
-						class="KAKAOMSG text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">알림전송
-						후 저장</button>
-					<button type="button" onclick="loadInfo()"
-						class="text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">저장</button>
 					<button type="button" onclick="qwe()"
 						class=" text-sm md:text-sm lg:text-base font-bold inline-flex mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-black bg-table-violet flex-shrink-0">
 						<img src="/resources/img/icon/rollbackIconBlack.svg" alt="초기화 아이콘"
 							class="mr-1">초기화
 					</button>
+					<button type="button" onclick="SendAlim()"
+						class="KAKAOMSG text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">알림전송
+						후 저장</button>
+					<button type="button" onclick="loadInfo()"
+						class="text-sm md:text-sm lg:text-base font-bold mx-3 items-center py-3 px-6 border border-transparent rounded-lg text-white bg-button-blue flex-shrink-0">저장</button>
+					
 				</div>
 				<input type="hidden" id="buttionType" name="buttionType" value="insert">
 				<input type="hidden" id="sa2_keyno" name="sa2_keyno" value="">
@@ -745,8 +747,8 @@ $(function() {
 	$(".hiddenTr").hide();
 	$(".imgdelete").hide();
 	
-	
-	
+	var change = "all";
+	AreaChange(change);
 	
 	//선간전압Change 실행
 	AC_Change(01);
@@ -1564,8 +1566,12 @@ function Divison3(){
 
 
 function qwe() {
-	alert("초기화 되었습니다")
-	location.reload()
+	if(confirm("작성한 양식을 초기화 하시겠습니까?")){
+		alert("초기화 되었습니다")
+		location.reload()
+	}else{
+		
+	}
 }
 
 
@@ -1755,5 +1761,46 @@ function img_delete(){
 	$(".imgdelete").hide();
 	$(".filename").empty();
 	
+}
+
+function Recent_popup(){
+	
+	
+	var SU_KEYNO = $("#SU_KEYNO").val();
+	
+	if(SU_KEYNO!=''){
+		var left = Math.ceil((window.screen.width - 2000)/2);
+		var top = Math.ceil((window.screen.height - 820)/2);
+		var popOpen	= window.open("/sfa/sfaAdmin/log/RecentViewController.do?SUKEYNO="+SU_KEYNO, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
+		popOpen.focus();
+	}else{
+		alert("발전소를 먼저 선택해주세요");
+	}
+}
+
+function AreaChange(value){
+	
+
+	$.ajax({
+        url: '/sfa/safe/AreaChangeList.do?${_csrf.parameterName}=${_csrf.token}',
+        type: 'POST',
+        data: {
+			"area" : value,
+		},
+        async: false,  
+        success: function(data) {
+        	
+        	$("#su_name").empty();
+        	$("#su_name").append("<option value=''>발전소 선택</option>");
+        	
+			for(var i=0; i<data.length; i++){
+				$("#su_name").append("<option value = "+data[i].SU_KEYNO+">"+data[i].SU_SA_SULBI+"</option>");
+	      	}
+        	
+        },
+        error: function(){
+        
+        }
+	});
 }
 </script>

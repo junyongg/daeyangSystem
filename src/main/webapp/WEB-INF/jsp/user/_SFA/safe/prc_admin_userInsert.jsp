@@ -113,8 +113,8 @@
 											<tr>
 												<td>발전소 명</td>
 												<td><input type="text" class="form-control check" id="SU_SA_SULBI" name="SU_SA_SULBI"></td>
-												<td>월별 점검 횟수</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_RG" name="SU_SA_RG" ></td>
+												<td>발전소 지역</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_AREA" name="SU_SA_AREA" ></td>
 												<td>발전소 주소</td>
 												<td><input type="text" class="form-control check" id="SU_SA_AD" name="SU_SA_AD"></td>
 											</tr>
@@ -158,6 +158,8 @@
 													<option value="${b.DPP_KEYNO }">${b.DPP_NAME }</option>
 													</c:forEach>
 												</select></td>
+												<td>월별 점검 횟수</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_RG" name="SU_SA_RG" ></td>
 											</tr>
 											<tr>
 												<td colspan="8">
@@ -220,6 +222,7 @@ function clear2(){
 	$("#SU_SA_INVERTERNUM").val("")
 	$("#SU_SA_PHONE1").val("")
 	$("#SU_SA_PHONE2").val("")
+	$("#SU_SA_AREA").val("")
 }
 
 function providerSelectmethod2(value){
@@ -242,6 +245,7 @@ function providerSelectmethod2(value){
         	$("#SU_DPP_KEYNO").val(result.SU_DPP_KEYNO)
         	$("#SU_SA_SULBI").val(result.SU_SA_SULBI)
         	$("#SU_SA_AD").val(result.SU_SA_AD)
+        	$("#SU_SA_AREA").val(result.SU_SA_AREA)
         	$("#SU_SA_RG").val(result.SU_SA_RG)
         	$("#SU_SA_VOLUM").val(result.SU_SA_VOLUM)
         	$("#SU_SA_VOLT").val(result.SU_SA_VOLT)
@@ -330,7 +334,6 @@ function inverternum(keyno){
 		success : function(data){
 			 console.log(data);
 			$("#SU_SA_INVERTERNUM").val(data.DPP_INVER_COUNT);
-			$("#SU_SA_SULBI").val(data.DPP_NAME);
 			$("#SU_SA_AD").val(data.DPP_LOCATION);
 				
 		}, 

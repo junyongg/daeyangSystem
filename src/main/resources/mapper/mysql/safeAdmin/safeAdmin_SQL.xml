@@ -501,6 +501,22 @@ where UI_KEYNO = 'UI_HMWNH'
 	    where SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
+	<!--     발전소 지역별 검색을 위한 지역 Select -->
+      <select id="AreaSelect" resultType="hashmap" parameterType="String">
+	    SELECT SU_SA_AREA
+		FROM dy_sa_user
+		where SU_UI_KEYNO = #{UI_KEYNO}
+		group by SU_SA_AREA
+    </select>
+    
+	<!--  지역별 발전소 select -->
+     <select id="AreaPlantSelect" resultType="hashmap" parameterType="hashmap">
+	      SELECT *
+		  from dy_sa_user
+		  where SU_UI_KEYNO = #{UI_KEYNO}
+		  and SU_SA_AREA = #{area}
+    </select>
+    
     <!-- 안전관리 발전소 개별 select -->
     <select id="safeuserselect_one" parameterType="String" resultType="hashmap">
 	    SELECT *
@@ -527,10 +543,29 @@ where UI_KEYNO = 'UI_HMWNH'
 	    from dy_sa_paper
 	    where sa_keyno = #{sa_keyno}
     </select>
+    
     <select id="safepaperselect2_one" parameterType="String" resultType="hashmap">
 	    SELECT *
 	    from dy_sa2_paper
 	    where sa2_keyno = #{sa2_keyno}
+    </select>
+    
+    <!-- 가장 최근 작성 양식 조회 (이전양식조회 버튼)-->
+     <select id="SafeRecentPre" parameterType="hashmap" resultType="hashmap">
+	   select *
+		from(
+			SELECT *
+			from dy_sa2_paper
+			where sa2_UI_KEYNO = #{UI_KEYNO}
+			)a
+		where sa2_title = 
+			(
+			select SU_SA_SULBI 
+			from dy_sa_user
+			where SU_KEYNO = #{SU_KEYNO}
+			)
+		order by Conn_date desc
+		limit 1
     </select>
     
      <select id="inverterNumSelect" parameterType="hashmap" resultType="String">
@@ -541,6 +576,18 @@ where UI_KEYNO = 'UI_HMWNH'
 			from dy_sa2_paper
 			where sa2_keyno = #{keyno})
 		and SU_UI_KEYNO = #{SU_UI_KEYNO}
+    </select>
+    
+      <select id="inverterNum_Recent" parameterType="String" resultType="String">
+		select SU_SA_INVERTERNUM
+		from dy_sa_user
+		where SU_KEYNO = #{SU_KEYNO}
+    </select>
+    
+      <select id="inverterNumSelect_ReCent" parameterType="String" resultType="String">
+		select SU_SA_INVERTERNUM
+		from dy_sa_user
+		where SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
 	<!--     모니터링 연동 시 발전소 select -->
@@ -590,7 +637,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			SU_SA_PHONE3,
 			SU_SA_PHONE4,
 			SU_SA_PHONE5,
-			SU_UI_KEYNO
+			SU_UI_KEYNO,
+			SU_SA_AREA
 			
 		)VALUES(
 			#{SU_SA_SULBI},
@@ -609,7 +657,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			#{SU_SA_PHONE3},
 			#{SU_SA_PHONE4},
 			#{SU_SA_PHONE5},
-			#{SA_UI_KEYNO}
+			#{SA_UI_KEYNO},
+			#{SU_SA_AREA}
 		)
 	</insert>
 	
@@ -631,7 +680,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			SU_SA_PHONE2 = #{SU_SA_PHONE2},
 			SU_SA_PHONE3 = #{SU_SA_PHONE3},
 			SU_SA_PHONE4 = #{SU_SA_PHONE4},
-			SU_SA_PHONE5 = #{SU_SA_PHONE5}
+			SU_SA_PHONE5 = #{SU_SA_PHONE5},
+			SU_SA_AREA = #{SU_SA_AREA}
 			
 		WHERE SU_KEYNO = #{SU_KEYNO}
 	</update>

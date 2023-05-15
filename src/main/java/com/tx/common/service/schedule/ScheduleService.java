@@ -12,18 +12,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import org.junit.Test;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tx.common.config.SettingData;
 import com.tx.common.service.component.ComponentService;
@@ -87,6 +81,10 @@ public class ScheduleService {
 	public void TimeDataInputCheck() throws Exception {
 		List<HashMap<String,Object>> list = Component.getListNoParam("main.DataInputCheck");
 		
+		//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+		
 		for(HashMap<String,Object> l : list) {
 			String ch = l.get("checked").toString();
 			if(ch.equals("N")) { 
@@ -100,11 +98,6 @@ public class ScheduleService {
 				String warn = "통신";
 				
 				String Contents = "현재 "+dpName+"의 "+inverter+"에서 "+today+"에 "+warn+"에 대한 에러가 발생했습니다."; 
-				
-				
-				//토큰받기
-				String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-				tocken = URLEncoder.encode(tocken, "UTF-8");
 		    	
 				//리스트 뽑기 - 현재 게시물 알림은 index=1
 				JSONObject jsonObj = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
@@ -113,7 +106,7 @@ public class ScheduleService {
 
 		    	
 		    	//전송할 회원 리스트 - 관리자만
-		    	String [] ls = {"010-4531-3246","010-9860-1540"};
+		    	String [] ls = {"010-7358-6606"};
 				
 				for(String ll : ls) {
 					
@@ -159,7 +152,7 @@ public class ScheduleService {
 				
 				for(UserDTO ll : ls) {
 					ll.decode();
-		    		String phone = ll.getUI_PHONE().toString().replace("-", "");
+		    		String phone = "010-7358-6606";
 		    		String url = "http://dymonitering.co.kr/";
 		    		//받은 토큰으로 알림톡 전송		
 		    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,Contents,phone,url);
@@ -219,12 +212,12 @@ public class ScheduleService {
 		
 //		Component.deleteData("sub.deletehourData");
 		
-		/* 시간단위 데이터 뽑기 */
+		
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
 //		Component.getData("sub.inserthourDetail",list);
 		
 		
-		/* 10분단위 데이터 뽑기 */
+	
 		List<HashMap<String, Object>> list = Component.getListNoParam("sub.10minutes_Data");
 		Component.getData("sub.insert_10minutes_Detail",list);
 

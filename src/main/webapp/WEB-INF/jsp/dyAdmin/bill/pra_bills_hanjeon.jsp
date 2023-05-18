@@ -425,6 +425,9 @@ function providerSelect(){
        	$("#ie_name1").val(result.dbs_name1)
        	$("#ie_email1").val(result.dbs_email1)
        	$("#ie_cell1").val(result.dbs_cell1)
+       	$("#ie_name2").val(result.dbs_name2)
+       	$("#ie_email2").val(result.dbs_email2)
+       	$("#ie_cell2").val(result.dbs_cell2)
        	
        },
        error: function(){
@@ -460,6 +463,9 @@ function supliedSelect(value){
        	$("#ie_name1").val(result.dbs_name1)
        	$("#ie_email1").val(result.dbs_email1)
        	$("#ie_cell1").val(result.dbs_cell1)
+       	$("#ie_name2").val(result.dbs_name2)
+       	$("#ie_email2").val(result.dbs_email2)
+       	$("#ie_cell2").val(result.dbs_cell2)
 
        	
        },

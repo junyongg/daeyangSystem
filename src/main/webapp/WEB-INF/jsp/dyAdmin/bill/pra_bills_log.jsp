@@ -135,6 +135,7 @@ function sendstatus() {
 			data: $('#Form').serializeArray(),
 			success : function(data){
 				location.reload();
+				alert("전송 상태가 새로고침 되었습니다.")
 			}, 
 			error: function(){
 				

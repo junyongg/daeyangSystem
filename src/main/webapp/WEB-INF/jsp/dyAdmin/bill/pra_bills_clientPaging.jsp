@@ -136,11 +136,15 @@
 							</div>
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">당일 전송</button>
+								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">전송</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="delaysend()" style="width : 100px;">지연 전송</button>
+								type="button" onclick="AllSendNTS()" style="width : 100px;">전체 전송</button>
+<!-- 							<button class="btn btn-sm btn-primary" id="deleteButton" -->
+<!-- 								type="button" onclick="delaysend()" style="width : 100px;">지연 전송</button> -->
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="HomeIdUpdte()" style="width : 100px; background-color: #000000;">고유번호수정</button>
 							</div>
 							</div>
 <div class="pageNumberBox dt-toolbar-footer">
@@ -205,5 +209,41 @@ function TaxListUpdate_DY() {
 			
 		}
 	});
+}
+
+function HomeIdUpdte() {
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	
+	$.ajax({
+		url: '/dyAdmin/bills/HomeIdUpdate.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+		}
+	});	
+}
+
+function AllSendNTS(){
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	$.ajax({
+		url: '/dyAdmin/bills/allSendNTS.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+			location.reload();
+		}
+	});	
 }
 </script>

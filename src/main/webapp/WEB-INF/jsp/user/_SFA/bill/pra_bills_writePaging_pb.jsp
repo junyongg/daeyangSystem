@@ -5,7 +5,7 @@
   <div class="flex">
 	    <input type="text" class="search-control" name="field_search" data-searchindex="all" placeholder="모든필드 검색"
 	     style="background-color:#f0f2f5;border:none;border-radius:4px;margin-right:10px;font-size:12px;padding-top:4px;padding-bottom:4px">
-	    <button type="button"  onclick="pf_LinkPage();"
+	    <button type="button"  onclick="pf_LinkPage();" 
 	      class="text-xs inline-flex items-center px-3 py-1 md:px-3 md:py-1 lg:px-5 lg:py-2 border border-transparent rounded-lg text-white bg-black">검색</button>
 	      <button type="button"  onclick="TaxListUpdate();"
       class="text-xs inline-flex items-center px-3 py-1 md:px-3 md:py-1 lg:px-5 lg:py-2 border border-transparent rounded-lg text-white bg-black">세금계산서 리스트 업데이트</button>
@@ -166,11 +166,15 @@
   <div class="px-4 py-3 border-t bg-gray-50 text-gray-500">
   	<div style="text-align: center;">
 		<button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton"
-			type="button" onclick="sendNTS()" style="margin-left: 2%;">당일 전송</button>
+			type="button" onclick="sendNTS()" style="margin-left: 2%;">전송</button>
 		<button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton"
-			type="button" onclick="delaysend()" >지연 전송</button>
+			type="button" onclick="AllSendNTS_SFA()" style="">전체 전송</button>
+<!-- 		<button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton" -->
+<!-- 			type="button" onclick="delaysend()" >지연 전송</button> -->
 		<button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton"
 			type="button" onclick="deleteInfo()" style="background-color: #E53935;">삭제</button>
+		<button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton"
+			type="button" onclick="HomeIdUpdte_SFA()" style="background-color: #000000;">고유번호수정</button>
   	</div>
     <div class="flex flex-col justify-between text-xs sm:flex-row text-gray-600">
   	<c:if test="${not empty resultList3 }">
@@ -254,6 +258,41 @@ function TaxListUpdate() {
 		}
 	});
 	
+}
+
+function HomeIdUpdte_SFA() {
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	$.ajax({
+		url: '/sfa/bills/HomeIdUpdate_SFA.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+		}
+	});	
+}
+
+function AllSendNTS_SFA() {
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	$.ajax({
+		url: '/sfa/bills/allSendNTS_SFA.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+			location.reload();
+		}
+	});	
 }
 
 </script>

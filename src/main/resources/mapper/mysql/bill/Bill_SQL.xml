@@ -858,7 +858,9 @@
     <update id="codemsgUpdate" parameterType="String" >
 		UPDATE dy_bills_log 
 			SET dbl_status = #{dbl_status},
-				dbl_errormsg = #{dbl_errormsg}
+				dbl_errormsg = #{dbl_errormsg},
+				dbl_issuedate = #{dbl_issuedate},
+				dbl_sub_issuedate = #{dbl_sub_issuedate}
 			WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	

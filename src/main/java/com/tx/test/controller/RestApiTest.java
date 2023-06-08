@@ -536,12 +536,12 @@ public class RestApiTest {
 			data.put("taxdetailList", jArray);// 배열을 넣음
 			
 			// 전자세금계산서 발행 후 리턴
-//			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+			String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+//			String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 			
 			if(restapi.equals("fail")) {
-//				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+				System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+//				System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 				return "서버문제장애";
 			}
 			
@@ -571,6 +571,8 @@ public class RestApiTest {
 			String  code = (String) jsonObj.get("code");
 			bill.setDbl_status(code);
 			bill.setDbl_errormsg(msg);
+			bill.setDbl_issuedate(nowdate2);
+			bill.setDbl_sub_issuedate(nowdate2);
 
 			Component.updateData("bills.codemsgUpdate", bill);
 			
@@ -1165,17 +1167,20 @@ public class RestApiTest {
 		tocken = URLEncoder.encode(tocken, "UTF-8");
 		
 		if(tocken.length() > 0) {
-			for(Object l : list) {
-				//전송 Y/N 체크
-				Component.updateData("bills.checkYN", l);
-				
-				bill = Component.getData("bills.selectAllView", l);
-				
-				sendApi(bill,tocken);
+			if(list.isEmpty()) {	
+				msg = "전송할 세금계산서가 없습니다.";
+			}else {
+				for(Object l : list) {
+					//전송 Y/N 체크
+					Component.updateData("bills.checkYN", l);
+					bill = Component.getData("bills.selectAllView", l);
+					
+					sendApi(bill,tocken);
+				}
+				msg = "전체 전송이 완료되었습니다.";	
 			}
-			msg = "전체 전송이 완료되었습니다.";
 		}else {
-			msg = "전송할 세금계산서가 없습니다.";
+			
 		}
 		return msg;
 	}

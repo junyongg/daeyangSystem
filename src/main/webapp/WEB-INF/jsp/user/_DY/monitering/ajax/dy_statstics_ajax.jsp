@@ -201,7 +201,8 @@ table{
 
 <article class="artBoard bott_r">
     <h2 class="circle" style="float: left;">통계분석</h2>
-    <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">더보기</a>
+    <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">상세보기</a>
+    <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreErrorTable();">에러확인</a>
 <!--     <button type="button" class="a_box_line" style="color: white;background-color: #0088F1; margin-right: 10px;margin-top: -3px; float: right; ">상세보기</button> -->
 	<button type="button" 
 			class="a_box_line" 
@@ -214,10 +215,11 @@ table{
             <dt>조회범위</dt>
             <dd>
                 <a href="javascript:;" onclick="select('1')" class="a_box_line active">인버터 합산</a>
-                <a href="javascript:;" onclick="select('2')" class="a_box_line"  >인버터별</a>
-                <select class="a_box_line" disabled id="selectInverter" onchange="inputInverterNum(this.value)">
+                <a href="javascript:;" onclick="select('2')" class="hidselec a_box_line"  >인버터별</a>
+                <select class="hidselec a_box_line" disabled id="selectInverter" onchange="inputInverterNum(this.value)">
+                		<option value="0">인버터 전체</option>
                    	<c:forEach varStatus="status" begin="1" end="${ob.DPP_INVER_COUNT }">
-                    	<option value="${status.count }" ${InverterType eq status.count?'selected':''} >인버터 ${status.count }호</option>
+                    	<option value="${status.count }" ${InverterType eq status.count?'selected':''} >인버터 ${status.count }</option>
                     </c:forEach>
                 </select>
             </dd>
@@ -278,7 +280,7 @@ table{
 	                <c:choose>
 	                	<c:when test="${DaliyType eq '1' }">
 		                    <td>${result.Conn_date }</td>
-		                    <td>${result.DI_NAME }</td>
+		                    <td>${fn:substring(result.DI_NAME,0,5)}</td>
 		                    <td><fmt:formatNumber value="${result.daily }" pattern="0.0"/></td>
 		                    <td>${result.Cumulative_Generation }</td>
 		                    <td><fmt:formatNumber value="${result.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
@@ -360,34 +362,34 @@ table{
 						            <th>Ipv9</th>
 						            <th>Vpv10</th>
 						            <th>Ipv10</th>
-						            <th>Vpv11</th>
-						            <th>Ipv11</th>
-						            <th>Vpv12</th>
-						            <th>Ipv12</th>
-						            <th>Vpv13</th>
-						            <th>Ipv13</th>
-						            <th>Vpv14</th>
-						            <th>Ipv14</th>
-						            <th>Vpv15</th>
-						            <th>Ipv15</th>
-						            <th>Vpv16</th>
-						            <th>Ipv16</th>
-						            <th>Vpv17</th>
-						            <th>Ipv17</th>
-						            <th>Vpv18</th>
-						            <th>Ipv18</th>
-						            <th>Vpv19</th>
-						            <th>Ipv19</th>
-						            <th>Vpv20</th>
-						            <th>Ipv20</th>
-						            <th>Vpv21</th>
-						            <th>Ipv21</th>
-						            <th>Vpv22</th>
-						            <th>Ipv22</th>
-						            <th>Vpv23</th>
-						            <th>Ipv23</th>
-						            <th>Vpv24</th>
-						            <th>Ipv24</th>
+<!-- 						            <th>Vpv11</th> -->
+<!-- 						            <th>Ipv11</th> -->
+<!-- 						            <th>Vpv12</th> -->
+<!-- 						            <th>Ipv12</th> -->
+<!-- 						            <th>Vpv13</th> -->
+<!-- 						            <th>Ipv13</th> -->
+<!-- 						            <th>Vpv14</th> -->
+<!-- 						            <th>Ipv14</th> -->
+<!-- 						            <th>Vpv15</th> -->
+<!-- 						            <th>Ipv15</th> -->
+<!-- 						            <th>Vpv16</th> -->
+<!-- 						            <th>Ipv16</th> -->
+<!-- 						            <th>Vpv17</th> -->
+<!-- 						            <th>Ipv17</th> -->
+<!-- 						            <th>Vpv18</th> -->
+<!-- 						            <th>Ipv18</th> -->
+<!-- 						            <th>Vpv19</th> -->
+<!-- 						            <th>Ipv19</th> -->
+<!-- 						            <th>Vpv20</th> -->
+<!-- 						            <th>Ipv20</th> -->
+<!-- 						            <th>Vpv21</th> -->
+<!-- 						            <th>Ipv21</th> -->
+<!-- 						            <th>Vpv22</th> -->
+<!-- 						            <th>Ipv22</th> -->
+<!-- 						            <th>Vpv23</th> -->
+<!-- 						            <th>Ipv23</th> -->
+<!-- 						            <th>Vpv24</th> -->
+<!-- 						            <th>Ipv24</th> -->
 						            <th>Voltage_Of_Phase_A to B</th>
 						            <th>Voltage_Of_Phase_B to C</th>
 						            <th>Voltage_Of_Phase_C to A</th>
@@ -406,8 +408,8 @@ table{
 					                    <td>${fn:substring(result1.Conn_date,0,11)}</td>
 					                    <td>${fn:substring(result1.Conn_date,11,16)}</td>
 					                    <td>${ob.DPP_NAME }</td>
-					                    <td>${result1.DI_NAME }</td>
-					                    <td>${result1.daily }</td>
+					                    <td>${fn:substring(result1.DI_NAME,0,5)}</td>
+					                    <td>${result1.Daily_Generation }</td>
 					                    <td>${result1.Cumulative_Generation }</td>
 					                    <td><fmt:formatNumber value="${result1.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>
 					                    <td>${result1.Active_Power }</td>
@@ -431,34 +433,34 @@ table{
 							            <td>${result1.Ipv9}</td>
 							            <td>${result1.Vpv10}</td>
 							            <td>${result1.Ipv10}</td>
-							            <td>${result1.Vpv11}</td>
-							            <td>${result1.Ipv11}</td>
-							            <td>${result1.Vpv12}</td>
-							            <td>${result1.Ipv12}</td>
-							            <td>${result1.Vpv13}</td>
-							            <td>${result1.Ipv13}</td>
-							            <td>${result1.Vpv14}</td>
-							            <td>${result1.Ipv14}</td>
-							            <td>${result1.Vpv15}</td>
-							            <td>${result1.Ipv15}</td>
-							            <td>${result1.Vpv16}</td>
-							            <td>${result1.Ipv16}</td>
-							            <td>${result1.Vpv17}</td>
-							            <td>${result1.Ipv17}</td>
-							            <td>${result1.Vpv18}</td>
-							            <td>${result1.Ipv18}</td>
-							            <td>${result1.Vpv19}</td>
-							            <td>${result1.Ipv19}</td>
-							            <td>${result1.Vpv20}</td>
-							            <td>${result1.Ipv20}</td>
-							            <td>${result1.Vpv21}</td>
-							            <td>${result1.Ipv21}</td>
-							            <td>${result1.Vpv22}</td>
-							            <td>${result1.Ipv22}</td>
-							            <td>${result1.Vpv23}</td>
-							            <td>${result1.Ipv23}</td>
-							            <td>${result1.Vpv24}</td>
-							            <td>${result1.Ipv24}</td>
+<%-- 							            <td>${result1.Vpv11}</td> --%>
+<%-- 							            <td>${result1.Ipv11}</td> --%>
+<%-- 							            <td>${result1.Vpv12}</td> --%>
+<%-- 							            <td>${result1.Ipv12}</td> --%>
+<%-- 							            <td>${result1.Vpv13}</td> --%>
+<%-- 							            <td>${result1.Ipv13}</td> --%>
+<%-- 							            <td>${result1.Vpv14}</td> --%>
+<%-- 							            <td>${result1.Ipv14}</td> --%>
+<%-- 							            <td>${result1.Vpv15}</td> --%>
+<%-- 							            <td>${result1.Ipv15}</td> --%>
+<%-- 							            <td>${result1.Vpv16}</td> --%>
+<%-- 							            <td>${result1.Ipv16}</td> --%>
+<%-- 							            <td>${result1.Vpv17}</td> --%>
+<%-- 							            <td>${result1.Ipv17}</td> --%>
+<%-- 							            <td>${result1.Vpv18}</td> --%>
+<%-- 							            <td>${result1.Ipv18}</td> --%>
+<%-- 							            <td>${result1.Vpv19}</td> --%>
+<%-- 							            <td>${result1.Ipv19}</td> --%>
+<%-- 							            <td>${result1.Vpv20}</td> --%>
+<%-- 							            <td>${result1.Ipv20}</td> --%>
+<%-- 							            <td>${result1.Vpv21}</td> --%>
+<%-- 							            <td>${result1.Ipv21}</td> --%>
+<%-- 							            <td>${result1.Vpv22}</td> --%>
+<%-- 							            <td>${result1.Ipv22}</td> --%>
+<%-- 							            <td>${result1.Vpv23}</td> --%>
+<%-- 							            <td>${result1.Ipv23}</td> --%>
+<%-- 							            <td>${result1.Vpv24}</td> --%>
+<%-- 							            <td>${result1.Ipv24}</td> --%>
 							            <td>${result1.voltage_of_phase_A_to_B}</td>
 							            <td>${result1.voltage_of_phase_B_to_C}</td>
 							            <td>${result1.voltage_of_phase_C_to_A}</td>
@@ -469,6 +471,46 @@ table{
 							            <td>${result1.Current_of_phase_B}</td>
 							            <td>${result1.Current_of_phase_C}</td>
 							            <td>${result1.Internal_temperature}</td>
+					               </tr>
+				                </c:forEach>
+				            </tbody>
+				        </table>
+                </div>
+
+            </div>
+        </section>
+        
+	<section class="base_pop_wrapper2">
+            <div class="pop_base_calculation" style="top: 50%; width: 900px; left: calc(38% - 231px);" >
+                
+                <button type="button" class="btn_close fixed" title="닫기"  onclick="$('.base_pop_wrapper2').removeClass('on')" style="position: sticky; top: 0px;float:right;"><i class="xi-close" style="margin: 10px;"></i></button>
+                <button type="button" class="a_box_line fixed" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Error_Excel();">엑셀</button>
+                <div class="form_box">
+				       <table class="tbl_normal fixed" style="width: auto;">
+				           <colgroup>
+				               <col style="width: 15%;">
+				               <col style="width: 20%;">
+				               <col style="width: 20%;">
+				               <col style="width: 15%;">
+				               <col style="width: 15%;">
+				            </colgroup>
+				            <thead>
+				                <tr>
+				                    <th>일시</th>
+				                    <th>시간</th>
+				                    <th>발전소</th>
+				                    <th>이름</th>
+				                    <th>에러내용</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <c:forEach items="${errorlist}" var="errorlist">
+					                <tr>
+					                    <td>${fn:substring(errorlist.DIE_DATE,0,11)}</td>
+					                    <td>${fn:substring(errorlist.DIE_DATE,11,16)}</td>
+					                    <td>${ob.DPP_NAME }</td>
+					                    <td>${fn:substring(errorlist.DIE_INVERTER_NAME,0,5)}</td>
+					                    <td>${errorlist.DIE_DSP_ERROR }</td>
 					               </tr>
 				                </c:forEach>
 				            </tbody>
@@ -616,13 +658,18 @@ function searchDate(value){
 	$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a").removeClass("active")
 	
 	if(value == '99'){
+		$(".hidselec").attr('style', 'visibility:hidden');
 		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child(1)").addClass("active")
-	}else{
+	}else if(value == '1'){
+		$(".hidselec").removeAttr('style', 'visibility:hidden');
+		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child("+(parseInt(value)+2)+")").addClass("active")
+	}else{ 
+		$(".hidselec").attr('style', 'visibility:hidden');
 		$("#statics_ajax > article > div.statis_cate_box > dl:nth-child(2) > dd > a:nth-child("+(parseInt(value)+2)+")").addClass("active")
 	}
 	
 	
-	$("#DaliyType").val(value)
+	$("#DaliyType").val(value) //데일리타입에 searchDate
 	select("1")
 	var date = new Date();
 	var yyyy = date.getFullYear();
@@ -818,7 +865,14 @@ function moreTable(){
 	$('.base_pop_wrapper').addClass('on')
 }
 
+function moreErrorTable(){
+	$('.base_pop_wrapper2').addClass('on')
+}
+
 function Detail_Excel(){
 	pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}');
+}
+function Detail_Error_Excel(){
+	pf_excel('/dy/moniter/stasticsAjax.do?excel=error&keyno=${ob.DPP_KEYNO}');
 }
 </script>

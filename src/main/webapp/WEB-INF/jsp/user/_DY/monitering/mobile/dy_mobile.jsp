@@ -32,12 +32,56 @@
 				<div class="power_select">
 	                <select class="select_nor sm3 w100" id="InverterNum" name="InverterNum" value="${InverterNum }" onchange="ajaxData();" >
 	                    <c:forEach varStatus="status" begin="1" end="${ob.DPP_INVER_COUNT }">
-	                    	<option value="인버터 ${status.count }호">인버터 ${status.count }호</option>
+	                    	<c:choose>
+		                    	<c:when test="${ob.DPP_KEYNO eq '95' }">
+			                    	<c:if test="${status.index == 1}">
+			                    	<option value="인버터 1호">오남매 1호 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 2}">
+			                    	<option value="인버터 2호">오남매 1호 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 3}">
+			                    	<option value="인버터 3호">오남매 2호 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 4}">
+			                    	<option value="인버터 4호">오남매 2호 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 5}">
+			                    	<option value="인버터 5호">오남매 3호 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 6}">
+			                    	<option value="인버터 6호">오남매 3호 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 7}">
+			                    	<option value="인버터 7호">오남매 4호 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 8}">
+			                    	<option value="인버터 8호">오남매 4호 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 9}">
+			                    	<option value="인버터 9호">오남매 5호 1번</option>
+			                    	</c:if>
+		                    	</c:when>
+		                    	<c:when test="${ob.DPP_KEYNO eq '96' }">
+			                    	<c:if test="${status.index == 1}">
+			                    	<option value="인버터 1호">하민 발전소</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 2}">
+			                    	<option value="인버터 2호">한결 발전소</option>
+			                    	</c:if>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<option value="인버터 ${status.count }호">인버터 ${status.count }호</option>
+		                    	</c:otherwise>
+	                    	</c:choose>
 	                    </c:forEach>
 	                </select>
 	            </div>
-				
-                     <h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
+					<c:choose>
+                   		<c:when test="${ob.DPP_KEYNO eq '96' }">
+                     		<h2 class="circle mgSm"><p id="inverterName" style="float:right;">[인버터 1호]</p>금일 발전량 | ${ob.DPP_NAME } </h2>
+                     	</c:when>
+                   	</c:choose>
                     
                      <div class="graph_b_gaue">
                          <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
@@ -354,6 +398,9 @@ function DPPDataAjax(keyno){
 }
 
 function ajaxData(){
+	
+	var DPP_KEYNO = $("#DPP_KEYNO").val();
+	
 	$.ajax({
         url: '/dy/moniter/generalAjax.do',
         type: 'POST',
@@ -364,7 +411,15 @@ function ajaxData(){
         async: false,  
         success: function(result) {
         	//인버터 이름 추가
-        	$("#inverterName").text("<"+result.name+">")
+        	if(DPP_KEYNO == '96'){
+        		if(result.name == '인버터 1호'){	
+	        		$("#inverterName").text("<하민 발전소>")
+        		}else if(result.name == '인버터 2호'){
+        			$("#inverterName").text("<한결 발전소>")
+        		}
+        	}else{ // 나머지 인버터들은 그대로
+	        	$("#inverterName").text("<"+result.name+">")
+        	}
         	
         	var volum = "${ob.DPP_VOLUM}";
         	var count = "${ob.DPP_INVER_COUNT}";

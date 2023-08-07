@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +25,10 @@ import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +42,7 @@ import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
+import com.tx.common.service.AsyncService.AsyncService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -49,7 +56,6 @@ import com.tx.test.dto.billDTO;
 public class RestApiTest {
 
 	
-	
 	@Autowired ComponentService Component;
 	@Autowired CommonService CommonService;
 	
@@ -62,8 +68,8 @@ public class RestApiTest {
 	
 	@Autowired requestAPIservice requestAPI;
 	
-	
-	
+	@Autowired AsyncService AsyncService;
+
 	
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
@@ -496,13 +502,13 @@ public class RestApiTest {
 			data.put("ie_cell2",bill.getDbs_cell2());							// 공급받는자 담당자연락처2
 			data.put("ie_email2",bill.getDbs_email2() );							// 공급받는자 담당자이메일2
 			data.put("ie_companyaddress",bill.getDbs_address() );			// 공급받는자 회사주소*
-			data.put("su_companynumber",bill.getSu_companynumber() );			// 수탁사업자 사업자등록번호-
+			data.put("su_companynumber","1858701989" );			// 수탁사업자 사업자등록번호- **
 			data.put("su_biztype",bill.getSu_biztype() );						// 수탁사업자 업태-
 			
-			data.put("su_companyname",bill.getSu_companyname() );				// 수탁사업자 상호명-
+			data.put("su_companyname","대양에스코 주식회사" );				// 수탁사업자 상호명- **
 			data.put("su_bizclassification",bill.getSu_bizclassification() );	// 수탁사업자 업종-
 			data.put("su_taxnumber",bill.getSu_taxnumber() );					// 수탁사업자 종사업장번호-
-			data.put("su_ceoname",bill.getSu_ceoname() );						// 수탁사업자 대표자명-
+			data.put("su_ceoname","김형기" );						// 수탁사업자 대표자명- **
 			data.put("su_busename",bill.getSu_busename() );						// 수탁사업자 담당부서명-
 			
 			data.put("su_name",bill.getSu_name() );								// 수탁사업자 담당자명-
@@ -611,6 +617,7 @@ public class RestApiTest {
 			    		String phone = list.toString().replace("-", "");
 			    			//받은 토큰으로 알림톡 전송		
 			    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
+			    		
 			    		
 			    	}else {
 			    		
@@ -809,10 +816,12 @@ public class RestApiTest {
 	
 	}
 	
+	
 	@RequestMapping("/dyAdmin/bills/sendNTS.do")
 	@ResponseBody
 	public void sendNTS(HttpServletRequest req,billDTO bill,
 			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
+		
 		
 		String[] list = dbl_keyno.split(",");
 		
@@ -822,6 +831,7 @@ public class RestApiTest {
 		
 		if(tocken.length() > 0) {
 			for(int i= 0; i<list.length; i++) {
+				
 				
 				//전송 Y/N 체크
 				Component.updateData("bills.checkYN", list[i]);
@@ -1184,5 +1194,12 @@ public class RestApiTest {
 		}
 		return msg;
 	}
-	 
+	
+	@ResponseBody
+	@RequestMapping("/dyAdmin/bills/testasync.do")
+	public void testtt(billDTO bill, String tocken) throws Exception {
+		
+		AsyncService.sendApi(bill, tocken);
+	}
+		
 }

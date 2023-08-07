@@ -1032,7 +1032,7 @@
 		and date_format(a.Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
 	</select>
 	
-	<update id="homeIdUpdate_f_sfa" parameterType="List" >
+	<update id="homeIdUpdate_f_sfa" parameterType="List">
 		UPDATE sa_bill_log 
 			SET dbl_homeid = #{dbl_homeid},
 				dbl_issuedate = #{dbl_issuedate},

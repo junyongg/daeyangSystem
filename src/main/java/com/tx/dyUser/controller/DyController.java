@@ -170,7 +170,7 @@ public class DyController {
 	   c1.add(Calendar.MONTH, -1); 
 	   String ppred = format.format(c1.getTime());
 	   
-	   Calendar c2 = Calendar.getInstance(); 
+	   Calendar c2 = Calendar.getInstance();
 	   c2.add(Calendar.YEAR, -1); 
 	   String nowY = format2.format(c2.getTime()); //작년
 
@@ -476,6 +476,7 @@ public class DyController {
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
     	List<HashMap<String,Object>> result1 = new ArrayList<HashMap<String,Object>>();
+    	List<HashMap<String,Object>> errorlist = new ArrayList<HashMap<String,Object>>();
     	List<List<String>> MainList = new ArrayList<List<String>>();
     	
     	type.put("type",keyno);
@@ -498,12 +499,16 @@ public class DyController {
     	type.put("DaliyType",DaliyType);
     	
     	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	errorlist = Component.getList("main.error_data",type);
+    	
     	
     	int numbering = Integer.parseInt(ob.get("DPP_INVER_COUNT").toString());
     	
     	
     	if(DaliyType.equals("1")) {
     		
+    		//당일
+//    		
     		result =  Component.getList("main.select_inverterData",type);
     		result = changeDailyData(result);
     		result1 = result;
@@ -517,6 +522,8 @@ public class DyController {
         	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
         	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
         	if(InverterType.equals("0")) {
+        		
+        		//select = 1이면 인버터 합산,  InverterType = 0
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
             		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
@@ -524,6 +531,8 @@ public class DyController {
             		MainList.add(subList);
             	}
         	}else {
+        		
+        		//select = 2이면 인버터 별,  InverterType = 1
         		type.put("inverterNum", InverterType);
         		List<String> subList = Component.getList("main.select_inverterData_active",type); 
         		MainList.add(subList);
@@ -551,21 +560,27 @@ public class DyController {
     	mv.addObject("ob",ob);
     	mv.addObject("result",result);
     	mv.addObject("result1",result1);
+    	mv.addObject("errorlist",errorlist);
     	
 		if(excel != null){
-			mv.addObject("DaliyType","1");
+			
 			mv.addObject("DPP_NAME",ob.get("DPP_NAME"));
 			mv.addObject("now",now);
 			
-			mv.setViewName("/user/_DY/monitering/excel/dy_statstic_excel");
+			if(excel.equals("excel")) {
+				mv.addObject("DaliyType","1");
+				mv.setViewName("/user/_DY/monitering/excel/dy_statstic_excel");
+			}else {
+				mv.setViewName("/user/_DY/monitering/excel/dy_statstic_error_excel");
+			}
 			
 			try {
 				Cookie cookie = new Cookie("fileDownload", "true");
-		        cookie.setPath("/");
-		        res.addCookie(cookie);
-	        } catch (Exception e) {
-	            System.out.println("쿠키 에러 :: "+e.getMessage());
-	        }
+				cookie.setPath("/");
+				res.addCookie(cookie);
+			} catch (Exception e) {
+				System.out.println("쿠키 에러 :: "+e.getMessage());
+			}
 		}
     	return mv;
     }

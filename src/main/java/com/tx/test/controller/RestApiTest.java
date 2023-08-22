@@ -822,27 +822,14 @@ public class RestApiTest {
 	public void sendNTS(HttpServletRequest req,billDTO bill,
 			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
 		
-		
-		String[] list = dbl_keyno.split(",");
-		
 		//토큰받기
 		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
 		tocken = URLEncoder.encode(tocken, "UTF-8");
 		
-		if(tocken.length() > 0) {
-			for(int i= 0; i<list.length; i++) {
-				
-				
-				//전송 Y/N 체크
-				Component.updateData("bills.checkYN", list[i]);
-				
-				bill = Component.getData("bills.selectAllView", list[i]);
-				
-				sendApi(bill,tocken);
-				
-			}
-		}		
+		
+		AsyncService.sendNTS(bill, dbl_keyno, tocken);	
 	}
+	
 	
 	
 	@RequestMapping("/dyAdmin/bills/deleteInfo.do")
@@ -1166,38 +1153,27 @@ public class RestApiTest {
 	
 	@RequestMapping("/dyAdmin/bills/allSendNTS.do")
 	@ResponseBody
-	public String allSendNTS(HttpServletRequest req, billDTO bill,
+	public void allSendNTS(HttpServletRequest req, billDTO bill,
 			@RequestParam(value="subkey")String subkey) throws Exception {
 		
 		String msg = "";
-		List list = Component.getList("bills.AllsentNTS",subkey);
 		
 		//토큰받기
 		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
 		tocken = URLEncoder.encode(tocken, "UTF-8");
 		
-		if(tocken.length() > 0) {
-			if(list.isEmpty()) {	
-				msg = "전송할 세금계산서가 없습니다.";
-			}else {
-				for(Object l : list) {
-					//전송 Y/N 체크
-					Component.updateData("bills.checkYN", l);
-					bill = Component.getData("bills.selectAllView", l);
-					
-					sendApi(bill,tocken);
-				}
-				msg = "전체 전송이 완료되었습니다.";	
-			}
-		}else {
+		AsyncService.allSendNTS(bill, subkey, tocken);
 			
-		}
-		return msg;
 	}
 	
 	@ResponseBody
 	@RequestMapping("/dyAdmin/bills/testasync.do")
-	public void testtt(billDTO bill, String tocken) throws Exception {
+	public void testtt(billDTO bill) throws Exception {
+		
+		//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+				
 		
 		AsyncService.sendApi(bill, tocken);
 	}

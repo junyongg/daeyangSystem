@@ -228,19 +228,22 @@ function HomeIdUpdte() {
 function AllSendNTS(){
 	
 	var subkey = $("#dbl_sub_keyno").val();
-	
-	$.ajax({
-		url: '/dyAdmin/bills/allSendNTS.do',
-		type: 'POST',
-		data: {
-			"subkey" : subkey
-		},
-		async: false,
-		success : function(data){
-			alert(data);
-			location.reload();
-		}
-	});	
+	if(confirm("전체 전송하시겠습니까?")){	
+		alert("전송 완료")
+		location.reload();
+		$.ajax({
+			url: '/dyAdmin/bills/allSendNTS.do',
+			type: 'POST',
+			data: {
+				"subkey" : subkey
+			},
+			async: false,
+			success : function(data){
+				alert(data);
+				location.reload();
+			}
+		});
+	}
 }
 
 

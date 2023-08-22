@@ -212,6 +212,14 @@
 		LIMIT 1
 	</select>
 	
+	<select id="error_data" resultType="hashmap" parameterType="hashmap">
+		SELECT *
+		FROM dy_inverter_error 
+		WHERE DIE_DPP_KEYNO  = #{type}
+		ORDER BY DIE_DATE desc
+		limit 500
+	</select>
+	
 	
 	<!-- 당일 통계를 위한 인버터 별 전력 출력 (그래프를위함)-->
 <!-- 	<select id="select_inverterData_active" resultType="String" parameterType="hashmap"> -->

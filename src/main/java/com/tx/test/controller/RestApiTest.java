@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +25,10 @@ import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,9 +42,11 @@ import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
+import com.tx.common.service.AsyncService.AsyncService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import freemarker.core.ReturnInstruction.Return;
 
 import com.tx.test.RestApiSample_getpkey;
 import com.tx.test.dto.billDTO;
@@ -47,7 +55,6 @@ import com.tx.test.dto.billDTO;
 @Controller
 public class RestApiTest {
 
-	
 	
 	@Autowired ComponentService Component;
 	@Autowired CommonService CommonService;
@@ -61,8 +68,8 @@ public class RestApiTest {
 	
 	@Autowired requestAPIservice requestAPI;
 	
-	
-	
+	@Autowired AsyncService AsyncService;
+
 	
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
@@ -124,9 +131,15 @@ public class RestApiTest {
 		    	  l.put("dbl_homeid", codeStr);
 		    	  l.put("dbl_status", "1");
 		    	  
+		    	  //품목명 처리(Subject)
+		    	  String subject = (String)l.get("dbl_subject");
+		    	  String subject_sub = subject.substring(5, subject.length());
+		    	  
+		    	  
 		    	  //
 		    	  if(subkey.equals("1")) {
-		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
+		    		String subDate = year2+"."+month2;
+		    		l.put("dbl_subject",subDate+subject_sub);
 		    		l.put("dbl_unitprice", "");
 		    		l.put("dbl_supplyprice", "");
 		    		l.put("dbl_tax", "");
@@ -134,15 +147,17 @@ public class RestApiTest {
 					l.put("dbl_taxtotal", "");
 					l.put("dbl_grandtotal", "");
 		    	  }else if(subkey.equals("2")) {
-		    		l.put("dbl_subject",year2+"."+month2+"월분 발전대금");
+		    		String subDate = year2+"."+month2;
+		    		l.put("dbl_subject",subDate+subject_sub);
 		    		l.put("dbl_unitprice", "");
 		    		l.put("dbl_supplyprice", "");
 		    		l.put("dbl_tax", "");
 		    		l.put("dbl_chargetotal", "");
 					l.put("dbl_taxtotal", "");
 					l.put("dbl_grandtotal", "");
-		    	  }else {
-		    		l.put("dbl_subject",year2+"."+month+"월분 전기안전관리비");
+		    	  }else {	
+		    		String subDate = year2+"."+month;
+		    		l.put("dbl_subject",subDate+subject_sub);
 		    	  }
 		    	  
 		    	  Component.createData("bills.billInfoInsertAuto", l);
@@ -426,7 +441,12 @@ public class RestApiTest {
 	@SuppressWarnings("unchecked")
 	public String sendApi( billDTO bill , String tocken)
 			throws Exception {
-
+			
+		 	String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		 	String nowdate = now.replace("-", "");
+		 	String nowdate2 = nowdate.trim();
+			
+		
 			// JSONObject객체 생성
 			JSONObject data = new JSONObject();
 
@@ -441,7 +461,7 @@ public class RestApiTest {
 			data.put("typecode1",bill.getDbl_typecode1());							// (세금)계산서 종류1*
 			data.put("typecode2",bill.getDbl_typecode2());							// (세금)계산서 종류2*
 			data.put("description",bill.getDescription());						// 비고
-			data.put("issuedate",bill.getDbl_issuedate());							// 작성일자*
+			data.put("issuedate",nowdate2);										// 작성일자*
 			
 			data.put("modifytype",bill.getModifytype() );						// 수정사유-
 			data.put("purposetype",bill.getDbl_purposetype());						// 영수/청구 구분*
@@ -482,13 +502,13 @@ public class RestApiTest {
 			data.put("ie_cell2",bill.getDbs_cell2());							// 공급받는자 담당자연락처2
 			data.put("ie_email2",bill.getDbs_email2() );							// 공급받는자 담당자이메일2
 			data.put("ie_companyaddress",bill.getDbs_address() );			// 공급받는자 회사주소*
-			data.put("su_companynumber",bill.getSu_companynumber() );			// 수탁사업자 사업자등록번호-
+			data.put("su_companynumber","1858701989" );			// 수탁사업자 사업자등록번호- **
 			data.put("su_biztype",bill.getSu_biztype() );						// 수탁사업자 업태-
 			
-			data.put("su_companyname",bill.getSu_companyname() );				// 수탁사업자 상호명-
+			data.put("su_companyname","대양에스코 주식회사" );				// 수탁사업자 상호명- **
 			data.put("su_bizclassification",bill.getSu_bizclassification() );	// 수탁사업자 업종-
 			data.put("su_taxnumber",bill.getSu_taxnumber() );					// 수탁사업자 종사업장번호-
-			data.put("su_ceoname",bill.getSu_ceoname() );						// 수탁사업자 대표자명-
+			data.put("su_ceoname","김형기" );						// 수탁사업자 대표자명- **
 			data.put("su_busename",bill.getSu_busename() );						// 수탁사업자 담당부서명-
 			
 			data.put("su_name",bill.getSu_name() );								// 수탁사업자 담당자명-
@@ -513,7 +533,7 @@ public class RestApiTest {
 			sObject.put("quantity",bill.getDbl_quantity() );									// 품목수량
 			sObject.put("unit",bill.getDbl_unit() );											// 품목규격
 			sObject.put("subject",bill.getDbl_subject() );										// 품목명
-			sObject.put("gyymmdd",bill.getDbl_sub_issuedate() );							// 공급연원일
+			sObject.put("gyymmdd",nowdate2 );													// 공급연원일
 			sObject.put("tax",bill.getDbl_tax().replace(",", ""));								// 세액
 			sObject.put("unitprice",bill.getDbl_unitprice().replace(",", ""));					// 단가
 			jArray.put(sObject);
@@ -557,6 +577,8 @@ public class RestApiTest {
 			String  code = (String) jsonObj.get("code");
 			bill.setDbl_status(code);
 			bill.setDbl_errormsg(msg);
+			bill.setDbl_issuedate(nowdate2);
+			bill.setDbl_sub_issuedate(nowdate2);
 
 			Component.updateData("bills.codemsgUpdate", bill);
 			
@@ -596,6 +618,7 @@ public class RestApiTest {
 			    			//받은 토큰으로 알림톡 전송		
 			    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
 			    		
+			    		
 			    	}else {
 			    		
 			    		String pname = bill.getDbl_p_name();
@@ -630,10 +653,26 @@ public class RestApiTest {
 			    	}
 		    		
 		    	}else {
-		    			
+		    		
+		    		//전송상태 N으로 변경해서 체크박스 안사라지게 함
 		    		Component.updateData("bills.checkChange", bill);
-		    	}
-		    	
+		    		
+		    		
+		    		// 전송실패시 고유번호 자동 +1 처리
+//		    		String codeStr = "";
+//		    		
+//		    		String homekey = Component.getData("bills.homekey");
+//		    		 
+//		    		String codenum = homekey.substring(7,homekey.length());
+//					int tempc = Integer.parseInt(codenum) + 1 ;
+//					String homeKeyPront =  homekey.substring(0,7);
+//					codeStr = homeKeyPront+tempc;
+//					 
+//					bill.setDbl_homeid(codeStr);
+//					
+//					Component.updateData("bills.homeIdUpdate_f", bill);
+//					Component.updateData("bills.changeHomekey", codeStr);
+		    	}		    	
 			
 			return msg;
 	}
@@ -644,8 +683,8 @@ public class RestApiTest {
 	public String billsInfoIsnsertAjax1(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		
-		 String msg = "";
-		 String keyno = Component.getData("bills.billLogCount",bill);
+		String msg = "";
+//		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
 		//공급자 공급받는자 등록 확인 	
 //			if(keyno != null && keyno != "") {
@@ -659,10 +698,10 @@ public class RestApiTest {
 //				}else if(chkYN.equals("N")) {
 //				}	 
 //			}else {
-				 Component.createData("bills.subkey1Insert", bill);
-				 Component.updateData("bills.registNumberUpdate", bill);
-				 Component.createData("bills.billsInfoInsert", bill);
-				 msg = "저장 완료";
+		Component.createData("bills.subkey1Insert", bill);
+		Component.updateData("bills.registNumberUpdate", bill);
+		Component.createData("bills.billsInfoInsert", bill);
+		msg = "저장 완료";
 //		 }
 
 
@@ -674,8 +713,8 @@ public class RestApiTest {
 	public String billsInfoIsnsertAjax2(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		
-		 String msg = "";
-		 String keyno = Component.getData("bills.billLogCount",bill);
+		String msg = "";
+//		 String keyno = Component.getData("bills.billLogCount",bill);
 		 
 		//공급자 공급받는자 등록 확인 	
 //			if(keyno != null && keyno != "") {	
@@ -690,10 +729,10 @@ public class RestApiTest {
 //				}else if(chkYN.equals("N")) {
 //				}	 
 //			}else {
-				 Component.createData("bills.subkey2Insert", bill);
-				 Component.updateData("bills.registNumberUpdate", bill);
-				 Component.createData("bills.billsInfoInsert", bill);
-				 msg = "저장 완료";
+		Component.createData("bills.subkey2Insert", bill);
+		Component.updateData("bills.registNumberUpdate", bill);
+		Component.createData("bills.billsInfoInsert", bill);
+		msg = "저장 완료";
 //		 }
 
 
@@ -706,7 +745,7 @@ public class RestApiTest {
 	public String billsInfoIsnsertAjax3(HttpServletRequest req,billDTO bill) throws Exception {
 		
 		String msg = "";
-		String keyno = Component.getData("bills.billLogCount",bill);
+//		String keyno = Component.getData("bills.billLogCount",bill);
 		
 		
 		//공급자 공급받는자 등록 확인 	
@@ -722,10 +761,10 @@ public class RestApiTest {
 //				
 //			}	 
 //		 }else{
-			Component.createData("bills.subkey3Insert", bill);
-			Component.updateData("bills.registNumberUpdate", bill);
-			Component.createData("bills.billsInfoInsert", bill);
-			msg = "저장 완료";
+		Component.createData("bills.subkey3Insert", bill);
+		Component.updateData("bills.registNumberUpdate", bill);
+		Component.createData("bills.billsInfoInsert", bill);
+		msg = "저장 완료";
 //		 }
 
 
@@ -756,31 +795,33 @@ public class RestApiTest {
 		bill = Component.getData("bills.selectAllView", bill);
 		
 		//homeid 조합식
-		String codeStr = "";
-		String homekey = Component.getData("bills.homekey");
-		String codenum = homekey.substring(7,homekey.length());
-		int tempc = Integer.parseInt(codenum) + 1 ;
-		String code =  homekey.substring(0,7);
-		codeStr = code+tempc;
+//		String codeStr = "";
+//		String homekey = Component.getData("bills.homekey");
+//		String codenum = homekey.substring(7,homekey.length());
+//		int tempc = Integer.parseInt(codenum) + 1 ;
+//		String code =  homekey.substring(0,7);
+//		codeStr = code+tempc;
 		
 		//homekey 테이블 +1수치 업데이트
-		Component.updateData("bills.changeHomekey", codeStr);
+//		Component.updateData("bills.changeHomekey", codeStr);
 		
 		
 		//homeid select(수정 전)
 		//HashMap<String, Object> code = Component.getData("bills.CodeNumberSelect", bill);
 	
-		bill.setDbl_homeid(codeStr);
+//		bill.setDbl_homeid(codeStr);
 		
 		
 		return bill;
 	
 	}
 	
+	
 	@RequestMapping("/dyAdmin/bills/sendNTS.do")
 	@ResponseBody
 	public void sendNTS(HttpServletRequest req,billDTO bill,
 			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
+		
 		
 		String[] list = dbl_keyno.split(",");
 		
@@ -790,6 +831,7 @@ public class RestApiTest {
 		
 		if(tocken.length() > 0) {
 			for(int i= 0; i<list.length; i++) {
+				
 				
 				//전송 Y/N 체크
 				Component.updateData("bills.checkYN", list[i]);
@@ -1044,10 +1086,30 @@ public class RestApiTest {
 					System.out.println(r.getDbp_name() + ": 실패");
 					msg = (String) jsonObj.get("msg");
 					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+					
 				}
 			}else {
-				msg = "서버 호출 실패";		
+				msg = "서버 호출 실패";
 			}
+			
+			//전송 실패시 고유번호 자동 +1 처리
+//			if(status.equals("-1")) {
+//				
+//				String codeStr = "";
+//	    		
+//	    		String homekey = Component.getData("bills.homekey");
+//	    		 
+//	    		String codenum = homekey.substring(7,homekey.length());
+//				int tempc = Integer.parseInt(codenum) + 1;
+//				String homeKeyPront =  homekey.substring(0,7);
+//				codeStr = homeKeyPront+tempc;
+//				 
+//				r.setDbl_homeid(codeStr);
+//				
+//				Component.updateData("bills.homeIdUpdate_f", r);
+//				Component.updateData("bills.changeHomekey", codeStr);
+//			}
+			
 			r.setDbl_status(status);
 			r.setDbl_errormsg(msg);
 			r.setDbl_checkYN(chYn);
@@ -1055,4 +1117,89 @@ public class RestApiTest {
 		}
 		return msg2;
 	}
+	
+	
+	@RequestMapping("/dyAdmin/bills/HomeIdUpdate.do")
+	@ResponseBody
+	public String HomeIdUpdate(HttpServletRequest req,billDTO bill,
+			@RequestParam(value="subkey")String subkey) throws Exception {
+	
+		 List<HashMap<String, Object>> list = Component.getList("bills.f_ListSelect", subkey);
+		 
+		 String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		 String nowdate = now.replace("-", "");
+		 String nowdate2 = nowdate.trim();
+		 
+		 
+		 String msg = "";
+		 String codeStr = "";
+		 String homekey = Component.getData("bills.homekey");
+		 
+		 
+		 if (list.size() > 0) {
+			 for(HashMap<String, Object> l : list) {
+				 
+				 String codenum = homekey.substring(7,homekey.length());
+				 int tempc = Integer.parseInt(codenum) + 1 ;
+				 String code =  homekey.substring(0,7);
+				 codeStr = code+tempc;
+				 homekey = codeStr;
+				 
+				 l.put("dbl_homeid", codeStr);
+				 l.put("dbl_issuedate", nowdate2);
+				 l.put("sub_issuedate", nowdate2);
+				 
+				 Component.updateData("bills.homeIdUpdate_f", l);
+			 }
+			 msg = "전송 실패한 리스트의 고유번호가 수정되었습니다. 발행할 리스트를 전송하세요."; 
+			 
+			 //Keytable에 가장 마지막 숫자 업데이트
+			 Component.updateData("bills.changeHomekey", codeStr);
+			 
+		 }else {
+			 msg = "고유번호를 수정할 리스트가 없습니다.";
+		 }
+		 
+		 return msg;
+	}
+	
+	
+	@RequestMapping("/dyAdmin/bills/allSendNTS.do")
+	@ResponseBody
+	public String allSendNTS(HttpServletRequest req, billDTO bill,
+			@RequestParam(value="subkey")String subkey) throws Exception {
+		
+		String msg = "";
+		List list = Component.getList("bills.AllsentNTS",subkey);
+		
+		//토큰받기
+		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+		tocken = URLEncoder.encode(tocken, "UTF-8");
+		
+		if(tocken.length() > 0) {
+			if(list.isEmpty()) {	
+				msg = "전송할 세금계산서가 없습니다.";
+			}else {
+				for(Object l : list) {
+					//전송 Y/N 체크
+					Component.updateData("bills.checkYN", l);
+					bill = Component.getData("bills.selectAllView", l);
+					
+					sendApi(bill,tocken);
+				}
+				msg = "전체 전송이 완료되었습니다.";	
+			}
+		}else {
+			
+		}
+		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/dyAdmin/bills/testasync.do")
+	public void testtt(billDTO bill, String tocken) throws Exception {
+		
+		AsyncService.sendApi(bill, tocken);
+	}
+		
 }

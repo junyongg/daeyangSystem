@@ -135,11 +135,15 @@
 							</div>
 							<div style="text-align: center;">
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">당일 전송</button>
+								type="button" onclick="sendNTS()" style="width : 100px; margin-left: 2%;">전송</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
-								type="button" onclick="delaysend()" style="width : 100px;">지연 전송</button>
+								type="button" onclick="AllSendNTS()" style="width : 100px;">전체 전송</button>
+<!-- 							<button class="btn btn-sm btn-primary" id="deleteButton" -->
+<!-- 								type="button" onclick="delaysend()" style="width : 100px;">지연 전송</button> -->
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
+							<button class="btn btn-sm btn-primary" id="deleteButton"
+								type="button" onclick="HomeIdUpdte()" style="width : 100px; background-color: #000000;">고유번호수정</button>
 							</div>
 							</div>
 
@@ -204,6 +208,43 @@ function TaxListUpdate_DY() {
 				alert("첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다.");
 			}
 			
+		}
+	});	
+}
+
+function HomeIdUpdte() {
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	
+	$.ajax({
+		url: '/dyAdmin/bills/HomeIdUpdate.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+			location.reload();
+		}
+	});	
+}
+
+function AllSendNTS(){
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	$.ajax({
+		url: '/dyAdmin/bills/allSendNTS.do',
+		type: 'POST',
+		data: {
+			"subkey" : subkey
+		},
+		async: false,
+		success : function(data){
+			alert(data);
+			location.reload();
 		}
 	});	
 }

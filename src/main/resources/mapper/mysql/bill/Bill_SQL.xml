@@ -858,7 +858,17 @@
     <update id="codemsgUpdate" parameterType="String" >
 		UPDATE dy_bills_log 
 			SET dbl_status = #{dbl_status},
-				dbl_errormsg = #{dbl_errormsg}
+				dbl_errormsg = #{dbl_errormsg},
+				dbl_issuedate = #{dbl_issuedate},
+				dbl_sub_issuedate = #{dbl_sub_issuedate}
+			WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
+    <update id="homeIdUpdate_f" parameterType="List" >
+		UPDATE dy_bills_log 
+			SET dbl_homeid = #{dbl_homeid},
+				dbl_issuedate = #{dbl_issuedate},
+				dbl_sub_issuedate = #{sub_issuedate}
 			WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
@@ -972,6 +982,23 @@
 		left join dy_bills_provider b
 		on a.dbl_provider_key  = b.dbp_keyno
 		where (dbl_status = 0 or dbl_status = -1)
+		and date_format(a.Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
+	</select>
+	
+	<!-- 안전관리 부분 전체 전송 -->
+	<select id="AllsentNTS" resultType="String" parameterType="String">
+		select dbl_keyno
+		from dy_bills_log 
+		where dbl_sub_keyno = #{subkey}
+		and dbl_checkYN = 'N'
+		and date_format(Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
+	</select>
+	
+	<select id="f_ListSelect" resultType="Hashmap" parameterType="String">
+		select *
+		from dy_bills_log a
+		where dbl_sub_keyno = #{subkey}
+		and dbl_status = '-1'
 		and date_format(a.Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
 	</select>
 	

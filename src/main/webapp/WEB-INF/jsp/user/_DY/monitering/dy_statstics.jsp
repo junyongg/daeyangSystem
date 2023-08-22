@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
 <form:form action="" method="POST" id="Form">
 <input type="hidden" value="${ob.DPP_KEYNO }" id="n_keyno" name="n_keyno">
-
 <div id="container" class="heightFix">
     <div class="flex_wrapper">
         <section class="one_row left2">
@@ -13,7 +14,7 @@
                 <p class="power_tit">[${ob.DPP_AREA }] ${ob.DPP_NAME }</p>
 
 				<div class="power_select">
-                    <select class="select_nor sm3 w100" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax();">
+                    <select class="select_nor sm3 w100 form-control select2" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax();">
                         <c:forEach items="${list }" var="list">
                         	<option value="${list.DPP_KEYNO }" ${list.DPP_KEYNO eq DPP_KEYNO ? 'selected' : '' } >${list.DPP_NAME }</option>
                         </c:forEach>
@@ -84,7 +85,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript" src="/resources/publish/_DY/js/echarts.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script src="/resources/common/js/html2canvas.js"></script>
 
@@ -112,12 +113,17 @@ function downloadURI(uri, name){
 $(function(){
 	pf_setMap();
 	statics_ajax();
+	$('.select2').select2({
+	    closeOnSelect: true
+	});
 });
 
 function DPPDataAjax(){
 	$('#Form').attr('action','/dy/moniter/stastics.do');
 	$("#Form").submit();
+	
 }
+
 
    
 function pf_setMap(){
@@ -168,5 +174,28 @@ function statics_ajax(){
 function pf_excel(url){
 	$('#Form').attr('action',url);
 	$('#Form').submit();
+}
+
+
+function auto(){
+	
+	$.ajax({
+        url: '/dy/moniter/stasticsAjax.do',
+        type: 'POST',
+        data: {
+        	keyno : $("#n_keyno").val(),
+        	DaliyType : "${DaliyType}",
+        	InverterType : "${InverterType}",
+        	searchBeginDate : "${searchBeginDate}",
+        	searchEndDate : "${searchEndDate}"
+        },
+        async: false,  
+        success: function(result) {
+        	$("#statics_ajax").html(result);
+        },
+        error: function(){
+        	alert("에러 관리자에 문의해주세요.");
+        }
+	});
 }
 </script>

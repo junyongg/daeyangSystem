@@ -436,25 +436,25 @@ public class safeAdminController {
 	public String billsInfoIsnsertAjax3(HttpServletRequest req, safebillDTO bill) throws Exception {
 
 		String msg = "";
-		String keyno = Component.getData("sfabill.billLogCount", bill);
+//		String keyno = Component.getData("sfabill.billLogCount", bill);
 
 		// 공급자 공급받는자 등록 확인
-		if (keyno != null && keyno != "") {
+//		if (keyno != null && keyno != "") {
 
 			// 공급자 공급받는자 중복된 것중 국세청 전송여부 확인
-			String chkYN = Component.getData("sfabill.checkYNselect", keyno);
+//			String chkYN = Component.getData("sfabill.checkYNselect", keyno);
 
-			if (chkYN.equals("Y")) {
-				msg = "1";
-			} else if (chkYN.equals("N")) {
-				msg = keyno;
-			}
-		} else {
-			Component.createData("sfabill.subkey3Insert", bill);
-			Component.updateData("sfabill.registNumberUpdate", bill);
-			Component.createData("sfabill.billsInfoInsert", bill);
-			msg = "저장 완료";
-		}
+//			if (chkYN.equals("Y")) {
+//				msg = "1";
+//			} else if (chkYN.equals("N")) {
+//				msg = keyno;
+//			}
+//		} else {
+		Component.createData("sfabill.subkey3Insert", bill);
+		Component.updateData("sfabill.registNumberUpdate", bill);
+		Component.createData("sfabill.billsInfoInsert", bill);
+		msg = "저장 완료";
+//		}
 
 		return msg;
 
@@ -511,17 +511,17 @@ public class safeAdminController {
 		
 		
 		//homeid 조합식
-		String codeStr = "";
-		String homekey = Component.getData("sfabill.homekey",UI_KEYNO);
-		String codenum = homekey.substring(7,homekey.length());
-		int tempc = Integer.parseInt(codenum) + 1 ;
-		String code =  homekey.substring(0,7);
-		codeStr = code+tempc;
+//		String codeStr = "";
+//		String homekey = Component.getData("sfabill.homekey",UI_KEYNO);
+//		String codenum = homekey.substring(7,homekey.length());
+//		int tempc = Integer.parseInt(codenum) + 1 ;
+//		String code =  homekey.substring(0,7);
+//		codeStr = code+tempc;
 		
 		//homekey 테이블 +1수치 업데이트
-		map.put("key", codeStr);
-		map.put("kt_UI_KEYNO", UI_KEYNO);
-		Component.updateData("sfabill.changeHomekey", map);
+//		map.put("key", codeStr);
+//		map.put("kt_UI_KEYNO", UI_KEYNO);
+//		Component.updateData("sfabill.changeHomekey", map);
 		
 		
 		//homeid select(수정 전)
@@ -538,7 +538,7 @@ public class safeAdminController {
 //		String code2 = codeapi.substring(codeapi.length() - 6, codeapi.length() - 2);
 //		codeStr = code1 + code2 + tempc;
 
-		bill.setDbl_homeid(codeStr);
+//		bill.setDbl_homeid(codeStr);
 
 		return bill;
 
@@ -625,8 +625,10 @@ public class safeAdminController {
 	public String billsResultTest(HttpServletRequest req) throws Exception {
 
 		String msg2 = "";
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
 
-		List<safebillDTO> result = Component.getListNoParam("sfabill.LogResultNeedData");
+		List<safebillDTO> result = Component.getList("sfabill.LogResultNeedData",UI_KEYNO);
 
 		for (safebillDTO r : result) {
 
@@ -1602,7 +1604,12 @@ public class safeAdminController {
 
 	@SuppressWarnings("unchecked")
 	public String sendApi(safebillDTO bill) throws Exception {
-
+		
+		String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+	 	String nowdate = now.replace("-", "");
+	 	String nowdate2 = nowdate.trim();
+		
+		
 		// JSONObject객체 생성
 		JSONObject data = new JSONObject();
 
@@ -1617,7 +1624,7 @@ public class safeAdminController {
 		data.put("typecode1", bill.getDbl_typecode1()); // (세금)계산서 종류1*
 		data.put("typecode2", bill.getDbl_typecode2()); // (세금)계산서 종류2*
 		data.put("description", bill.getDescription()); // 비고
-		data.put("issuedate", bill.getDbl_issuedate()); // 작성일자*
+		data.put("issuedate", nowdate2); // 작성일자*
 
 		data.put("modifytype", bill.getModifytype()); // 수정사유-
 		data.put("purposetype", bill.getDbl_purposetype()); // 영수/청구 구분*
@@ -1688,7 +1695,7 @@ public class safeAdminController {
 		sObject.put("quantity", bill.getDbl_quantity()); // 품목수량
 		sObject.put("unit", bill.getDbl_unit()); // 품목규격
 		sObject.put("subject", bill.getDbl_subject()); // 품목명
-		sObject.put("gyymmdd", bill.getDbl_sub_issuedate()); // 공급연원일
+		sObject.put("gyymmdd", nowdate2); // 공급연원일
 		sObject.put("tax", bill.getDbl_tax().replace(",", "")); // 세액
 		sObject.put("unitprice", bill.getDbl_unitprice().replace(",", "")); // 단가
 		jArray.put(sObject);
@@ -1733,6 +1740,8 @@ public class safeAdminController {
 		String code = (String) jsonObj.get("code");
 		bill.setDbl_status(code);
 		bill.setDbl_errormsg(msg);
+		bill.setDbl_issuedate(nowdate2);
+		bill.setDbl_sub_issuedate(nowdate2);
 
 		Component.updateData("sfabill.codemsgUpdate", bill);
 
@@ -1807,7 +1816,7 @@ public class safeAdminController {
 			}
 
 		} else {
-
+//			전송상태 N으로 변경해서 체크박스 안사라지게 함
 			Component.updateData("sfabill.checkChange", bill);
 		}
 
@@ -1823,10 +1832,14 @@ public class safeAdminController {
 			@RequestParam(value = "excelFile", required=false) MultipartFile file
 			) throws Exception {
 		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		
 		ArrayList<ArrayList<String>> result = excel.readFilter_And_Insert(file);
 		
 		if(result.size() > 0) {
-			//발전소명 , 주소 , 인버터 대수, 점검횟수, 전압, 용량 , CT비, 전화번호 1, 2 
+			//발전소명, 지역, 주소, 용량, 전압, CT비, 인버터대수, 검침일, 번호1 ,번호2, 전화번호1, 2, 3, 4, 5, 월별점검횟수
 			for(ArrayList<String> re : result) {
 				HashMap<String , Object> m = new HashMap<String, Object>();
 				
@@ -1841,7 +1854,13 @@ public class safeAdminController {
 				m.put("i",re.get(8));
 				m.put("j",re.get(9));
 				m.put("k",re.get(10));
-			
+				m.put("l",re.get(11));
+				m.put("m",re.get(12));
+				m.put("n",re.get(13));
+				m.put("o",re.get(14));
+				m.put("p",re.get(15));
+				m.put("q",UI_KEYNO);
+				
 				
 				Component.createData("sfa.ExcelInsert", m);
 				
@@ -1855,6 +1874,7 @@ public class safeAdminController {
 	
 	
 	@RequestMapping("/autolistsfa.do")
+	@ResponseBody
 	public String autolistSFA(HttpServletRequest req) throws Exception {
 		
 		  Map<String, Object> user = CommonService.getUserInfo(req);
@@ -1896,13 +1916,17 @@ public class safeAdminController {
 				  codeStr = code+tempc;
 				  homekey = codeStr;
 				  
+				//품목명 처리(Subject)
+				  String subject = (String)l.get("dbl_subject");
+		    	  String subject_sub = subject.substring(5, subject.length());
 		    	  
+		    	  String subDate = year2+"."+month2;
+		    	  l.put("dbl_subject",subDate+subject_sub);
 		    	  l.put("dbl_issuedate", nowdate2);
 		    	  l.put("dbl_checkYN", "N");
 		    	  l.put("dbl_errormsg", "");
 		    	  l.put("dbl_homeid", codeStr);
 		    	  l.put("dbl_status", "1");
-		    	  l.put("dbl_subject",year2+"."+month+"월분 전기안전관리비");
 		    	  
 		    	  
 		    	  Component.createData("sfabill.billInfoInsertAuto", l);
@@ -1922,7 +1946,6 @@ public class safeAdminController {
 		  
 		return msg;
 	}
-	
 	
 	
 	@RequestMapping("/sfa/safe/AreaChangeList.do")
@@ -1947,6 +1970,93 @@ public class safeAdminController {
 		}
 
 		return map2;
+	}
+	
+	//고유번호 자동수정 
+	@RequestMapping("/sfa/bills/HomeIdUpdate_SFA.do")
+	@ResponseBody
+	public String HomeIdUpdate(HttpServletRequest req,
+			@RequestParam(value="subkey")String subkey) throws Exception {
+	
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("subkey", subkey);
+		map.put("UI_KEYNO", UI_KEYNO);
+		
+		
+		 List<HashMap<String, Object>> list = Component.getList("sfabill.f_ListSelect_sfa", map);
+		 
+		 String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		 String nowdate = now.replace("-", "");
+		 String nowdate2 = nowdate.trim();
+		 
+		 
+		 String msg = "";
+		 String codeStr = "";
+		 String homekey = Component.getData("sfabill.homekey");
+		 
+		 
+		 if (list.size() > 0) {
+			 for(HashMap<String, Object> l : list) {
+				 
+				 String codenum = homekey.substring(7,homekey.length());
+				 int tempc = Integer.parseInt(codenum) + 1 ;
+				 String code =  homekey.substring(0,7);
+				 codeStr = code+tempc;
+				 homekey = codeStr;
+				 
+				 l.put("dbl_homeid", codeStr);
+				 l.put("dbl_issuedate", nowdate2);
+				 l.put("dbl_sub_issuedate", nowdate2);
+				 
+				 Component.updateData("sfabill.homeIdUpdate_f_sfa", l);
+			 }
+			 msg = "전송 실패한 리스트의 고유번호가 수정되었습니다. 발행할 리스트를 전송하세요."; 
+			 
+			 //Keytable에 가장 마지막 숫자 업데이트
+			 Component.updateData("sfabill.changeHomekey", codeStr);
+			 
+		 }else {
+			 msg = "고유번호를 수정할 리스트가 없습니다.";
+		 }
+		 
+		 return msg;
+	}
+	
+	
+	@RequestMapping("/sfa/bills/allSendNTS_SFA.do")
+	@ResponseBody
+	public String allSendNTS(HttpServletRequest req, safebillDTO bill,
+			@RequestParam(value="subkey")String subkey) throws Exception {
+		
+		String msg = "";
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("subkey", subkey);
+		map.put("UI_KEYNO", UI_KEYNO);
+		
+		List list = Component.getList("sfabill.AllsentNTS_sfa",map);
+		
+		if(list.isEmpty()) {	
+			msg = "전송할 세금계산서가 없습니다.";
+		}else {
+			for(Object l : list) {
+				//전송 Y/N 체크
+				Component.updateData("sfabill.checkYN", l);
+				bill = Component.getData("sfabill.selectAllView", l);
+				
+				sendApi(bill);
+			}
+			msg = "전체 전송이 완료되었습니다.";	
+		}
+		
+		return msg;
 	}
 	
 }

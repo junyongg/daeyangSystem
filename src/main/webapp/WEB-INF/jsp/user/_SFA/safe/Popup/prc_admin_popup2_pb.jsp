@@ -42,7 +42,8 @@
       </div>
         <div class="w-full rounded-lg bg-white my-4 md:md-4 lg:my-7">
           <div class="w-full">
-	    	<button type="button" onclick="popup('${list.sa2_keyno}')" style="width:120px;" class="mx-3 text-xs font-semibold items-center w-16 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">수정페이지 이동</button>
+<%-- 	    	<button type="button" onclick="popup('${list.sa2_keyno}')" style="width:120px;" class="mx-3 text-xs font-semibold items-center w-16 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">수정페이지 이동</button> --%>
+	    	<button type="button" onclick="ClosePopup()" style="width:120px;" class="mx-3 text-xs font-semibold items-center w-16 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">닫기</button>
           </div>
           <div class="px-5 text-bold text-sm md:text-sm lg:text-base my-2.5">
             <div class="flex items-center ">
@@ -553,6 +554,10 @@ function popup(value){
 	var top = Math.ceil((window.screen.height - 820)/2);
 	var popOpen	= window.open("/sfa/safeAdmin/safeAdminUpdate.do?listtable="+value+"&num="+num, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
 	popOpen.focus();
+}
+
+function ClosePopup(){
+	window.close();
 }
 
 

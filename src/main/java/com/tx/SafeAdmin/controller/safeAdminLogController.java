@@ -238,21 +238,29 @@ public class safeAdminLogController {
 		String UI_KEYNO = user.get("UI_KEYNO").toString();
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map2 = new HashMap<String, Object>();
 		
 		map.put("UI_KEYNO", UI_KEYNO);
 		map.put("SU_KEYNO", SU_KEYNO);
 		
 		//바로 전회차 양식 뽑기
-		map = Component.getData("sfa.SafeRecentPre", map);  //object로 보냄 getList는 배열, getData는 object 
+		map2 = Component.getData("sfa.SafeRecentPre", map);  //object로 보냄 getList는 배열, getData는 object 
 		
-		//인버터 갯수 뽑기
-		String num = Component.getData("sfa.inverterNum_Recent", SU_KEYNO);
-		
-		mv.addObject("list",map); //object로 보냄
-		mv.addObject("num", num);
-		
-		
-		return mv;
+		if(map2 == null) {
+			
+			return "<script>alert('이전에 작성한 양식이 없습니다'); window.close();</script>";
+			
+		}else {
+			
+			//인버터 갯수 뽑기
+			String num = Component.getData("sfa.inverterNum_Recent", SU_KEYNO);
+			
+			mv.addObject("list",map2); //object로 보냄
+			mv.addObject("num", num);
+			
+			
+			return mv;
+		}
 	}
 	
 	//수정페이지

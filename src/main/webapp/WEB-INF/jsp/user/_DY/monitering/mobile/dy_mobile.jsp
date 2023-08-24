@@ -395,8 +395,8 @@
         </section>
 
 		<!-- 세부 내용 표시 부분 -->
-		<article class="artBoard bott_r" id="staticAjax">
-		</article>
+		<!-- <article class="artBoard bott_r" id="staticAjax">
+		</article> -->
         
     </div>
     <!-- COMTAINER END -->
@@ -408,8 +408,8 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
 $(function(){
- 	ajaxData();
- 	searching();
+  	ajaxData();
+//  	searching();
 });
 
 function DPPDataAjax(keyno){

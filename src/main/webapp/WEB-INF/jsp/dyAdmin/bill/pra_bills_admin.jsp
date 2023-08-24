@@ -637,6 +637,8 @@ function sendNTS(){
 	
 	if(array.length > 0){
 		if(confirm("전송하시겠습니까?")){
+			alert("전송 완료");
+			location.reload();
 			$.ajax({
 					type: "POST",
 					url: "/dyAdmin/bills/sendNTS.do",
@@ -644,8 +646,6 @@ function sendNTS(){
 					async: false,
 					success : function(data){
 						
-						alert("전송 완료");
-						location.reload();
 					}, 
 					error: function(){
 						

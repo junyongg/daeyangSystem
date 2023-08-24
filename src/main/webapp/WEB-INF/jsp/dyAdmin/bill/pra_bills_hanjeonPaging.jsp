@@ -144,6 +144,8 @@
 								type="button" onclick="deleteInfo()" style="width : 100px; background-color: #E53935;">삭제</button>
 							<button class="btn btn-sm btn-primary" id="deleteButton"
 								type="button" onclick="HomeIdUpdte()" style="width : 100px; background-color: #000000;">고유번호수정</button>
+<!-- 							<button class="btn btn-sm btn-primary" id="deleteButton" -->
+<!-- 								type="button" onclick="testasync()" style="width : 100px; background-color: #000000;">테스트</button> -->
 							</div>
 							</div>
 
@@ -234,18 +236,20 @@ function HomeIdUpdte() {
 function AllSendNTS(){
 	
 	var subkey = $("#dbl_sub_keyno").val();
-	
-	$.ajax({
-		url: '/dyAdmin/bills/allSendNTS.do',
-		type: 'POST',
-		data: {
-			"subkey" : subkey
-		},
-		async: false,
-		success : function(data){
-			alert(data);
-			location.reload();
-		}
-	});	
+	if(confirm("전체 전송하시겠습니까?")){	
+		alert("전송 완료")
+		location.reload();
+		$.ajax({
+			url: '/dyAdmin/bills/allSendNTS.do',
+			type: 'POST',
+			data: {
+				"subkey" : subkey
+			},
+			async: false,
+			success : function(data){
+				
+			}
+		});	
+	}
 }
 </script>

@@ -626,8 +626,6 @@ function detailView(keyno){
 
 function sendNTS(){
 	
-	
-		
 		var array = new Array(); 
 		$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
 		    array.push(this.value);
@@ -639,15 +637,15 @@ function sendNTS(){
 		
 		if(array.length > 0){
 			if(confirm("전송하시겠습니까?")){
+				alert("전송 완료");
+				location.reload();
 				$.ajax({
 						type: "POST",
 						url: "/dyAdmin/bills/sendNTS.do",
 						data: $('#Form').serializeArray(),
 						async: false,
 						success : function(data){
-							
-							alert("전송 완료");
-							location.reload();
+			
 						}, 
 						error: function(){
 							
@@ -808,6 +806,21 @@ function Divison(obj){
 
 function focus_p(){
 	document.getElementById("supplyprice").focus();
+}
+
+function testasync(){
+	$.ajax({
+		type: "POST",
+		url: '/dyAdmin/bills/testasync.do',
+		async: false,
+		data: $('#Form').serializeArray(),
+		success : function(data){
+			console.log(data)
+		}, 
+		error: function(){
+			
+		}
+	}); 
 }	
 
 </script>

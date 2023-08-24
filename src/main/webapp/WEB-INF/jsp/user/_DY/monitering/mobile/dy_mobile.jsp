@@ -33,6 +33,26 @@
 	                <select class="select_nor sm3 w100" id="InverterNum" name="InverterNum" value="${InverterNum }" onchange="ajaxData();" >
 	                    <c:forEach varStatus="status" begin="1" end="${ob.DPP_INVER_COUNT }">
 	                    	<c:choose>
+		                    	<c:when test="${ob.DPP_KEYNO eq '93' }">
+			                    	<c:if test="${status.index == 1}">
+			                    	<option value="인버터 1호">한빛 1호</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 2}">
+			                    	<option value="인버터 2호">한빛 2호</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 3}">
+			                    	<option value="인버터 3호">한밭 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 4}">
+			                    	<option value="인버터 4호">한밭 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 5}">
+			                    	<option value="인버터 5호">한밭 3번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 6}">
+			                    	<option value="인버터 6호">한밭 4번</option>
+			                    	</c:if>
+		                    	</c:when>
 		                    	<c:when test="${ob.DPP_KEYNO eq '95' }">
 			                    	<c:if test="${status.index == 1}">
 			                    	<option value="인버터 1호">오남매 1호 1번</option>

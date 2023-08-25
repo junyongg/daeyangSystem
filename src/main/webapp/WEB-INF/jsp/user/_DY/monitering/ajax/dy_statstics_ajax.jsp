@@ -7,13 +7,15 @@ table{
 	width: auto;
 }
 
-.pop_base_calculation {
-	width: auto;
-	overflow-x: auto;
+.pop_base_calculation {	
 	white-space: nowrap;
+	top: 50%; left: calc(50% - 231px);
 }
-
-
+@media screen and (max-width: 500px) {
+	.pop_base_calculation {left:5%;width:90%;height: 85%;}
+	.pop_base_calculation.header { top: 43% !important;}
+	.pop_base_calculation.body { top: 53% !important;}
+}
 
 </style>
 
@@ -318,10 +320,12 @@ table{
 
 
 	<section class="base_pop_wrapper">
-            <div class="pop_base_calculation" style="top: 50%; width: 690px; left: calc(44% - 231px);" >
+			<div class="pop_base_calculation header" style="top: 6%;">
+				<button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')" style="position: sticky; top: 0px;"><i class="xi-close" style="margin: 10px;"></i></button>
+	            <button type="button" class="a_box_line" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;position:sticky;top: 0px" onclick="Detail_Excel();">엑셀</button>
+			</div>
+            <div class="pop_base_calculation body" style="top: 51%;height: 85%;padding-top: 0px;">
                 
-                <button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')" style="position: sticky; top: 0px;float:right;"><i class="xi-close" style="margin: 10px;"></i></button>
-                <button type="button" class="a_box_line" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Excel();">엑셀</button>
                 <div class="form_box">
 				       <table class="tbl_normal fixed" style="width: auto;">
 				           <colgroup>
@@ -481,10 +485,14 @@ table{
         </section>
         
 	<section class="base_pop_wrapper2">
-            <div class="pop_base_calculation" style="top: 50%; width: 900px; left: calc(38% - 231px);" >
-                
-                <button type="button" class="btn_close fixed" title="닫기"  onclick="$('.base_pop_wrapper2').removeClass('on')" style="position: sticky; top: 0px;float:right;"><i class="xi-close" style="margin: 10px;"></i></button>
-                <button type="button" class="a_box_line fixed" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Error_Excel();">엑셀</button>
+	
+			<div class="pop_base_calculation header" style="top: 6%;">
+				<button type="button" class="btn_close fixed" title="닫기"  onclick="$('.base_pop_wrapper2').removeClass('on')"><i class="xi-close" style="margin: 10px;"></i></button>
+	            <button type="button" class="a_box_line fixed" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Error_Excel();">엑셀</button>
+			</div>
+            <div class="pop_base_calculation body" style="top: 51%;height: 85%;padding-top: 0px;">	
+            <!-- <div class="pop_base_calculation" style="top: 50%; width: 900px; left: calc(38% - 231px);" > -->
+
                 <div class="form_box">
 				       <table class="tbl_normal fixed" style="width: auto;">
 				           <colgroup>

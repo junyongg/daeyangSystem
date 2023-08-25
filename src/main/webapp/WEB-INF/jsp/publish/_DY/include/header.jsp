@@ -42,5 +42,10 @@
  <section class="mobile_title">
      <button type="button" class="btn_moArr prev" onclick="location.href='/dy/mobile.do'" title="이전"></button>
      <button type="button" class="btn_moArr next" onclick="location.href='/dy/moniter/safe.do'" title="다음"></button>
+     <c:if test="${userInfo.isAdmin eq 'Y' }">
+     	<button type="button" class="btn_moArr next" onclick="location.href='/dy/moniter/stastics.do'" title="다음"></button>
+     </c:if>
+     
+     
    <p class="tit">${currentMenu.MN_NAME}</p>
   </section>

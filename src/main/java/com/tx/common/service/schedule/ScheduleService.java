@@ -106,7 +106,7 @@ public class ScheduleService {
 
 		    	
 		    	//전송할 회원 리스트 - 관리자만
-		    	String [] ls = {"010-7358-6606"};
+		    	String [] ls = {"010-9860-1540"};
 				
 				for(String ll : ls) {
 					
@@ -152,7 +152,7 @@ public class ScheduleService {
 				
 				for(UserDTO ll : ls) {
 					ll.decode();
-		    		String phone = "010-7358-6606";
+		    		String phone = "010-9860-1540";
 		    		String url = "http://dymonitering.co.kr/";
 		    		//받은 토큰으로 알림톡 전송		
 		    		requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj,Contents,phone,url);

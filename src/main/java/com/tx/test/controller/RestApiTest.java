@@ -910,7 +910,7 @@ public class RestApiTest {
 		
 		mv.addObject("paginationInfo", pageInfo);
 		
-		List<HashMap<String,Object>> resultList = Component.getList("bills.Log_getList2", map); 
+		List<HashMap<String,Object>> resultList = Component.getList("bills.Log_getList2", map);
 		mv.addObject("resultList2", resultList);
 		mv.addObject("search", search);
 		return mv;

@@ -1109,7 +1109,7 @@ public class safeAdminController {
 		String msg = "";
 
 		Component.createData("sfa.sapaper2Insert", bill);
-		System.out.println(bill);
+//		System.out.println(bill);
 		
 //		msg = Component.getData("sfa.paperpreview", bill);
 		

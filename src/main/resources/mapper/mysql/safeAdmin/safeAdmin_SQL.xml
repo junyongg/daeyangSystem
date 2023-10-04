@@ -552,30 +552,22 @@ where UI_KEYNO = 'UI_HMWNH'
     
     <!-- 가장 최근 작성 양식 조회 (이전양식조회 버튼)-->
      <select id="SafeRecentPre" parameterType="hashmap" resultType="hashmap">
-	   select *
-		from(
-			SELECT *
-			from dy_sa2_paper
-			where sa2_UI_KEYNO = #{UI_KEYNO}
-			)a
-		where sa2_title = 
-			(
-			select SU_SA_SULBI 
-			from dy_sa_user
-			where SU_KEYNO = #{SU_KEYNO}
-			)
+		SELECT *
+		from dy_sa2_paper
+		where sa2_UI_KEYNO = #{UI_KEYNO}
+		and sa2_su_keyno = #{SU_KEYNO}
 		order by Conn_date desc
 		limit 1
     </select>
     
      <select id="inverterNumSelect" parameterType="hashmap" resultType="String">
-		select SU_SA_INVERTERNUM
-		from dy_sa_user
-		where SU_SA_SULBI = 
-			(select sa2_title 
+	select SU_SA_INVERTERNUM
+	from dy_sa_user
+	where SU_KEYNO = 
+		(select sa2_su_keyno
 			from dy_sa2_paper
 			where sa2_keyno = #{keyno})
-		and SU_UI_KEYNO = #{SU_UI_KEYNO}
+	and SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
       <select id="inverterNum_Recent" parameterType="String" resultType="String">
@@ -703,6 +695,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			order by SU_KEYNO
 		) B
 		where (@ROWNUM:=0)=0
+		and SU_UI_KEYNO = #{SU_UI_KEYNO}
 	)AA
 	where 1=1
 	<if test="searchList != null">
@@ -715,10 +708,10 @@ where UI_KEYNO = 'UI_HMWNH'
  		AND		SU_SA_SULBI			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
 	 			<when test='item.searchIndex.equals("3")'>
- 		AND		SU_SA_PHONE			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+ 		AND		SU_SA_AD			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
 	 			<when test='item.searchIndex.equals("4")'>
- 		AND		SU_SA_KAKAOYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+ 		AND		SU_SA_KAKAOYN		LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 	 			</when>
 	 			<when test='item.searchIndex.equals("5")'>
  		AND		SU_SA_MSGYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
@@ -727,7 +720,7 @@ where UI_KEYNO = 'UI_HMWNH'
  		AND (
  				COUNT						LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				SU_SA_SULBI 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
- 				SU_SA_PHONE					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_AD					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				SU_SA_KAKAOYN				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
  				SU_SA_MSGYN					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
  		)							
@@ -740,13 +733,11 @@ where UI_KEYNO = 'UI_HMWNH'
 	<select id="safeUser_getListCnt" resultType="int" parameterType="hashmap">
 		SELECT	COUNT(*)
 		<include  refid="safeUser_getListBody"/>
-		and SU_UI_KEYNO = #{SU_UI_KEYNO}
     </select>
     
     <select id="safeUser_getList" resultMap="ResultMap.rownumHashMap" parameterType="hashmap">
     	SELECT	* 
 		<include  refid="safeUser_getListBody"/>
-		and SU_UI_KEYNO = #{SU_UI_KEYNO}
 		<choose>
 			<when test="orderBy == 1">
 	 		ORDER BY	COUNT ${sortDirect}
@@ -755,7 +746,7 @@ where UI_KEYNO = 'UI_HMWNH'
 	 		ORDER BY	SU_SA_SULBI ${sortDirect}
 	 		</when>
 	 		<when test="orderBy == 3">
-	 		ORDER BY	SU_SA_PHONE ${sortDirect}
+	 		ORDER BY	SU_SA_AD ${sortDirect}
 	 		</when>
 	 		<when test="orderBy == 4">
 	 		ORDER BY	SU_SA_KAKAOYN ${sortDirect}
@@ -809,6 +800,8 @@ where UI_KEYNO = 'UI_HMWNH'
 		and b.SU_KEYNO = #{su_keyno}
 	</select>
 	
+	
+<!-- 	사용하지 않는 sql -->
 	<select id="preview2" parameterType="DateDTO" resultType="hashmap">
 		SELECT *
 		FROM dy_sa2_paper a
@@ -819,6 +812,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		and b.SU_KEYNO = #{su_keyno}
 	</select>
 	
+	<!-- 	사용하지 않는 sql -->
 	<!-- 이전정보 placeholder조회 sql(keyno, 일자 뽑기) -->
 	<select id="previewData" parameterType="DateDTO" resultType="hashmap">
 		SELECT sa2_keyno, date_format(a.Conn_date, '%d일') datenum
@@ -890,7 +884,9 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_preannacc,
 				sa2_AC_Change,
 				sa2_peridev,
-				sa2_UI_KEYNO
+				sa2_UI_KEYNO,
+				sa2_LR,
+				sa2_su_keyno
 				
 			)VALUES(
 				#{sa2_title},
@@ -948,7 +944,9 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa2_preannacc},
 				#{AC_sangsun},
 				#{sa2_peridev},
-				#{SA_UI_KEYNO}
+				#{SA_UI_KEYNO},
+				#{sa2_LR},
+				#{SU_KEYNO}
 			)
 		</insert>
 		
@@ -976,7 +974,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				SELECT sa2_keyno, date_format(a.Conn_date, '%d일') datenum
 				FROM dy_sa2_paper a 
 				join dy_sa_user b
-				on a.sa2_title = b.SU_SA_SULBI
+				on a.sa2_su_keyno = b.SU_KEYNO
 				and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 				where date_format(a.Conn_date, '%Y-%m') =  date_format(now() , '%Y-%m')
 				and b.SU_KEYNO = #{su_keyno}
@@ -988,7 +986,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			SELECT ifnull(date_format(max(b.Conn_date), '%m/%d'),'') predate
 			FROM dy_sa_user a
 			join dy_sa2_paper b
-			on a.SU_SA_SULBI  = b.sa2_title
+			on a.SU_KEYNO  = b.sa2_su_keyno
 			and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 			where SU_KEYNO = #{su_keyno}
 		</select>
@@ -1013,13 +1011,13 @@ where UI_KEYNO = 'UI_HMWNH'
 			select *
 			FROM dy_sa2_paper a
 			join dy_sa_user b
-			on a.sa2_title = b.SU_SA_SULBI
+			on a.sa2_su_keyno = b.SU_KEYNO
 			and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 			where date_format(a.Conn_date, '%m/%d/%h/%i') =
 			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
 				FROM dy_sa_user a
 				join dy_sa2_paper b
-				on a.SU_SA_SULBI  = b.sa2_title
+				on a.SU_KEYNO  = b.sa2_su_keyno
 				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 				where SU_KEYNO = #{su_keyno}
 			)
@@ -1030,13 +1028,13 @@ where UI_KEYNO = 'UI_HMWNH'
 			select *
 			FROM dy_sa2_paper a
 			join dy_sa_user b
-			on a.sa2_title = b.SU_SA_SULBI
+			on a.sa2_su_keyno = b.SU_KEYNO
 			and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
 			where date_format(a.Conn_date, '%m/%d/%h/%i') =
 			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
 				FROM dy_sa_user a
 				join dy_sa2_paper b
-				on a.SU_SA_SULBI  = b.sa2_title
+				on a.SU_KEYNO  = b.sa2_su_keyno
 				where sa2_keyno = #{selectgroup}
 			)
 		</select>
@@ -1046,16 +1044,16 @@ where UI_KEYNO = 'UI_HMWNH'
 			select max(a.sa2_meter1KWh) prewatt
 			FROM dy_sa2_paper a
 			join dy_sa_user b
-			on a.sa2_title = b.SU_SA_SULBI
+			on a.sa2_su_keyno = b.SU_KEYNO
 			where date_format(a.Conn_date, '%Y-%m') =
 				(select date_format(max(now()-interval 1 month),'%Y-%m')
 				FROM dy_sa_user a
 				join dy_sa2_paper b
-				on a.SU_SA_SULBI  = b.sa2_title
+				on a.SU_KEYNO  = b.sa2_su_keyno
 				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 				where a.SU_KEYNO = #{su_keyno}
 				)
-			and b.SU_KEYNO = #{su_keyno}
+			and a.sa2_su_keyno = #{su_keyno}
 		</select>
 
 		

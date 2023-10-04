@@ -4,9 +4,9 @@
 <div id="content">
 	<section id="widget-grid">
 		<div class="row">
-				<form:form id= "Form1" action="">
+				<form:form id="Form"  action="" method="post">
 				<input type="hidden" name="chkvalue" id="chkvalue">
-				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="menu_1">
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="menu_1">
 			<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0"
 				data-widget-editbutton="false">
 				<header>
@@ -33,7 +33,8 @@
 						</div>
 					</div> -->
 					<div class="table-responsive">
-						<jsp:include page="/WEB-INF/jsp/user/_SFA/include/search/pra_search_header_paging.jsp" flush="true">
+						<%-- <jsp:include page="/WEB-INF/jsp/user/_SFA/include/search/pra_search_header_paging.jsp" flush="true"> --%>
+						<jsp:include page="/WEB-INF/jsp/dyAdmin/include/search/pra_search_header_paging.jsp" flush="true">
 							<jsp:param value="/sfa/sfaAdmin/USerpagingAjax.do" name="pagingDataUrl" />
 						</jsp:include>
 						<fieldset id="tableWrap">

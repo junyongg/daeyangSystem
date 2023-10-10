@@ -117,6 +117,7 @@ public class AuthenticationSessionServiceImpl extends EgovAbstractServiceImpl im
     	
     	if("/user".equals(URL)) {
 			String tiles = (String) request.getSession().getAttribute("currentTiles");				
+			if(tiles == null) tiles = "dy";
 			URL = "/" + tiles;
 		}
     	
@@ -144,7 +145,7 @@ public class AuthenticationSessionServiceImpl extends EgovAbstractServiceImpl im
     	log.setAH_DESC("로그인");
     	log.setAH_IP(ip);
     	log.setAH_SESSION(request.getSession().getId());
-    	Component.createData("Log.AH_creatData", log);
+    	//Component.createData("Log.AH_creatData", log);
 	}
 
 

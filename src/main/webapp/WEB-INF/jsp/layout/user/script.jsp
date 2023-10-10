@@ -29,6 +29,7 @@
 
 <script type="text/javascript" src="/resources/api/bxslider/jquery.bxslider.js"></script>
 <script type="text/javascript" src="/resources/common/js/common/swiper.js"></script>
+<script type="text/javascript" src="/resources/publish/_DY/js/echarts.min.js"></script>
 
 <!-- JS적용 -->
 <c:forEach items="${ResourcesList }" var="jsCommon">

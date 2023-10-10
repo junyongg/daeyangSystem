@@ -128,10 +128,17 @@ $('.go-next').on('click', function() { thisMonth = new Date(currentYear+1, curre
 renderCalender(thisMonth); });
 
 function sendstatus() {
+	
+	 var url = "/billsResultTest.do"; //한전 x 
+	 if($("#AH_HOMEDIV_C").val() == "1"){
+		 alert("한전")
+		 url = "/billsResultTest3.do"
+	 }
+	
 	 $.ajax({
 			type: "POST",
-			url: "/billsResultTest.do",
-			async: false,
+			url: url,
+		    async: false,
 			data: $('#Form').serializeArray(),
 			success : function(data){
 				location.reload();

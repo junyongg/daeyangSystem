@@ -15,7 +15,8 @@
 
             <p class="log"><input type="text" class="log_txt id" placeholder="ID(아이디)" name="UI_ID" id="UI_IDs" ></p>
             <p class="log"><input type="password" class="log_txt pwd" placeholder="PW(비밀번호)" name="UI_PASSWORD" id="UI_PASSWORD" autocomplete="off"></p>
-            <input type="checkbox" id="idSave" /> <label for="idSave">아이디저장</label>
+            <input type="checkbox" id="idSave" /> <label for="idSave" style="margin-right: 25px;">아이디저장</label>
+            <input type="checkbox" id="autoLogin" name="_spring_security_remember_me"> <label for="autoLogin">자동로그인</label>
             <button type="submit" class="btn_login" id="login_button" onclick="validateLoginForm(); return false;" >로그인</button>
     </section>
 </div>  

@@ -110,6 +110,8 @@ dependencies {
 	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
 	// https://mvnrepository.com/artifact/com.itextpdf/itext7-core
 	
+	//링크허브 API
+	implementation group: 'kr.co.linkhub', name: 'popbill-sdk', version: '1.61.0'
 	
 	// MultipartEntityBuilder (문자 api연동시 필요한 선언)
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime

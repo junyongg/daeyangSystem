@@ -26,6 +26,7 @@ import com.tx.common.service.AsyncService.AsyncService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.reqapi.requestAPIservice;
+import com.tx.common.service.tax.taxService;
 import com.tx.test.controller.AsyncConfig;
 import com.tx.test.dto.billDTO;
 
@@ -37,7 +38,7 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 	@Autowired ComponentService Component;
 	@Autowired CommonService CommonService;
 	@Autowired requestAPIservice requestAPI;
-	
+	@Autowired taxService taxService;
 	
 	public static String Api(String strUrl, String jsonMessage) { // strUrl = 전송할 restapi 서버 url , jsonMessage = 전송할 데이터
 		// json형식을 String으로 형변환
@@ -240,6 +241,7 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 				Component.updateData("bills.codemsgUpdate", bill);
 				
 				
+				
 				//카카오톡 전송 & 전송실패시 체크 풀기
 				if(code.equals("0")) {
 			    	String subkey = bill.getDbl_sub_keyno();
@@ -350,7 +352,9 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 				Component.updateData("bills.checkYN", list[i]);
 				
 				bill = Component.getData("bills.selectAllView", list[i]);
+				
 				sendApi(bill, tocken);
+				
 				String subkey = bill.getDbl_sub_keyno();
 				if(subkey.equals("1") || subkey.equals("2")) {
 					System.out.println("하나보냄");
@@ -361,6 +365,8 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 			}
 		}		
 	}
+	
+	
 	
 	@Override
 	@Async("threadPoolTaskExecutor")
@@ -378,7 +384,9 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 					Component.updateData("bills.checkYN", l);
 					bill = Component.getData("bills.selectAllView", l);
 					
-					sendApi(bill,tocken);
+					//sendApi(bill,tocken);
+					taxService.registIssue(bill);
+					
 					if(subkey.equals("1") || subkey.equals("2")) {
 						System.out.println("하나보냄");
 						Thread.sleep(60000);

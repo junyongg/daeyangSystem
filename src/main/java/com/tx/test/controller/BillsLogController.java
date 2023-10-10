@@ -29,9 +29,6 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 
- * @FileName: AdminLogController.java
- * @Date    : 2017. 12. 15. 
- * @Author  : 이재령	
  * @Version : 1.0
  */
 @Controller

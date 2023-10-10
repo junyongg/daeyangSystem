@@ -119,7 +119,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		URL = "/"+URL.split("/")[1];
 		
 		if("/user".equals(URL)) {
-			String tiles = (String) request.getSession().getAttribute("currentTiles");				
+			String tiles = (String) request.getSession().getAttribute("currentTiles");
+			if(tiles == null) tiles = "dy";
 			URL = "/" + tiles;
 		}
 		

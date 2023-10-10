@@ -46,10 +46,10 @@ import com.tx.common.service.AsyncService.AsyncService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import freemarker.core.ReturnInstruction.Return;
 
 import com.tx.test.RestApiSample_getpkey;
 import com.tx.test.dto.billDTO;
+import com.tx.common.service.tax.taxService;
 
 
 @Controller
@@ -70,7 +70,7 @@ public class RestApiTest {
 	
 	@Autowired AsyncService AsyncService;
 
-	
+	@Autowired taxService taxService;
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -826,7 +826,6 @@ public class RestApiTest {
 		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
 		tocken = URLEncoder.encode(tocken, "UTF-8");
 		
-		
 		AsyncService.sendNTS(bill, dbl_keyno, tocken);	
 	}
 	
@@ -1104,6 +1103,15 @@ public class RestApiTest {
 		}
 		return msg2;
 	}
+	
+	//전송결과 확인
+		@RequestMapping("/billsResultTest3.do")
+		@ResponseBody
+		public void billsResultTest2(HttpServletRequest req) throws Exception {
+			
+			taxService.result();
+			
+		}
 	
 	
 	@RequestMapping("/dyAdmin/bills/HomeIdUpdate.do")

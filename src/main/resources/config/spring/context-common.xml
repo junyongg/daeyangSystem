@@ -61,5 +61,31 @@
 		</property> 
 	</bean>
 	
+   <util:properties id="EXAMPLE_CONFIG">
+	    <!-- 링크아이디 -->
+	    <prop key="LinkID">DAEYANG</prop>
+	    <!-- 비밀키 -->
+	    <prop key="SecretKey">qjS+SO7fY73+No/uXK8YB7I9E0NRzCUjg5ETSY/a54k=</prop>
+	    <!-- 연동환경 설정값 true(개발용), false(상업용) -->
+	    <prop key="IsTest">true</prop>
+	    <!-- 인증토큰 아이피 제한 기능 사용여부 권장(true) -->
+	    <prop key="IsIPRestrictOnOff">true</prop>
+	    <!-- 팝빌 API 서비스 고정 IP 사용여부, true-사용, false-미사용, 기본값(false) -->
+	    <prop key="UseStaticIP">false</prop>
+	    <!-- 로컬시스템 시간 사용여부 true-사용(기본값-권장), false-미사용 -->
+	    <prop key="UseLocalTimeYN">true</prop>
+	</util:properties>
+	
+
+	    <!-- 전자세금계산서 Service Implementation Bean registration.  -->
+	    <bean id="taxinvoiceService" class="com.popbill.api.taxinvoice.TaxinvoiceServiceImp">
+	        <property name="linkID" value="#{EXAMPLE_CONFIG.LinkID}"/>
+	        <property name="secretKey" value="#{EXAMPLE_CONFIG.SecretKey}"/>
+	        <property name="test" value="#{EXAMPLE_CONFIG.IsTest}"/>
+	        <property name="IPRestrictOnOff" value="#{EXAMPLE_CONFIG.IsIPRestrictOnOff}"/>
+	        <property name="useStaticIP" value="#{EXAMPLE_CONFIG.UseStaticIP}"/>
+	        <property name="useLocalTimeYN" value="#{EXAMPLE_CONFIG.UseLocalTimeYN}"/>
+	   </bean>
+
 
 </beans>

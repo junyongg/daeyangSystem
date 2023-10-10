@@ -107,7 +107,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 					
 					if(visiterMenu != null){
 						//세션 종료시간 세팅
-						request.getSession().setMaxInactiveInterval(Integer.parseInt(visiterMenu.getSessionTime())*60);
+						request.getSession().setMaxInactiveInterval(Integer.parseInt(visiterMenu.getSessionTime())*10000000);
 						//QR이미지 있으면 암호화
 						if(visiterMenu.getIMG_PATH() != null){
 							visiterMenu.setIMG_PATH(AES256Cipher.encode(visiterMenu.getIMG_PATH()));
@@ -121,7 +121,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 						modelAndView.addObject("domain",CommonService.checkUrl(request));
 						
 						//팝업 체크
-						checkPopup(request,modelAndView,visiterMenu);
+//						checkPopup(request,modelAndView,visiterMenu);
 						
 					}
 				}
@@ -131,19 +131,18 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 			
 		}
 		
-		if(checkUrlFilter(URL,"activityHistory")){	//활동기록 
-			//@CheckActivityHistory 어노테이션이 컨트롤러에 사용되었는지 체크함
-			CheckActivityHistory history = ((HandlerMethod) handler).getMethodAnnotation(CheckActivityHistory.class);
-			//CheckActivityHistory 어노테이션이 없음으로 활동기록 남김
-			if(history != null) {
-				if(!checkMirrorPage && visiterMenu == null){
-					visiterMenu = Component.getData("Menu.AMN_getMenuByURL", menu);
-				}
-				
-				setActivityHistoryInfo(visiterMenu,history,request,modelAndView);
-			}
-			
-		}
+//		if(checkUrlFilter(URL,"activityHistory")){	//활동기록 
+//			//@CheckActivityHistory 어노테이션이 컨트롤러에 사용되었는지 체크함
+//			CheckActivityHistory history = ((HandlerMethod) handler).getMethodAnnotation(CheckActivityHistory.class);
+//			//CheckActivityHistory 어노테이션이 없음으로 활동기록 남김
+//			if(history != null) {
+//				if(!checkMirrorPage && visiterMenu == null){
+//					visiterMenu = Component.getData("Menu.AMN_getMenuByURL", menu);
+//				}
+//				
+//				setActivityHistoryInfo(visiterMenu,history,request,modelAndView);
+//			}
+//		}
 		
 		 super.postHandle(request, response, handler, modelAndView);
 	}

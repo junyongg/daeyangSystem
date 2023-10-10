@@ -395,7 +395,7 @@ input.a_box_line{width: 120px;}
 	.statis_cate_box > dl > dt{font-size: 14px; width: 100%; margin-bottom: 5px;}
 	.statis_cate_box > dl > dt::before{width: 4px; height: 4px; top: 9px;}
 	.statis_cate_box > dl > dd{font-size: 14px;}
-	.a_box_line{min-width: auto; min-height: 30px; font-size: 13px; padding: 5px 10px; margin: 2px;}
+	.a_box_line{min-width: 43px; min-height: 30px; font-size: 13px; padding: 5px 10px; margin: 2px;}
 	input.a_box_line{width: 100px;}
 	.search_a{min-height: 30px; font-size: 13px; padding: 7px 10px 5px 22px; background-size: 12px; background-position: left 7px center;}
 }/* 인버터 텍스트 */
@@ -510,10 +510,11 @@ input.a_box_line{width: 120px;}
 .pop_base_calculation .calculation_result .list > li .result{width: 35%; text-align: right;}
 .pop_base_calculation .calculation_result .list > li .result .blue{font-size: 15px; margin-bottom: 5px; font-weight: 500; color: #2d62b0;}
 .pop_base_calculation .calculation_result .list > li .result .re{font-size: 16px; font-weight: 500; color: #222; word-break: break-all;}
+
 @media screen and (max-width: 500px) {
 	/* 수익계산 팝업 */
 	.pop_base_calculation{width: 90%; left: 5%; max-height: 90%; padding: 15px 20px;}
-	.pop_base_calculation > .btn_close{width: 30px; height: 30px; font-size: 15px; margin-bottom: 10px;}
+	.pop_base_calculation > .btn_close{width: 34px; height: 34px; font-size: 15px; margin-bottom: 10px;float: none !important;}
 	.pop_base_calculation .warning_box{padding: 15px; font-size: 13px; margin-bottom: 10px;}
 	.pop_base_calculation .warning_box br{display: none;}
 	.pop_base_calculation .form_box > dl{padding: 7px 0;}

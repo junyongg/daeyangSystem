@@ -1,12 +1,19 @@
 <%@ page language="java" contentType="text/javascript ; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/> 
+
+
 
 
 <form:form action="/dy/moniter/general.do" method="POST" id="Form">
 
 <input type="hidden" name="keyno" value="${DPP_KEYNO }" id="keyno">
+
+
 <!-- COMTAINER -->
 
 
@@ -821,12 +828,15 @@
 </div>
 <!-- COMTAINER END -->
 </form:form>
+
+
 <script src="/resources/smartadmin/js/plugin/select2/select2.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
-<script>
+<script type="text/javascript">
+
 $(function(){
 	if ("${DPP_KEYNO}" != '63'){
 		pf_setMap();	
@@ -861,34 +871,56 @@ function ajaxData(){
         },
         async: false,  
         success: function(result) {
+        	
         	//인버터 이름 추가
         	$("#inverterName").text("<"+result.name+">")
         	
         	var volum = "${ob.DPP_VOLUM}";
         	var count = "${ob.DPP_INVER_COUNT}";
+
+        	var ALL_VOLUM = volum/count;
         	
         	
-        	console.log(result.invertData);
+        	//개별용량 추가
+        	var other_count = "${ob.DPP_OTHER_VOLUM}";
         	
+        	console.log(other_count);
+        	
+        	var volum_list = []
+        	if(other_count != "") {
+        	
+        		volum_list = other_count.split(",")	
+        		
+        		//인버터 호에서 숫자만 추출
+	        	var inverternumberstr = $("#InverterNum").val();
+				var regex = /[^0-9]/g;
+				var resulttemp = inverternumberstr.replace(regex, "");
+				var numbering = parseInt(resulttemp);
+        		
+        		ALL_VOLUM = volum_list[numbering-1]
+        	}
+        	
+        
         	
         	if(result.invertData == null){
+        		
         		$("#AllPower").text("0.0kW / 0.00h")
-//             	$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
         		$("#Active").text("0.0kW")
-//             	$("#Active_g").attr("style","background-color: #f13a3a; transform: rotate(0deg);")
-        		chartOption(0.0,0.0,volum/count);
+
+        		chartOption(0.0,0.0,ALL_VOLUM);
         	}else{
-        		var hour = result.invertData.Daily_Generation / (volum/count);
+        	
+        		var hour = result.invertData.Daily_Generation / (ALL_VOLUM);
         		$("#AllPower").text(result.invertData.Daily_Generation+"kW / " + hour.toFixed(2) +"h")
             	$("#Active").text(result.invertData.Active_Power+"kW")
         		
-            	var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*100
+            	var aDeg = (result.invertData.Daily_Generation/((ALL_VOLUM)*8))*100
              	/*$("#AllPower_g").attr("style","background-color: #f13a3a; transform: rotate("+aDeg+"deg);")
             	
-            	var bDeg = (result.invertData.Active_Power/(volum/count))*100
+            	var bDeg = (result.invertData.Active_Power/(ALL_VOLUM))*100
              	$("#Active_g").attr("style","background-color: #ff7d53; transform: rotate("+bDeg+"deg);") */
 
-             	chartOption(aDeg,result.invertData.Active_Power,volum/count);
+             	chartOption(aDeg,result.invertData.Active_Power,ALL_VOLUM);
         	}
         },
         error: function(){

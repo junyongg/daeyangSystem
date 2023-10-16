@@ -193,13 +193,19 @@ form .error {color:red}
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 인버터 갯수</label>
 														<div class="col-md-6">
-															<input type="number" class="form-control DPP_INVER_COUNT" id="DPP_INVER_COUNT" name="DPP_INVER_COUNT"  value="1" onchange="SerialNumber(this.value)" min="1" max="10">
+															<input type="number" class="form-control DPP_INVER_COUNT" id="DPP_INVER_COUNT" name="DPP_INVER_COUNT"  value="1" onchange="ALL(this.value)" min="1" max="10">
 														</div>
 													</div>
 													
 													<div class="form-group">
 														<label class="col-md-3 control-label"><span class="nessSpan">*</span> S/N</label>
 														<div class="col-md-6" id="sn_insert">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<label class="col-md-3 control-label"><span class="nessSpan">*</span> 개별 용량</label>
+														<div class="col-md-6" id="other_volum">
 														</div>
 													</div>
 													
@@ -235,6 +241,7 @@ var map;
 $(document).ready(function() {
 	pf_setMap('${resultData.DDP_X_LOCATION}','${resultData.DDP_Y_LOCATION}');
 	SerialNumber("1");
+	VolumNumber("1");
 });
 
 function validation(){
@@ -394,7 +401,8 @@ function detailData(keyno){
 		},
 		success : function(data){
 			
-			SN_Detail(data.DPP_INVER_COUNT,data.DPP_SN)
+			SN_Detail(data.DPP_INVER_COUNT,data.DPP_SN);
+			Volum_Detail(data.DPP_INVER_COUNT,data.DPP_OTHER_VOLUM);
 			
 			$("#DPP_KEYNO").val(data.DPP_KEYNO)
 			$("#DPP_NAME").val(data.DPP_NAME)
@@ -433,8 +441,17 @@ function cancle(){
 	$("#DPP_INVER").val('')
 	$("#DPP_INVER_COUNT").val('')
 	$("input[name='DPP_SN']").val('')
+	$("input[name='DPP_OTHER_VOLUM']").val('')
 }
 
+
+// 인버터 개수 넣을때 s/n , 개별용량 추가
+function ALL(number,snlist){
+	SerialNumber(number,snlist);
+	VolumNumber(number,snlist);
+}
+
+//s/n 기입부분
 function SerialNumber(number,snlist){
 	var num = Number(number)
 	input = ''
@@ -451,12 +468,41 @@ function SerialNumber(number,snlist){
 	$("#sn_insert").html(input)
 }
 
+
+//개별 s/n 불러오기
 function SN_Detail(num,list){
 	var snlist = []
 	if(list != null){
     	snlist = list.split(",")	
     }
     SerialNumber(num,snlist)
+}
+
+//개별용량 추가 기입
+function VolumNumber(number,snlist){
+	var num = Number(number)
+	input = ''
+	if(num > 0){
+		for(var i=1;i<=num;i++){
+			if(snlist !=null ){
+				input += '<input type="text" class="form-control other_volum" name="DPP_OTHER_VOLUM"  value="'+snlist[i-1]+'" placeholder="'+i+'호" style="margin-bottom: 5px;">'
+			}else{
+				input += '<input type="text" class="form-control other_volum" name="DPP_OTHER_VOLUM"  value="" placeholder="'+i+'호" style="margin-bottom: 5px;">'
+			}
+		}	
+	}
+	
+	$("#other_volum").html(input)
+}
+
+
+//개별 용량 불러오기
+function Volum_Detail(num,list){
+	var snlist = []
+	if(list != null){
+  	snlist = list.split(",")	
+  }
+	VolumNumber(num,snlist)
 }
 
 </script>

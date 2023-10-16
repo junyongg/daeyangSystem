@@ -91,6 +91,7 @@
 				, DPP_AREA
 				, DPP_LOCATION
 				, DPP_SN
+				, DPP_OTHER_VOLUM
 		)
 		VALUES
 		(
@@ -106,6 +107,7 @@
 				, #{DPP_AREA}
 				, #{DPP_LOCATION}
 				, #{DPP_SN}
+				, #{DPP_OTHER_VOLUM}
 		)
     </insert>
     
@@ -125,6 +127,7 @@
 			, DPP_AREA			= #{DPP_AREA}
 			, DPP_LOCATION		= #{DPP_LOCATION}
 			, DPP_SN			= #{DPP_SN}			
+			, DPP_OTHER_VOLUM	= #{DPP_OTHER_VOLUM}
 		WHERE DPP_KEYNO 		= #{DPP_KEYNO}
     </update>
 

@@ -26,6 +26,7 @@ public class PowerDTO implements Serializable  {
 					DPP_AREA,
 					DPP_LOCATION,
 					DPP_SN,
-					DPP_SN_NUM
+					DPP_SN_NUM,
+					DPP_OTHER_VOLUM
 					;
 }

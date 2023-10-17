@@ -461,6 +461,26 @@ function ajaxData(){
         	var volum = "${ob.DPP_VOLUM}";
         	var count = "${ob.DPP_INVER_COUNT}";
         	
+        	var ALL_VOLUM = volum/count;
+        	
+        	//개별용량 추가
+        	var other_count = "${ob.DPP_OTHER_VOLUM}";
+        	
+        	var volum_list = []
+        	if(other_count != "") {
+        	
+        		volum_list = other_count.split(",")	
+        		
+        		//인버터 호에서 숫자만 추출
+	        	var inverternumberstr = $("#InverterNum").val();
+				var regex = /[^0-9]/g;
+				var resulttemp = inverternumberstr.replace(regex, "");
+				var numbering = parseInt(resulttemp);
+        		
+        		ALL_VOLUM = volum_list[numbering-1]
+        	}
+        	
+        	
         	if(result.invertData == null){
         		$("#AllPower").text("0.0KW / 0.00h")
         		$("#Active").text("0.0kW")
@@ -469,10 +489,17 @@ function ajaxData(){
         		var hour = result.invertData.Daily_Generation / (volum/count);
         		$("#AllPower").text(result.invertData.Daily_Generation+"kWh / " + hour.toFixed(2) +"h")
             	$("#Active").text(result.invertData.Active_Power+"kW")
-        		
-            	var aDeg = (result.invertData.Daily_Generation/((volum/count)*8))*100
 
-             	chartOption(aDeg,result.invertData.Active_Power,volum/count);
+        		$("#Active").text("0.0KW")
+        		chartOption(0.0,0.0,ALL_VOLUM);
+        	}else{
+        		var hour = result.invertData.Daily_Generation / (ALL_VOLUM);
+        		$("#AllPower").text(result.invertData.Daily_Generation+"KW / " + hour.toFixed(2) +"h")
+            	$("#Active").text(result.invertData.Active_Power+"KW")
+        		
+            	var aDeg = (result.invertData.Daily_Generation/((ALL_VOLUM)*8))*100
+
+             	chartOption(aDeg,result.invertData.Active_Power,ALL_VOLUM);
         	}
         },
         error: function(){

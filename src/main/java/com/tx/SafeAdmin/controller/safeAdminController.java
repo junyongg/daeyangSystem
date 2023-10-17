@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -117,11 +118,21 @@ public class safeAdminController {
 
 		List<HashMap<String, Object>> result = Component.getListNoParam("sfa.jspselect");
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분").format(Calendar.getInstance().getTime());
+		String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
+		String mon = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+		String day = new SimpleDateFormat("dd").format(Calendar.getInstance().getTime());
+		String time = new SimpleDateFormat("HH").format(Calendar.getInstance().getTime());
+		String dayOfWeek =  new SimpleDateFormat("E").format(Calendar.getInstance().getTime());
 		
 		
 		mv.addObject("arialist", Component.getList("sfa.AreaSelect", UI_KEYNO));
 		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("now", now);
+		mv.addObject("year", year);
+		mv.addObject("mon", mon);
+		mv.addObject("day", day);
+		mv.addObject("time", time);
+		mv.addObject("dayOfWeek", dayOfWeek);
 
 		mv.addObject("result", result);
 		mv.addObject("UI_KEYNO", UI_KEYNO);
@@ -252,6 +263,7 @@ public class safeAdminController {
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분").format(Calendar.getInstance().getTime());
 		String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		String mon = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
+	
 
 		String yearMin = "2020";
 		String yearMax = year+1;

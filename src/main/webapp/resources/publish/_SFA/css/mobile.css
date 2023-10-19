@@ -58,6 +58,12 @@
   .w-60 {
     width: 10rem;
 	}
+  .w-90 {
+ 	 width: 21rem;
+	}
+  .w-96 {
+  	width: 24rem;
+	}
   select#sa2_adminname {
     margin: 0;
     width: 90px;

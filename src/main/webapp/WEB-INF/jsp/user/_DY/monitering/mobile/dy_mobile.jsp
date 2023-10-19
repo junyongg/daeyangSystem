@@ -90,6 +90,23 @@
 			                    	<option value="인버터 2호">한결 발전소</option>
 			                    	</c:if>
 		                    	</c:when>
+		                    	<c:when test="${ob.DPP_KEYNO eq '98' }">
+			                    	<c:if test="${status.index == 1}">
+			                    	<option value="인버터 1호">아라 1호 1번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 2}">
+			                    	<option value="인버터 2호">아라 1호 2번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 3}">
+			                    	<option value="인버터 3호">아라 1호 3번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 4}">
+			                    	<option value="인버터 4호">아라 1호 4번</option>
+			                    	</c:if>
+			                    	<c:if test="${status.index == 5}">
+			                    	<option value="인버터 5호">아라 2호 1번</option>
+			                    	</c:if>
+		                    	</c:when>
 		                    	<c:otherwise>
 		                    		<option value="인버터 ${status.count }호">인버터 ${status.count }호</option>
 		                    	</c:otherwise>
@@ -107,7 +124,7 @@
                          <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
                          <div class="guage_txt" style="padding-bottom: 0px;">
                              <span>총 금일 발전량(%)</span>
-                             <p><b id="AllPower" style="font-size: 1.1em;">0.0KW / 0h</b></p>
+                             <p><b id="AllPower" style="font-size: 1.1em;">0.0KWh / 0h</b></p>
                              <p style="text-align:center; color: gray;font-size: 5px;">* 발전량은 8시간 기준 <br> 100% 입니다.</p>
                          </div>
                      </div>
@@ -466,6 +483,13 @@ function ajaxData(){
         	
         	if(result.invertData == null){
         		$("#AllPower").text("0.0KW / 0.00h")
+        		$("#Active").text("0.0kW")
+        		chartOption(0.0,0.0,volum/count);
+        	}else{
+        		var hour = result.invertData.Daily_Generation / (volum/count);
+        		$("#AllPower").text(result.invertData.Daily_Generation+"kWh / " + hour.toFixed(2) +"h")
+            	$("#Active").text(result.invertData.Active_Power+"kW")
+
         		$("#Active").text("0.0KW")
         		chartOption(0.0,0.0,ALL_VOLUM);
         	}else{

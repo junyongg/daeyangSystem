@@ -385,7 +385,7 @@
                          <div id="gauge_1" style="display: inline-block; width: 300px; height: 300px;"></div>
                          <div class="guage_txt" style="padding-bottom: 0px;">
                              <span>총 금일 발전량(%)</span>
-                             <p><b id="AllPower">0.0kW / 0h</b></p>
+                             <p><b id="AllPower">0.0kWh / 0h</b></p>
                              <p style="float: right;margin-right: 35px;color: gray;font-size: 11px;">*	발전량은 8시간 기준 100% 입니다.</p>
                          </div>
                      </div>
@@ -456,45 +456,45 @@
     	                                	<c:choose>
     	                                		<c:when test="${ob.DPP_KEYNO eq '49' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			윤서 태양광 발전소 1호 | 인버터 1호
+	    	                                			윤서 태양광 발전소 1호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			윤서 태양광 발전소 2호 | 인버터 1호
+	    	                                			윤서 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '51' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			푸른 태양광 발전소| 인버터 1호
+	    	                                			푸른 태양광 발전소| 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			하늘 태양광 발전소| 인버터 1호
+	    	                                			하늘 태양광 발전소| 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '52' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			은영 태양광 발전소 1호 | 인버터 1호
+	    	                                			은영 태양광 발전소 1호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			은영 태양광 발전소 2호 | 인버터 1호
+	    	                                			은영 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '54' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			순옥 2호 태양광 발전소| 인버터 1호
+	    	                                			순옥 2호 태양광 발전소| 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			순옥 2호 태양광 발전소| 인버터 2호
+	    	                                			순옥 2호 태양광 발전소| 인버터 2
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 2}">
-	    	                                			순옥 3호 태양광 발전소| 인버터 1호
+	    	                                			순옥 3호 태양광 발전소| 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '56' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			하랑 태양광 2호| 인버터 1호
+	    	                                			하랑 태양광 2호| 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			하랑 태양광 3호| 인버터 1호
+	    	                                			하랑 태양광 3호| 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:when test="${ob.DPP_KEYNO eq '95' }">
@@ -528,40 +528,70 @@
  		                               		</c:when>
  		                               		<c:when test="${ob.DPP_KEYNO eq '93' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			한빛 태양광 발전소 1호 | 인버터 1호
+	    	                                			한빛 태양광 발전소 1호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			한빛 태양광 발전소 2호 | 인버터 1호
+	    	                                			한빛 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 2}">
+	    	                                			한밭 태양광 발전소 | 인버터 1
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 3}">
+	    	                                			한밭 태양광 발전소 | 인버터 2
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 4}">
+	    	                                			한밭 태양광 발전소 | 인버터 3
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 5}">
+	    	                                			한밭 태양광 발전소 | 인버터 4
+	    	                                		</c:if>
+
     	                                		</c:when>
  		                               		<c:when test="${ob.DPP_KEYNO eq '96' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			하민 태양광 발전소| 인버터 1호
+	    	                                			하민 태양광 발전소| 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			한결 태양광 발전소| 인버터 1호
+	    	                                			한결 태양광 발전소| 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
  		                               		<c:when test="${ob.DPP_KEYNO eq '97' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			주원 태양광 발전소 1호 | 인버터 1호
+	    	                                			주원 태양광 발전소 1호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			주원 태양광 발전소 2호 | 인버터 1호
+	    	                                			주원 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 2}">
-	    	                                			주원 태양광 발전소 3호 | 인버터 1호
+	    	                                			주원 태양광 발전소 3호 | 인버터 1
+	    	                                		</c:if>
+    	                                		</c:when>
+ 		                               		<c:when test="${ob.DPP_KEYNO eq '98' }">
+	    	                                		<c:if test="${status.index == 0}">
+	    	                                			아라 태양광 발전소 1호 | 인버터 1
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 1}">
+	    	                                			아라 태양광 발전소 1호 | 인버터 2
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 2}">
+	    	                                			아라 태양광 발전소 1호 | 인버터 3
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 3}">
+	    	                                			아라 태양광 발전소 1호 | 인버터 4
+	    	                                		</c:if>
+	    	                                		<c:if test="${status.index == 4}">
+	    	                                			아라 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
  		                               		<c:when test="${ob.DPP_KEYNO eq '80' }">
 	    	                                		<c:if test="${status.index == 0}">
-	    	                                			종배 태양광 발전소 1호 | 인버터 1호
+	    	                                			종배 태양광 발전소 1호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 1}">
-	    	                                			종배 태양광 발전소 2호 | 인버터 1호
+	    	                                			종배 태양광 발전소 2호 | 인버터 1
 	    	                                		</c:if>
 	    	                                		<c:if test="${status.index == 2}">
-	    	                                			종배 태양광 발전소 3호 | 인버터 1호
+	    	                                			종배 태양광 발전소 3호 | 인버터 1
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:otherwise>
@@ -909,6 +939,8 @@ function ajaxData(){
 
         		chartOption(0.0,0.0,ALL_VOLUM);
         	}else{
+        		var hour = result.invertData.Daily_Generation / (volum/count);
+        		$("#AllPower").text(result.invertData.Daily_Generation+"kWh / " + hour.toFixed(2) +"h")
         	
         		var hour = result.invertData.Daily_Generation / (ALL_VOLUM);
         		$("#AllPower").text(result.invertData.Daily_Generation+"kW / " + hour.toFixed(2) +"h")

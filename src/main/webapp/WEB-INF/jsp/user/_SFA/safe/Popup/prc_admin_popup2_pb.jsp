@@ -472,6 +472,9 @@
         <input type="hidden" id="buttionType" name="buttionType" value="insert">
 		<input type="hidden" id="sa2_keyno" name="sa2_keyno" value="">
 		<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="${num}">
+		<input type="hidden" id="sa2_todaypowertype" name="sa2_todaypowertype" value="${list.sa2_todaypowertype}">
+		<input type="hidden" id="sa2_accpowertype" name="sa2_accpowertype" value="${list.sa2_accpowertype}">
+		<input type="hidden" id="sa2_periodpowertype" name="sa2_periodpowertype" value="${list.sa2_periodpowertype}">
 		<input type="hidden" id="sa_writetype" name="sa_writetype" value="2">
 		<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
 		<input type="hidden" id="imgSrc" name="imgSrc" value="">
@@ -564,6 +567,11 @@ function ClosePopup(){
 
 function inverterNumber(){
 	
+	
+	var todaypowertype = "${list.sa2_todaypowertype}";
+	var accpowertype = "${list.sa2_accpowertype}";
+	var periodpowertype = "${list.sa2_periodpowertype}";
+	
 	var num = Number($("#sa2_inverternumtype").val())
 	var LefLigt = $("#sa2_LR").val()
 	
@@ -599,24 +607,25 @@ function inverterNumber(){
 		var preannacclist = []
 		var peridevlist = []
 
-		annacclist = annacc.split(",")	
-		preannacclist = preannacc.split(",")	
-		peridevlist = peridev.split(",")	
+		annacclist = annacc ? annacc.split(",") : [0];
+		preannacclist = preannacc ? preannacc.split(",") : [0];	
+		peridevlist = peridev ? peridev.split(",") : [0];
 		
-		if(annacc != null | preannacc != null | peridev != null){
+		
+// 		if(annacc != null | preannacc != null | peridev != null){
 			
-			for(var i = 0; i <= num-1; i++ ){
-				if(annacclist[i] == "" || preannacclist[i] == "" || peridevlist[i] == ""){
-					annacclist[i] = 0
-					preannacclist[i] = 0
-					peridevlist[i] = 0
-				}else{
-					annacclist[i] =  annacclist[i]
-					preannacclist[i] =  preannacclist[i]
-					peridevlist[i] =  peridevlist[i]
-				}
-			}
-	    }
+// 			for(var i = 0; i <= num-1; i++ ){
+// 				if(annacclist[i] == "" || preannacclist[i] == "" || peridevlist[i] == ""){
+// 					annacclist[i] = 0
+// 					preannacclist[i] = 0
+// 					peridevlist[i] = 0
+// 				}else{
+// 					annacclist[i] =  annacclist[i]
+// 					preannacclist[i] =  preannacclist[i]
+// 					peridevlist[i] =  peridevlist[i]
+// 				}
+// 			}
+// 	    }
 		
 		
 		
@@ -655,7 +664,7 @@ function inverterNumber(){
        			
    			}else{
    				var conutt = count - 9
-   				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+LefLigt+count+'</td>')
+   				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'</td>')
     			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc" onkeyup="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
     			$("#inputplus7").append('<td class="tgsfa7 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+preannacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
     			$("#inputplus8").append('<td class="tgsfa8 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+peridevlist[i-1]+' name="sa2_peridev" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
@@ -679,28 +688,24 @@ function inverterNumber(){
 		var todaypowerlist = []
 		var accpowerlist = []
 		var periodpowerlist = []
-
-		nowpowerlist = nowpower.split(",")	
-		todaypowerlist = todaypower.split(",")	
-		accpowerlist = accpower.split(",")	
+		
+		nowpowerlist = nowpower.split(",");
+		todaypowerlist = todaypower.split(",");
+		accpowerlist = accpower.split(",");
 		periodpowerlist = periodpower.split(",")
 		
-		if(nowpower != null || todaypower != null || accpower != null || periodpower != null){
-			
-			for(var i = 0; i <= num-1; i++ ){
-				if(nowpowerlist[i] == "" || todaypowerlist[i] == "" || accpowerlist[i] == "" || periodpowerlist[i] == ""){
-					nowpowerlist[i] = 0		
-					todaypowerlist[i] = 0									
-					accpowerlist[i] = 0
-					periodpowerlist[i] = periodpowerlist[i]
-				}else{
-					nowpowerlist[i] =  nowpowerlist[i]		
-					todaypowerlist[i] =  todaypowerlist[i]
-					accpowerlist[i] =  accpowerlist[i]
-					periodpowerlist[i] = periodpowerlist[i]
-				}
-			}
-	    }
+		
+		function EmptyValue(value) { 
+			return value = value.map(function(item) {
+	  			return item.trim() !== "" ? item : 0;
+			});
+		}
+		
+		nowpowerlist = EmptyValue(nowpowerlist);
+		todaypowerlist = EmptyValue(todaypowerlist);
+		accpowerlist = EmptyValue(accpowerlist);
+		periodpowerlist = EmptyValue(periodpowerlist);	
+
 		
 		var conutt = count + 1
 		
@@ -712,15 +717,15 @@ function inverterNumber(){
 		if(num == "1"){
 			$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">1</td>');
 			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 <input id="sa2_nowpowertype" name="sa2_nowpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower" readonly="readonly"></td>');
-			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
-			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
-			$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
+			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="'+todaypowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
+			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="'+accpowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
+			$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="'+periodpowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
 		}else{			
 			$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">('+LefLigt+')1</td>');
 			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 <input id="sa2_nowpowertype" name="sa2_nowpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la2 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+nowpowerlist[0]+' name="sa2_nowpower" id="sa2_nowpower" readonly="readonly"></td>');
-			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
-			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
-			$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="KWh" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
+			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<input id="sa2_todaypowertype" name="sa2_todaypowertype" value="'+todaypowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+todaypowerlist[0]+' name="sa2_todaypower" id="sa2_todaypower" readonly="readonly"></td>');
+			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<input id="sa2_accpowertype" name="sa2_accpowertype" value="'+accpowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+accpowerlist[0]+' name="sa2_accpower" readonly="readonly"></td>');
+			$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<input id="sa2_periodpowertype" name="sa2_periodpowertype" value="'+periodpowertype+'" readonly="readonly" style="padding-top:0;padding-bottom:0;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+periodpowerlist[0]+' name="sa2_periodpower" readonly="readonly"></td>');
 		}
 		
 	
@@ -749,6 +754,5 @@ function inverterNumber(){
 	}
 	
 }
-
 
 </script>

@@ -212,7 +212,7 @@ public class safeAdminLogController {
 			, @RequestParam(value="listtable", required = false) String listtable
 			, @RequestParam(value="num") String num
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/user/_SFA/safe/Popup/prc_admin_popup2_pb");
+		ModelAndView mv  = new ModelAndView("/user/_SFA/safe/Popup/prc_admin_popup3_pb");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map = Component.getData("sfa.safepaperselect2_one", listtable);  //object로 보냄 getList는 배열, getData는 object 

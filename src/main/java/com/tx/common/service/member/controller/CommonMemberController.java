@@ -2,10 +2,12 @@ package com.tx.common.service.member.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -65,10 +67,12 @@ public class CommonMemberController {
 	public ModelAndView memberLogion(HttpServletRequest req, Map<String,Object> commandMap
 			, @Valid TilesDTO TilesDTO
 			,HttpSession session
+			,HttpServletResponse res
 			) throws Exception {
 		String tiles = TilesDTO.getTiles(req);
 		
-		if(tiles == null || tiles.equals("cf") ||tiles.equals("sfa")) tiles = "dy";
+		if( tiles == null || tiles.equals("cf") ||tiles.equals("sfa")) tiles = "dy";
+		
 		
 		
 		ModelAndView mv  = new ModelAndView("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
@@ -82,17 +86,18 @@ public class CommonMemberController {
 		//모바일일 경우 세션을 날리고 다시 로그인 하게 만들자
 		//모바일 부분 체크 이후 url 변경
 		String userAgent = req.getHeader("user-agent");
-		boolean mobile1 = userAgent.matches( ".*(iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
-		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung|KakaoTalk).*"); 
-
-//		if (mobile1 || mobile2) {
-
-//
-//			//session.invalidate();
-
+		boolean mobile1 = userAgent.matches( ".*(Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
+		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*"); 
+		boolean kakao = userAgent.matches( ".*(iPhone|iPod|Kakao).*");
+		
+		if (kakao) {
+//			session.invalidate();
 //			session.removeAttribute("userInfo");
-//			session.setAttribute("referrerPage", req.getHeader("Referer"));
-//		}
+//			session.removeAttribute("referrerPage");
+//			mv.setViewName("redirect:/"+tiles+"/index.do");
+//			System.out.println(mv.getViewName());
+			//return mv;
+		}
 		
 		//로그인한 상태라면 메인화면으로 리다이렉트 (관리자와 회원 구분)
 		if(user != null){
@@ -102,9 +107,9 @@ public class CommonMemberController {
 		
 		//리턴페이지 셋팅
 		if(req.getParameter("returnPage") != null){
-//			session.setAttribute("returnPage", req.getParameter("returnPage"));
+			session.setAttribute("returnPage", req.getParameter("returnPage"));
 		}else if(session.getAttribute("referrerPage") == null){
-//			session.setAttribute("referrerPage", req.getHeader("Referer"));
+			session.setAttribute("referrerPage", req.getHeader("Referer"));
 		}
 		
 		//에러메세지 셋팅
@@ -113,6 +118,7 @@ public class CommonMemberController {
 			req.getSession().removeAttribute("customExceptionmsg");
 		}
 		
+			
 		//RsaService.setRsa(req);
 		mv.addObject("tiles",tiles);
 		

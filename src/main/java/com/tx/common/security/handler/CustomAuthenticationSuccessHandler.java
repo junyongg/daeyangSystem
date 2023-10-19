@@ -21,6 +21,7 @@ import org.springframework.security.web.access.DefaultWebInvocationPrivilegeEval
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.util.StringUtils;
 
+import com.tx.common.config.SettingData;
 import com.tx.common.config.session.CustomSessionRegistry;
 import com.tx.common.config.tld.SiteProperties;
 import com.tx.common.security.rememberMe.CustomTokenBasedRememberMeServices;
@@ -65,7 +66,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			Authentication authentication) throws IOException, ServletException {
 		
         //세션 시간 설정
-//        request.getSession().setMaxInactiveInterval(SettingData.SESSION_DURATION);
+        request.getSession().setMaxInactiveInterval(SettingData.SESSION_DURATION);
 
 		// 세션에 userInfo map으로 저장
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -125,10 +126,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 		
 		// 1. 최초 제품 설치시 비밀번호 초기화
-		if(checkPwdInit(map,URL)) return "/dyAdmin/login/init.do";
+		//if(checkPwdInit(map,URL)) return "/dyAdmin/login/init.do";
 		
 		// 2. 비밀번호 변경주기 체크
-		if(vertifyPasswordCycle((String)map.get("UI_KEYNO"),URL)) return URL + "/member/pwdchange2.do"; 
+		//if(vertifyPasswordCycle((String)map.get("UI_KEYNO"),URL)) return URL + "/member/pwdchange2.do"; 
 		
 		// 3. returPage 체크
 		String returnPage = getReturnPage(request,URL,authentication); 

@@ -26,7 +26,7 @@
               <c:if test="${userInfo.isAdmin eq 'Y' }">
                 	<button type="button" onclick="location.href='/dyAdmin/index.do'" target="_blank" class="btn_logout">관리자페이지</button>
               </c:if>
-              <button type="button" onclick="location.href='/user/logout.do'" class="btn_logout">로그아웃</button>
+              <button type="button" onclick="location.href='/user/logout.do'" class="btn_logout" style="display: block;">로그아웃</button>
           	</sec:authorize>
         </div>
         

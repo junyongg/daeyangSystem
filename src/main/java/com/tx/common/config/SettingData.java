@@ -14,7 +14,7 @@ public class SettingData {
 	public final static String HOMEPAGE_LANGUAGE = "ko"; //홈페이지 언어
 //	public final static String HOMEPAGE_LANGUAGE = "en"; //홈페이지 언어
 	
-	public final static int SESSION_DURATION = 17000+30; 	//세션 유지 시간 (초단위) 오차범위 수정을 위해 30초 추가로 셋팅해둠
+	public final static int SESSION_DURATION = 172800; 	//세션 유지 시간 (초단위) 오차범위 수정을 위해 30초 추가로 셋팅해둠
 	
 	
 	public final static String HOMEDIV_DY = "MN_0000000207"; //홈페이지 코드  - CF

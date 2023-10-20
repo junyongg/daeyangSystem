@@ -39,6 +39,7 @@ $(function(){
 	var saveId = cf_getCookie('saveId');
 	if(saveId){
 		$('#idSave').attr('checked',true);
+		$('#autoLogin').attr('checked',true);
 		$('#UI_IDs').val(saveId);
 		$('#UI_PASSWORD').focus();
 	}else{
@@ -70,6 +71,13 @@ function submit(username, password) {
 	}else{
 		cf_clearCookie('saveId');
 	}
+	
+	if($('#autoLogin').is(':checked')){
+		cf_setCookie('autoLogin',username)
+	}else{
+		cf_clearCookie('autoLogin');
+	}
+	
 	
 	// POST 로그인 폼에 값을 설정하고 발행(submit) 한다.
     var Form = document.getElementById("Form");

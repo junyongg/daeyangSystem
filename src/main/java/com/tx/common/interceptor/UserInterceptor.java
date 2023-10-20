@@ -702,9 +702,19 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 		if(user != null){
 			String ip = CommonService.getClientIP(request);
 			String userIp = (String)user.get("ip");
-			if(!ip.equals(userIp)){	//ip를 비교해서 ip가 다르다면 팅겨낸다.
-				return false;
+
+			//모바일은 브라우저에 따라 ip가 달라진다?
+			String userAgent = request.getHeader("user-agent");
+			boolean mobile1 = userAgent.matches( ".*(Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
+			boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*"); 
+			boolean kakao = userAgent.matches( ".*(iPhone|iPod|Kakao).*");
+			
+			if(!kakao && !mobile1 && !mobile2) {
+				if(!ip.equals(userIp)){	//ip를 비교해서 ip가 다르다면 팅겨낸다.
+					return false;
+				}
 			}
+
 		}
 		return true;
 	}
@@ -713,6 +723,8 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 	 * 세션/쿠키를 체크한다
 	 * */
 	private void checkSessionVal(HttpServletRequest request) throws UnsupportedEncodingException {
+		
+		
 		//세션에 값이 있나 체크
 		String SITE_KEYNO = (String)request.getSession().getAttribute("SITE_KEYNO");
 		String SITE_NAME = (String)request.getSession().getAttribute("SITE_NAME");

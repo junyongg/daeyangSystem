@@ -483,13 +483,6 @@ function ajaxData(){
         	
         	if(result.invertData == null){
         		$("#AllPower").text("0.0KW / 0.00h")
-        		$("#Active").text("0.0kW")
-        		chartOption(0.0,0.0,volum/count);
-        	}else{
-        		var hour = result.invertData.Daily_Generation / (volum/count);
-        		$("#AllPower").text(result.invertData.Daily_Generation+"kWh / " + hour.toFixed(2) +"h")
-            	$("#Active").text(result.invertData.Active_Power+"kW")
-
         		$("#Active").text("0.0KW")
         		chartOption(0.0,0.0,ALL_VOLUM);
         	}else{

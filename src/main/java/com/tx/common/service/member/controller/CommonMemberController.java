@@ -73,31 +73,12 @@ public class CommonMemberController {
 		
 		if( tiles == null || tiles.equals("cf") ||tiles.equals("sfa")) tiles = "dy";
 		
-		
-		
 		ModelAndView mv  = new ModelAndView("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
-		
 		
 		SiteManagerDTO SiteManagerDTO =  Component.getData("SiteManager.getData",SiteProperties.getCmsUser());
 		mv.addObject("SiteManager", SiteManagerDTO);
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
-		
-		//모바일일 경우 세션을 날리고 다시 로그인 하게 만들자
-		//모바일 부분 체크 이후 url 변경
-		String userAgent = req.getHeader("user-agent");
-		boolean mobile1 = userAgent.matches( ".*(Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
-		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*"); 
-		boolean kakao = userAgent.matches( ".*(iPhone|iPod|Kakao).*");
-		
-		if (kakao) {
-//			session.invalidate();
-//			session.removeAttribute("userInfo");
-//			session.removeAttribute("referrerPage");
-//			mv.setViewName("redirect:/"+tiles+"/index.do");
-//			System.out.println(mv.getViewName());
-			//return mv;
-		}
 		
 		//로그인한 상태라면 메인화면으로 리다이렉트 (관리자와 회원 구분)
 		if(user != null){

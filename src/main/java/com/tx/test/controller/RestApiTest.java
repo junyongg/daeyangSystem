@@ -20,6 +20,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
@@ -47,6 +48,7 @@ import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
+import com.tx.test.MailAndExcelDown;
 import com.tx.test.RestApiSample_getpkey;
 import com.tx.test.dto.billDTO;
 import com.tx.common.service.tax.taxService;
@@ -1185,5 +1187,44 @@ public class RestApiTest {
 		
 		AsyncService.sendApi(bill, tocken);
 	}
+	
+	
+	/**
+	 * 
+	 * @param bill
+	 * @throws Exception
+	 * 메일 접근이후 엑셀 다운로드 테스트 진행 
+	 */
+	@RequestMapping("/dyAdmin/bills/mailExceldown.do")
+	public void mailReadExcelDownload(HttpServletResponse res) throws Exception {
 		
+		//대양기업
+		String[] user1 = {"imap.naver.com","daeyang0715@naver.com","eodid2015!@"};
+		String[] user2 = {"imap.naver.com","khk8086@naver.com","kimhk8086"};
+		
+		ArrayList<String[]> Userlist = new ArrayList<String[]>();
+		ArrayList<ArrayList<String>> sheet = new ArrayList<ArrayList<String>>();
+		
+		Userlist.add(user1);
+		Userlist.add(user2);
+		
+		for(String[] u : Userlist) {
+			ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+			temp = MailAndExcelDown.main(res,u[0],u[1],u[2]);
+			
+			sheet.addAll(temp);
+		}
+		
+		  //여기서 excel 다운로드
+        if(sheet.size() > 0 ) {
+        	try {
+        		MailAndExcelDown.ExcelDown(sheet,res);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+	}
+	
+	
+	
 }

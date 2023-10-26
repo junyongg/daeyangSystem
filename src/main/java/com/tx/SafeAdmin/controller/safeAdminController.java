@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -114,7 +115,7 @@ public class safeAdminController {
 		
 		Map<String, Object> user = CommonService.getUserInfo(req);
 		String UI_KEYNO = user.get("UI_KEYNO").toString();
-		
+		Locale koreanLocale = Locale.KOREAN; 
 
 		List<HashMap<String, Object>> result = Component.getListNoParam("sfa.jspselect");
 		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분").format(Calendar.getInstance().getTime());
@@ -122,7 +123,7 @@ public class safeAdminController {
 		String mon = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		String day = new SimpleDateFormat("dd").format(Calendar.getInstance().getTime());
 		String time = new SimpleDateFormat("HH").format(Calendar.getInstance().getTime());
-		String dayOfWeek =  new SimpleDateFormat("E").format(Calendar.getInstance().getTime());
+		String dayOfWeek =  new SimpleDateFormat("E",koreanLocale).format(Calendar.getInstance().getTime());
 		
 		
 		mv.addObject("arialist", Component.getList("sfa.AreaSelect", UI_KEYNO));

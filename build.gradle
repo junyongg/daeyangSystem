@@ -23,11 +23,7 @@ repositories {
 	jcenter()
 	maven { url "http://maven.egovframe.kr:8080/maven/" }
 	 maven() {
-        
         url "https://maven.atlassian.com/3rdparty/"
-        
-        url 'http://repository.aspose.com/repo/'
-         
     }
 
 
@@ -57,12 +53,10 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.+'
 	
 
-	implementation group: 'org.apache.poi', name: 'poi-ooxml', version:'5.2.2'
-    implementation group: 'org.apache.poi', name: 'poi', version:'5.2.2'
-    
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version:'4.1.0'
     implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.1.0'
     implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version:'4.1.0'
-	
+	implementation group: 'org.apache.poi', name: 'poi', version:'4.1.0'
 
 	implementation group: 'kr.dogfoot', name: 'hwplib', version:'1.0'
 	implementation group: 'org.aspectj', name: 'aspectjrt', version:'1.6.10'
@@ -118,22 +112,14 @@ dependencies {
 	
 	//링크허브 API
 	implementation group: 'kr.co.linkhub', name: 'popbill-sdk', version: '1.61.0'
-
-	
 	
 	// MultipartEntityBuilder (문자 api연동시 필요한 선언)
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
 	implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.13'
 	
-	// str -> int 추출
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 	
-
-
-	//email read
-    implementation 'com.sun.mail:javax.mail:1.6.2'
-    implementation 'javax.activation:activation:1.1.1'
-
+	
+	
 	//webjars
 	implementation 'org.webjars:jquery:2.2.4'
 	implementation 'org.webjars:jquery-ui:1.12.1'

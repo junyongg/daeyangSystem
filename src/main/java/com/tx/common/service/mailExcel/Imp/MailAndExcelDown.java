@@ -1,8 +1,7 @@
-package com.tx.test;
+package com.tx.common.service.mailExcel.Imp;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 
 import javax.mail.BodyPart;
@@ -29,20 +28,28 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Service;
 
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
+import com.tx.common.service.mail.EmailService;
+import com.tx.common.service.mailExcel.MailAndExcelDownService;
 
-public class MailAndExcelDown {
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
+
+@Service("MailAndExcelDownService")
+public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAndExcelDownService {
 	 
-	public static ArrayList<ArrayList<String>> main(HttpServletResponse res,String hostmap, String user, String passw) {
+	public ArrayList<ArrayList<String>> main(HttpServletResponse res,String hostmap, String user, String passw) throws Exception {
 	        String host = hostmap;
 	        String username = user;
 	        String password = passw;
 
  	        Properties properties = new Properties();
 	        properties.setProperty("mail.store.protocol", "imaps");
-	       
+	        properties.setProperty("mail.imaps.ssl.protocols", "TLSv1.2");
+	        properties.setProperty("mail.imaps.ssl.ciphersuites", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
             
             int endnumber = 500;
             String content = "";
@@ -117,7 +124,7 @@ public class MailAndExcelDown {
 	    }
 	
 	//내용 Multpart부분 타입 수정부
-	 public static String extractContent(MimeMessage mimeMessage) {
+	 private static String extractContent(MimeMessage mimeMessage) {
 		 String msg = "";   
 		 try {
 	            Object content = mimeMessage.getContent();
@@ -161,7 +168,7 @@ public class MailAndExcelDown {
 	    
 	    
 	    //엑셀 정리 및 다운로드 부분
-	    public static void ExcelDown( ArrayList<ArrayList<String>> dataSheet, HttpServletResponse res) throws Exception{
+	    public void ExcelDown( ArrayList<ArrayList<String>> dataSheet, HttpServletResponse res) throws Exception{
 	    	
 	    	//excel sheet 생성
 	    	 Workbook workbook = new XSSFWorkbook();

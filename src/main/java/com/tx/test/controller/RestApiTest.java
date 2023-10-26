@@ -15,9 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +23,6 @@ import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +33,7 @@ import com.tx.common.config.SettingData;
 import com.tx.common.dto.Common;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
+import com.tx.common.service.mailExcel.MailAndExcelDownService;
 import com.tx.common.service.page.PageAccess;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
@@ -48,7 +42,6 @@ import com.tx.dyAdmin.admin.code.service.CodeService;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
-import com.tx.test.MailAndExcelDown;
 import com.tx.test.RestApiSample_getpkey;
 import com.tx.test.dto.billDTO;
 import com.tx.common.service.tax.taxService;
@@ -73,6 +66,8 @@ public class RestApiTest {
 	@Autowired AsyncService AsyncService;
 
 	@Autowired taxService taxService;
+	
+	@Autowired MailAndExcelDownService emailExcel;
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -1239,7 +1234,7 @@ public class RestApiTest {
 		
 		for(String[] u : Userlist) {
 			ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
-			temp = MailAndExcelDown.main(res,u[0],u[1],u[2]);
+			temp = emailExcel.main(res,u[0],u[1],u[2]);
 			
 			sheet.addAll(temp);
 		}
@@ -1247,7 +1242,7 @@ public class RestApiTest {
 		  //여기서 excel 다운로드
         if(sheet.size() > 0 ) {
         	try {
-        		MailAndExcelDown.ExcelDown(sheet,res);
+        		emailExcel.ExcelDown(sheet,res);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

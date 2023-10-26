@@ -455,13 +455,16 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
             //100 임시저장 , 101 수정 , 102 개봉 , 103 수신확인 , 111 메일재전송 , 112 문자재전송 , 113 팩스 재전송 , 122 문자전송결과 , 123 팩스 전송결과 
             //124 휴폐업 확인 , 125 문서번호 할당 , 220 역발행요청 , 221 역발행요청 거부 , 222 역발행요청취소 , 230 발행 , 240 발행취소 , 250 국세청전송 요청 , 251 국세청전송 대기 
             //252 국세청전송 진행중 , 253 국세청 전송 접수 , 254 국세청 전송 성공 , 255 국세청전송 실패
-            System.out.println(taxinvoiceLogs[0].getDocLogType());
-            DcCode = taxinvoiceLogs[0].getDocLogType().toString();
+            System.out.println(taxinvoiceLogs[taxinvoiceLogs.length-1].getDocLogType());
+            DcCode = taxinvoiceLogs[taxinvoiceLogs.length-1].getDocLogType().toString();
             if(DcCode.equals("100")) {
             	DcCode = "세금계산서 임시저장 상태";
             	
 			}else if(DcCode.equals("250")){
 				DcCode = "국세청전송 요청";
+				
+			}else if(DcCode.equals("102")){
+				DcCode = "개봉";
 				
 			}else if(DcCode.equals("251")){
 				DcCode = "국세청전송 대기";

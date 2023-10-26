@@ -1109,7 +1109,7 @@ public class RestApiTest {
 		
 		String DcCode = taxService.result(HomeId, CopNum);
 		
-		if(DcCode.equals("국세청 전송 성공")) {
+		if(DcCode.equals("국세청 전송 성공") || DcCode.equals("개봉") ) {
 			 msg = DcCode;
 			 status = "0";
 			 chYn = "Y"; 	
@@ -1120,11 +1120,11 @@ public class RestApiTest {
 			 chYn = "N";
 			
 			
-			r.setDbl_status(status);
-			r.setDbl_errormsg(msg);
-			r.setDbl_checkYN(chYn);
-			Component.updateData("bills.ChangeLogmsg", r);
 		}
+		r.setDbl_status(status);
+		r.setDbl_errormsg(msg);
+		r.setDbl_checkYN(chYn);
+		Component.updateData("bills.ChangeLogmsg", r);
 		
 		
 	}

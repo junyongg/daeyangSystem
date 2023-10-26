@@ -51,6 +51,11 @@
 														style="margin-right: 10px;">
 														<i class="fa fa-plus"></i> 세금계산서 리스트 업데이트
 													</button>
+													<button class="btn btn-sm btn-success smallBtn"
+														type="button" onclick="MailAndExcel()"
+														style="margin-right: 10px;">
+														<i class="fa fa-inbox-in"></i> 메일 다운로드
+													</button>
 												</div>
 											</th>
 										</tr>
@@ -251,5 +256,9 @@ function AllSendNTS(){
 			}
 		});	
 	}
+}
+
+function MailAndExcel(){
+	window.location.href="/dyAdmin/bills/mailExceldown.do";
 }
 </script>

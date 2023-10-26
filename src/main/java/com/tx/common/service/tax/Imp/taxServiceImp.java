@@ -1,10 +1,12 @@
 package com.tx.common.service.tax.Imp;
 
+import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,10 @@ import com.popbill.api.taxinvoice.Taxinvoice;
 import com.popbill.api.taxinvoice.TaxinvoiceAddContact;
 import com.popbill.api.taxinvoice.TaxinvoiceDetail;
 import com.popbill.api.taxinvoice.TaxinvoiceLog;
+import com.tx.common.service.component.ComponentService;
+import com.tx.common.service.reqapi.requestAPIservice;
+import com.tx.common.config.SettingData;
+import com.tx.common.service.component.CommonService;
 import com.tx.common.service.tax.taxService;
 import com.tx.test.dto.billDTO;
 
@@ -27,8 +33,12 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
     
 	@Autowired
     private TaxinvoiceService taxinvoiceService;
+	
+	@Autowired ComponentService Component;
+	@Autowired CommonService CommonService;
+	@Autowired requestAPIservice requestAPI;
 
-	public void registIssue(billDTO bill) {
+	public void registIssue(billDTO bill, String tocken) throws Exception {
 	        /**
 	         * 작성된 세금계산서 데이터를 팝빌에 저장과 동시에 발행(전자서명)하여 "발행완료" 상태로 처리합니다. - 세금계산서 국세청 전송 정책
 	         * [https://developers.popbill.com/guide/taxinvoice/java/introduction/policy-of-send-to-nts]
@@ -74,8 +84,7 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
 
 	        // 공급자 사업자번호 (하이픈 '-' 제외 10 자리)
 	        taxinvoice.setInvoicerCorpNum(bill.getDbp_co_num());
-	        System.out.println("사업자 등록 번호 ");
-	        System.out.println(bill.getDbp_co_num());
+	        
 	        // 공급자 종사업장 식별번호, 필요시 기재. 형식은 숫자 4자리.
 	        taxinvoice.setInvoicerTaxRegID("");
 
@@ -142,7 +151,7 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
 	        taxinvoice.setInvoiceeCorpNum(bill.getDbs_co_num());
 
 	        // 공급받는자 종사업장 식별번호, 필요시 숫자4자리 기재
-	        taxinvoice.setInvoiceeTaxRegID("");
+	        taxinvoice.setInvoiceeTaxRegID(bill.getDbs_taxnum());
 
 	        // 공급받는자 상호
 	        taxinvoice.setInvoiceeCorpName(bill.getDbs_name());
@@ -214,8 +223,8 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
 	        // {invoiceeType}이 "외국인" 이면 remark1 필수
 	        // - 외국인 등록번호 또는 여권번호 입력
 	        taxinvoice.setRemark1(bill.getDescription());
-	        taxinvoice.setRemark2("비고2");
-	        taxinvoice.setRemark3("비고3");
+	        taxinvoice.setRemark2("");
+	        taxinvoice.setRemark3("");
 
 	        // 책번호 '권' 항목, 최대값 32767
 	        taxinvoice.setKwon((short) 1);
@@ -256,7 +265,7 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
 	        detail.setSerialNum((short) 1); // 일련번호, 1부터 순차기재
 	        detail.setPurchaseDT(nowdate2); // 거래일자
 	        detail.setItemName(bill.getDbl_subject()); // 품목명
-	        detail.setSpec("규격"); // 규격
+	        detail.setSpec(""); // 규격
 	        detail.setQty(bill.getDbl_quantity()); // 수량
 	        detail.setUnitCost(bill.getDbl_unitprice().replace(",", "")); // 단가
 	        detail.setSupplyCost(bill.getDbl_supplyprice().replace(",", "")); // 공급가액
@@ -325,15 +334,106 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
 	            IssueResponse response = taxinvoiceService.registIssue(bill.getDbp_co_num(), taxinvoice,
 	                    WriteSpecification, Memo, ForceIssue, DealInvoiceKey);
 
-	            System.out.println(response);
+	            System.out.println(response.getCode());
+	            String code = String.valueOf(response.getCode());
+	            System.out.println(response.getMessage());
+	            String msg = response.getMessage();
+	           
+				
+				
+				
+		    	String subkey = bill.getDbl_sub_keyno();
+		    	
+		    	bill.setDbl_status("0");
+				bill.setDbl_errormsg(msg);
+				bill.setDbl_issuedate(nowdate2);
+				bill.setDbl_sub_issuedate(nowdate2);
+				
+				Component.updateData("bills.codemsgUpdate", bill);
+				
+		    	if(subkey.equals("1")||subkey.equals("2")) {
+		    		
+		    			String pname = bill.getDbl_p_name();
+		    			String sname = bill.getDbl_s_name();
+		    			String subject = bill.getDbl_subject();
+		    			String grandtotal = bill.getDbl_grandtotal();
+		    			String issuedate = bill.getDbl_issuedate();
+		    			String admin = "대양기업 이시연";
+		    			String adminphone = "061-332-8086";
+
+	
+//			    			String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+		    			String contents = "[세금계산서 발행 완료 안내]\n"
+    							+pname+"의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : "+pname
+    							+"\n□ 공급받는자: "+sname
+    							+"\n□ 품목명 : "+subject
+    							+"\n□ 합계금액 : "+grandtotal+"원"
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
+
+			    		
+			    		//리스트 뽑기 - 현재 게시물 알림은 index=1
+			    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+			    		org.json.simple.JSONArray jsonObj_a = (org.json.simple.JSONArray) jsonObj2.get("list");
+			    		jsonObj2 = (JSONObject) jsonObj_a.get(9); //템플릿 리스트
+			    		
+			    		String list = Component.getData("bills.AlimSelect",bill);
+			    		String Sendurl  = "http://dymonitering.co.kr/"; 
+			    		
+			    		String phone = list.toString().replace("-", "");
+			    			//받은 토큰으로 알림톡 전송		
+//				    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
+			    		
+			    		
+			    	}else {
+			    		
+			    		String pname = bill.getDbl_p_name();
+		    			String sname = bill.getDbl_s_name();
+		    			String subject = bill.getDbl_subject();
+		    			String grandtotal = bill.getDbl_grandtotal();
+		    			String issuedate = bill.getDbl_issuedate();
+		    			String admin = "대양기업 이시연";
+		    			String adminphone = "061-332-8086";
+			       		
+			       		
+
+//					    	String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
+		    			String contents = "[세금계산서 발행 완료 안내]\n"
+    							+sname+"의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : "+pname
+    							+"\n□ 공급받는자: "+sname
+    							+"\n□ 품목명 : "+subject
+    							+"\n□ 합계금액 : "+grandtotal+"원"
+    							+"\n□ 발행일 : "+issuedate+"\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : "+admin+"\n연락처 : "+adminphone;
+					    		
+					    		//리스트 뽑기 - 현재 게시물 알림은 index=1
+					    		JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken);
+					    		org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
+					    		jsonObj2 = (JSONObject) jsonObj_a2.get(9); //템플릿 리스트
+					    		
+					    		String list = Component.getData("bills.AlimSelect2",bill);
+					    		String Sendurl  = "http://dymonitering.co.kr/"; 
+					    		
+					    		String phone = list.toString().replace("-", "");
+					    			//받은 토큰으로 알림톡 전송
+					    			requestAPI.KakaoAllimTalkSend(SettingData.Apikey,SettingData.Userid,SettingData.Senderkey,tocken,jsonObj2,contents,phone,Sendurl);
+			    	}
+			    		
+
 
 	        } catch (PopbillException e) {
-	        	System.out.println(e);
+	          // 전송 실패 시	
+	        
+	        	
+	        	bill.setDbl_status("-1");
+				bill.setDbl_errormsg(e.getMessage());
+				Component.updateData("bills.codemsgUpdate", bill);
+				
+				//전송상태 N으로 변경해서 체크박스 안사라지게 함
+				Component.updateData("bills.checkChange", bill);
 	            
 	        }
 	    }
 		
-	public void result() {
+	public String result(String HomeId, String CopNum) {
 		/**
          * 세금계산서의 상태에 대한 변경이력을 확인합니다. -
          * https://developers.popbill.com/reference/taxinvoice/java/api/info#GetLogs
@@ -343,9 +443,12 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
         MgtKeyType mgtKeyType = MgtKeyType.SELL;
 
         // 세금계산서 문서번호
-        String mgtKey = "daeyang2816";
-        String CorpNum = "6838800157"; //사업자등록번호
-        
+        String mgtKey = HomeId;
+//       String mgtKey = "daeyang2845";
+        String CorpNum = CopNum; //사업자등록번호
+//       String CorpNum = "6838800157"; //사업자등록번호
+        String DcCode="";
+       
         try {
 
             TaxinvoiceLog[] taxinvoiceLogs = taxinvoiceService.getLogs(CorpNum, mgtKeyType, mgtKey);
@@ -353,11 +456,36 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
             //124 휴폐업 확인 , 125 문서번호 할당 , 220 역발행요청 , 221 역발행요청 거부 , 222 역발행요청취소 , 230 발행 , 240 발행취소 , 250 국세청전송 요청 , 251 국세청전송 대기 
             //252 국세청전송 진행중 , 253 국세청 전송 접수 , 254 국세청 전송 성공 , 255 국세청전송 실패
             System.out.println(taxinvoiceLogs[0].getDocLogType());
-            
-
+            DcCode = taxinvoiceLogs[0].getDocLogType().toString();
+            if(DcCode.equals("100")) {
+            	DcCode = "세금계산서 임시저장 상태";
+            	
+			}else if(DcCode.equals("250")){
+				DcCode = "국세청전송 요청";
+				
+			}else if(DcCode.equals("251")){
+				DcCode = "국세청전송 대기";
+				
+			}else if(DcCode.equals("252")){
+				DcCode = "국세청전송 진행중";
+				
+			}else if(DcCode.equals("253")){
+				DcCode = "국세청 전송 접수";
+				
+			}else if(DcCode.equals("254")){
+				DcCode = "국세청 전송 성공";
+				
+			}else if(DcCode.equals("255")){
+				DcCode = "국세청전송 실패";
+			}else {
+				DcCode = "국세청전송 진행중";
+			}
 
         } catch (PopbillException e) {
-        	System.out.println(e);
+      
+        	DcCode = "오류내용 : "+e;
         }
+        
+     return DcCode;   
 	}
 }

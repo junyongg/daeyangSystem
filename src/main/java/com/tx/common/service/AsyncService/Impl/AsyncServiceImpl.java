@@ -352,16 +352,20 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 				Component.updateData("bills.checkYN", list[i]);
 				
 				bill = Component.getData("bills.selectAllView", list[i]);
-				
-				sendApi(bill, tocken);
-				
+
 				String subkey = bill.getDbl_sub_keyno();
-				if(subkey.equals("1") || subkey.equals("2")) {
-					System.out.println("하나보냄");
-					Thread.sleep(60000);
-				}else {
+				if(subkey.equals("1")){
 					
-				}
+					taxService.registIssue(bill, tocken);
+					
+				}else if(subkey.equals("2")){
+					
+					sendApi(bill, tocken);
+					Thread.sleep(60000);
+					
+				}else {
+					sendApi(bill, tocken);
+				}	
 			}
 		}		
 	}
@@ -384,15 +388,17 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 					Component.updateData("bills.checkYN", l);
 					bill = Component.getData("bills.selectAllView", l);
 					
-					//sendApi(bill,tocken);
-					taxService.registIssue(bill);
-					
-					if(subkey.equals("1") || subkey.equals("2")) {
-						System.out.println("하나보냄");
+					if(subkey.equals("1")){
+						taxService.registIssue(bill, tocken);
+//						System.out.println("하나보냄");
+//						Thread.sleep(60000);
+					}else if(subkey.equals("2")){
+						sendApi(bill, tocken);
+//						System.out.println("하나보냄");
 						Thread.sleep(60000);
 					}else {
-						
-					}
+						sendApi(bill, tocken);
+					}	
 				}
 				msg = "전체 전송이 완료되었습니다.";	
 			}

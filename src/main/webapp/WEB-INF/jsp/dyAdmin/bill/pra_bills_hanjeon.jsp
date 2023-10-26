@@ -276,7 +276,7 @@ form .error {color:red}
 											</tr>
 											<tr>	
 												<td><input type="text" class="form-control check2" id="grandtotal" name="grandtotal" onkeyup="inputNumberFormat(this)" value="0"></td>
-												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeyup="inputNumberFormat(this)" value="0"></td>	
+												<td><input type="text" class="form-control check2" id="cash" name="cash" onkeyup="inputNumberFormat(this)" value=""></td>	
 												<td><input type="text" class="form-control" id="scheck" name="scheck" onkeyup="inputNumberFormat(this)" value="0"></td>
 												<td><input type="text" class="form-control" id="draft" name="draft" onkeyup="inputNumberFormat(this)" value="0"></td>
 												<td><input type="text" class="form-control" id="uncollected" name="uncollected" onkeyup="inputNumberFormat(this)" value="0"></td>
@@ -793,6 +793,7 @@ function Divison(obj){
 	$("#unitprice").val(comma(v))
 	$("#grandtotal").val(comma(total))
 	$("#chargetotal").val(comma(v))
+	$("#cash").val(comma(total))
 	
 	if (tax > 0) {
 		$("#tax").val(comma(tax))

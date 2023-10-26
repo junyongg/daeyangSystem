@@ -1104,14 +1104,43 @@ public class RestApiTest {
 		return msg2;
 	}
 	
-	//전송결과 확인
-		@RequestMapping("/billsResultTest3.do")
-		@ResponseBody
-		public void billsResultTest2(HttpServletRequest req) throws Exception {
+	//한전 발행 전송결과 확인
+	@RequestMapping("/billsResultTest3.do")
+	@ResponseBody
+	public void billsResultTest2(HttpServletRequest req) throws Exception {
+		
+		List<billDTO> result = Component.getListNoParam("bills.LogResultNeedData2");
+		
+		String msg = "";
+		String status = "";
+		String chYn = ""; 	
+		
+		for(billDTO r : result) {
+	
+			String HomeId = r.getDbl_homeid();
+			String CopNum = r.getDbp_co_num();
 			
-			taxService.result();
+			String DcCode = taxService.result(HomeId, CopNum);
 			
+			if(DcCode.equals("국세청 전송 성공")) {
+				 msg = DcCode;
+				 status = "0";
+				 chYn = "Y"; 	
+				
+			}else {
+				 msg = DcCode;
+				 status = "-1";
+				 chYn = "N";
+			}
+			
+			r.setDbl_status(status);
+			r.setDbl_errormsg(msg);
+			r.setDbl_checkYN(chYn);
+			Component.updateData("bills.ChangeLogmsg", r);
 		}
+		
+		
+	}
 	
 	
 	@RequestMapping("/dyAdmin/bills/HomeIdUpdate.do")

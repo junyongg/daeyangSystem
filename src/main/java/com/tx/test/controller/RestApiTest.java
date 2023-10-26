@@ -1017,118 +1017,108 @@ public class RestApiTest {
 		
 		for(billDTO r: result) {
 			
-			String msg = "";
-			String status = "-1";
-			String chYn = "N";
-			
-			// 입력할 세금계산서 정보를 배열에 추가(JSONObject객체와 순서가 일치해야함.)
-			List<List<String>> taxinfo = new ArrayList<>();
-			taxinfo.add(Arrays.asList(r.getDbp_id(),r.getDbp_pass(),r.getDbp_apikey(),r.getDbl_homeid()));
-			
-			// JSONObject객체 생성
-			JSONObject data = new JSONObject();
-			
-			// JSONObject객체에 세금계산서 정보를 추가
-			data.put("hometaxbill_id", taxinfo.get(0).get(0));			// 회사코드
-			data.put("spass", taxinfo.get(0).get(1));					// 패스워드
-			data.put("apikey", taxinfo.get(0).get(2));					// 인증키
-			data.put("homemunseo_id", taxinfo.get(0).get(3));			// 고유번호
-
-			// 전자세금계산서 발행 후 리턴
-			String restapi = RestApiSample_getpkey.Api("https://www.hometaxbill.com:8084/homtax/getpkey", data.toString());
-
-			if(restapi.equals("fail")) {
-				System.out.println("https://www.hometaxbill.com:8084/homtax/getpkey 서버에 문제가 발생했습니다.");
-			}
-			
-			// Api에서 리턴받은 값으로 예외처리 및 출력
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(restapi);
-			JSONObject jsonObj = (JSONObject) obj;
-
-			HashMap<String,String> Hlist = new LinkedHashMap<>();
-			
-			Hlist.put("code",(String) jsonObj.get("code"));
-			Hlist.put("msg",(String) jsonObj.get("msg"));
-			Hlist.put("msg2",(String) jsonObj.get("msg2"));
-			Hlist.put("hometaxbill_id",(String) jsonObj.get("hometaxbill_id"));
-			Hlist.put("homemunseo_id",(String) jsonObj.get("homemunseo_id"));
-			Hlist.put("issueid",(String) jsonObj.get("issueid"));
-			Hlist.put("declarestatus",(String) jsonObj.get("declarestatus"));
+			String subKey = r.getDbl_sub_keyno();
 			
 			
-			if (!restapi.equals("fail")) {
-				if (Hlist.get("issueid") != null) {
-					System.out.println(r.getDbp_name() + ": 성공");
-					msg = Hlist.get("msg").toString() + Hlist.get("msg2").toString();
-					if(msg.contains("성공")) {
-						status = "0";
-						chYn = "Y";
-					}
-				} else {
-					System.out.println(r.getDbp_name() + ": 실패");
-					msg = (String) jsonObj.get("msg");
-					System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
-					
-				}
+			
+			//한전 발행일 경우
+			if(subKey.equals("1")) {
+				billsResultTest2(r);
+				
+			// 한전발행 아닐경우
 			}else {
-				msg = "서버 호출 실패";
+				
+				String msg = "";
+				String status = "-1";
+				String chYn = "N";
+				
+				// 입력할 세금계산서 정보를 배열에 추가(JSONObject객체와 순서가 일치해야함.)
+				List<List<String>> taxinfo = new ArrayList<>();
+				taxinfo.add(Arrays.asList(r.getDbp_id(),r.getDbp_pass(),r.getDbp_apikey(),r.getDbl_homeid()));
+				
+				// JSONObject객체 생성
+				JSONObject data = new JSONObject();
+				
+				// JSONObject객체에 세금계산서 정보를 추가
+				data.put("hometaxbill_id", taxinfo.get(0).get(0));			// 회사코드
+				data.put("spass", taxinfo.get(0).get(1));					// 패스워드
+				data.put("apikey", taxinfo.get(0).get(2));					// 인증키
+				data.put("homemunseo_id", taxinfo.get(0).get(3));			// 고유번호
+				
+				// 전자세금계산서 발행 후 리턴
+				String restapi = RestApiSample_getpkey.Api("https://www.hometaxbill.com:8084/homtax/getpkey", data.toString());
+				
+				if(restapi.equals("fail")) {
+					System.out.println("https://www.hometaxbill.com:8084/homtax/getpkey 서버에 문제가 발생했습니다.");
+				}
+				
+				// Api에서 리턴받은 값으로 예외처리 및 출력
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(restapi);
+				JSONObject jsonObj = (JSONObject) obj;
+				
+				HashMap<String,String> Hlist = new LinkedHashMap<>();
+				
+				Hlist.put("code",(String) jsonObj.get("code"));
+				Hlist.put("msg",(String) jsonObj.get("msg"));
+				Hlist.put("msg2",(String) jsonObj.get("msg2"));
+				Hlist.put("hometaxbill_id",(String) jsonObj.get("hometaxbill_id"));
+				Hlist.put("homemunseo_id",(String) jsonObj.get("homemunseo_id"));
+				Hlist.put("issueid",(String) jsonObj.get("issueid"));
+				Hlist.put("declarestatus",(String) jsonObj.get("declarestatus"));
+				
+				
+				if (!restapi.equals("fail")) {
+					if (Hlist.get("issueid") != null) {
+						System.out.println(r.getDbp_name() + ": 성공");
+						msg = Hlist.get("msg").toString() + Hlist.get("msg2").toString();
+						if(msg.contains("성공")) {
+							status = "0";
+							chYn = "Y";
+						}
+					} else {
+						System.out.println(r.getDbp_name() + ": 실패");
+						msg = (String) jsonObj.get("msg");
+						System.out.println("code : " + (String) jsonObj.get("code") + "\n" + "msg : " + (String) jsonObj.get("msg"));
+						
+					}
+				}else {
+					msg = "서버 호출 실패";
+				}
+				
+				r.setDbl_status(status);
+				r.setDbl_errormsg(msg);
+				r.setDbl_checkYN(chYn);
+				Component.updateData("bills.ChangeLogmsg", r);
 			}
 			
-			//전송 실패시 고유번호 자동 +1 처리
-//			if(status.equals("-1")) {
-//				
-//				String codeStr = "";
-//	    		
-//	    		String homekey = Component.getData("bills.homekey");
-//	    		 
-//	    		String codenum = homekey.substring(7,homekey.length());
-//				int tempc = Integer.parseInt(codenum) + 1;
-//				String homeKeyPront =  homekey.substring(0,7);
-//				codeStr = homeKeyPront+tempc;
-//				 
-//				r.setDbl_homeid(codeStr);
-//				
-//				Component.updateData("bills.homeIdUpdate_f", r);
-//				Component.updateData("bills.changeHomekey", codeStr);
-//			}
-			
-			r.setDbl_status(status);
-			r.setDbl_errormsg(msg);
-			r.setDbl_checkYN(chYn);
-			Component.updateData("bills.ChangeLogmsg", r);
 		}
 		return msg2;
 	}
 	
 	//한전 발행 전송결과 확인
-	@RequestMapping("/billsResultTest3.do")
-	@ResponseBody
-	public void billsResultTest2(HttpServletRequest req) throws Exception {
+	public void billsResultTest2(billDTO r) throws Exception {
 		
-		List<billDTO> result = Component.getListNoParam("bills.LogResultNeedData2");
 		
 		String msg = "";
 		String status = "";
 		String chYn = ""; 	
 		
-		for(billDTO r : result) {
-	
-			String HomeId = r.getDbl_homeid();
-			String CopNum = r.getDbp_co_num();
+		String HomeId = r.getDbl_homeid();
+		String CopNum = r.getDbp_co_num();
+		
+		String DcCode = taxService.result(HomeId, CopNum);
+		
+		if(DcCode.equals("국세청 전송 성공")) {
+			 msg = DcCode;
+			 status = "0";
+			 chYn = "Y"; 	
 			
-			String DcCode = taxService.result(HomeId, CopNum);
+		}else {
+			 msg = DcCode;
+			 status = "-1";
+			 chYn = "N";
 			
-			if(DcCode.equals("국세청 전송 성공")) {
-				 msg = DcCode;
-				 status = "0";
-				 chYn = "Y"; 	
-				
-			}else {
-				 msg = DcCode;
-				 status = "-1";
-				 chYn = "N";
-			}
 			
 			r.setDbl_status(status);
 			r.setDbl_errormsg(msg);

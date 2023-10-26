@@ -130,11 +130,11 @@ renderCalender(thisMonth); });
 function sendstatus() {
 	
 	 var url = "/billsResultTest.do"; //한전 x 
-	 if($("#AH_HOMEDIV_C").val() == "1"){
-		 alert("한전")
-		 url = "/billsResultTest3.do"
-	 }
-	
+// 	 if($("#AH_HOMEDIV_C").val() == "1"){
+// 		 alert("한전")
+// 		 url = "/billsResultTest3.do"
+// 	 }
+
 	 $.ajax({
 			type: "POST",
 			url: url,

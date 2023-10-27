@@ -508,7 +508,8 @@ table{
 				                    <th>시간</th>
 				                    <th>발전소</th>
 				                    <th>이름</th>
-				                    <th>에러내용</th>
+				                    <th>DSP_ERROR</th>
+				                    <th>DSP_Slave_ERROR</th>
 				                </tr>
 				            </thead>
 				            <tbody>
@@ -519,6 +520,7 @@ table{
 					                    <td>${ob.DPP_NAME }</td>
 					                    <td>${fn:substring(errorlist.DIE_INVERTER_NAME,0,5)}</td>
 					                    <td>${errorlist.DIE_DSP_ERROR }</td>
+					                    <td>${errorlist.DIE_DSP_S_ERROR }</td>
 					               </tr>
 				                </c:forEach>
 				            </tbody>

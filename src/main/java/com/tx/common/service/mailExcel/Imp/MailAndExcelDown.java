@@ -2,6 +2,7 @@ package com.tx.common.service.mailExcel.Imp;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.mail.BodyPart;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
-import com.tx.common.service.mail.EmailService;
 import com.tx.common.service.mailExcel.MailAndExcelDownService;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -41,7 +41,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 @Service("MailAndExcelDownService")
 public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAndExcelDownService {
 	 
-	public ArrayList<ArrayList<String>> main(HttpServletResponse res,String hostmap, String user, String passw) throws Exception {
+	public ArrayList<HashMap<String, Object>> main(HttpServletResponse res,String hostmap, String user, String passw) throws Exception {
 	        String host = hostmap;
 	        String username = user;
 	        String password = passw;
@@ -53,7 +53,7 @@ public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAnd
             
             int endnumber = 500;
             String content = "";
-            ArrayList<ArrayList<String>> sheet = new ArrayList<ArrayList<String>>();
+            ArrayList<HashMap<String, Object>> sheet = new ArrayList<HashMap<String, Object>>();
 
 	        try {
 		        Session session = Session.getDefaultInstance(properties, null);
@@ -103,10 +103,10 @@ public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAnd
                 			break;
                 		}
                 		
-                		ArrayList<String> map = new ArrayList<String>();
-                		map.add(name);
-                		map.add(price);
-                		map.add(date);
+                		HashMap<String, Object> map = new HashMap<String, Object>();
+                		map.put("name",name);
+                		map.put("price",price);
+                		map.put("date",date);
                 		
                 		System.out.println(name);
                 		sheet.add(map);	
@@ -169,6 +169,9 @@ public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAnd
 	    
 	    //엑셀 정리 및 다운로드 부분
 	    public void ExcelDown( ArrayList<ArrayList<String>> dataSheet, HttpServletResponse res) throws Exception{
+	    	
+	    	
+	    	
 	    	
 	    	//excel sheet 생성
 	    	 Workbook workbook = new XSSFWorkbook();

@@ -21,6 +21,7 @@ form .error {color:red}
 </style>
 
 <form:form id="Form" name="Form" method="post" action="">
+
 <input type="hidden" name="hometaxbill_id" id="hometaxbill_id">
 <input type="hidden" name="spass" id="spass">
 <input type="hidden" name="apikey" id="apikey">
@@ -53,6 +54,7 @@ form .error {color:red}
 							<div class="table-responsive">
 							<jsp:include page="/WEB-INF/jsp/dyAdmin/include/search/pra_search_header_paging.jsp" flush="true">
 								<jsp:param value="/dyAdmin/bills/pagingAjax1.do" name="pagingDataUrl" />
+								<jsp:param value="/dyAdmin/bills/excelAjax.do" name="excelDataUrl" />
 							</jsp:include>
 							<fieldset id="tableWrap">
 							</fieldset>

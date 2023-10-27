@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -1209,34 +1210,47 @@ public class RestApiTest {
 	 * @throws Exception
 	 * 메일 접근이후 엑셀 다운로드 테스트 진행 
 	 */
-	@RequestMapping("/dyAdmin/bills/mailExceldown.do")
-	public void mailReadExcelDownload(HttpServletResponse res) throws Exception {
+	@RequestMapping("/dyAdmin/bills/excelAjax.do")
+	public ModelAndView mailReadExcelDownload( 
+			
+			HttpServletResponse res 
+			,HttpServletRequest req
+			,Common search
+			
+			) throws Exception {
 		
+		ModelAndView mv = new ModelAndView("dyAdmin/bill/pra_bills_hanjeon_excel");
 		//대양기업
 		String[] user1 = {"imap.naver.com","daeyang0715@naver.com","eodid2015!@"};
 		String[] user2 = {"imap.naver.com","khk8086@naver.com","kimhk8086"};
 		
 		ArrayList<String[]> Userlist = new ArrayList<String[]>();
-		ArrayList<ArrayList<String>> sheet = new ArrayList<ArrayList<String>>();
+		ArrayList<HashMap<String, Object>> sheet = new ArrayList<HashMap<String, Object>>();
 		
 		Userlist.add(user1);
 		Userlist.add(user2);
 		
 		for(String[] u : Userlist) {
-			ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+			ArrayList<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>();
 			temp = emailExcel.main(res,u[0],u[1],u[2]);
 			
 			sheet.addAll(temp);
 		}
 		
-		  //여기서 excel 다운로드
+		//여기서 excel 다운로드
         if(sheet.size() > 0 ) {
-        	try {
-        		emailExcel.ExcelDown(sheet,res);
+	    	mv.addObject("sheet",sheet);
+	    	
+	    	try {
+	    		Cookie cookie = new Cookie("fileDownload", "true");
+				cookie.setPath("/");
+				res.addCookie(cookie);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("쿠키 에러 :: " + e.getMessage());
 			}
+        	
         }
+        return mv;
 	}
 	
 	

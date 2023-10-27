@@ -24,8 +24,6 @@ repositories {
 	maven { url "http://maven.egovframe.kr:8080/maven/" }
 	 maven() {
         url "https://maven.atlassian.com/3rdparty/"
-        
-        url 'http://repository.aspose.com/repo/'
     }
 
 
@@ -55,10 +53,10 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.+'
 	
 
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version:'5.2.0'
-    implementation group: 'org.apache.poi', name: 'poi', version:'5.2.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version:'4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi', version:'4.1.2'
     
-    implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
+    implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.1.2'
     implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version:'4.1.2'
 
 	implementation group: 'kr.dogfoot', name: 'hwplib', version:'1.0'
@@ -129,7 +127,7 @@ dependencies {
 	
 	implementation 'com.google.zxing:core:3.2.0'
 	implementation 'com.google.zxing:javase:3.2.0'
-	implementation 'javax.mail:mail:1.6.2'
+	implementation 'javax.mail:mail:1.4.7'
 	
 	// jsoup
 	implementation 'org.jsoup:jsoup:1.12.1'

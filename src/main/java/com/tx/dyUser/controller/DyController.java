@@ -1245,7 +1245,7 @@ public class DyController {
 	
 	   ModelAndView mv = new ModelAndView("");
 	   WetherService w = new WetherService();
-	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천","부산","부안"};
+	   String[] regionL = {"나주","광주","해남","화성","세종","영암","김제","곡성","남원","음성","진천","부산","부안","안성"};
 	   Component.deleteData("Weather.Daily_WeatherDelete");
 	   
 	   for (String r : regionL) {

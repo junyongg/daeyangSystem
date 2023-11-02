@@ -457,7 +457,6 @@ where UI_KEYNO = 'UI_HMWNH'
 		SELECT	COUNT(*)
 		<include  refid="Safe_getListBody"/>
 		and sa2_UI_KEYNO = #{SU_UI_KEYNO}
-		
     </select>
     
     <select id="Safe_getList" resultMap="ResultMap.rownumHashMap" parameterType="String">
@@ -500,6 +499,7 @@ where UI_KEYNO = 'UI_HMWNH'
 	    SELECT *
 	    from dy_sa_user
 	    where SU_UI_KEYNO = #{SU_UI_KEYNO}
+	    order by SU_SA_SULBI asc 
     </select>
     
 	<!--     발전소 지역별 검색을 위한 지역 Select -->
@@ -508,6 +508,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		FROM dy_sa_user
 		where SU_UI_KEYNO = #{UI_KEYNO}
 		group by SU_SA_AREA
+		
     </select>
     
 	<!--  지역별 발전소 select -->
@@ -516,6 +517,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		  from dy_sa_user
 		  where SU_UI_KEYNO = #{UI_KEYNO}
 		  and SU_SA_AREA = #{area}
+		  order by SU_SA_SULBI asc 
     </select>
     
     <!-- 안전관리 발전소 개별 select -->
@@ -523,6 +525,7 @@ where UI_KEYNO = 'UI_HMWNH'
 	    SELECT *
 	    from dy_sa_user
 	    where SU_KEYNO = #{SU_KEYNO}
+	    order by SU_SA_SULBI asc
     </select>
     
     <!-- 문자 전송을 위한 데이터 뽑기(이름, 전화번호) -->
@@ -530,12 +533,14 @@ where UI_KEYNO = 'UI_HMWNH'
 	    SELECT *
 	    from dy_sa_user
 	    where SU_KEYNO = #{SU_KEYNO}
+	    order by SU_SA_SULBI asc
     </select>
 	
 	 <select id="safeuserselect_phone" parameterType="String" resultType="safeUserDTO">
 	    SELECT SU_SA_SULBI, SU_SA_PHONE
 	    from dy_sa_user
 	    where SU_KEYNO = #{SU_KEYNO}
+	    order by SU_SA_SULBI asc
     </select>
     
     <!-- 안전관리 양식 개별 select -->
@@ -756,7 +761,7 @@ where UI_KEYNO = 'UI_HMWNH'
 	 		ORDER BY	SU_SA_MSGYN ${sortDirect}
 	 		</when>
 	 		<otherwise>
-	 		ORDER BY 	COUNT DESC
+	 		ORDER BY 	SU_SA_SULBI DESC
 	 		</otherwise>
  		</choose>
 		<if test=" recordCountPerPage != 0">
@@ -1083,6 +1088,87 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{a},#{b},#{c},#{d},#{e},#{f},#{g},#{h},#{i},#{j},#{k},#{l},#{m},#{n},#{o},#{p},#{q}
 			)
 		</insert>
+		
+		
+		<!-- 이번달 점검 체크 쿼리 -->
+		<select id="Month_Checking" resultMap="ResultMap.rownumHashMap" parameterType="String">
+			select AA.* 
+			from (
+					SELECT a.* , if ( month(b.Conn_date) = month(now()),count(b.sa2_title),0 ) as checking
+					FROM dy_sa_user a
+					LEFT JOIN dy_sa2_paper b
+					ON a.SU_KEYNO = b.sa2_su_keyno 
+					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
+					GROUP BY a.SU_KEYNO
+				) AA
+			where 1=1
+			<if test="AH_HOMEDIV_C != null and AH_HOMEDIV_C != ''">
+	 			AND			sa2_problem 	=	#{AH_HOMEDIV_C}
+		 	</if>
+		 	<if test="UI_ID != null and UI_ID != ''">
+	 			AND			sa2_title 			=	#{UI_ID}
+		 	</if>
+	        <if test="searchBeginDate != null and searchBeginDate != ''">
+	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 			AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+			<if test="searchList != null">
+			 	<foreach collection="searchList" item="item">
+			 		<choose>
+			 			<when test='item.searchIndex.equals("1")'>
+		 		AND		sa2_title			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+			 			</when>
+			 			<when test='item.searchIndex.equals("2")'>
+		 		AND		AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+			 			</when>
+			 			<when test='item.searchIndex.equals("all")'>
+		 		AND 	(
+			 				sa2_title	 			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+			 				AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+		 				)							
+			 			</when>
+			 		</choose>
+		 		</foreach>
+		 	</if>
+			<choose>
+				<when test="orderBy == 1">
+		 		ORDER BY	sa2_title ${sortDirect}
+		 		</when>
+		 		<when test="orderBy == 2">
+		 		ORDER BY	AA.checking ${sortDirect}
+		 		</when>
+		 		<otherwise>
+		 		ORDER BY 	AA.checking DESC
+		 		</otherwise>
+	 		</choose>
+			<if test=" recordCountPerPage != 0">
+				LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+			</if>  
+		</select>
+		
+		<!-- 전체 발전소 추출 -->
+		<select id="Month_Checking_Cnt" resultType="int" parameterType="String">
+			SELECT	COUNT(*)
+			FROM dy_sa_user
+			WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
+			ORDER BY SU_KEYNO ASC
+			<if test=" recordCountPerPage != 0">
+				LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+			</if>  
+    	</select>
+		
+		<!-- 지역 전체 출력 -->
+		<select id="Area_select" resultType="hashmap">
+			select  SU_SA_AREA 
+			from dy_sa_user 
+			where SU_SA_AREA != ''
+			and SU_SA_AREA != 'TEST'
+			group by SU_SA_AREA 
+		</select>
 		
 		
 </mapper>

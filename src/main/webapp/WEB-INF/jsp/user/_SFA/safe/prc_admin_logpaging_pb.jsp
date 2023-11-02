@@ -56,14 +56,7 @@
               </select>
               <div class="text-center mt-2">
                 <a>
-                  이상 유/무
-<!--                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" -->
-<!--                     viewBox="0 0 320 512" class="inline-flex" height="1em" width="1em" -->
-<!--                     xmlns="http://www.w3.org/2000/svg"> -->
-<!--                     <path -->
-<!--                       d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"> -->
-<!--                     </path> -->
-<!--                   </svg> -->
+                 	 이상 유/무
                 </a>
               </div>
             </td>
@@ -73,14 +66,7 @@
                 placeholder="발전소명(으)로 검색">
               <div class="text-center mt-2">
                 <a>
-                  발전소명
-<!--                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" -->
-<!--                     viewBox="0 0 320 512" class="inline-flex" height="1em" width="1em" -->
-<!--                     xmlns="http://www.w3.org/2000/svg"> -->
-<!--                     <path -->
-<!--                       d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"> -->
-<!--                     </path> -->
-<!--                   </svg> -->
+                 	 발전소명
                 </a>
               </div>
             </td>
@@ -90,7 +76,7 @@
                 value="Invalid date">
               <div class="text-center mt-2">
                 <a class="arrow" data-index="4" style="cursor: pointer;">
-                  작성일
+                  	작성일
                   <svg stroke="currentColor" fill="currentColor" stroke-width="0"
                     viewBox="0 0 320 512" class="inline-flex" height="1em" width="1em"
                     xmlns="http://www.w3.org/2000/svg">
@@ -107,14 +93,7 @@
                 placeholder="종합의견(으)로 검색" value="">
               <div class="text-center mt-2">
                 <a>
-                  종합의견
-<!--                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" -->
-<!--                     viewBox="0 0 320 512" class="inline-flex" height="1em" width="1em" -->
-<!--                     xmlns="http://www.w3.org/2000/svg"> -->
-<!--                     <path -->
-<!--                       d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"> -->
-<!--                     </path> -->
-<!--                   </svg> -->
+                  	종합의견
                 </a>
               </div>
             </td>
@@ -140,9 +119,7 @@
 	            <c:if test="${b.sa2_problem eq '1' }">
 		            <td class="px-4 py-3 text-center" style="white-space: nowrap;">
 		              <span class="text-sm">
-		                <span
-		                  class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">이상
-		                  있음</span>
+		                <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">이상있음</span>
 		              </span>
 		            </td>
 	            </c:if>
@@ -150,8 +127,7 @@
 	            	<td class="px-4 py-3 text-center">
                        <span class="text-sm">
                          <span
-                           class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-100">이상
-                           없음</span>
+                           class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-100">이상없음</span>
                        </span>
                      </td>
 	            </c:if>
@@ -183,29 +159,7 @@
       <div class="flex mt-2 sm:mt-auto sm:justify-end">
         <nav aria-label="페이지">
           <ul class="pageNumberUl inline-flex items-center">
-<!--             <li> -->
-<!--               <button -->
-<!--                 class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none p-2 rounded-md text-gray-600 focus:outline-none border border-transparent opacity-50 cursor-not-allowed" -->
-<!--                 disabled="" type="button" aria-label="Previous"> -->
-<!--                 <svg class="h-3 w-3" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"> -->
-<!--                   <path -->
-<!--                     d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" -->
-<!--                     clip-rule="evenodd" fill-rule="evenodd"></path> -->
-<!--                 </svg> -->
-<!--               </button> -->
-<!--             </li> -->      
                 <ui:pagination paginationInfo="${paginationInfo }" type="Manager" jsFunction="pf_LinkPage"/>
-<!--             <li> -->
-<!--               <button -->
-<!--                 class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none p-2 rounded-md text-gray-600 focus:outline-none border border-transparent opacity-50 cursor-not-allowed" -->
-<!--                 disabled="" type="button" aria-label="Next"> -->
-<!--                 <svg class="h-3 w-3" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"> -->
-<!--                   <path -->
-<!--                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" -->
-<!--                     clip-rule="evenodd" fill-rule="evenodd"></path> -->
-<!--                 </svg> -->
-<!--               </button> -->
-<!--             </li> -->
           </ul>
         </nav>
       </div>

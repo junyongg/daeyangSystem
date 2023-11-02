@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <%@ include file="/WEB-INF/jsp/setting/settingData.jsp"%>
-<%@ include file="/WEB-INF/jsp/cf/board/language/prc_board_language.jsp"%>
+<%-- <%@ include file="/WEB-INF/jsp/cf/board/language/prc_board_language.jsp"%> --%>
 
 
 <jsp:useBean id="toDay" class="java.util.Date" scope="page"/>

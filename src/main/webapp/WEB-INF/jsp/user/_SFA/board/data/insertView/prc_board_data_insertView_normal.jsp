@@ -709,7 +709,7 @@ function pf_adjust(id, bl_type, data){
 						        
 						        
 						        
-								<%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%>
+<%-- 								<%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%> --%>
 								
 								
 								
@@ -750,7 +750,7 @@ function pf_adjust(id, bl_type, data){
 
 				    <c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y' && currentMenu.MN_GONGNULI_TYPE eq '0'}">
 			            <div>
-							<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli_insert.jsp" %>                            
+<%-- 							<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli_insert.jsp" %>                             --%>
 			            </div>
 		            </c:if>   
 				                       

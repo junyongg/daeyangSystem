@@ -13,9 +13,6 @@
 </head>
 <body>
 	
-   	<c:if test="${not empty popupList_B }">
-	<%@ include file="/WEB-INF/jsp/user/_common/_Default/popup_view_B.jsp" %>
-	</c:if>
 	
 	<tiles:insertAttribute name="header"/>
 
@@ -42,7 +39,6 @@
 					<jsp:include page="/WEB-INF/jsp/user/Skin/research/prs_skin_${fn:substring(homeData.HM_RESEARCH_SKIN,4,20)}.jsp"/>
  				</c:when>
  				<c:otherwise>
-					<jsp:include page="/WEB-INF/jsp/user/_common/_Default/pra_page_research.jsp"/>
  				</c:otherwise>
  			</c:choose>     	
            </div>
@@ -50,10 +46,6 @@
 	</c:if>
 
 	<tiles:insertAttribute name="footer"/>
-
-	<c:if test="${not empty popupList_W }">
-	<%@ include file="/WEB-INF/jsp/user/_common/_Default/popup_view_W.jsp" %>
-	</c:if>
 
 	<div class="loading_box">
 		<div class="bg"></div>

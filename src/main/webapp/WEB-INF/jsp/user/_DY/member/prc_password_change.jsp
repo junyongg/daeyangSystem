@@ -28,9 +28,9 @@
 	
 	<button type="submit">비밀번호 변경하기</button>
 	<button type="button" onclick="location.href='/${tiles}/index.do'">나중에 변경하기</button>
-	<c:if test="${not empty sp:getString('PASSWORD_CYCLE') || sp:getString('PASSWORD_CYCLE') > 0}">
-	<button type="button" class="btn-join1 bgGray" onclick="location.href='/${tiles}/password/after/update.do'">${sp:getString('PASSWORD_CYCLE')}일 뒤에 변경하기</button>
-	</c:if>
+	<%-- <c:if test="${not empty sp:getString('PASSWORD_CYCLE') || sp:getString('PASSWORD_CYCLE') > 0}">
+		<button type="button" class="btn-join1 bgGray" onclick="location.href='/${tiles}/password/after/update.do'">${sp:getString('PASSWORD_CYCLE')}일 뒤에 변경하기</button>
+	</c:if> --%>
 </form:form> 
 
 <script type="text/javascript">

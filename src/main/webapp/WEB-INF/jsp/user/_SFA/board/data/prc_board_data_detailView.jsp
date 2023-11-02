@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <%@ include file="/WEB-INF/jsp/setting/settingData.jsp"%>
-<%@ include file="/WEB-INF/jsp/cf/board/language/prc_board_language.jsp"%>
 <style>
 .btnBig_01 {
     padding: 10px 40px;
@@ -209,7 +208,7 @@ function pf_checkPwd(){
 					
 					<c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y'}">
 			            <div style="margin: 50px 0;">
-							<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                            
+<%-- 							<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                             --%>
 			            </div>
 		            </c:if>
 		            

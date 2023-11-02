@@ -636,7 +636,7 @@ function pf_adjust(id, bl_type, data){
 									<label>첨부파일</label>
 						        </p>
 						        <div class="formBox">
-								<%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%>
+<%-- 								<%@ include file="/WEB-INF/jsp/txap/operation/file/pra_file_insertView.jsp"%> --%>
 								<%-- <p class="file_img">사이즈 :: ${BoardType.BT_FILE_IMG_WIDTH } X ${BoardType.BT_FILE_IMG_HEIGHT } 사이즈가 다를시 자동 리사이즈 됩니다.</p> --%>
 								<c:if test="${action eq 'update' || action eq 'move' }">
 									<input type="hidden" name="fsSize" id="fsSize" value="${fn:length(FileSub) }">

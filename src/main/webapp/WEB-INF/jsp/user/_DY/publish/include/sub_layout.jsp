@@ -4,7 +4,7 @@
 <div class="shadowBox"></div>
 	
 	<c:if test="${not empty popupList_B }">
-	<%@ include file="/WEB-INF/jsp/dyAdmin/operation/popup/popup_view_B.jsp" %>
+<%-- 	<%@ include file="/WEB-INF/jsp/dyAdmin/operation/popup/popup_view_B.jsp" %> --%>
 	</c:if>
 	
 	
@@ -28,7 +28,7 @@
 	            	<tiles:insertAttribute name="body"/>	
 	            </div>
 	            
-	            <c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y' && currentMenu.MN_PAGEDIV_C ne sp:getData('MENU_TYPE_BOARD') }">
+	            <%-- <c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y' && currentMenu.MN_PAGEDIV_C ne sp:getData('MENU_TYPE_BOARD') }">
 		            <div style="margin-top: 150px;">
 						<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                            
 		            </div>
@@ -37,7 +37,7 @@
 		            <div style="margin-top: 150px;">
 						<%@ include file="/WEB-INF/jsp/dyAdmin/operation/research/prc_page_research.jsp" %>                            
 		            </div>
-	            </c:if>
+	            </c:if> --%>
 	        </div>
 	    </div>
 	</div>

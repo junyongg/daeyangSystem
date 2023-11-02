@@ -91,14 +91,6 @@
 <meta name="naver-site-verification" content="1674c2c22c64d99f129e94920246b11d51dc88f3" />
 </head>
 <body>
-	<c:if test="${not empty popupList_W }">
-		<%@ include file="/WEB-INF/jsp/txap/operation/popup/popup_view_W.jsp" %>
-	</c:if>
-	<div class="shadowBox"></div>
-	
-	<c:if test="${not empty popupList_B }">
-		<%@ include file="/WEB-INF/jsp/txap/operation/popup/popup_view_B.jsp" %>
-	</c:if>
 		
 <tiles:insertAttribute name="header"/>
 <c:if test="${currentMenu.MN_LEV eq 0 }">
@@ -114,16 +106,6 @@
         	
             	<tiles:insertAttribute name="body"/>	
             
-            <c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y' && currentMenu.MN_PAGEDIV_C ne MENU_TYPE_BOARD }">
-	            <div style="margin-top: 150px;">
-<%-- 					<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                             --%>
-	            </div>
-            </c:if>
-            <c:if test="${currentMenu.MN_RESEARCH eq 'Y' }">
-	            <div style="margin-top:65px;">
-<%-- 					<%@ include file="/WEB-INF/jsp/txap/operation/research/prc_page_research.jsp" %>                             --%>
-	            </div>
-            </c:if>
 </div>
 
 </c:if>

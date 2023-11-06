@@ -158,7 +158,8 @@ public class billDTO {
 	,dbs_address
 	,dbs_date
 	,dbs_subkey1
-	,dbs_homeid= "";
+	,dbs_homeid
+	,dbl_update= "";
 	
 	
 

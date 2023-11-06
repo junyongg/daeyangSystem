@@ -260,7 +260,8 @@
 				dbl_sub_issuedate,
 				dbl_sub_keyno,
 				dbl_si_hcnt,
-				dbl_homeid
+				dbl_homeid,
+				dbl_update
 				
 			)VALUES(
 				#{dbl_provider_key},
@@ -291,10 +292,27 @@
 				#{dbl_sub_issuedate},
 				#{dbl_sub_keyno},
 				#{dbl_si_hcnt},
-				#{dbl_homeid}
+				#{dbl_homeid},
+				#{dbl_update}
 				
 			)
 	</insert>
+	
+	<delete id="billInfoDeleteAuto" parameterType="String">
+			DELETE  FROM dy_bills_log 
+			where date_format(Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
+			and dbl_sub_keyno = #{subkey}
+			and dbl_status = '1'
+			and dbl_update = 'up'
+	</delete>
+	
+	<select id="billInfoAutoSelect" parameterType="String" resultType="String">
+			select count(*)
+			FROM dy_bills_log
+			where date_format(Conn_date, '%Y-%m') = date_format(now(), '%Y-%m')
+			and dbl_sub_keyno = #{subkey}
+			and dbl_update = 'up'
+	</select>
 	
 	<update id="billsInfoUpdate" parameterType="billDTO">
 		UPDATE dy_bills_log

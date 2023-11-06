@@ -52,6 +52,11 @@
 														style="margin-right: 10px;">
 														<i class="fa fa-plus"></i> 세금계산서 리스트 업데이트
 													</button>
+													<button class="btn btn-sm btn-primary smallBtn"
+														id ="UpdateButton" type="button" onclick="DeleteUpdate()"
+														style="margin-right: 10px;">
+														업데이트 되돌리기
+													</button>
 												</div>
 											</th>
 										</tr>
@@ -190,7 +195,6 @@ function TaxListUpdate_DY() {
 	
 	var subkey = $("#dbl_sub_keyno").val();
 	
-	
 	$.ajax({
 		url: '/autolist.do',
 		type: 'POST',
@@ -199,16 +203,35 @@ function TaxListUpdate_DY() {
 		},
 		async: false,
 		success : function(data){
-			
-			if(data.length > 0){
-				alert("세금계산서 발행 리스트 업데이트 완료");
-				location.reload();
-			}else{
-				alert("첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다.");
-			}
-			
+			alert(data)
+			location.reload();
 		}
 	});
+}
+
+
+function DeleteUpdate() {
+	
+	var subkey = $("#dbl_sub_keyno").val();
+	
+	if(confirm("업데이트 된 리스트를 되돌리시겠습니까?")){	
+		$.ajax({
+			
+			url: '/listDelete.do',
+			type: 'POST',
+			data: {
+				"subkey" : subkey
+			},
+			async: false,
+			success : function(data){
+				alert(data)
+				location.reload();
+			}
+		});	
+	}else{
+		
+	}
+	
 }
 
 function HomeIdUpdte() {
@@ -241,7 +264,6 @@ function AllSendNTS(){
 			data: {
 				"subkey" : subkey
 			},
-			async: false,
 			success : function(data){
 				
 			}

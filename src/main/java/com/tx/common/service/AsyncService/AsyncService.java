@@ -8,7 +8,7 @@ public interface AsyncService {
 
    public String sendApi(billDTO bill, String tocken) throws Exception;
    
-   public void allSendNTS(billDTO bill, String subkey, String tocken) throws Exception;
+   public void allSendNTS(billDTO bill, String subkey) throws Exception;
    
    public void sendNTS(billDTO bill, String dbl_keyno, String tocken) throws Exception;
 	

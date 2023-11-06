@@ -374,37 +374,41 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 	
 	@Override
 	@Async("threadPoolTaskExecutor")
-	public void allSendNTS(billDTO bill, String subkey, String tocken) throws Exception {
+	public void allSendNTS(billDTO bill, String subkey) throws Exception {
 		
 		String msg = "";
-		List list = Component.getList("bills.AllsentNTS",subkey);
+		List list = Component.getList("bills.AllsentNTS",subkey);		
 		
-		if(tocken.length() > 0) {
-			if(list.isEmpty()) {	
-				msg = "전송할 세금계산서가 없습니다.";
-			}else {
-				for(Object l : list) {
-					//전송 Y/N 체크
-					Component.updateData("bills.checkYN", l);
-					bill = Component.getData("bills.selectAllView", l);
-					
-					if(subkey.equals("1")){
-						taxService.registIssue(bill, tocken);
+		
+		if(list.isEmpty()) {	
+			msg = "전송할 세금계산서가 없습니다.";
+		}else {
+			for(Object l : list) {
+				
+				//카카오톡 발급 토큰받기
+				String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+				tocken = URLEncoder.encode(tocken, "UTF-8");
+				
+			
+				//전송 Y/N 체크
+				Component.updateData("bills.checkYN", l);
+				bill = Component.getData("bills.selectAllView", l);
+				
+				if(subkey.equals("1")){
+					taxService.registIssue(bill, tocken);
 //						System.out.println("하나보냄");
 //						Thread.sleep(60000);
-					}else if(subkey.equals("2")){
-						sendApi(bill, tocken);
+				}else if(subkey.equals("2")){
+					sendApi(bill, tocken);
 //						System.out.println("하나보냄");
-						Thread.sleep(60000);
-					}else {
-						sendApi(bill, tocken);
-					}	
-				}
-				msg = "전체 전송이 완료되었습니다.";	
+					Thread.sleep(60000);
+				}else {
+					sendApi(bill, tocken);
+				}	
 			}
-		}else {
-			
+			msg = "전체 전송이 완료되었습니다.";	
 		}
+		
 
 	}
 		

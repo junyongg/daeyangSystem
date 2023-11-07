@@ -1019,8 +1019,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			join dy_sa_user b
 			on a.sa2_su_keyno = b.SU_KEYNO
 			and a.sa2_UI_KEYNO = b.SU_UI_KEYNO
-			where date_format(a.Conn_date, '%m/%d/%h/%i') =
-			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
+			where date_format(a.Conn_date, '%m/%d/%h/%i/%S') =
+			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i/%S'),'0')
 				FROM dy_sa_user a
 				join dy_sa2_paper b
 				on a.SU_KEYNO  = b.sa2_su_keyno

@@ -84,7 +84,7 @@ public class RestApiTest {
 	
 	@RequestMapping("/autolist.do")
 	@ResponseBody
-	public ArrayList<HashMap<String,Object>> autolist(HttpServletRequest req,
+	public String autolist(HttpServletRequest req,
 			@RequestParam(value="subkey")String subkey) throws Exception {
 		
 		  String codeStr = "";
@@ -92,6 +92,8 @@ public class RestApiTest {
 		  
 		  
 		  List<HashMap<String, Object>> list = Component.getList("bills.PreMonthData", subkey);
+		  String AutolistCount = Component.getData("bills.billInfoAutoSelect", subkey);
+		  
 		  ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String,Object>>();
 		  
 		  String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
@@ -110,69 +112,98 @@ public class RestApiTest {
 		  String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		  String month2 = date.substring(4,6);
 		  
-		  if (list.size() > 0) {
+		  
+		  if(AutolistCount.equals("0")) {
 			  
-			  String homekey = Component.getData("bills.homekey");
-			  int num = 0;
-			  
-			  for(HashMap<String, Object> l : list) {
+			  if (list.size() > 0) {
 				  
-				  String codenum = homekey.substring(7,homekey.length());
-				  int tempc = Integer.parseInt(codenum) + 1 ;
-				  String code =  homekey.substring(0,7);
-				  codeStr = code+tempc;
-				  homekey = codeStr;
+				  String homekey = Component.getData("bills.homekey");
+				  int num = 0;
 				  
-		    	  l.put("dbl_issuedate", nowdate2);
-		    	  l.put("dbl_checkYN", "N");
-		    	  l.put("dbl_errormsg", "");
-		    	  l.put("dbl_homeid", codeStr);
-		    	  l.put("dbl_status", "1");
-		    	  
-		    	  //품목명 처리(Subject)
-		    	  String subject = (String)l.get("dbl_subject");
-		    	  String subject_sub = subject.substring(5, subject.length());
-		    	  
-		    	  
-		    	  //
-		    	  if(subkey.equals("1")) {
-		    		String subDate = year2+"."+month2;
-		    		l.put("dbl_subject",subDate+subject_sub);
-		    		l.put("dbl_unitprice", "");
-		    		l.put("dbl_supplyprice", "");
-		    		l.put("dbl_tax", "");
-		    		l.put("dbl_chargetotal", "");
-					l.put("dbl_taxtotal", "");
-					l.put("dbl_grandtotal", "");
-		    	  }else if(subkey.equals("2")) {
-		    		String subDate = year2+"."+month2;
-		    		l.put("dbl_subject",subDate+subject_sub);
-		    		l.put("dbl_unitprice", "");
-		    		l.put("dbl_supplyprice", "");
-		    		l.put("dbl_tax", "");
-		    		l.put("dbl_chargetotal", "");
-					l.put("dbl_taxtotal", "");
-					l.put("dbl_grandtotal", "");
-		    	  }else {	
-		    		String subDate = year2+"."+month;
-		    		l.put("dbl_subject",subDate+subject_sub);
-		    	  }
-		    	  
-		    	  Component.createData("bills.billInfoInsertAuto", l);
-		    	  map.add(num, l);
-		    	  
-		    	  num =+ 1;
+				  for(HashMap<String, Object> l : list) {
+					  
+					  String codenum = homekey.substring(7,homekey.length());
+					  int tempc = Integer.parseInt(codenum) + 1 ;
+					  String code =  homekey.substring(0,7);
+					  codeStr = code+tempc;
+					  homekey = codeStr;
+					  
+					  l.put("dbl_issuedate", nowdate2);
+					  l.put("dbl_checkYN", "N");
+					  l.put("dbl_errormsg", "");
+					  l.put("dbl_homeid", codeStr);
+					  l.put("dbl_status", "1");
+					  l.put("dbl_update", "up");
+					  
+					  //품목명 처리(Subject)
+					  String subject = (String)l.get("dbl_subject");
+					  String subject_sub = subject.substring(5, subject.length());
+					  
+					  
+					  //
+					  if(subkey.equals("1")) {
+						  String subDate = year2+"."+month2;
+						  l.put("dbl_subject",subDate+subject_sub);
+						  l.put("dbl_unitprice", "");
+						  l.put("dbl_supplyprice", "");
+						  l.put("dbl_tax", "");
+						  l.put("dbl_chargetotal", "");
+						  l.put("dbl_taxtotal", "");
+						  l.put("dbl_grandtotal", "");
+					  }else if(subkey.equals("2")) {
+						  String subDate = year2+"."+month2;
+						  l.put("dbl_subject",subDate+subject_sub);
+						  l.put("dbl_unitprice", "");
+						  l.put("dbl_supplyprice", "");
+						  l.put("dbl_tax", "");
+						  l.put("dbl_chargetotal", "");
+						  l.put("dbl_taxtotal", "");
+						  l.put("dbl_grandtotal", "");
+					  }else {	
+						  String subDate = year2+"."+month;
+						  l.put("dbl_subject",subDate+subject_sub);
+					  }
+					  
+					  Component.createData("bills.billInfoInsertAuto", l);
+					  map.add(num, l);
+					  
+					  num =+ 1;
+				  }
+				  
+				  //Keytable에 가장 마지막 숫자 업데이트
+				  Component.updateData("bills.changeHomekey", codeStr);
+				  
+				  msg = "세금계산서 발행 리스트 업데이트 완료";
+			  } else {
+				  msg = "첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다."; 
 			  }
+		  }else {
+			  msg = "이번달에 이미 자동업데이트를 실행했습니다.";
 			  
-			//Keytable에 가장 마지막 숫자 업데이트
-			 Component.updateData("bills.changeHomekey", codeStr);
-			 
-			 msg = "세금계산서 발행 리스트 업데이트 완료";
-		  } else {
-			 msg = "첫 발행시에는 직접 등록해 주세요. 다음 발행부터는 버튼 클릭 시 자동으로 업데이트 됩니다."; 
 		  }
 		  
-		return map;
+
+		  return msg;
+	}
+	
+	@RequestMapping("/listDelete.do")
+	@ResponseBody
+	public String listDelete(HttpServletRequest req,
+			@RequestParam(value="subkey")String subkey) throws Exception {
+		
+		
+		String msg = "";
+		String AutolistCount = Component.getData("bills.billInfoAutoSelect", subkey);
+		
+		if(AutolistCount.equals("0")) {
+			msg = "되돌릴 리스트가 없습니다";
+		}else {
+			
+			Component.deleteData("bills.billInfoDeleteAuto", subkey);
+			msg = "업데이트 리스트 되돌리기 완료";
+		}
+		
+		return msg;
 	}
 	 
 
@@ -1183,11 +1214,7 @@ public class RestApiTest {
 		
 		String msg = "";
 		
-		//토큰받기
-		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-		tocken = URLEncoder.encode(tocken, "UTF-8");
-		
-		AsyncService.allSendNTS(bill, subkey, tocken);
+		AsyncService.allSendNTS(bill, subkey);
 			
 	}
 	

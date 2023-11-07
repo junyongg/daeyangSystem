@@ -53,7 +53,16 @@
         <div class="board_detail_contents">
 	    	<c:choose>
 	    		<c:when test="${BoardNotice.BN_HTMLMAKER_PLUS_TYPE eq 'N'}">
-	    		 <pre><c:out value="${BoardNotice.BN_CONTENTS }" escapeXml="false"/></pre>
+	    		 <pre>
+	    		 	<c:out value="${BoardNotice.BN_CONTENTS }" escapeXml="false"/>
+	    		 	
+	    		 	<c:forEach items="${FileSub}" var="fs">
+	    		 		<c:if test="${fs.FS_EXT eq 'png' || fs.FS_EXT eq 'jpg' || fs.FS_EXT eq 'jpeg' }">
+	    		 			<img src="/resources/img/upload/${fs.FS_FOLDER }${fs.FS_CHANGENM}.${fs.FS_EXT}" width="50%;" height="50%;"/>
+	    		 		</c:if>
+	    		 	</c:forEach>
+	    		 	
+	    		 </pre>
 	    		</c:when>
 	    		<c:otherwise>
 	    			<c:out value="${BoardNotice.BN_CONTENTS }" escapeXml="false"/>
@@ -70,14 +79,14 @@
 					<div class="list">
 						<ul>
 							<li class="file">
-							  <c:choose>
+							  <%-- <c:choose>
 								<c:when test="${boardAuthList.download eq true}">
 				                	<a href="javascript:;" onclick="cf_download('${fs.encodeFsKey}')"> 
 								</c:when>
 							  	<c:otherwise>
 							  		<a href="javascript:;" onclick="alert('다운로드 권한이 없습니다.')">
 							  	</c:otherwise>
-							  </c:choose>
+							  </c:choose> --%>
 							  ${fs.FS_ORINM }
 							  <c:if test="${fs.FS_FILE_SIZE / 1024  gt 1000}">
 									(<fmt:formatNumber value="${fs.FS_FILE_SIZE / 1024 / 1024 }" pattern=".0"/>M)
@@ -85,7 +94,7 @@
 							  <c:if test="${fs.FS_FILE_SIZE / 1000  le 1000}">
 									(<fmt:formatNumber value="${fs.FS_FILE_SIZE / 1024 }" pattern=".0"/>K)
 							  </c:if> 
-							  </a>
+<!-- 							  </a> -->
 							 <c:if test="${fn:contains('bmp,jpg,png,gif,jpeg,hwp,pdf,xls,xlsx,doc,docx,ppt,pptx', ext) && BoardType.BT_PREVIEW_YN eq 'Y' && boardAuthList.download eq true}">
 								<c:choose>
 									<c:when test="${fs.FS_CONVERT_CHK eq 'Y' }">

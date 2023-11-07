@@ -99,10 +99,12 @@ public class safeAdminController {
 	 * 메인페이지
 	 **/
 	@RequestMapping("/sfa/safe/safe.do")
-	public ModelAndView adminIntro(HttpServletRequest req) throws Exception {
-		ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_safemain_pb");
+	public String adminIntro(HttpServletRequest req) throws Exception {
+		//ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_safemain_pb");
+		//ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_admin_log_pb");
+		
 
-		return mv;
+		return "redirect:/sfa/safe/safeAdminLog.do";
 	}
 
 	/*
@@ -2070,6 +2072,20 @@ public class safeAdminController {
 		}
 		
 		return msg;
+	}
+	
+	/*
+	* 점검현황
+	**/
+	@RequestMapping(value = "/sfa/safe/checkingStatus.do")
+	public ModelAndView safeAdminCheck(HttpServletRequest req) throws Exception {
+
+		ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_admin_check_pb");
+			
+		//지역 전체 출력 
+		List<HashMap<String, Object>> map =  Component.getListNoParam("sfa.Area_select");
+		mv.addObject("map",map);
+		return mv;
 	}
 	
 }

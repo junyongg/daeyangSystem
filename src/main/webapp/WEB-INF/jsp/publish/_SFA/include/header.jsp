@@ -12,7 +12,7 @@
       </svg>
     </button>
     <c:set var = "str" value = "${currentMenu.MN_NAME}"/>
-	<c:if test="${fn:contains(str,'안전') }">
+	<c:if test="${fn:contains(str,'안전') || fn:contains(str,'점검') }">
     <div class="relative w-full max-w-xl text-base md:text-base lg:text-lg text-left hidden lg:block"><b>${userInfo.UI_NAME }</b> 님</div>
     </c:if>
     <c:set var = "str" value = "${currentMenu.MN_NAME}"/>

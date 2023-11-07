@@ -184,7 +184,54 @@ public class safeAdminLogController {
 		
 	}
 	
+
 	
+	/**
+	 * 활동 기록 - 페이징 ajax
+	 * @param req
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
+	 @RequestMapping(value="/sfa/sfaAdmin/checkingAjaxAdmin.do")
+		public ModelAndView checkingAjaxAdmin(HttpServletRequest req,
+				Common search
+				, @RequestParam(value="UI_ID",required=false) String UI_ID
+				, @RequestParam(value="AH_HOMEDIV_C",required=false) String AH_HOMEDIV_C
+				) throws Exception {
+			
+			ModelAndView mv  = new ModelAndView("/user/_SFA/safe/prc_admin_checking_pb");
+
+			List<HashMap<String,Object>> searchList = Component.getSearchList(req);
+			
+			Map<String,Object> map = CommonService.ConverObjectToMap(search);
+			
+			Map<String, Object> user = CommonService.getUserInfo(req);
+			String UI_KEYNO = user.get("UI_KEYNO").toString();
+			
+			if(searchList != null){
+				map.put("searchList", searchList);
+			}
+			
+			map.put("AH_HOMEDIV_C", AH_HOMEDIV_C);
+			map.put("UI_ID", UI_ID);
+			map.put("SU_UI_KEYNO", UI_KEYNO);
+			
+			
+			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfa.Month_Checking_Cnt",map, search.getPageUnit(), 25);
+			
+			map.put("firstIndex", pageInfo.getFirstRecordIndex());
+			map.put("lastIndex", pageInfo.getLastRecordIndex());
+			map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+			
+			mv.addObject("paginationInfo", pageInfo);
+			
+			List<HashMap<String,Object>> resultList = Component.getList("sfa.Month_Checking", map); 
+			mv.addObject("resultList4", resultList);
+			mv.addObject("search", search);
+			mv.addObject("SU_UI_KEYNO", UI_KEYNO);
+			return mv;
+		}
 	
 	/**
 	 * 활동 기록 - 데이터 가져오기

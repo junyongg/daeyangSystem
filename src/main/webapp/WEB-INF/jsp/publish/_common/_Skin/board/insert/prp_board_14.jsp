@@ -138,14 +138,11 @@
 									<p class="titleBox">
 						        	<label for="BN_CATEGORY_NAME">카테고리 구분</label>
 						       		 </p>
-									<select class="form-control input-sm" id="BN_CATEGORY_NAME"
-										name="BN_CATEGORY_NAME">
+									<select class="form-control input-sm" id="BN_CATEGORY_NAME" name="BN_CATEGORY_NAME">
 										<option>전체</option>
-										<c:forEach var="categoryname"
-											items="${ fn:split(BoardType.BT_CATEGORY_INPUT,',')}">
+										<c:forEach var="categoryname" items="${ fn:split(BoardType.BT_CATEGORY_INPUT,',')}">
 
-											<option value="${categoryname }"
-												${categoryname eq BoardNotice.BN_CATEGORY_NAME ? 'selected' : ''}>${categoryname }</option>
+											<option value="${categoryname }" ${categoryname eq BoardNotice.BN_CATEGORY_NAME ? 'selected' : ''}>${categoryname }</option>
 
 										</c:forEach>
 

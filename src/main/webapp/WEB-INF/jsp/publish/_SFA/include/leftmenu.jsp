@@ -8,7 +8,7 @@
     <a class="flex ml-6 text-base md:text-base lg:text-lg md:text-base font-bold text-gray-800" href="/sfa/index.do">DAEYANG</a>
 	  <ul class="mt-6 px-6">
 		<c:set var = "str" value = "${currentMenu.MN_NAME}"/>
-		<c:if test="${fn:contains(str,'안전') }">
+		<c:if test="${fn:contains(str,'안전') || fn:contains(str,'점검') }">
 	      <li class="relative py-3">
 	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
 	        href="/sfa/safe/safeAdmin.do">
@@ -21,6 +21,13 @@
 	        href="/sfa/safe/safeAdminLog.do">
 	          <img src="/resources/img/icon/shieldKeyholeFillBlack.svg" class="fill-red w-5 h-5" alt="안전관리 현황 아이콘">
 	          <span class="ml-4">안전관리 현황</span>
+	        </a>
+	      </li>
+	      <li class="relative py-3">
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/sfa/safe/checkingStatus.do">
+	          <img src="/resources/img/icon/checking.svg" class="fill-red w-5 h-5" alt="점검 현황 아이콘">
+	          <span class="ml-4">점검 현황</span>
 	        </a>
 	      </li>
 		</c:if>

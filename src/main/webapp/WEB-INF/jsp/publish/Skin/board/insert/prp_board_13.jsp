@@ -64,7 +64,8 @@
                             <td>
                             	<c:forEach var="categoryname" items="${ fn:split(BoardType.BT_CATEGORY_INPUT,',')}" varStatus="status">
 									<span class="ca_in">
-                                    	<input type="radio" name="BN_CATEGORY_NAME" id="ch0${status.count }"  value="${categoryname }" ${categoryname eq BoardNotice.BN_CATEGORY_NAME?'checked':'' }>
+                                    	<input type="radio" name="BN_CATEGORY_NAME" id="ch0${status.count }"  
+                                    	value="${categoryname }" ${(action eq 'update' && categoryname eq BoardNotice.BN_CATEGORY_NAME) || ( empty BoardNotice.BN_CATEGORY_NAME && status.count == 1)  ?'checked':'' } >
                                     	<label for="ch0${status.count }">${categoryname }</label>
                                 	</span>
 								</c:forEach>
@@ -356,7 +357,9 @@
 								<textarea name="BN_CONTENTS" class="txtarea_nor w100" id="BN_CONTENTS" rows="5" style="width:100%;height:400px;min-width:260px;padding:10px;" onkeydown="useTab(this);" title="내용을 입력해주세요"></textarea>
 							</c:if>
 							<c:if test="${action eq 'update' || action eq 'move'}">
-								<textarea name="BN_CONTENTS" class="txtarea_nor w100" id="BN_CONTENTS" rows="5" style="width:100%;height:400px;min-width:260px;padding:10px;" onkeydown="useTab(this);" title="내용을 입력해주세요">${BoardNotice.BN_CONTENTS}</textarea>
+								<textarea name="BN_CONTENTS" class="txtarea_nor w100" id="BN_CONTENTS" rows="5" style="width:100%;height:400px;min-width:260px;padding:10px;" onkeydown="useTab(this);" title="내용을 입력해주세요">
+									${BoardNotice.BN_CONTENTS}
+								</textarea>
 							</c:if>
 							</td>
 						</tr>

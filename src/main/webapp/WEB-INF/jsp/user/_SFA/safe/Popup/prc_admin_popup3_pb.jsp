@@ -479,7 +479,7 @@
 		<input type="hidden" id="sa2_accpowertype" name="sa2_accpowertype" value="${list.sa2_accpowertype}">
 		<input type="hidden" id="sa2_periodpowertype" name="sa2_periodpowertype" value="${list.sa2_periodpowertype}">
 		<input type="hidden" id="sa_writetype" name="sa_writetype" value="2">
-		<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
+		<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="${list.SU_KEYNO }">
 		<input type="hidden" id="imgSrc" name="imgSrc" value="">
 		<input type="hidden" id="predataMeter1" name="predataMeter1" value="">
 		<input type="hidden" id="predataMeter2" name="predataMeter2" value="">
@@ -545,10 +545,12 @@ function changesulbi(keyno) {
 function popup(value){
 	
 	var num = Number($("#sa2_inverternumtype").val())
+	var SU_KEYNO = $("#SU_KEYNO").val()
+	console.log("123"+SU_KEYNO)
 	
 	var left = Math.ceil((window.screen.width - 1000)/2);
 	var top = Math.ceil((window.screen.height - 820)/2);
-	var popOpen	= window.open("/sfa/safeAdmin/safeAdminUpdate.do?listtable="+value+"&num="+num, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
+	var popOpen	= window.open("/sfa/safeAdmin/safeAdminUpdate.do?listtable="+value+"&num="+num+"&SU_KEYNO="+SU_KEYNO, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
 	popOpen.focus();
 }
 
@@ -558,7 +560,6 @@ function ClosePopup(){
 
 
 function inverterNumber(){
-	
 	
 	var todaypowertype = "${list.sa2_todaypowertype}";
 	var accpowertype = "${list.sa2_accpowertype}";

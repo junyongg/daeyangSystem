@@ -28,12 +28,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.popbill.api.JoinForm;
 import com.tx.common.config.SettingData;
 import com.tx.common.dto.Common;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
+import com.tx.common.service.excel.ExcelService;
 import com.tx.common.service.mailExcel.MailAndExcelDownService;
 import com.tx.common.service.page.PageAccess;
 import com.tx.common.service.reqapi.requestAPIservice;
@@ -69,6 +72,8 @@ public class RestApiTest {
 	@Autowired taxService taxService;
 	
 	@Autowired MailAndExcelDownService emailExcel;
+	
+	@Autowired ExcelService excel;
 	
 	@RequestMapping("/dyAdmin/bills/billsproducer.do")
 	public ModelAndView billsproducer(HttpServletRequest req) throws Exception {
@@ -1278,6 +1283,43 @@ public class RestApiTest {
         	
         }
         return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/popBillInsertExcel.do")
+	public String PopBillJoinExcel(HttpServletRequest req,
+			@RequestParam(value = "excelFile2", required=false) MultipartFile file
+			) throws Exception {
+	
+
+		ArrayList<ArrayList<String>> result = excel.readFilter_And_Insert(file);
+		
+		if(result.size() > 0) {
+			
+			for(ArrayList<String> re : result) {
+				JoinForm m = new JoinForm();
+				
+				m.setID(re.get(0));				
+				m.setPassword(re.get(1));
+				m.setLinkID("DAEYANG");
+				m.setCorpNum(re.get(2));
+				m.setCEOName(re.get(3));
+				m.setCorpName(re.get(4));
+				m.setAddr(re.get(5));
+				m.setBizType(re.get(6));
+				m.setBizClass(re.get(7));
+				m.setContactName(re.get(8));
+				m.setContactEmail(re.get(9));
+				m.setContactTEL(re.get(10));
+				
+				taxService.Join(m);
+				
+			}
+		}
+		
+		return "회원가입 완료";
+		
+		
 	}
 	
 	

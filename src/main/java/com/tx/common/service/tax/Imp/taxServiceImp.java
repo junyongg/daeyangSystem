@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 
 import com.popbill.api.IssueResponse;
+import com.popbill.api.JoinForm;
 import com.popbill.api.PopbillException;
+import com.popbill.api.Response;
 import com.popbill.api.TaxinvoiceService;
 import com.popbill.api.taxinvoice.MgtKeyType;
 import com.popbill.api.taxinvoice.Taxinvoice;
@@ -491,4 +493,16 @@ public class taxServiceImp extends EgovAbstractServiceImpl implements taxService
         
      return DcCode;   
 	}
+	
+	
+	public Response Join(JoinForm joinInfo) throws PopbillException{
+		
+		Response joinMessage = taxinvoiceService.joinMember(joinInfo);
+		
+		System.out.println(joinMessage);
+		
+		return joinMessage;
+	}
+		
+		
 }

@@ -218,14 +218,12 @@ br      {mso-data-placement:same-cell;}
              <th>이름</th>
              <th>발전량(kWh)</th>
              <th>누적발전량(KWh)</th>
-             <th>발전시간(h)</th>
-             <th>현재 출력(KW)</th>
              </c:otherwise>
          </c:choose>
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items="${result1 }" var="result">
+		<c:forEach items="${result }" var="result">
 			<c:choose>
 	         	<c:when test="${DaliyType eq '1' }">
 	         	<tr>
@@ -296,16 +294,20 @@ br      {mso-data-placement:same-cell;}
 	              <td class="tdName">${result.Internal_temperature}</td>
 	            </tr>
 	         	</c:when>
+	         	<%-- <c:when test="${excelType eq '2'}">
+	         	<tr>
+	         	  <td class="tdName">${result.ddtt }</td>
+	              <td class="tdName">${result.DPP_NAME }</td>
+	              <td class="tdName"><fmt:formatNumber value="${result.sdata }" pattern="0.00"/></td>
+	              <td class="tdName"><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
+	            </tr>
+	         	</c:when> --%>
 	         	<c:otherwise>
 	         	<tr>
-	         	  <td class="tdName"><fmt:formatDate value="${result.DDM_DATE }" pattern="yyyy-MM-dd"/></td>
-	              <td class="tdName">${result.DPP_NAME }</td>
-	              <td class="tdName"><fmt:formatNumber value="${result.DDM_D_DATA }" pattern="0.00"/></td>
+	         	  <td class="tdName">${result.ddtt }</td>
+	              <td class="tdName">${ob.DPP_NAME }</td>
+	              <td class="tdName"><fmt:formatNumber value="${result.sdata }" pattern="0.00"/></td>
 	              <td class="tdName"><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
-	              <td class="tdName"><fmt:formatNumber value="${result.DDM_T_HOUR  }" pattern="0.00"/></td>
-	              <td class="tdName">
-						X
-	              </td>
 	            </tr>
 	         	</c:otherwise>
 	         </c:choose>

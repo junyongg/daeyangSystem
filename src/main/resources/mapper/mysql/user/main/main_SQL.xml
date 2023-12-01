@@ -311,7 +311,7 @@
                AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  
                AND Active_Power > 0
                ORDER BY DI_NAME , Conn_date DESC
-               LIMIT 100000
+               LIMIT 50
             )AA
             GROUP BY hhmm
          )B
@@ -480,15 +480,8 @@
 	</select>
 	
 	<select id="select_inverterData_other" resultType="hashmap" parameterType="hashmap">
-	<choose>
-	<!-- 통계분석 1년 일때 월 단위로 뿌림 -->
-	<when test="DaliyType == 4">
-		SELECT * ,DATE_FORMAT(DDM_DATE,'%Y-%m') AS ddtt, sum(DDM_D_DATA) as sdata, sum(DDM_CUL_DATA) as cdata, sum(DDM_T_HOUR) as thour
-	</when>
-	<otherwise>
-		SELECT * ,DATE_FORMAT(DDM_DATE,'%Y-%m-%d') AS FORMATDATE
-	</otherwise>
-	</choose>
+	
+	SELECT * ,DATE_FORMAT(DDM_DATE,'%Y-%m-%d') AS FORMATDATE
 		FROM(	
 			SELECT * 
 			FROM(
@@ -506,18 +499,69 @@
 				 	]]>
 				</if>
 			 	ORDER BY DDM_DATE DESC
-			 	LIMIT 1000
+			 	LIMIT 100000
 			 	)A
 			 	GROUP BY DATE_FORMAT(DDM_DATE,'%Y-%m-%d')
 			 	ORDER BY DDM_DATE DESC
 		 	)B
 		 	LEFT JOIN dy_power_plant C
 		 	ON B.DDM_DPP_KEYNO = C.DPP_KEYNO
-		 	<if test="DaliyType == 4">
-		 	group by ddtt
-		 	ORDER BY ddtt DESC
-		 	</if>
 	</select>
+	
+	<!-- 누적치에서 차감하여 당일발전량을 구해서 excel 추출함 -->
+	<select id="select_inverterData_other_excelType2_orType4" resultType="hashmap" parameterType="hashmap">
+		
+		SELECT A.DDM_DATE as ddtt, A.DDM_CUL_DATA , A.DDM_CUL_DATA - B.PREVIOUS_D_DATA AS sdata
+		FROM (
+		   			SELECT DATE_FORMAT(AA.DDM_DATE,'%Y-%m-%d')  as DDM_DATE , AA.DDM_CUL_DATA  
+					FROM(
+						SELECT DDM_DATE , DDM_CUL_DATA 
+						FROM dy_inverter_data_main 
+						WHERE DDM_DPP_KEYNO = #{type}
+						<![CDATA[
+				 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	>=	#{searchBeginDate}
+				 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	<=	#{searchEndDate}
+				 		]]>
+					 	ORDER BY DDM_DATE DESC
+					 	LIMIT 10000
+					 	)AA
+					 	GROUP BY 
+					 	<choose>
+					 		<when test="excelType == 2 || DaliyType == 4">DATE_FORMAT(DDM_DATE,'%Y-%m')</when>
+					 		<otherwise>DATE_FORMAT(DDM_DATE,'%Y-%m-%d')</otherwise>
+					 	</choose>
+					 	ORDER BY DDM_DATE desc
+		) A
+		JOIN (
+		    			SELECT DATE_FORMAT(BB.DDM_DATE,'%Y-%m-%d') as DDM_DATE , BB.PREVIOUS_D_DATA  
+						FROM(
+						select DDM_DATE , DDM_CUL_DATA as PREVIOUS_D_DATA
+						FROM dy_inverter_data_main 
+						WHERE DDM_DPP_KEYNO = #{type}
+						<![CDATA[
+					 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	>=	DATE_SUB( DATE_FORMAT(#{searchBeginDate},'%Y-%m-%d'), INTERVAL 1 DAY)
+					 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	<=	#{searchEndDate}
+					 	]]>
+					 	ORDER BY DDM_DATE DESC
+					 	LIMIT 10000
+					 	)BB
+					 	GROUP BY 
+					 	<choose>
+					 		<when test="excelType == 2 || DaliyType == 4">DATE_FORMAT(DDM_DATE,'%Y-%m')</when>
+					 		<otherwise>DATE_FORMAT(DDM_DATE,'%Y-%m-%d')</otherwise>
+					 	</choose>
+					 	ORDER BY DDM_DATE desc
+		) B ON  
+			<choose>
+				<when test="excelType == 2 || DaliyType == 4">DATE_FORMAT(A.DDM_DATE,'%Y-%m') = DATE_FORMAT(DATE_ADD( DATE_FORMAT(B.DDM_DATE,'%Y-%m-%d'), INTERVAL 1 DAY),'%Y-%m')</when>
+				<otherwise>DATE_FORMAT(A.DDM_DATE,'%Y-%m-%d') = DATE_ADD( DATE_FORMAT(B.DDM_DATE,'%Y-%m-%d'), INTERVAL 1 DAY)</otherwise>
+			</choose>
+		GROUP BY DATE_FORMAT(A.DDM_DATE, '%Y-%m-%d')
+		ORDER BY A.DDM_DATE DESC
+		
+	</select>
+	
+	
 	
 	<select id="select_inverterData_other_AVGSUM" resultType="hashmap" parameterType="hashmap">
 		SELECT AVG(B.DDM_D_DATA) AS avgData, SUM(B.DDM_D_DATA) AS sumData 

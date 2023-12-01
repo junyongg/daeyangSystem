@@ -153,6 +153,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="safeUserDTO" type="com.tx.SafeAdmin.dto.safeUserDTO"/>
 		<typeAlias alias="DateDTO" type="com.tx.SafeAdmin.dto.DateDTO"/>
 		
+		<!-- 파일점검부분 -->
+		<typeAlias alias="LicenseDTO" type="com.tx.dyAdmin.member.dto.LicenseDTO"/>
+		
 	</typeAliases>
 	
 	<typeHandlers>

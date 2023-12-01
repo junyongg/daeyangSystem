@@ -212,12 +212,28 @@ table{
     <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">상세보기</a>
     <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreErrorTable();">에러확인</a>
 <!--     <button type="button" class="a_box_line" style="color: white;background-color: #0088F1; margin-right: 10px;margin-top: -3px; float: right; ">상세보기</button> -->
-	<button type="button" 
-			class="a_box_line" 
-			onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}')"
-			style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
-		엑셀
-	</button>
+	
+	<c:if test="${userInfo.isAdmin eq 'Y' && DaliyType eq '99'}">
+		<button type="button" 
+				class="a_box_line" 
+				onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}&excelType=2')"
+				style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
+			월별 엑셀 <!--DaliyType  -->
+		</button>
+		<button type="button" 
+				class="a_box_line" 
+				onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}&excelType=1')"
+				style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
+			일별 엑셀 <!--DaliyType  -->
+		</button>
+		<button type="button" 
+				class="a_box_line" 
+				onclick="pf_excel('/dy/moniter/stasticsAjax.do?excel=excel&keyno=${ob.DPP_KEYNO}&excelType=0')"
+				style="float: right;margin-right: 10px;margin-top: -3px; background-color: #4caf50; color: white;">
+			시간별 엑셀
+		</button>
+	</c:if>
+    
     <div class="statis_cate_box">
         <dl>
             <dt>조회범위</dt>
@@ -296,13 +312,12 @@ table{
 	                	</c:when>
 	                	<c:when test="${DaliyType eq '4' }">
 	                		<td>${result.ddtt }</td>
-		                    <td>${result.DPP_NAME }</td>
+		                    <td>${ob.DPP_NAME }</td>
 		                    <td><fmt:formatNumber value="${result.sdata }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
-		                    <td><fmt:formatNumber value="${result.thour }" pattern="0.00"/></td>
+		                    <td><fmt:formatNumber value="${result.sdata/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT) }" pattern="0.00"/></td>
 		                    <td>
 									X
-<%-- 		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
 		                    </td>
 	                	</c:when>
 	                	<c:otherwise>
@@ -311,10 +326,7 @@ table{
 		                    <td><fmt:formatNumber value="${result.DDM_D_DATA }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_CUL_DATA }" pattern="0.00"/></td>
 		                    <td><fmt:formatNumber value="${result.DDM_T_HOUR  }" pattern="0.00"/></td>
-		                    <td>
-									X
-<%-- 		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
-		                    </td>
+		                    <td>X</td>
 	                	</c:otherwise>
 	                </c:choose>
 	               </tr>
@@ -328,7 +340,7 @@ table{
 	<section class="base_pop_wrapper">
 			<div class="pop_base_calculation header" style="top: 6%;">
 				<button type="button" class="btn_close" title="닫기"  onclick="$('.base_pop_wrapper').removeClass('on')" style="position: sticky; top: 0px;"><i class="xi-close" style="margin: 10px;"></i></button>
-	            <button type="button" class="a_box_line" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;position:sticky;top: 0px" onclick="Detail_Excel();">엑셀</button>
+	            <!-- <button type="button" class="a_box_line" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;position:sticky;top: 0px" onclick="Detail_Excel();">엑셀</button> -->
 			</div>
             <div class="pop_base_calculation body" style="top: 51%;height: 85%;padding-top: 0px;">
                 
@@ -480,7 +492,7 @@ table{
 	
 			<div class="pop_base_calculation calculation2 header" style="top: 6%;">
 				<button type="button" class="btn_close fixed" title="닫기"  onclick="$('.base_pop_wrapper2').removeClass('on')"><i class="xi-close" style="margin: 10px;"></i></button>
-	            <button type="button" class="a_box_line fixed" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Error_Excel();">엑셀</button>
+	            <!-- <button type="button" class="a_box_line fixed" style="border-radius:50%;float: left;padding: 10px 0px;color: white;background-color: #4caf50;" onclick="Detail_Error_Excel();">엑셀</button> -->
 			</div>
             <div class="pop_base_calculation calculation2 body" style="top: 51%;height: 85%;padding-top: 0px;">	
             <!-- <div class="pop_base_calculation" style="top: 50%; width: 900px; left: calc(38% - 231px);" > -->
@@ -573,7 +585,6 @@ $(function(){
 // 			list.push(list_sub.reverse())
 			list.push(list_sub)
 		</c:forEach>
-			console.log(list)
 		
 		if(inverternum == '0'){
 			for(var i=1;i<list.length-1;i++){
@@ -653,7 +664,6 @@ $(function(){
 // 		chartGraph2(datelist,aJsonArray);
 		chartGraph2(datelist.reverse(),aJsonArray);
 	}
-		console.log(aJson)
 })
 
 function searchDate(value){

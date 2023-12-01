@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="li"> 
+	
+	<!-- 서브데이터 추출 -->
+	<select id="liView" resultType="LicenseDTO">
+		
+		select *
+		from dy_license_sub
+		where dls_now = #{dls_now}
+		and dls_dpp_keyno = #{dls_dpp_keyno}
+		
+	</select>
+	
+	
+	<!-- 서브데이터 등록 -->
+	<insert id="liInsert" parameterType="LicenseDTO">
+       	INSERT INTO dy_license_sub
+		(
+				  dls_dpp_keyno
+				, dls_conn
+				, dls_name
+				, dls_depart
+				, dls_phone
+				, dls_other
+				, dls_name2
+				, dls_depart2
+				, dls_phone2
+				, dls_other2
+				, dls_now
+		)
+		VALUES
+		(
+				  #{dls_dpp_keyno}
+				, #{dls_conn}
+				, #{dls_name}
+				, #{dls_depart}
+				, #{dls_phone}
+				, #{dls_other}
+				, #{dls_name2}
+				, #{dls_depart2}
+				, #{dls_phone2}
+				, #{dls_other2}
+				, #{dls_now}
+		)
+    </insert>
+	
+	<update id="liupdate" parameterType="LicenseDTO">
+       	UPDATE dy_license_sub
+       	SET 
+		
+			  dls_conn 			= #{dls_conn}
+			, dls_name 			= #{dls_name}
+			, dls_depart		= #{dls_depart}
+			, dls_phone			= #{dls_phone}
+			, dls_other			= #{dls_other}
+			, dls_name2			= #{dls_name2}
+			, dls_depart2		= #{dls_depart2}
+			, dls_phone2		= #{dls_phone2}
+			, dls_other2		= #{dls_other2}
+		
+		WHERE dls_dpp_keyno 	= #{dls_dpp_keyno}
+		AND dls_now				= #{dls_now}
+    </update>
+	
+	<!-- 메인 데이터 추출 -->
+	<select id="main_liView" resultType="LicenseDTO">
+		
+		select *
+		from dy_license_main
+		where dlm_dpp_keyno = #{dls_dpp_keyno}
+		
+	</select>
+	
+	
+	<!-- 메인데이터 등록 -->
+	<insert id="main_liInsert" parameterType="LicenseDTO">
+       	INSERT INTO dy_license_main
+		(
+				  dlm_address
+				, dlm_street
+				, dlm_area
+				, dlm_land
+				, dlm_use
+				, dlm_usage
+				, dlm_dpp_keyno
+				, dlm_type
+		)
+		VALUES
+		(
+				  #{dlm_address}
+				, #{dlm_street}
+				, #{dlm_area}
+				, #{dlm_land}
+				, #{dlm_use}
+				, #{dlm_usage}
+				, #{dlm_dpp_keyno}
+				, #{dlm_type}
+		)
+    </insert>
+	
+	<update id="main_liUpdate" parameterType="LicenseDTO">
+       	UPDATE dy_license_main
+       	SET 
+			  dlm_address 	= #{dlm_address}
+			, dlm_street 	= #{dlm_street}
+			, dlm_area		= #{dlm_area}
+			, dlm_land		= #{dlm_land}
+			, dlm_use		= #{dlm_use}
+			, dlm_usage		= #{dlm_usage}
+			, dlm_type		= #{dlm_type}
+		
+		WHERE dlm_dpp_keyno 	= #{dlm_dpp_keyno}
+    </update>
+	
+	<!-- 서브 업데이트시 현재진행 최신화 -->
+	<update id="li_plant_update" parameterType="LicenseDTO">
+		UPDATE dy_power_plant
+		SET DPP_DLS_KEYNO = #{dls_now}
+		WHERE DPP_KEYNO = #{dls_dpp_keyno}
+	</update>
+	
+	
+	
+</mapper>

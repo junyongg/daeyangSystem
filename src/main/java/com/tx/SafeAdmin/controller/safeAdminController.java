@@ -615,7 +615,7 @@ public class safeAdminController {
 			bill = Component.getData("sfabill.selectAllView", list[i]);
 
 			sendApi(bill);
-
+			
 		}
 
 		return;

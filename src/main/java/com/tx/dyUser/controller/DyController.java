@@ -50,6 +50,7 @@ import com.tx.common.security.password.MyPasswordEncoder;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.reqapi.requestAPIservice;
+import com.tx.dyAdmin.member.dto.LicenseDTO;
 import com.tx.dyAdmin.member.dto.UserDTO;
 import com.tx.dyUser.wether.WetherService;
 
@@ -469,7 +470,8 @@ public class DyController {
     		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
     		@RequestParam(value="InverterType",defaultValue="0")String InverterType,
     		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
-    		@RequestParam(value="excel", required=false) String excel
+    		@RequestParam(value="excel", required=false) String excel,
+    		@RequestParam(value="excelType", required=false) String excelType
     		) throws Exception{
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax");
     	
@@ -506,9 +508,7 @@ public class DyController {
     	
     	
     	if(DaliyType.equals("1")) {
-    		
     		//당일
-//    		
     		result =  Component.getList("main.select_inverterData",type);
     		result = changeDailyData(result);
     		result1 = result;
@@ -522,7 +522,6 @@ public class DyController {
         	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
         	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
         	if(InverterType.equals("0")) {
-        		
         		//select = 1이면 인버터 합산,  InverterType = 0
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
@@ -531,16 +530,32 @@ public class DyController {
             		MainList.add(subList);
             	}
         	}else {
-        		
         		//select = 2이면 인버터 별,  InverterType = 1
         		type.put("inverterNum", InverterType);
         		List<String> subList = Component.getList("main.select_inverterData_active",type); 
         		MainList.add(subList);
         	}
     	}else {
-    		result =  Component.getList("main.select_inverterData_other",type);
+    		String sql = "main.select_inverterData_other";
+    		
+    		//excelType = 0(시간),1(일),2(월)
+    		if(excel == null) {
+    			result1 =  Component.getList("sub.select_hourData",type); //이건 detail 테이블에서 시간별 데이터 가져오는 부분
+    			if(DaliyType.equals("4")) {
+    				sql = "select_inverterData_other_excelType2_orType4";
+    			}
+    		}else {
+    			sql = "select_inverterData_other_excelType2_orType4";
+    			//excel 실행시 쿼리 부분
+    			if(excelType.equals("0")) {
+    				sql = "sub.select_hourData";
+        		}
+    			type.put("excelType",excelType);
+    		}
+    		
+    		result =  Component.getList(sql,type);
+    		
     		type.put("now",now);
-    		result1 =  Component.getList("sub.select_hourData",type);
     		
     		//최대 최솟값 날짜랑 데이터 뽑기
         	type.put("minmax","min");
@@ -568,7 +583,13 @@ public class DyController {
 			mv.addObject("now",now);
 			
 			if(excel.equals("excel")) {
-				mv.addObject("DaliyType","1");
+				
+				mv.addObject("excelType",excelType);
+				
+				if(excelType.equals("0")) {
+			    	mv.addObject("DaliyType","1");	
+			    }
+				
 				mv.setViewName("/user/_DY/monitering/excel/dy_statstic_excel");
 			}else {
 				mv.setViewName("/user/_DY/monitering/excel/dy_statstic_error_excel");
@@ -629,7 +650,8 @@ public class DyController {
     @RequestMapping("/dy/moniter/filedown.do")
     public ModelAndView filedown(HttpServletRequest req,
     		HttpSession session,
-    		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key
+    		@RequestParam(value="DPP_KEYNO",defaultValue="0")String key,
+    		@RequestParam(value="dls_now",defaultValue="1")String dls_now
     		) throws Exception{
     	ModelAndView mv = new ModelAndView("/user/_DY/monitering/dy_filedown");
     	
@@ -655,6 +677,8 @@ public class DyController {
  	    if(key == null || StringUtils.isEmpty(key)) {
 		   key = Component.getData(sql2,type);
  	    }
+ 	    
+ 	    
  	    session.setAttribute("DPP_KEYNO", key);
  	    mv.addObject("list", Component.getList(sql,type));
  	    
@@ -662,7 +686,7 @@ public class DyController {
     	HashMap<String,Object> ob =  Component.getData(sql,type);
     	
     	mv.addObject("UI_KEYNO",user.get("UI_KEYNO").toString());
-    	System.out.println(ob.get("DPP_FM_KEYNO"));
+    	
     	if(ob.get("DPP_FM_KEYNO") != null) {
     		FileSub fsVo = new FileSub();
         	fsVo.setFS_FM_KEYNO(ob.get("DPP_FM_KEYNO").toString());
@@ -678,11 +702,76 @@ public class DyController {
         	
         	ob.put("DPP_FM_KEYNO", AES256Cipher.encode(ob.get("DPP_FM_KEYNO").toString()));
     	}
+
+    	type.put("dls_now", dls_now);
+    	type.put("dls_dpp_keyno", key);
+
+//    	mv.addObject("dlsData",Component.getData("li.liView", type));
     	
+    	mv.addObject("dlmData",Component.getData("li.main_liView", type));
+    	
+    	//여기서 뽑긴하는데 
+    	if(ob.get("DPP_DLS_KEYNO") != null && ob.get("DPP_DLS_KEYNO") != "") {
+    		dls_now = ob.get("DPP_DLS_KEYNO").toString();
+    	}else {
+    		dls_now = "1";
+    	}
+
+    	mv.addObject("dls_now",dls_now);
     	mv.addObject("ob",ob);
     	
     	return mv;
     }
+    
+    /**
+     * sub 데이터 출력
+     */
+    @RequestMapping("/dy/moniter/SubdataView.do")
+    @ResponseBody
+    public LicenseDTO SubdataView(LicenseDTO license ) throws Exception{
+    	
+    	license = Component.getData("li.liView",license);
+    	
+    	return license; 
+    }
+    
+    
+    /**
+     * Main_sub 데이터 등록
+     */
+    @RequestMapping("/dy/moniter/Subdatainsert.do")
+    @ResponseBody
+    public String Subdatainsert(
+    			LicenseDTO license,
+    			@RequestParam(value="DPP_KEYNO" , required=false) String DPP_KEYNO
+    		) throws Exception{
+    	String msg = "저장완료"; 
+    	
+   	
+    	if(license.getSavetype().toString().equals("2")) {
+    		license.setDls_dpp_keyno(DPP_KEYNO);
+    		
+    		msg = "수정완료";
+    		Component.createData("li.liupdate",license);
+    		Component.createData("li.li_plant_update", license);
+    	}else if(license.getSavetype().toString().equals("3")) {
+    		license.setDlm_dpp_keyno(DPP_KEYNO);
+    		Component.createData("li.main_liInsert", license);
+    		msg = "저장완료";    		
+    	}else if(license.getSavetype().toString().equals("4")) {
+    		license.setDlm_dpp_keyno(DPP_KEYNO);
+    		Component.createData("li.main_liUpdate", license);
+    		msg = "수정완료";
+    	}else {
+    		license.setDls_dpp_keyno(DPP_KEYNO);
+    		Component.createData("li.liInsert",license);
+    		Component.createData("li.li_plant_update", license);
+    	}
+    		
+    	return  msg;
+    }
+    
+    
     /**
      * @return 파일 등록 or 수정
      */

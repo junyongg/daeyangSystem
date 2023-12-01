@@ -9,25 +9,25 @@
 	  <ul class="mt-6 px-6">
 		<c:set var = "str" value = "${currentMenu.MN_NAME}"/>
 		<c:if test="${fn:contains(str,'안전') || fn:contains(str,'점검') }">
-	      <li class="relative py-3">
+		 <li class="relative py-3">
 	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
-	        href="/sfa/safe/safeAdmin.do">
-	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
-	          <span class="ml-4">안전관리</span>
+	        href="/sfa/safe/checkingStatus.do">
+	          <img src="/resources/img/icon/checking.svg" class="fill-red w-5 h-5" alt="점검 현황 아이콘">
+	          <span class="ml-4">점검일지현황(현월)</span>
 	        </a>
 	      </li>
 	      <li class="relative py-3">
 	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
 	        href="/sfa/safe/safeAdminLog.do">
 	          <img src="/resources/img/icon/shieldKeyholeFillBlack.svg" class="fill-red w-5 h-5" alt="안전관리 현황 아이콘">
-	          <span class="ml-4">안전관리 현황</span>
+	          <span class="ml-4">점검일지현황(전체)</span>
 	        </a>
 	      </li>
 	      <li class="relative py-3">
 	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
-	        href="/sfa/safe/checkingStatus.do">
-	          <img src="/resources/img/icon/checking.svg" class="fill-red w-5 h-5" alt="점검 현황 아이콘">
-	          <span class="ml-4">점검 현황</span>
+	        href="/sfa/safe/safeAdmin.do">
+	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
+	          <span class="ml-4">점검일지등록</span>
 	        </a>
 	      </li>
 		</c:if>
@@ -82,19 +82,26 @@
 	<c:set var = "str" value = "${currentMenu.MN_NAME}"/>
 	<c:if test="${fn:contains(str,'안전') }">
 		<li class="relative py-3">
-		  <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
-		  href="/sfa/safe/safeAdmin.do">
-		    <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
-		    <span class="ml-4">안전관리</span>
-		  </a>
-		</li>
-		<li class="relative py-3">
-		  <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
-		  href="/sfa/safe/safeAdminLog.do">
-		    <img src="/resources/img/icon/shieldKeyholeFillBlack.svg" class="fill-red w-5 h-5" alt="안전관리 현황 아이콘">
-		    <span class="ml-4">안전관리 현황</span>
-		  </a>
-		</li>
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/sfa/safe/checkingStatus.do">
+	          <img src="/resources/img/icon/checking.svg" class="fill-red w-5 h-5" alt="점검 현황 아이콘">
+	          <span class="ml-4">점검일지현황(현월)</span>
+	        </a>
+	      </li>
+	      <li class="relative py-3">
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/sfa/safe/safeAdminLog.do">
+	          <img src="/resources/img/icon/shieldKeyholeFillBlack.svg" class="fill-red w-5 h-5" alt="안전관리 현황 아이콘">
+	          <span class="ml-4">점검일지현황(전체)</span>
+	        </a>
+	      </li>
+	      <li class="relative py-3">
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/sfa/safe/safeAdmin.do">
+	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
+	          <span class="ml-4">점검일지등록</span>
+	        </a>
+	      </li>
 	</c:if>
 	<c:if test="${fn:contains(str,'세금') }">
 		<li class="relative py-3">

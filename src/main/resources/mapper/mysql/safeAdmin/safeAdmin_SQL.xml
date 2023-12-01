@@ -552,8 +552,21 @@ where UI_KEYNO = 'UI_HMWNH'
     
     <select id="safepaperselect2_one" parameterType="String" resultType="hashmap">
 	    SELECT *
-	    from dy_sa2_paper
+	    from dy_sa2_paper a
+	    left join dy_sa_user b
+	    on a.sa2_su_keyno = b.SU_KEYNO
 	    where sa2_keyno = #{sa2_keyno}
+    </select>
+    
+    <select id="safe_TwoPreData" parameterType="hashmap" resultType="hashmap">
+	   SELECT *
+		FROM (
+		   SELECT *, ROW_NUMBER() OVER (ORDER BY Conn_date DESC) AS row_num
+		   FROM dy_sa_user a
+		   LEFT JOIN dy_sa2_paper b ON a.SU_KEYNO = b.sa2_su_keyno AND a.SU_UI_KEYNO = b.sa2_UI_KEYNO
+		   WHERE SU_KEYNO = #{SU_KEYNO} AND a.SU_UI_KEYNO = #{UI_KEYNO}
+		) AS ranked
+		WHERE row_num = 2;
     </select>
     
     <!-- 가장 최근 작성 양식 조회 (이전양식조회 버튼)-->
@@ -892,11 +905,12 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_peridev,
 				sa2_UI_KEYNO,
 				sa2_LR,
-				sa2_su_keyno
+				sa2_su_keyno,
+				Conn_date
 				
 			)VALUES(
 				#{sa2_title},
-				#{sa2_date},
+				#{sa2_date3},
 				#{sa2_wether},
 				#{sa2_adminname},
 				#{sa2_inverternumtype},
@@ -952,7 +966,8 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa2_peridev},
 				#{SA_UI_KEYNO},
 				#{sa2_LR},
-				#{SU_KEYNO}
+				#{SU_KEYNO},
+				#{sa2_date}
 			)
 		</insert>
 		
@@ -1002,9 +1017,21 @@ where UI_KEYNO = 'UI_HMWNH'
 			select ifnull(datediff(now(),max(b.Conn_date)),0) diff
 			FROM dy_sa_user a
 			join dy_sa2_paper b
-			on a.SU_SA_SULBI  = b.sa2_title
+			on a.SU_KEYNO = b.sa2_su_keyno
 			and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
-			where SU_KEYNO = #{su_keyno}
+			where a.SU_KEYNO = #{su_keyno}
+		</select>
+		
+		<!-- 가장최근 작성일자와 현재 시간 일차이 뽑기-->
+		<select id="CurrentData" parameterType="String" resultType="hashmap">
+			SELECT *, b.Conn_date AS max_conn_date
+			FROM dy_sa_user a
+			JOIN dy_sa2_paper b
+			ON a.SU_KEYNO = b.sa2_su_keyno 
+			AND a.SU_UI_KEYNO = b.sa2_UI_KEYNO
+			WHERE a.SU_KEYNO = #{su_keyno}
+			ORDER BY b.Conn_date DESC
+			LIMIT 1;
 		</select>
 		
 		<!-- 전달 마지막날 뽑기-->
@@ -1094,7 +1121,10 @@ where UI_KEYNO = 'UI_HMWNH'
 		<select id="Month_Checking" resultMap="ResultMap.rownumHashMap" parameterType="String">
 			select AA.* 
 			from (
-					SELECT a.* , if ( month(b.Conn_date) = month(now()),count(b.sa2_title),0 ) as checking
+					SELECT *, 
+					COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checking,
+					CONCAT(COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END), '회 / ', a.SU_SA_RG,'회') AS combined_column,
+					a.SU_SA_RG - COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checkminus 
 					FROM dy_sa_user a
 					LEFT JOIN dy_sa2_paper b
 					ON a.SU_KEYNO = b.sa2_su_keyno 
@@ -1102,6 +1132,9 @@ where UI_KEYNO = 'UI_HMWNH'
 					GROUP BY a.SU_KEYNO
 				) AA
 			where 1=1
+			<if test="areaSelect != null and areaSelect != ''">
+	 			AND			SU_SA_AREA 	=	#{areaSelect}
+		 	</if>
 			<if test="AH_HOMEDIV_C != null and AH_HOMEDIV_C != ''">
 	 			AND			sa2_problem 	=	#{AH_HOMEDIV_C}
 		 	</if>
@@ -1125,10 +1158,14 @@ where UI_KEYNO = 'UI_HMWNH'
 			 			<when test='item.searchIndex.equals("2")'>
 		 		AND		AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 			 			</when>
+			 			<when test='item.searchIndex.equals("3")'>
+		 		AND		SU_SA_AD				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+			 			</when>
 			 			<when test='item.searchIndex.equals("all")'>
 		 		AND 	(
 			 				sa2_title	 			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
-			 				AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+			 				AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+			 				SU_SA_AD				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
 		 				)							
 			 			</when>
 			 		</choose>
@@ -1139,10 +1176,10 @@ where UI_KEYNO = 'UI_HMWNH'
 		 		ORDER BY	sa2_title ${sortDirect}
 		 		</when>
 		 		<when test="orderBy == 2">
-		 		ORDER BY	AA.checking ${sortDirect}
+		 		ORDER BY	AA.checkminus ${sortDirect}
 		 		</when>
 		 		<otherwise>
-		 		ORDER BY 	AA.checking DESC
+		 		ORDER BY 	AA.checkminus DESC
 		 		</otherwise>
 	 		</choose>
 			<if test=" recordCountPerPage != 0">
@@ -1155,17 +1192,36 @@ where UI_KEYNO = 'UI_HMWNH'
 			SELECT	COUNT(*)
 			FROM dy_sa_user
 			WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
+			<if test="areaSelect != null and areaSelect != ''">
+	 			AND			SU_SA_AREA 	=	#{areaSelect}
+		 	</if>
+		 	<if test="searchList != null">
+			 	<foreach collection="searchList" item="item">
+			 		<choose>
+			 			<when test='item.searchIndex.equals("all")'>
+		 		AND 	(
+			 				SU_SA_SULBI	 			LIKE CONCAT( '%',#{item.searchKeyword},'%') OR
+			 				SU_SA_AD				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+		 				)							
+			 			</when>
+			 		</choose>
+		 		</foreach>
+		 	</if>
 			ORDER BY SU_KEYNO ASC
 			<if test=" recordCountPerPage != 0">
 				LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
-			</if>  
+			</if>
+			
+			
+			
     	</select>
 		
 		<!-- 지역 전체 출력 -->
-		<select id="Area_select" resultType="hashmap">
+		<select id="Area_select" resultType="hashmap" parameterType="String">
 			select  SU_SA_AREA 
 			from dy_sa_user 
 			where SU_SA_AREA != ''
+			and SU_UI_KEYNO = #{UI_KEYNO}
 			and SU_SA_AREA != 'TEST'
 			group by SU_SA_AREA 
 		</select>

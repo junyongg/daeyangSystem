@@ -1,5 +1,7 @@
 package com.tx.SafeAdmin.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,6 +200,7 @@ public class safeAdminLogController {
 				Common search
 				, @RequestParam(value="UI_ID",required=false) String UI_ID
 				, @RequestParam(value="AH_HOMEDIV_C",required=false) String AH_HOMEDIV_C
+				, @RequestParam(value="areaSelect",required=false) String areaSelect
 				) throws Exception {
 			
 			ModelAndView mv  = new ModelAndView("/user/_SFA/safe/prc_admin_checking_pb");
@@ -216,9 +219,10 @@ public class safeAdminLogController {
 			map.put("AH_HOMEDIV_C", AH_HOMEDIV_C);
 			map.put("UI_ID", UI_ID);
 			map.put("SU_UI_KEYNO", UI_KEYNO);
+			map.put("areaSelect", areaSelect);
 			
 			
-			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfa.Month_Checking_Cnt",map, search.getPageUnit(), 25);
+			PaginationInfo pageInfo = PageAccess.getPagInfo(search.getPageIndex(),"sfa.Month_Checking_Cnt",map, search.getPageUnit(), 10);
 			
 			map.put("firstIndex", pageInfo.getFirstRecordIndex());
 			map.put("lastIndex", pageInfo.getLastRecordIndex());
@@ -230,6 +234,7 @@ public class safeAdminLogController {
 			mv.addObject("resultList4", resultList);
 			mv.addObject("search", search);
 			mv.addObject("SU_UI_KEYNO", UI_KEYNO);
+			mv.addObject("areaSelect", areaSelect);
 			return mv;
 		}
 	
@@ -315,15 +320,47 @@ public class safeAdminLogController {
 		public Object UpdatePage(HttpServletRequest req
 				, @RequestParam(value="listtable", required = false) String listtable
 				, @RequestParam(value="num", required = false) String num
+				, @RequestParam(value="SU_KEYNO", required = false) String SU_KEYNO
 				) throws Exception {
 			ModelAndView mv  = new ModelAndView("/user/_SFA/safe/Popup/prc_admin_updateview2_pb");
+			
+			Map<String, Object> user = CommonService.getUserInfo(req);
+			String UI_KEYNO = user.get("UI_KEYNO").toString();
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+			HashMap<String, Object> Update_Predata = new HashMap<String, Object>();
+			
+			
+			
+			map2.put("SU_KEYNO", SU_KEYNO);
+			map2.put("UI_KEYNO", UI_KEYNO);
 			
 			map = Component.getData("sfa.safepaperselect2_one", listtable);  //object로 보냄 getList는 배열, getData는 object
+			Update_Predata = Component.getData("sfa.safe_TwoPreData", map2);
+			Timestamp timestamp = (Timestamp) map.get("Conn_date");
 
+			// Timestamp 객체를 문자열로 변환
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String Conn_date = dateFormat.format(timestamp);
 			
-			mv.addObject("list",map); //object로 보냄
-			mv.addObject("num",num); //object로 보냄
+			String sa2_date = (String) map.get("sa2_date");
+			String year = Conn_date.substring(0,4);
+			String mon = Conn_date.substring(5,7);
+			String day = Conn_date.substring(8,10);
+			String time = Conn_date.substring(11,13);
+			String dayOfWeek = sa2_date.substring(18,19);
+			
+					
+			mv.addObject("list",map); 
+			mv.addObject("list2",Update_Predata); 
+			mv.addObject("num",num); 
+			mv.addObject("year",year); 
+			mv.addObject("mon",mon); 
+			mv.addObject("day",day); 
+			mv.addObject("time",time); 
+			mv.addObject("dayOfWeek",dayOfWeek); 
+			mv.addObject("Conn_date",Conn_date); 
 			mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
 			
 			

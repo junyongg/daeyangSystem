@@ -151,7 +151,9 @@ public class safeAdminDTO {
 	 sa2_peridev,
 	 SA_UI_KEYNO,
 	 sa2_LR,
-	 SU_KEYNO= "";
+	 SU_KEYNO,
+	 sa2_dateDow,
+	 sa2_date3 = "";
 
 	
 }

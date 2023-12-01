@@ -15,6 +15,17 @@ $(() => {
       	$(`label[for='${e.target.id}']`).removeClass("text-black bg-badge-green")
   })
   
+  
+  var area = document.getElementsByClassName("area_btn");
+  $(".area_btn").on("click", (e) => {    
+		for(var i = 0; i<area.length; i++){		
+	        $(`label[for=area_`+i+`]`).addClass("text-black bg-badge-green")
+	        $(`label[for=area_`+i+`]`).removeClass("text-white bg-active-green")
+		}
+		$(`label[for='${e.target.id}']`).addClass("text-white bg-active-green")
+      	$(`label[for='${e.target.id}']`).removeClass("text-black bg-badge-green")
+  })
+  
   /*$(".relative a").on("click", (e) => {    
 		console.log(real);
 		for(var i = 0; i<real.length; i++){		

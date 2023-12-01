@@ -105,24 +105,24 @@
 										name="sa2_date" id="sa2_date" value=""
 										class="w-full border-none text-xs bg-active-green text-center"
 										>
-										<input type="text"
-										name="" id="sa2_dateY" value="${year}"
+										<input type="text" oninput="changeDate()"
+										name="sa2_dateY" id="sa2_dateY" value="${year}"
 										class="w-full border-none text-xs bg-active-green text-center"
 										>년
-										<input type="text"
-										name="" id="sa2_dateM" value="${mon}"
+										<input type="text" oninput="changeDate()"
+										name="sa2_dateM" id="sa2_dateM" value="${mon}"
 										class="w-full border-none text-xs bg-active-green text-center"
 										>월
-										<input type="text"
-										name="" id="sa2_dateD" value="${day}"
+										<input type="text" oninput="changeDate()"
+										name="sa2_dateD" id="sa2_dateD" value="${day}"
 										class="w-full border-none text-xs bg-active-green text-center"
 										>일
 										<input type="text"
-										name="" id="sa2_dateT" value="${time}"
+										name="sa2_dateT" id="sa2_dateT" value="${time}"
 										class="w-full border-none text-xs bg-active-green text-center"
 										>시
 										<input type="text"
-										name="" id="sa2_dateDow" value="${dayOfWeek}"
+										name="sa2_dateDow" id="sa2_dateDow" value="${dayOfWeek}"
 										class="w-full border-none text-xs bg-active-green text-center"
 										>요일
 								</p>
@@ -758,14 +758,28 @@
 				<input type="hidden" id="predataMeter1" name="predataMeter1" value="">
 				<input type="hidden" id="predataMeter2" name="predataMeter2" value="">
 				<input type="hidden" id="prewatt" name="prewatt" value="">
+				<input type="hidden" id="sa2_dateMI" name="sa2_dateMI" value="${min}">
+				<input type="hidden" id="sa2_dateS" name="sa2_dateS" value="${sec}">
+				<input type="hidden" id="sa2_date3" name="sa2_date3" value="">
+				<input type="hidden" id="Current_Conn_date" name="Current_Conn_date" value="">
+				<input type="hidden" id="Pre_Conn_date" name="Pre_Conn_date" value="">
 				<input type="hidden" id="SA_UI_KEYNO" name="SA_UI_KEYNO" value="${UI_KEYNO }">
 			</div>
 		</div>
 	</main>
 </form:form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript">
 var list = [];
 $(function() {
+	
+	//현황페이지에서 발전소 클릭 시 
+	var chksu_keyno = "${chk_su_keyno}";
+	
+	if(chksu_keyno){
+		changesulbi(chksu_keyno)
+	}
+	
 	
 	$(".hiddenTr").hide();
 	$(".imgdelete").hide();
@@ -800,19 +814,11 @@ $(function() {
 	yearselect();
 	monselect();
 	
-	
-	
-    
-	/** 계량기 번호 변경 */
 		var t = document.getElementById('sa2_meternum2');
 		 
 		t.addEventListener('change', function(event){
 		 
-		//changetext(event.target.value);
       });
- 		
-//     window.setTimeout('loadInfo()',6000);
-
 });
 
 //qwer4321
@@ -870,7 +876,6 @@ function SendAlim(){
 						myImg = myImg.replace("data:image/jpeg;base64,", "");
 						$("#imgSrc").val(myImg);
 						
-						//console.log(myImg);
 						
  						$.ajax({
  							type : "POST",
@@ -979,16 +984,7 @@ function datanumselect(){
 	        	}else{		
 					for(var i=0; i<data.length; i++){
 						$("#selectgroup").append("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
-				 }  		
-		        	
-		//         	if(data == "null"){        		
-		//         		alert("해당 연월에 작성한 양식이 없습니다.")	
-		//         	}else{
-		// 	        	var left = Math.ceil((window.screen.width - 1000)/2);
-		// 	        	var top = Math.ceil((window.screen.height - 820)/2);
-		// 	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
-		// 	        	popOpen.focus();
-		//         	}	
+					 }  		
 	        	}
 	        	
 	        },
@@ -1087,22 +1083,6 @@ function view(){
         	alert("발전소,월,일을 선택해주세요");
         }
 	}); 
-	
-// 	$.ajax({
-//         url: '/sfa/sfaAdmin/prepaperview.do?${_csrf.parameterName}=${_csrf.token}',
-//         type: 'POST',
-//         data: $("#Form").serialize(),
-//         async: false,  
-//         success: function(data) {
-        	
-//         	$("#prepaper").html(data)
-        	
-//         },
-//         error: function(){
-//         	alert("저장 에러");
-//         }
-// 	}); 
-	
 }
 
 function changesulbi(keyno) {
@@ -1112,9 +1092,14 @@ function changesulbi(keyno) {
 	$("#selectgroup").empty();
 	var UIKEYNO = $("#SA_UI_KEYNO").val();
 	
-
+	
+	
+	
 	var date = new Date();
-	var now = date.getMonth()+1+"/"+date.getDate();
+	var Mon = $("#sa2_dateM").val();
+	var Day = $("#sa2_dateD").val();
+	
+	var now = Mon+"/"+Day;
 	var premonth = date.getMonth();
 	
 	$.ajax({
@@ -1132,6 +1117,9 @@ function changesulbi(keyno) {
         	var lastday = Number(result.lastday);
         	var diff = Number(result.datediff.diff);
         	var admincount = result.count.count;
+        	var preacctype =  result.preData.sa2_accpowertype;
+        	
+        	
         	
         	$("#sa2_count2").text(result.count.count)
         	$("#sa2_count").text(result.data.SU_SA_RG);
@@ -1153,6 +1141,13 @@ function changesulbi(keyno) {
         	$("#sa2_meter1date").val(lastday)
         	$("#sa2_meter2date").val(diff)
         	$("#prewatt").val(result.prewatt)
+        	$("#Current_Conn_date").val(result.CurrentData[0].max_conn_date)
+        	$("#Pre_Conn_date").val(predate)
+        	
+        	
+        	
+        	
+        	
         	
         	
         	
@@ -1206,7 +1201,6 @@ function changesulbi(keyno) {
         		$("#Year").attr("style","display:none;");
         		$("#Month").attr("style","display:none;");
         		$("#selectgroup").attr("style","display:none;");
-//         		$("#autoInsert").attr("style","display:none;");
         		
         		
         		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
@@ -1251,12 +1245,12 @@ function changesulbi(keyno) {
         		$(".etcTr").hide();
         		$(".hiddenTr").show();
         		$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td>')
-    			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적[KWh]</td>')
+    			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_ten()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td>')
     			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[KWh]</td>')
     			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">기간 발전[KWh]</td>')
     			$("#inputplus4").hide();
         		$("#inputplus5").html('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td>')
-    			$("#inputplus6").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적[KWh]</td>')
+    			$("#inputplus6").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적<input id="kwselect" name = "kwselect" value = ""/> </td>')
     			$("#inputplus7").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[KWh]</td>')
     			$("#inputplus8").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">기간 발전[KWh]</td>')
     			$("#inputplus9").hide();
@@ -1286,14 +1280,6 @@ function changesulbi(keyno) {
 		       				}      		
 		       				
 		       			}else{
-		       				
-// 		       				if(count == num){
-// 			       				var conutt = count + 1
-// 				   				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'<select id="sa2_LR2" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value="L">좌</option><option value="R">우</option></select></td>')
-// 				    			$("#inputplus6").append('<td class="tgsfa1 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_annacc"  oninput="method_1(\'inputplus1\',\'inputplus2\',\'inputplus3\',\''+conutt+'\');" oninput="this.value = this.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
-// 				    			$("#inputplus7").append('<td class="tgsfa2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this) style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 				    			$("#inputplus8").append('<td class="tgsfa3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_peridev" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 		       				}else{
 			       				var conutt = count + 1
 			       				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'</td>')
 				    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_annacc" oninput="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" oninput="this.value = this.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
@@ -1323,20 +1309,11 @@ function changesulbi(keyno) {
 		       				}
 			       			
 		       			}else{
-		       				
-// 		       				if(count == num){
-// 		       					var conutt = count + 1
-// 			       				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'<select id="sa2_LR2" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value="L">좌</option><option value="R">우</option></select></td>')
-// 				    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+result.InverterData[i].Cumulative_Generation+' name="sa2_annacc" oninput="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
-// 				    			$("#inputplus7").append('<td class="tgsfa7 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 				    			$("#inputplus8").append('<td class="tgsfa8 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_peridev" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 		       				}else{
 			       				var conutt = count + 1
 			       				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'</td>')
 				    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value='+result.InverterData[i].Cumulative_Generation+' name="sa2_annacc" oninput="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
 				    			$("#inputplus7").append('<td class="tgsfa7 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
 				    			$("#inputplus8").append('<td class="tgsfa8 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_peridev" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 		       				}
 		       				
 		
 		       			}
@@ -1346,6 +1323,15 @@ function changesulbi(keyno) {
 	       			
 	       		}
 	       		list.length = 0;
+		       
+	       		//td 어펜드 후에 kwh, mwh넣어주고 "MWh" 일때만 수식 function 실행
+  		       	$("#sa2_accpowertype").val(preacctype);
+  		      	var preacctypeVal = $("#sa2_accpowertype").val(preacctype);
+ 				if(preacctypeVal == "MWh"){
+ 					MwhCal_ten()
+ 				}
+	       		
+	       		
         	}else{
         		
         		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
@@ -1392,31 +1378,31 @@ function changesulbi(keyno) {
         		if(result.InverterData == null || result.InverterData == "" || result.InverterData == "undefined"){
         			if(num == "1"){
         				$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">1</td>');
-    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kw]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
-    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<select id="sa2_todaypowertype" name="sa2_todaypowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
-    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
-    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
+    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kwh]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
+    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량[Kwh]</td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
+    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_one()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
+    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량[Kwh]</td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
         			}else{
         				$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><select id="sa2_LR" name ="sa2_LR" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value = "L">좌</option><option value = "R">우</option></select>1</td>');
-    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kw]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
-    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<select id="sa2_todaypowertype" name="sa2_todaypowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
-    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
-    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
+    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kwh]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
+    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량[Kwh]</td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
+    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_one()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
+    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량 [kwh]</td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
         			}	
         			
         		}else{     			
         			if(num == "1"){
         				$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">1</td>');
-    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kw]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
-    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<select id="sa2_todaypowertype" name="sa2_todaypowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
-    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
-    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
+    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kwh]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
+    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량[Kwh]</td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
+    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_one()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
+    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량[Kwh]</td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
         			}else{
         				$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-left font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td><td class="tg-0lax px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><select id="sa2_LR" name ="sa2_LR" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value = "L">좌</option><option value = "R">우</option></select>1</td>');
-    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kw]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
-    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량<select id="sa2_todaypowertype" name="sa2_todaypowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
-    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
-    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
+    					$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">현재 출력 [Kwh]</td><td class="la2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>');
+    					$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">금일 발전량[Kwh]</td><td class="la3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>');
+    					$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">누적 발전량<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_one()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[0].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value='+accpowerlist[0]+' name="sa2_accpower1"></td>');
+    					$("#inputplus4").html('<td class="tg-0lax px-4 py-3 text-left font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding-top:0.5rem;padding-bottom:0.5rem">기간 발전량[Kwh]</td><td class="la5 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></td>');
         			}
 		        	
         		}
@@ -1447,41 +1433,22 @@ function changesulbi(keyno) {
         			//데이터 연동 안했을 때(인버터 10대 미만)
         			if(result.InverterData == null || result.InverterData == "" || result.InverterData == "undefined"){
         				
-//         				//인버터 마지막 번호에 좌우 select추가
-//         				if(i == num-1){	
-// 			   				$("#inputplus0").append('<td class="la1 px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">'+count+'<select id="sa2_LR2" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value="L">좌</option><option value="R">우</option></select></td>')
-// 			    			$("#inputplus1").append('<td class="la'+lanum+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>')
-// 			    			$("#inputplus2").append('<td class="la'+lanum2+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>')
-// 			    			$("#inputplus3").append('<td class="la'+lanum3+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conuttt+'\')" ><input type="hidden" value='+accpowerlist[i]+' name="sa2_accpower1"></td>')
-// 			    			$("#inputplus4").append('<td class="la'+lanum4+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" name="sa2_periodpower1"></td>')	
-//         				}else{
+//         					//인버터 마지막 번호에 좌우 select추가
         					$("#inputplus0").append('<td class="la1 px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">'+count+'</td>')
 			    			$("#inputplus1").append('<td class="la'+lanum+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>')
 			    			$("#inputplus2").append('<td class="la'+lanum2+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>')
 			    			$("#inputplus3").append('<td class="la'+lanum3+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conuttt+'\')" ><input type="hidden" value='+accpowerlist[i]+' name="sa2_accpower1"></td>')
-			    			$("#inputplus4").append('<td class="la'+lanum4+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" name="sa2_periodpower1"></td>')	
-//         				}
+			    			$("#inputplus4").append('<td class="la'+lanum4+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" name="sa2_periodpower1"></td>')
 					
         				
         			// 데이터 연동 했을 떄(인버터 10대 미만) 
         			}else{
-        				//인버터 마지막 번호에 좌우 select 추가
-//         				var Inverternumber = num-1;
-//         				if(i=Inverternumber){
-//         					console.log(Inverternumber)
-// 			   				$("#inputplus0").append('<td class="la1 px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">'+count+'<select id="sa2_LR2" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value="L">좌</option><option value="R">우</option></select></td>')
-// 			    			$("#inputplus1").append('<td class="la'+lanum+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>')
-// 			    			$("#inputplus2").append('<td class="la'+lanum2+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>')
-// 			    			$("#inputplus3").append('<td class="la'+lanum3+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conuttt+'\')" ><input type="hidden" value='+accpowerlist[i]+' name="sa2_accpower1"></td>')
-// 			    			$("#inputplus4").append('<td class="la'+lanum4+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" name="sa2_periodpower1"></td>')	
-        					
-//         				}else{
+        					//인버터 마지막 번호에 좌우 select 추가
         					$("#inputplus0").append('<td class="la1 px-4 py-3 text-center bg-table-violet font-semibold" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0">'+count+'</td>')
 			    			$("#inputplus1").append('<td class="la'+lanum+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Active_Power+' name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></td>')
 			    			$("#inputplus2").append('<td class="la'+lanum2+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Daily_Generation+' name="sa2_todaypower" id="sa2_todaypower"><input type="hidden" value="" name="sa2_todaypower1"></td>')
 			    			$("#inputplus3").append('<td class="la'+lanum3+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value='+result.InverterData[i].Cumulative_Generation+' name="sa2_accpower" id="sa2_accpower" oninput="method_2(\'inputplus3\',\'inputplus4\',\''+conuttt+'\')" ><input type="hidden" value='+accpowerlist[i]+' name="sa2_accpower1"></td>')
 			    			$("#inputplus4").append('<td class="la'+lanum4+' px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" style="background-color:rgba( 255, 255, 255, 0 )" class="tb_gbla1 w-full border-none text-xs focus:outline-none" value="" name="sa2_periodpower" id="sa2_periodpower"><input type="hidden" value="" name="sa2_periodpower1"></td>')
-//         				}
         			}
         			
 		       			//자동계산	       			
@@ -1491,10 +1458,13 @@ function changesulbi(keyno) {
         				list.length = 0;
         				
         		
-//         		$("#sa2_nowpower").val(result.preData.sa2_nowpower)
-//             	$("#sa2_todaypower").val(result.preData.sa2_todaypower)
-//             	$("#sa2_accpower").val(result.preData.sa2_accpower)
-//             	$("#sa2_periodpower").val(result.preData.sa2_periodpower)
+       				//td 어펜드 후에 kwh, mwh넣어주고 수식 function 실행
+       		       	$("#sa2_accpowertype").val(preacctype);
+       				var preacctypeVal = $("#sa2_accpowertype").val(preacctype);
+       				if(preacctypeVal == "MWh"){
+       					MwhCal_one()	
+       				}
+       		    	
         	}
         	
         	
@@ -1530,26 +1500,6 @@ function validationCheck(){
 	}
 	return true
 }
-
-
-// function changenumber(value){
-	
-// 	if(value == 4){
-		
-// 		$("#sa2_meternum2").html("<select id='sa2_meternum2' name='sa2_meternum2'><option value='7'>계량기#7</option>")
-// 		$("#changenum").val("계량기#4")
-// 		$("#changenum2").val("계량기#7")
-		
-// 	}else if(value == 5){
-		
-// 		$("#sa2_meternum2").html("<select id='sa2_meternum2' name='sa2_meternum2'><option value='3'>계량기#3</option><option value='9'>계량기#9</option></select>")
-// 		$("#changenum").val("계량기#5")
-// 		$("#changenum2").val("계량기#3")
-		
-		
-// 	}
-	
-// }
 
 
 
@@ -1690,6 +1640,10 @@ function qwe() {
 
 function method_1(a,b,c,d){
 	
+	var acctype =  $("#sa2_accpowertype").val();
+	var periodtype =  $("#sa2_periodpowertype").val();
+	
+	
 	var num = d;
 	if(d > 11){
 		num = d - 10
@@ -1706,7 +1660,13 @@ function method_1(a,b,c,d){
 	if(aa-bb == aa){
 		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(0);
 	}else{
-		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(aa-bb);			
+		//MWh 일때 *1000 해줌
+		if(acctype == "MWh"){
+			$("#"+ c +">  td:nth-child("+  num + ")  > input").val(((aa-bb)*1000).toFixed(2));		
+		}else{
+			$("#"+ c +">  td:nth-child("+  num + ")  > input").val((aa-bb).toFixed(2));		
+		}
+			
 	}
 	
 	
@@ -1717,8 +1677,16 @@ function method_1(a,b,c,d){
 	
 		
 	for(var i=0;i<list.length;i++){
+		if(acctype == "MWh"){
+			sum += list[i]*1000
+			
+		}else{
 			sum += list[i]	
+		}
+			
 	}
+	
+	
 	
 	
 	$("#sa2_inverterallKWh").val(sum.toFixed(3));
@@ -1751,7 +1719,7 @@ function method_2(a,b,c){
 	var inverterdate = $("#sa2_inverterdate").val()
 	var palntKW = $("#sa2_palntKW").val()
 	var palntCT = $("#sa2_palntCT").val()
-	
+	var acctype =  $("#sa2_accpowertype").val();
 	
 	//현재 누적= aa, 전회차 누적 = bb, aa-bb
 	var aa = $("#"+ a +" > td:nth-child("+ c +") > input").val();
@@ -1766,7 +1734,12 @@ function method_2(a,b,c){
 		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(0);
 	}else{
 		//아닐경우 뺌
-		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));
+		if(acctype == "MWh"){
+			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val((periodpower*1000).toFixed(2));
+		}else{
+			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));			
+			
+		}
 	}
 
 	
@@ -1777,18 +1750,20 @@ function method_2(a,b,c){
 	
 	//기간발전량 합처리
 	for(var i=0;i<list.length;i++){
-			sum += list[i]	
+			
+			if(acctype == "MWh"){
+				sum += list[i]*1000
+			}else{
+				sum += list[i]
+			}
+			
 	}
 	
 	//MWh 일때 *1000 해줌
 	var acctype =  $("#sa2_accpowertype").val();
 	var periodtype =  $("#sa2_periodpowertype").val();
 	
-	if(acctype == "MWh" || periodtype == "MWh"){
-		sum = sum*1000
-	}else{
-		sum = sum
-	}
+
 	
 	//소수점 2번째 자리까지 자름
 	var sumfix = sum.toFixed(2)
@@ -1932,18 +1907,22 @@ function dateReplace(){
 	var Mon = $("#sa2_dateM").val();
 	var Day = $("#sa2_dateD").val();
 	var Hour = $("#sa2_dateT").val();
+	var Min = $("#sa2_dateMI").val();
+	var Sec = $("#sa2_dateS").val();
 	var Dow = $("#sa2_dateDow").val();
 	
-	$("#sa2_date").val(Year+"년 "+Mon+"월 "+Day+"일 "+Hour+"시 "+Dow+"요일 ")
+	$("#sa2_date").val(Year+"-"+Mon+"-"+Day+" "+Hour+":"+Min+":"+Sec);
+	$("#sa2_date3").val(Year+"년 "+Mon+"월 "+Day+"일 "+Hour+"시 "+Dow+"요일");
 	
-	console.log($("#sa2_date").val())
 	
 }
 
-function MwhCal(){
+
+function MwhCal_one(){
 	
-	
-	
+	var num = Number($("#sa2_inverternumtype").val())
+	var acctype =  $("#sa2_accpowertype").val();
+	var periodtype =  $("#sa2_periodpowertype").val();	
 	var inverterdate = $("#sa2_inverterdate").val()
 	var palntKW = $("#sa2_palntKW").val()
 	var palntCT = $("#sa2_palntCT").val()
@@ -1958,14 +1937,88 @@ function MwhCal(){
 	var vvv1 = Number(palntKW)
 	var palntCTnum = Number(palntCT)
 	
-	var acctype =  $("#sa2_accpowertype").val();
-	var periodtype =  $("#sa2_periodpowertype").val();
+	
 	
 	var allkwh = $("#sa2_inverterallKWh").val()
 	var daykwh = $("#sa2_inverterdayKWh").val()
 	var dayhour = $("#sa2_inverterdayhour").val()
 	
+	
 	if(acctype == "MWh"){
+		
+		for(var i = 2; i<=num+1; i++){
+			
+			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val();
+			var sumcal_d2 = sumcal_d * 1000
+			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val(sumcal_d2);
+		}
+		
+		
+		var allkwh2 = Number(allkwh)*1000;
+		var daykwh2 = allkwh2/vv1;
+		var dayhour2 = daykwh2/palntCTnum;
+		
+		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
+		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
+		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
+		
+	}else{
+		
+		for(var i = 2;  i<=num+1; i++){
+			
+			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val();
+			var sumcal_d2 = sumcal_d / 1000
+			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val(sumcal_d2);
+		}
+		
+	
+		var allkwh2 = Number(allkwh)/1000;
+		var daykwh2 = allkwh2/vv1;
+		var dayhour2 = daykwh2/palntCTnum;
+		
+		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
+		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
+		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
+	}
+	
+}
+
+function MwhCal_ten(){
+	
+	var num = Number($("#sa2_inverternumtype").val())
+	var acctype =  $("#sa2_accpowertype").val();
+	var periodtype =  $("#sa2_periodpowertype").val();	
+	var inverterdate = $("#sa2_inverterdate").val()
+	var palntKW = $("#sa2_palntKW").val()
+	var palntCT = $("#sa2_palntCT").val()
+	
+	if(inverterdate == "0"){
+		inverterdate = "1"
+	}else{
+		inverterdate == inverterdate
+	}
+	
+	var vv1 = Number(inverterdate)
+	var vvv1 = Number(palntKW)
+	var palntCTnum = Number(palntCT)
+	
+	
+	
+	var allkwh = $("#sa2_inverterallKWh").val()
+	var daykwh = $("#sa2_inverterdayKWh").val()
+	var dayhour = $("#sa2_inverterdayhour").val()
+	
+	
+	if(acctype == "MWh"){
+		for(var i=2; i<num; i++){
+			sumcal_one = $("#inputplus3 > td:nth-child("+  i + ")  > input").val();
+			sumcal_ten = $("#inputplus8 > td:nth-child("+  i + ")  > input").val();
+			sumcal_one2 = sumcal_one*1000
+			sumcal_ten2 = sumcal_ten*1000
+			$("#inputplus3 > td:nth-child("+ i + ")  > input").val(sumcal_one2);
+			$("#inputplus8 > td:nth-child("+ i + ")  > input").val(sumcal_ten2);
+		}
+		
 		
 		$("#sa2_periodpowertype").val("MWh");
 		
@@ -1979,6 +2032,15 @@ function MwhCal(){
 		
 	}else{
 		
+		for(var i=1; i<num; i++){
+			sumcal_one = $("#inputplus3 > td:nth-child("+  i + ")  > input").val();
+			sumcal_ten = $("#inputplus8 > td:nth-child("+  i + ")  > input").val();
+			sumcal_one2 = sumcal_one/1000
+			sumcal_ten2 = sumcal_ten/1000
+			$("#inputplus3 > td:nth-child("+ i + ")  > input").val(sumcal_one2);
+			$("#inputplus8 > td:nth-child("+ i + ")  > input").val(sumcal_ten2);
+		}
+		
 		var allkwh2 = Number(allkwh)/1000;
 		var daykwh2 = allkwh2/vv1;
 		var dayhour2 = daykwh2/palntCTnum;
@@ -1988,5 +2050,67 @@ function MwhCal(){
 		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
 	}
 	
+}
+
+function changeDate(){
+
+	var Year = $("#sa2_dateY").val();
+	var Mon = $("#sa2_dateM").val();
+	var Day = $("#sa2_dateD").val();
+	var Pre_Conn_date = $("#Pre_Conn_date").val() //09,26
+	
+	
+	//DayDiff => 작성 주기 계산
+	var Now_Conn_date = Year+"-"+Mon+"-"+Day;
+	var date1 = new Date(Now_Conn_date);
+	date1.setHours(0, 0, 0, 0);
+	
+	var Current_Conn_date = $("#Current_Conn_date").val();  //2023-09-26 16:16:28
+	var date2 = new Date(Current_Conn_date);
+	date2.setHours(0, 0, 0, 0);
+	
+	var timeDiff = date1 - date2;
+	var dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+	
+	$("#sa2_inverterdate").val(dayDiff)
+	$("#sa2_meter2date").val(dayDiff)
+	
+	
+	// 기간 표시 00/00 ~ 00/00 변경(날짜수정 시)
+	var date1_month = date1.getMonth() + 1;
+	var date1_day = date1.getDate();
+	var date1_period = date1_month+"/"+date1_day;
+	
+	$("#sa2_inverterperiod").val(Pre_Conn_date+"~"+date1_period)
+	$("#sa2_meter2period").val(Pre_Conn_date+"~"+date1_period)
+	
+	
+	//1. 데이터 입력 후 날짜 변경 시(인버터데이터 부분)
+	
+		//총발전량, 용량, CT비
+		var allKWh = Number($("#sa2_inverterallKWh").val());
+		var palntKW = Number($("#sa2_palntKW").val());
+		var palntCT = Number($("#sa2_palntCT").val());
+		
+		
+		var daykwh = allKWh/dayDiff
+		var dayhour = daykwh/palntKW
+		$("#sa2_inverterdayKWh").val(daykwh.toFixed(2))
+		$("#sa2_inverterdayhour").val(dayhour.toFixed(2))
+	
+	//2. 데이터 입력 후 날짜 변경 시(계량기 데이터 부분)
+	
+		//계량기 총발전량, 전회차 현재 누적 계량기 데이터
+		var meter_data = Number($("#sa2_meter2KWh").val());
+		var Prev_data = Number($("#predataMeter2").val());
+		
+		
+		var meter_allKWh = (meter_data-Prev_data)*palntCT
+		var meter_dayKWh = meter_allKWh/dayDiff
+		var meter_dayhour = meter_dayKWh/palntKW
+		
+		$("#sa2_meter2allKWh").val(meter_allKWh.toFixed(2))
+		$("#sa2_meter2dayKWh").val(meter_dayKWh.toFixed(2))
+		$("#sa2_meter2dayhour").val(meter_dayhour.toFixed(2))
 }
 </script>

@@ -104,14 +104,15 @@ public class safeAdminController {
 		//ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_admin_log_pb");
 		
 
-		return "redirect:/sfa/safe/safeAdminLog.do";
+		return "redirect:/sfa/safe/checkingStatus.do";
 	}
 
 	/*
 	 * 안전관리 전기안전설비점검 탭
 	 **/
 	@RequestMapping("/sfa/safe/safeAdmin.do")
-	public ModelAndView safeAdmin(HttpServletRequest req) throws Exception {
+	public ModelAndView safeAdmin(HttpServletRequest req,
+			@RequestParam(value = "SU_KEYNO", required = false) String SU_KEYNO) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/template/skin/prc_sfa_register_pb");
 		
@@ -120,14 +121,20 @@ public class safeAdminController {
 		Locale koreanLocale = Locale.KOREAN; 
 
 		List<HashMap<String, Object>> result = Component.getListNoParam("sfa.jspselect");
-		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분").format(Calendar.getInstance().getTime());
+		String now = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초").format(Calendar.getInstance().getTime());
 		String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		String mon = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		String day = new SimpleDateFormat("dd").format(Calendar.getInstance().getTime());
 		String time = new SimpleDateFormat("HH").format(Calendar.getInstance().getTime());
+		String min = new SimpleDateFormat("mm").format(Calendar.getInstance().getTime());
+		String sec = new SimpleDateFormat("ss").format(Calendar.getInstance().getTime());
 		String dayOfWeek =  new SimpleDateFormat("E",koreanLocale).format(Calendar.getInstance().getTime());
 		
 		
+		
+		if(SU_KEYNO != null && !SU_KEYNO.isEmpty()) {
+			mv.addObject("chk_su_keyno", SU_KEYNO);
+		}
 		mv.addObject("arialist", Component.getList("sfa.AreaSelect", UI_KEYNO));
 		mv.addObject("safeuserlist", Component.getList("sfa.safeuserselect", UI_KEYNO));
 		mv.addObject("now", now);
@@ -135,6 +142,8 @@ public class safeAdminController {
 		mv.addObject("mon", mon);
 		mv.addObject("day", day);
 		mv.addObject("time", time);
+		mv.addObject("min", min);
+		mv.addObject("sec", sec);
 		mv.addObject("dayOfWeek", dayOfWeek);
 
 		mv.addObject("result", result);
@@ -1175,6 +1184,7 @@ public class safeAdminController {
 		map.put("lastday", Component.getData("sfa.lastday"));
 		map.put("prewatt", Component.getData("sfa.preWattSelect",SU_KEYNO));
 		map.put("InverterData", Component.getList("sfa.InverterData_Select",SU_KEYNO));
+		map.put("CurrentData", Component.getList("sfa.CurrentData",SU_KEYNO));
 
 		
 		return map;
@@ -2081,9 +2091,13 @@ public class safeAdminController {
 	public ModelAndView safeAdminCheck(HttpServletRequest req) throws Exception {
 
 		ModelAndView mv = new ModelAndView("/user/_SFA/safe/prc_admin_check_pb");
+		
+		Map<String, Object> user = CommonService.getUserInfo(req);
+		String UI_KEYNO = user.get("UI_KEYNO").toString();
+		
 			
 		//지역 전체 출력 
-		List<HashMap<String, Object>> map =  Component.getListNoParam("sfa.Area_select");
+		List<HashMap<String, Object>> map =  Component.getList("sfa.Area_select",UI_KEYNO);
 		mv.addObject("map",map);
 		return mv;
 	}

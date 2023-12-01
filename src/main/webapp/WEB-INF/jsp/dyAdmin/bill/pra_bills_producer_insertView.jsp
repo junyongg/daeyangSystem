@@ -40,8 +40,7 @@
 											</c:forEach>
 										</select>
 									</div>
-								</div>
-								
+								</div>								
 								<div>
 									<table id="" class="table table-bordered table-striped">
 										<colgroup>
@@ -231,6 +230,44 @@
 		</div>
 	</section>
 	
+	<section id="widget-grid">
+		 <div class="row">
+				<article class="col-sm-12 col-md-12 col-lg-12">
+					<div class="jarviswidget jarviswidget-color-blueDark" id="" data-widget-editbutton="false">
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i>
+							</span>
+						    <h2>팝빌 회원가입</h2>
+						</header>
+						<div class="widget-body-toolbar bg-color-white">
+						<legend>
+								<div class="widget-body-toolbar bg-color-white">
+									<div class="alert alert-info no-margin fade in">
+										<button type="button" class="close" data-dismiss="alert">×</button>
+										양식에 맞는 엑셀 파일을 등록한 후 회원가입 버튼을 눌러주세요
+									</div>
+								</div>
+							</legend>
+							<div class="row">
+								<div class="col-sm-6 col-md-2 text-align-right" style="float:right;">
+									<div class="btn-group">  
+										<button class="btn btn-sm btn" type="button" onclick="popbillexcelInsert();" >
+											<i class="fa fa-plus"></i>회원 가입
+										</button>
+									</div>
+								</div>
+								
+								<div class="col-sm-6 col-md-2 text-align-right" style="float:right;">
+									<div class="btn-group">  
+										<input type="file" id="excelFile2" name="excelFile2">
+									</div>
+								</div> 
+							</div>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
 </div>
 
 
@@ -484,6 +521,50 @@ function supdeleteInfo(){
 	}else
 		return false;
 	
+}
+
+function popbillexcelInsert(){
+	
+	var formData = new FormData();
+    formData.append('excelFile2', $('#excelFile2')[0].files[0]);
+
+    $.ajax({
+        type: "POST",
+        url: '/popBillInsertExcel.do?${_csrf.parameterName}=${_csrf.token}',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            alert(data);
+            location.reload();
+        },
+        error: function() {
+            // Handle error
+        }
+    });
+	
+// 	var formData = new FormData();
+//     formData.append('excelFile2', $('#excelFile2')[0].files[0]);
+	
+	
+// 	$.ajax({
+// 		type: "POST",
+// 		url: '/popBillInsertExcel.do?${_csrf.parameterName}=${_csrf.token}',
+// 		data: {
+// 			'excelFile2' : formData
+// 		},
+// 		success : function(data){
+// 			alert(data);
+// 			location.reload();
+// 		}, 
+// 		error: function(){
+			
+// 		}
+// 	}); 
+	
+// 	$("#Form").attr("action","/popBillInsertExcel.do?${_csrf.parameterName}=${_csrf.token}");
+// 	$("#Form").submit();
+
 }
 
 

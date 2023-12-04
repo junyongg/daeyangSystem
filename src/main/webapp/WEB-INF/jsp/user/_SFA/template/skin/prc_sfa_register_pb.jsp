@@ -764,6 +764,7 @@
 				<input type="hidden" id="Current_Conn_date" name="Current_Conn_date" value="">
 				<input type="hidden" id="Pre_Conn_date" name="Pre_Conn_date" value="">
 				<input type="hidden" id="SA_UI_KEYNO" name="SA_UI_KEYNO" value="${UI_KEYNO }">
+				<input type="hidden" id="accpowerList" name="accpowerList" value="">
 			</div>
 		</div>
 	</main>
@@ -773,6 +774,11 @@
 var list = [];
 $(function() {
 	
+	
+	
+	$(".hiddenTr").hide();
+	$(".imgdelete").hide();
+	
 	//현황페이지에서 발전소 클릭 시 
 	var chksu_keyno = "${chk_su_keyno}";
 	
@@ -781,8 +787,6 @@ $(function() {
 	}
 	
 	
-	$(".hiddenTr").hide();
-	$(".imgdelete").hide();
 	
 	var change = "all";
 	AreaChange(change);
@@ -1196,7 +1200,6 @@ function changesulbi(keyno) {
     		$("#autoInsert").removeAttr("style","display:none;");
 			
         	if(num > 10){        		
-        		
         		//10대 이상은 전회차 데이터 보기 none
         		$("#Year").attr("style","display:none;");
         		$("#Month").attr("style","display:none;");
@@ -1285,7 +1288,6 @@ function changesulbi(keyno) {
 				    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_annacc" oninput="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" oninput="this.value = this.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
 				    			$("#inputplus7").append('<td class="tgsfa7 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
 				    			$("#inputplus8").append('<td class="tgsfa8 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" inputmode="numeric" class="w-full border-none text-xs text-center focus:outline-none" value="" name="sa2_peridev" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )" readonly="readonly"></td>')
-// 		       				}	
 		
 		       			}
 		       			count += 1;
@@ -1356,7 +1358,8 @@ function changesulbi(keyno) {
         	    }else{ 	
         			nowpowerlist = nowpower.split(",")	
         			todaypowerlist = todaypower.split(",")	
-        			accpowerlist = accpower.split(",")	
+        			accpowerlist = accpower.split(",")
+        			
         			
         			for(var i = 0; i <= num-1; i++ ){
         				if(accpowerlist[i] == ''){
@@ -1366,6 +1369,7 @@ function changesulbi(keyno) {
         				}
         			}
         	    }
+        		
         		
         		var conutt = count + 1
         		var put = "inputplus3";
@@ -1409,6 +1413,7 @@ function changesulbi(keyno) {
         		
         		//자동계산(기간발전량 총합, 전월누적 계산) 
         		method_2(put,put2,conutt)
+        		
 				
         		//자동계산(전월 누적으로 총발전량, 1일평균 계산 및 첫 작성일때 분기처리)
         		if(result.preData == null || result.preData == 'undefined'){
@@ -1455,7 +1460,23 @@ function changesulbi(keyno) {
 	            	method_2(put,put2,conuttt)
 
 	       		}
-        				list.length = 0;
+        			list.length = 0;
+        			
+        			var periodPowerInputs = document.getElementsByName("sa2_periodpower");
+
+    				// 배열 초기화
+    				var periodPowerList = [];
+    				
+    				// NodeList를 배열로 변환하여 각 input 요소의 값을 배열에 추가
+    				for (var i = 0; i < periodPowerInputs.length; i++) {
+    				    var value = periodPowerInputs[i].value.trim();
+    				
+    				    // 값이 빈 문자열인 경우 0으로 초기화
+    				    periodPowerList.push(value === '' ? 0 : parseFloat(value));
+    				}
+
+            		
+            		list = periodPowerList;
         				
         		
        				//td 어펜드 후에 kwh, mwh넣어주고 수식 function 실행
@@ -1745,7 +1766,8 @@ function method_2(a,b,c){
 	
 	var sum = 0;
 	
-	list[c-2] = aa-bb;
+	list[c-2] = periodpower;
+	
 	
 	
 	//기간발전량 합처리
@@ -2113,4 +2135,5 @@ function changeDate(){
 		$("#sa2_meter2dayKWh").val(meter_dayKWh.toFixed(2))
 		$("#sa2_meter2dayhour").val(meter_dayhour.toFixed(2))
 }
+
 </script>

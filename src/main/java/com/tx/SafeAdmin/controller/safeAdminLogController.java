@@ -343,12 +343,18 @@ public class safeAdminLogController {
 			// Timestamp 객체를 문자열로 변환
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String Conn_date = dateFormat.format(timestamp);
+			String perioddata = (String) map.get("sa2_meter2period");
 			
+			int idx = perioddata.indexOf("~");
+			
+			String perioddata2 = perioddata.substring(0,idx);
 			String sa2_date = (String) map.get("sa2_date");
 			String year = Conn_date.substring(0,4);
 			String mon = Conn_date.substring(5,7);
 			String day = Conn_date.substring(8,10);
 			String time = Conn_date.substring(11,13);
+			String min = Conn_date.substring(14,16);
+			String sec = Conn_date.substring(17);
 			String dayOfWeek = sa2_date.substring(18,19);
 			
 					
@@ -359,8 +365,11 @@ public class safeAdminLogController {
 			mv.addObject("mon",mon); 
 			mv.addObject("day",day); 
 			mv.addObject("time",time); 
+			mv.addObject("min",min); 
+			mv.addObject("sec",sec); 
 			mv.addObject("dayOfWeek",dayOfWeek); 
 			mv.addObject("Conn_date",Conn_date); 
+			mv.addObject("perioddata",perioddata2); 
 			mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
 			
 			

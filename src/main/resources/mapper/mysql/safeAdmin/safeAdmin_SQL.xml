@@ -326,7 +326,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		<update id="sapaperUpdate2" parameterType="safeAdminDTO">
 			UPDATE dy_sa2_paper 
 			SET sa2_title = #{sa2_title},
-				sa2_date = #{sa2_date},
+				sa2_date = #{sa2_date3},
 				sa2_wether = #{sa2_wether},
 				sa2_adminname = #{sa2_adminname},
 				sa2_inverternumtype = #{sa2_inverternumtype},
@@ -378,7 +378,8 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_preannacc = #{sa2_preannacc},
 				sa2_peridev = #{sa2_peridev},
 				sa2_AC_Change = #{AC_sangsun},
-				sa2_LR = #{sa2_LR}
+				sa2_LR = #{sa2_LR},
+				Conn_date = #{sa2_date}
 				
 			WHERE sa2_keyno = #{sa2_keyno}
 		</update>

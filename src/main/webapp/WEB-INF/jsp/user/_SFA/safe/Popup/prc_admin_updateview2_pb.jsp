@@ -312,7 +312,7 @@
                     </td>
                     <td class="tg-0lax px-4 py-3  " colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-							onkeyup="Divison(this.value)"
+							onkeyup="Divison(this.value)" inputmode="numeric"
 							value="${list.sa2_meter1KWh }"
 							name="sa2_meter1KWh" id="sa2_meter1KWh"   class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
                     </td>
@@ -321,11 +321,12 @@
                     <td class="tg-0lax px-4 py-3" colspan="2" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235);">
                       현재 누적 송전 유효전력량[kwh] - 전체</td>
                     <td class="tg-0lax px-4 py-3" colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
-                      <input type="text"   value="${list.sa2_meternum2 }"
+                      <input type="text"   value="${list.sa2_meternum2 }" 
 						name="sa2_meternum2" id="sa2_meternum2" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
                     </td>
                     <td class="tg-0lax px-4 py-3  " colspan="3" style="min-height: 41px; height: 41px; border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">
                       <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onkeyup="Divison2(this.value)" inputmode="numeric"
 							value="${list.sa2_meter2KWh }"  
 							name="sa2_meter2KWh" id="sa2_meter2KWh" class="tb_gbla1 w-full border-none text-xs focus:outline-none" style="background-color: rgba(255, 255, 255, 0);">
                     </td>
@@ -473,8 +474,12 @@
 		<input type="hidden" id="prewatt" name="prewatt" value="">
 		<input type="hidden" id="sang_AC" value="${list.sa2_AC_Change }">
 		<input type="hidden" id="lrChange" value="${list.sa2_LR }">
+		<input type="hidden" id="sa2_dateMI" name="sa2_dateMI" value="${min}">
+		<input type="hidden" id="sa2_dateS" name="sa2_dateS" value="${sec}">
+		<input type="hidden" id="sa2_date3" name="sa2_date3" value="">
 		<input type="hidden" id="Current_Conn_date" name="Current_Conn_date" value="${Conn_date}">
 		<input type="hidden" id="Pre_Conn_date" name="Pre_Conn_date" value="">
+		<input type="hidden" id="perioddata" name="perioddata" value="${perioddata}">
     </div>
   </div>
 </main>
@@ -679,7 +684,6 @@ function inverterNumber(){
 		accpowerlist = EmptyValue(accpowerlist);
 		periodpowerlist = EmptyValue(periodpowerlist);	
 		accpowerlist2 = EmptyValue(accpowerlist2);
-		console.log(accpowerlist2)
 		
 		var conutt = count + 1
 		
@@ -719,19 +723,38 @@ function inverterNumber(){
    			
 			
 		}	
+		
+		var periodPowerInputs = document.getElementsByName("sa2_periodpower");
+
+		// 배열 초기화
+		var periodPowerList = [];
+		
+		// NodeList를 배열로 변환하여 각 input 요소의 값을 배열에 추가
+		for (var i = 0; i < periodPowerInputs.length; i++) {
+		    var value = periodPowerInputs[i].value.trim();
+		
+		    // 값이 빈 문자열인 경우 0으로 초기화
+		    periodPowerList.push(value === '' ? 0 : parseFloat(value));
+		}
+
+		
+		list = periodPowerList;
+		
 			
-			//td 어펜드 후에 kwh, mwh넣어주고 수식 function 실행
-	       	$("#sa2_accpowertype").val(accpowertype);
-			var preacctypeVal = $("#sa2_accpowertype").val(accpowertype);
-			if(preacctypeVal == "MWh"){
-				MwhCal_one()	
-			}
+		//td 어펜드 후에 kwh, mwh넣어주고 수식 function 실행
+       	$("#sa2_accpowertype").val(accpowertype);
+		var preacctypeVal = $("#sa2_accpowertype").val(accpowertype);
+		if(preacctypeVal == "MWh"){
+			MwhCal_one()	
+		}
 	}
 	
 }
 
 
 function UpdateInfo(){
+	
+	dateReplace();
 	
 	 $.ajax({
       url: '/sfa/safeAdmin/safeAdminUpdate2.do?${_csrf.parameterName}=${_csrf.token}',
@@ -918,7 +941,15 @@ function changeDate(){
 	var Year = $("#sa2_dateY").val();
 	var Mon = $("#sa2_dateM").val();
 	var Day = $("#sa2_dateD").val();
+	var perioddata = $("#perioddata").val();
+	var idx = perioddata.indexOf('/');
+	var perioddata2 = perioddata.substring(0,idx);
+	var perioddata3 = perioddata.substring(idx);
 	
+	var perioddata4 = Year+"-"+perioddata2+"-"+perioddata3;
+	
+	var date3 = new Date(perioddata4);
+	date3.setHours(0, 0, 0, 0);
 	
 	
 	//DayDiff => 작성 주기 계산
@@ -930,8 +961,10 @@ function changeDate(){
 	var date2 = new Date(Current_Conn_date);
 	date2.setHours(0, 0, 0, 0);
 	
-	var timeDiff = date1 - date2;
+	
+	var timeDiff = date1 - date3;
 	var dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+
 	
 	$("#sa2_inverterdate").val(dayDiff)
 	$("#sa2_meter2date").val(dayDiff)
@@ -942,12 +975,16 @@ function changeDate(){
 	var date1_day = date1.getDate();
 	var date1_period = date1_month+"/"+date1_day;
 	
+	var date3_month = date3.getMonth() + 1;
+	var date3_day = date3.getDate();
+	var date3_period = date3_month+"/"+date3_day;
+	
 	var Pre_Conn_date1 = Current_Conn_date.substring(5,10);
 	var Pre_Conn_date2 = Pre_Conn_date1.replace("-","/");
 	
 
-	$("#sa2_inverterperiod").val(Pre_Conn_date2+"~"+date1_period)
-	$("#sa2_meter2period").val(Pre_Conn_date2+"~"+date1_period)
+	$("#sa2_meter2period").val(date3_period+"~"+date1_period)
+	$("#sa2_inverterperiod").val(date3_period+"~"+date1_period)
 	
 	
 	//1. 데이터 입력 후 날짜 변경 시(인버터데이터 부분)
@@ -1100,7 +1137,6 @@ function method_2(a,b,c){
 			
 	}
 	
-	console.log(sum)
 	
 	//MWh 일때 *1000 해줌
 	var acctype =  $("#sa2_accpowertype").val();
@@ -1131,6 +1167,93 @@ function method_2(a,b,c){
 	$("#sa2_inverterallKWh").val(sumfix)
 	$("#sa2_inverterdayKWh").val(num2.toFixed(2))
 	$("#sa2_inverterdayhour").val(num3.toFixed(2))
+	
+}
+
+function dateReplace(){
+	
+	
+	var Year = $("#sa2_dateY").val();
+	var Mon = $("#sa2_dateM").val();
+	var Day = $("#sa2_dateD").val();
+	var Hour = $("#sa2_dateT").val();
+	var Min = $("#sa2_dateMI").val();
+	var Sec = $("#sa2_dateS").val();
+	var Dow = $("#sa2_dateDow").val();
+	
+	$("#sa2_date").val(Year+"-"+Mon+"-"+Day+" "+Hour+":"+Min+":"+Sec);
+	console.log($("#sa2_date").val());
+	$("#sa2_date3").val(Year+"년 "+Mon+"월 "+Day+"일 "+Hour+"시 "+Dow+"요일");
+	
+	
+}
+
+
+function Divison2(obj){
+
+	var ctb = $("#sa2_palntCT").val()
+	var day = $("#sa2_meter2date").val()
+	var vol = $("#sa2_palntKW").val()
+	//전회차 현재 누적 송전 유효전력량
+	var prev = $("#predataMeter2").val()
+	
+	
+	if(day == 0){
+		day = 1
+	}else{
+		day = $("#sa2_meter2date").val()
+	}
+	
+	if(prev == null| prev == ''){
+		prev = 0;
+	}else{
+		prev = $("#predataMeter2").val()
+	}
+	
+	
+	var ctb1 = Number(ctb);
+	var day1 = Number(day);
+	var vol1 = Number(vol);
+	var obj1 = Number(obj);
+	var prev1 = Number(prev);
+	
+	var num = (obj1-prev1)*ctb1
+	var num2 = num/day1
+	var num3 = num2/vol1
+	
+	$("#sa2_meter2allKWh").val(num.toFixed(3))
+	$("#sa2_meter2dayKWh").val(num2.toFixed(3))
+	$("#sa2_meter2dayhour").val(num3.toFixed(3))
+}
+
+function Divison3(){
+
+	var v = $("#sa2_palntCT").val()
+	var vv = $("#sa2_inverterdate").val()
+	var vvv = $("#sa2_palntKW").val()
+	var v2 = $("#sa2_periodpower").val()
+	
+	
+	if(vv == 0){
+		vv = 1
+	}else{
+		vv = $("#sa2_inverterdate").val()
+	}
+	
+	var v1 = Number(v);
+	var vv1 = Number(vv);
+	var vvv1 = Number(vvv);
+	
+	
+	
+// 	var num = v2*1000
+	var num2 = num/vv1
+	var num3 = num2/vvv1
+	
+// 	$("#sa2_inverterallKWh").val(num.toFixed(3))
+	$("#sa2_inverterdayKWh").val(num2.toFixed(3))
+	$("#sa2_inverterdayhour").val(num3.toFixed(3))
+
 	
 }
 

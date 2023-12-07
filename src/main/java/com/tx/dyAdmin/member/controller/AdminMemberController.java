@@ -1,5 +1,6 @@
 package com.tx.dyAdmin.member.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.tx.common.security.rsa.service.RsaService;
 import com.tx.common.service.component.CommonService;
 import com.tx.common.service.component.ComponentService;
 import com.tx.common.service.page.PageAccess;
+import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.common.service.weakness.WeaknessService;
 import com.tx.dyAdmin.admin.code.service.CodeService;
 import com.tx.dyAdmin.member.dto.UserDTO;
@@ -61,6 +63,8 @@ public class AdminMemberController {
 	@Autowired private PageAccess PageAccess;
 	
 	@Autowired WeaknessService WeaknessService;
+	
+	@Autowired requestAPIservice requestAPI;
 	
 	@Autowired CodeService CodeService;
 	@RequestMapping(value="/dyAdmin/user/login.do")
@@ -566,9 +570,93 @@ public class AdminMemberController {
 		
 		ModelAndView mv  = new ModelAndView("/dyAdmin/member/pra_member_kakao.adm");
 		
+		HashMap<String,Object> type = new HashMap<String, Object>();
+    	Map<String, Object> user = CommonService.getUserInfo(req);
+		
+		 String sql = "main.select_MainData";
+		    String sql2 = "main.Power_SelectKEY";
+		    //삼환관리자 처리부분
+		    if(SettingData.samwhan.equals(user.get("UIA_KEYNO").toString())) {
+			    sql = "main.select_MainData_Ad";
+			    sql2 = "main.Power_SelectKEY_Ad";
+		    }
+		
+		mv.addObject("list", Component.getList(sql,type));
+		
+		
 		mv.addObject("authList",Component.getListNoParam("Authority.UIA_GetList_kakao"));
 		mv.addObject("kakao",Component.getListNoParam("main.Kakaotalk"));
 		return mv;
+	}
+	
+	/*
+	 * 문자 전송 시 회원선택
+	 **/
+	@RequestMapping("/userkakakoselectAjax.do")
+	@ResponseBody
+	public List<UserDTO> MessageuserselectAjax(HttpServletRequest req,
+			@RequestParam(value = "UIA_KEYNO", required = false) String UIA_KEYNO) throws Exception {
+
+		List userlist;
+
+		if (UIA_KEYNO.equals("") || UIA_KEYNO == null) {
+			List<UserDTO> list = Component.getListNoParam("main.Group_select_all");
+			userlist = list;
+
+		} else {
+			List<UserDTO> list = Component.getList("main.Group_select", UIA_KEYNO);
+			userlist = list;
+		}
+
+		return userlist;
+	}
+	
+	/*
+	 * 문자 전송
+	 **/
+	@RequestMapping("/sendMessageMinWon.do")
+	@ResponseBody
+	public String sendMessageMinWon(HttpServletRequest req,
+			@RequestParam(value="UI_KEYNO",required=false)String user,
+    		@RequestParam(value="content",required=false)String content,
+    		@RequestParam(value="DPP_KEYNO",required=false)String DPP_KEYNO) throws Exception {
+		    
+		String msg1 = "";
+//		String[] userlist = user.split(",");
+//    	map.put("userlist", userlist);
+    	
+    	HashMap<String,Object> map = Component.getData("main.PowerOneSelect",DPP_KEYNO);
+
+   
+		//여러 발전소 동시에 보낼수도 있으니 일단 list를 유지시킴.
+		List<UserDTO> list = Component.getList("main.Message_ad",map);
+		
+		String userid = "daeyang";
+		String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
+		String img = "";
+		
+		
+		for(UserDTO l : list) {
+				
+			l.decode();
+			String destination = l.getUI_NAME().toString();
+			String receiver = l.getUI_PHONE().toString().replace("-", "");
+			String msg = "대양기업 시공 진행 상황 안내\n"
+					+destination+ "의 시공 진행 상황을 안내드립니다.\n"
+					+"=======================\n"
+					+ content+"\n" 
+					+"=======================\n"
+					+ "시공 관련 문의\n"
+					+ "연락처 : 061-332-8086\n";
+//				String image = filePath;
+			
+			requestAPI.sendMessage(userid, api, destination, receiver, msg, img);
+		}
+	
+		
+		msg1 = "문자메시지 전송완료";
+		
+		return msg1;
 	}
 	
 	

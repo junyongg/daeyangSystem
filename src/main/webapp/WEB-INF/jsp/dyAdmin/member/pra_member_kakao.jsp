@@ -33,31 +33,35 @@
 						<input type="hidden" name="UI_NAME" id="UI_NAME"/>
 						<div id="myTabContent1" class="tab-content padding-10 form-horizontal bv-form">
 								<fieldset>
-								<div class="form-group" style = "width : 50%; float: left;">
-										<label class="col-md-2 control-label" for="select-1">그룹 선택</label>
-										<div class="col-md-8" items="${authList}" var="authList">
-										<select class="form-control input-sm select2" id="UIA_KEYNO" name ="UIA_KEYNO" onchange="change()">
-												<option>선택하세요.</option>
-												<option value = "">전체 선택</option>
-											<c:forEach items="${authList}" var="authList">
-												<option value="${authList.UIA_KEYNO}">${authList.UIA_NAME}</option>
-											</c:forEach>
-										</select>
-										</div>
-									</div>
-									<div class="form-group" style = "width:50%;  height:50px; float: left;">
-										<label class="col-md-2 control-label" for="select-1">회원 선택</label>
-										<div class="col-md-8" id ="UI_NAME">
-										<select style = "height : 100px;" class="form-control input-sm select2" id="UI_KEYNO" name ="UI_KEYNO" placeholder = "발전소를 선택하세요" multiple>
-<!-- 											<option>선택하세요</option> -->
-<%-- 											<c:forEach items="${kakao}" var="list"> --%>
-<%-- 												<option value="${kakao.UI_KEYNO}">${kakao.UI_NAME}</option> --%>
-<%-- 											</c:forEach> --%>
-										</select>
-										</div>
-										<button type="button" onclick = "selectDelete()" class="btn btn-sm btn-primary" style = "padding-left : 10px;">
-										<i class="fa fa-floppy"></i>삭제
-										</button>
+<!-- 								<div class="form-group" style = "width : 50%; float: left;"> -->
+<!-- 										<label class="col-md-2 control-label" for="select-1">그룹 선택</label> -->
+<%-- 										<div class="col-md-8" items="${authList}" var="authList"> --%>
+<!-- 											<select class="form-control input-sm select2" id="UIA_KEYNO" name ="UIA_KEYNO" onchange="change()"> -->
+<!-- 													<option>선택하세요.</option> -->
+<!-- 													<option value = "">전체 선택</option> -->
+<%-- 												<c:forEach items="${authList}" var="authList"> --%>
+<%-- 													<option value="${authList.UIA_KEYNO}">${authList.UIA_NAME}</option> --%>
+<%-- 												</c:forEach> --%>
+<!-- 											</select> -->
+<!-- 										</div> -->
+<!-- 								</div> -->
+								<div class="form-group" style = "width:50%;  height:50px; text-align: center; margin:0 auto;">
+										<label class="col-md-2 control-label" for="select-1">발전소 선택</label>
+											<div class="col-md-8">
+											    <select class="form-control input-sm select2" id="DPP_KEYNO" name="DPP_KEYNO">
+											    	<option>선택하세요.</option>
+											        <c:forEach items="${list }" var="list">
+											        	<option value="${list.DPP_KEYNO }">${list.DPP_NAME }</option>
+											        </c:forEach>
+											    </select>
+											</div>
+<!-- 										<div class="col-md-8" id ="UI_NAME"> -->
+<!-- 											<select style = "height : 100px;" class="form-control input-sm select2" id="UI_KEYNO" name ="UI_KEYNO" placeholder = "발전소를 선택하세요" multiple> -->
+<!-- 											</select> -->
+<!-- 										</div> -->
+<!-- 										<button type="button" onclick = "selectDelete()" class="btn btn-sm btn-primary" style = "padding-left : 10px;"> -->
+<!-- 										<i class="fa fa-floppy"></i>삭제 -->
+<!-- 										</button> -->
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">내용 입력</label>
@@ -94,11 +98,10 @@ function sendkakao() {
 	
 	$.ajax({
 		type : "post",
-		url : "/sendMessage.do",
+		url : "/sendMessageMinWon.do",
 		data: $('#Form').serializeArray(),
 		success: function(data){
-// 			alert(data)
-// 			location.reload();
+			
 			cf_smallBox('전송완료', '전송되었습니다', 3000);
 			
 		},
@@ -152,28 +155,15 @@ function selectDelete() {
 // 	    $('#UI_KEYNO').val('');  // 그냥 selectbox일 경우 value값 삭제
 	    $("#UI_KEYNO").val('').select2(); //select2 일 경우 value값 삭제
 // 	    $('#UI_KEYNO').select2('val',null);  //select2 일 경우 value값 삭제 2
-	}
+}
 
 
-
-// function change(e) {
-// 			 var user = ["frer","drrf","fwefwe"];
-// 		     var admin = ["석환 발전소", "정미 발전소", "해송 발전소"];
-// 		     var target = document.getElementById("UI_KEYNO");
-		
-// 		     if(e.value == "UIA_AGKGE") var d = user;
-// 		     else if(e.value == "UIA_JIPHJ") var d = admin;
-		
-// 		     target.options.length = 0;
-		
-// 		     for (x in d) {
-// 		         var opt = document.createElement("option");
-// 		         opt.value = d[x];
-// 		         opt.innerHTML = d[x];
-// 		         target.appendChild(opt);
-// 		     }   
-			 
-// 		 }
- 
+function DPPKey_Change(key){
+	
+	$("#DPP_KEYNO").val(key)
+	$("#Form").attr("action", "/dy/moniter/filedown.do?${_csrf.parameterName}=${_csrf.token}");
+	$("#Form").submit();
+			
+}
  
 </script>

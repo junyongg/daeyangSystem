@@ -689,6 +689,14 @@
 		</foreach>
 	</select>
 	
+	<select id="Message_ad" resultType="USER" parameterType="hashmap">
+		SELECT *
+		FROM u_userinfo A
+		LEFT JOIN dy_power_plant B
+		ON A.UI_KEYNO = B.DPP_USER
+		where B.DPP_USER = #{DPP_USER}
+	</select>
+	
 	<select id = "Group_select" resultType="USER" parameterType="String" >
 		SELECT B.UI_KEYNO, UI_NAME
 		FROM u_userinfo A

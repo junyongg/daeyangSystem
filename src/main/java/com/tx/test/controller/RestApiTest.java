@@ -1048,7 +1048,7 @@ public class RestApiTest {
 	@ResponseBody
 	public String billsResultTest(HttpServletRequest req) throws Exception {
 		
-		String msg2 = "";
+		String msg2 = "전송 상태가 새로고침 되었습니다.";
 		
 		List<billDTO> result = Component.getListNoParam("bills.LogResultNeedData");
 		
@@ -1087,6 +1087,7 @@ public class RestApiTest {
 				
 				if(restapi.equals("fail")) {
 					System.out.println("https://www.hometaxbill.com:8084/homtax/getpkey 서버에 문제가 발생했습니다.");
+					return "홈택스빌 서버 응답 오류. 새로고침 후 다시 전송상태현황 버튼을 클릭해 주세요.";
 				}
 				
 				// Api에서 리턴받은 값으로 예외처리 및 출력

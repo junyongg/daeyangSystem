@@ -348,8 +348,6 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 			for(int i= 0; i<list.length; i++) {
 				
 				
-				//전송 Y/N 체크
-				Component.updateData("bills.checkYN", list[i]);
 				
 				bill = Component.getData("bills.selectAllView", list[i]);
 
@@ -365,7 +363,11 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 					
 				}else {
 					sendApi(bill, tocken);
-				}	
+				}
+				
+				//전송 Y/N 체크
+				Component.updateData("bills.checkYN", list[i]);
+				
 			}
 		}		
 	}

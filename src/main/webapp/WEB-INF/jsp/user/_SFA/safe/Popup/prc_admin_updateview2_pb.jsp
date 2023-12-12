@@ -617,22 +617,22 @@ function inverterNumber(){
    				if(count == "1"){
 	   				var conutt = count + 1
 	   				$("#inputplus0").append('<td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;"><select id="sa2_LR" name ="sa2_LR" class="default_input_style input_margin_x_10px input_padding_y_4px"><option value = "L">좌</option><option value = "R">우</option></select>'+count+'</td>')
-	    			$("#inputplus1").append('<td class="tgsfa1 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc"  onkeyup="method_1(\'inputplus1\',\'inputplus2\',\'inputplus3\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
+	    			$("#inputplus1").append('<td class="tgsfa1 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc"  oninput="method_1(\'inputplus1\',\'inputplus2\',\'inputplus3\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
 	    			$("#inputplus2").append('<td class="tgsfa2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+preannacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this) style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')
 	    			$("#inputplus3").append('<td class="tgsfa3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+peridevlist[i-1]+' name="sa2_peridev" style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')		
    				}else{
    					var conutt = count + 1
 	   				$("#inputplus0").append('<td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'</td>')
-	    			$("#inputplus1").append('<td class="tgsfa1 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc"  onkeyup="method_1(\'inputplus1\',\'inputplus2\',\'inputplus3\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
+	    			$("#inputplus1").append('<td class="tgsfa1 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc"  oninput="method_1(\'inputplus1\',\'inputplus2\',\'inputplus3\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
 	    			$("#inputplus2").append('<td class="tgsfa2 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+preannacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this) style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')
 	    			$("#inputplus3").append('<td class="tgsfa3 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+peridevlist[i-1]+' name="sa2_peridev" style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')		
    				}
        			
    			}else{
    				
-   				var conutt = count - 9
+   				var conutt = count + 1
    				$("#inputplus5").append('<td class="tg-0lax px-4 py-3 text-center bg-table-violet" style="border-right: 1px solid rgb(229, 231, 235); border-left: 1px solid rgb(229, 231, 235); padding: 0px;">'+count+'</td>')
-    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc" onkeyup="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
+    			$("#inputplus6").append('<td class="tgsfa6 px-4 py-3 text-center  " style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+annacclist[i-1]+' name="sa2_annacc" oninput="method_1(\'inputplus6\',\'inputplus7\',\'inputplus8\',\''+conutt+'\');" style="background-color:rgba( 255, 255, 255, 0 )"></td>')
     			$("#inputplus7").append('<td class="tgsfa7 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+preannacclist[i-1]+' name="sa2_preannacc" oninput="inputNumberFormat(this)" style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')
     			$("#inputplus8").append('<td class="tgsfa8 px-4 py-3 text-center" style="border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235);padding:0"><input type="text" class="w-full border-none text-xs text-center focus:outline-none" value='+peridevlist[i-1]+' name="sa2_peridev" style="background-color:rgba( 255, 255, 255, 0 )"  ></td>')
 
@@ -640,6 +640,23 @@ function inverterNumber(){
    			count += 1;
    			
    		}
+   		
+   		var periodPowerInputs = document.getElementsByName("sa2_peridev");
+
+		// 배열 초기화
+		var periodPowerList = [];
+		
+		// NodeList를 배열로 변환하여 각 input 요소의 값을 배열에 추가
+		for (var i = 0; i < periodPowerInputs.length; i++) {
+		    var value = periodPowerInputs[i].value.trim();
+		
+		    // 값이 빈 문자열인 경우 0으로 초기화
+		    periodPowerList.push(value === '' ? 0 : parseFloat(value));
+		}
+
+		
+		list = periodPowerList;
+   		
    		
    		//td 어펜드 후에 kwh, mwh넣어주고 "MWh" 일때만 수식 function 실행
    		$("#sa2_accpowertype").val(accpowertype);
@@ -1021,32 +1038,34 @@ function method_1(a,b,c,d){
 	var acctype =  $("#sa2_accpowertype").val();
 	var periodtype =  $("#sa2_periodpowertype").val();
 	
-	
 	var num = d;
 	if(d > 11){
 		num = d - 10
 	}
 	
 	var aa = $("#"+ a +">  td:nth-child("+  num + ")  > input").val();
+	console.log(aa+"ok");
 	var bb = $("#"+ b +">  td:nth-child("+  num + ")  > input").val();
 	
 	if(bb == null | bb == ''){
 		bb = 0;
 	}
 	
-	//안전관리 첫 작성시 기간발전 0으로 만들어줌
-	if(aa-bb == aa){
-		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(0);
-	}else{
-		//MWh 일때 *1000 해줌
-		if(acctype == "MWh"){
-			$("#"+ c +">  td:nth-child("+  num + ")  > input").val(((aa-bb)*1000).toFixed(2));		
-		}else{
-			$("#"+ c +">  td:nth-child("+  num + ")  > input").val((aa-bb).toFixed(2));		
-		}
-			
+	//한번씩 문자들어갔을 경우에 문자를 지우고 숫자를 쓰면 method_1 펑션이 안먹힘;; 그래서 한번 더 값 넣어줌 그냥
+	if(typeof aa ==='string' || typeof bb ==='string'){
+		aa = aa;
+		bb = bb;
 	}
 	
+	
+	//MWh 일때 *1000 해줌
+	if(acctype == "MWh"){
+		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(((aa-bb)*1000).toFixed(2));		
+	}else{
+		$("#"+ c +">  td:nth-child("+  num + ")  > input").val((aa-bb).toFixed(2));
+	}
+			
+
 	
 	var periodpower = aa-bb
 	var sum = 0;
@@ -1063,10 +1082,7 @@ function method_1(a,b,c,d){
 		}
 			
 	}
-	
-	
-	
-	
+		
 	$("#sa2_inverterallKWh").val(sum.toFixed(3));
 	
 	
@@ -1104,20 +1120,19 @@ function method_2(a,b,c){
 	var bb = $("#"+ a +" > td:nth-child("+ c +") > input[type=hidden]:nth-child(2)").val();
 
 	
-	var periodpower = aa-bb
+	//한번씩 문자들어갔을 경우에 문자를 지우고 숫자를 쓰면 method_1 펑션이 안먹힘;; 그래서 한번 더 값 넣어줌 그냥
+	if(typeof aa ==='string' || typeof bb ==='string'){
+		aa = aa;
+		bb = bb;
+	}
 	
-	//인버터 10대이하 기간발전량 계산
-	if(periodpower == aa){
-		//bb = 누적 발전량 = 0, 맨처음 작성하는 발전소일 경우
-		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(0);
+	var periodpower = aa-bb
+
+	if(acctype == "MWh"){
+		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val((periodpower*1000).toFixed(2));
 	}else{
-		//아닐경우 뺌
-		if(acctype == "MWh"){
-			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val((periodpower*1000).toFixed(2));
-		}else{
-			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));			
-			
-		}
+		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));			
+		
 	}
 
 	

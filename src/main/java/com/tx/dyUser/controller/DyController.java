@@ -477,7 +477,6 @@ public class DyController {
     	
     	HashMap<String,Object> type = new HashMap<String, Object>();
     	List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
-    	List<HashMap<String,Object>> result1 = new ArrayList<HashMap<String,Object>>();
     	List<HashMap<String,Object>> errorlist = new ArrayList<HashMap<String,Object>>();
     	List<List<String>> MainList = new ArrayList<List<String>>();
     	
@@ -511,7 +510,6 @@ public class DyController {
     		//당일
     		result =  Component.getList("main.select_inverterData",type);
     		result = changeDailyData(result);
-    		result1 = result;
     		
     		//당일일때만 오늘날짜 데이터 뽑는것 
         	type.put("minmax","min");
@@ -526,7 +524,6 @@ public class DyController {
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
             		List<String> subList = Component.getList("main.select_inverterData_active",type); //인버터 개별 등록
-            		//System.out.println(subList.size());
             		MainList.add(subList);
             	}
         	}else {
@@ -539,8 +536,7 @@ public class DyController {
     		String sql = "main.select_inverterData_other";
     		
     		//excelType = 0(시간),1(일),2(월)
-    		if(excel == null) {
-    			result1 =  Component.getList("sub.select_hourData",type); //이건 detail 테이블에서 시간별 데이터 가져오는 부분
+    		if(excel == null) {   			
     			if(DaliyType.equals("4")) {
     				sql = "select_inverterData_other_excelType2_orType4";
     			}
@@ -574,7 +570,6 @@ public class DyController {
     	mv.addObject("searchEndDate",searchEndDate);
     	mv.addObject("ob",ob);
     	mv.addObject("result",result);
-    	mv.addObject("result1",result1);
     	mv.addObject("errorlist",errorlist);
     	
 		if(excel != null){
@@ -605,6 +600,56 @@ public class DyController {
 		}
     	return mv;
     }
+    
+    
+    
+    /**
+     * @return 통계 분석 detail_data_list
+     */
+    @RequestMapping("/dy/moniter/stasticsAjax3.do")
+    @ResponseBody
+    public ModelAndView stasticsAjax(HttpServletRequest req,
+    		HttpServletResponse res,
+    		@RequestParam(value="keyno",defaultValue="1")String keyno,
+    		@RequestParam(value="searchBeginDate",required=false)String searchBeginDate,
+    		@RequestParam(value="searchEndDate",required=false)String searchEndDate,
+    		@RequestParam(value="DaliyType",defaultValue="1")String DaliyType,
+    		@RequestParam(value="InverterType",defaultValue="0")String InverterType
+    		) throws Exception{
+    	ModelAndView mv = new ModelAndView("/user/_DY/monitering/ajax/dy_statstics_ajax2");
+    	
+    	HashMap<String,Object> type = new HashMap<String, Object>();
+    	
+    	List<HashMap<String,Object>> result1 = new ArrayList<HashMap<String,Object>>();
+    	
+    	type.put("searchBeginDate",searchBeginDate);
+    	type.put("searchEndDate",searchEndDate);
+    	type.put("InverterType",InverterType);
+    	type.put("type",keyno);
+    	
+    	HashMap<String,Object> ob =  Component.getData("main.select_MainData",type);
+    	
+    	String sql = "sub.select_hourData";
+    	
+    	if (DaliyType.equals("1")) {
+    		sql = "main.select_inverterData";
+    	}
+    	
+    	result1 =  Component.getList(sql,type);
+    	
+    	mv.addObject("result1",result1);
+    	mv.addObject("ob",ob);
+    	
+    	return mv;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * @return 설정 등록 

@@ -68,7 +68,7 @@
 			</c:if>
 			<c:forEach items="${resultList4 }" var="b">
 	          <tr class="">
-	            <td class="py-3 text-center" style="white-space: nowrap;">
+	            <td class="py-3 text-left" style="white-space: nowrap; text-align: left; padding-left: 3%; !important;">
 	             	<a class="text-sm" href="/sfa/safe/safeAdmin.do?SU_KEYNO=${b.SU_KEYNO}">${b.SU_SA_SULBI}</a>
 	            </td>
 	            <c:if test="${b.checkminus eq 0}">
@@ -76,12 +76,17 @@
 		              <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-100">${b.combined_column }</span>
 		            </td>
 	            </c:if>
-	            <c:if test="${b.checkminus ne 0}">
+	            <c:if test="${b.checkminus gt 0}">
 		            <td class="py-3 text-center" style="white-space: nowrap;">
 		              <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-700 bg-red-100">${b.combined_column }</span>
 		            </td>
 	            </c:if>
-	            <td class="py-3 text-center" style="white-space: nowrap;">
+	            <c:if test="${b.checkminus lt 0}">
+		            <td class="py-3 text-center" style="white-space: nowrap;">
+		              <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-400">${b.combined_column }</span>
+		            </td>
+	            </c:if>
+	            <td class="py-3 text-left" style="white-space: nowrap; text-align: left; padding-left: 3%; !important;">
 	             	<span class="text-sm">${b.SU_SA_AD}</span>
 	            </td>
 	          </tr>

@@ -2,11 +2,24 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <script src="/resources/common/js/html2canvas.js"></script>
-<!-- <button type="button" onclick="print($('#Form'));" >저장</button> -->
-<!-- <div class="card-body" style="height: 300px;"> -->
-<!--       <canvas id="bar2"></canvas> -->
-<!--      <div id='customLegend_humi' class='customLegend'></div> -->
-<!-- </div> -->
+<link
+  href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
+  rel="stylesheet"
+/>
+
+<!-- ✅ load jQuery ✅ -->
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"
+></script>
+
+<!-- ✅ load jquery UI ✅ -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+  integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
 <form:form id="Form" name="Form" method="post">
 	<main id="esco" class="h-full overflow-y-auto ">
 		<div class="container grid px-6 mx-auto">
@@ -730,7 +743,7 @@
 							type="radio" name="sa2_problem" id="sa2_problem" value="1"
 							class="ml-3 mr-5"> <label class="text-active-green"
 							for="safe">이상 없음</label> <input type="radio" name="sa2_problem"
-							id="sa2_problem" value="2" class="ml-3 mr-5">
+							id="sa2_problem" value="2" class="ml-3 mr-5" checked>
 						</span>
 					</div>
 				</div>
@@ -773,7 +786,6 @@
 <script type="text/javascript">
 var list = [];
 $(function() {
-	
 	
 	
 	$(".hiddenTr").hide();
@@ -1115,13 +1127,44 @@ function changesulbi(keyno) {
 		},
         async: false,  
         success: function(result) {
+			
+        	// 첫작성 시 오늘날짜를 위한 날짜 포맷팅--------------------------------------------------------
+        	var currentDate = new Date();
+        	var formattedDate = currentDate.getFullYear() + '-' +
+        	    ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' +
+        	    ('0' + currentDate.getDate()).slice(-2) + ' ' +
+        	    ('0' + currentDate.getHours()).slice(-2) + ':' +
+        	    ('0' + currentDate.getMinutes()).slice(-2) + ':' +
+        	    ('0' + currentDate.getSeconds()).slice(-2);
 
+       	    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+       		var day = ('0' + currentDate.getDate()).slice(-2);
+       		var formattedDate2 = month + '/' + day;    
+        	    
+        	// ------------------------------------------------------------------------
+        	 
+        	
         	var predate = result.predate.predate.substring(0,5);
+        	if(result.predate.predate.length == 0) {
+        		predate = formattedDate2;
+        	}
         	var premonth2 = result.data.SU_SA_ADMINDATE;
         	var lastday = Number(result.lastday);
         	var diff = Number(result.datediff.diff);
         	var admincount = result.count.count;
         	var preacctype =  result.preData.sa2_accpowertype;
+        	
+        	//첫작성 시 preacctype 없을때
+        	if(!preacctype){
+        		preacctype = "KWh"
+        	}
+        	
+        	if(result.CurrentData.length == 0) {
+        		$("#Current_Conn_date").val(formattedDate)
+        	}else{
+        		$("#Current_Conn_date").val(result.CurrentData[0].max_conn_date)
+        	}
+
         	
         	
         	
@@ -1145,7 +1188,6 @@ function changesulbi(keyno) {
         	$("#sa2_meter1date").val(lastday)
         	$("#sa2_meter2date").val(diff)
         	$("#prewatt").val(result.prewatt)
-        	$("#Current_Conn_date").val(result.CurrentData[0].max_conn_date)
         	$("#Pre_Conn_date").val(predate)
         	
         	
@@ -1206,7 +1248,7 @@ function changesulbi(keyno) {
         		$("#selectgroup").attr("style","display:none;");
         		
         		
-        		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
+        		if(Object.keys(result.preData).length === 0){
 	        		var annacc = 0
 	        		var preannacc = 0
 	        		var peridev = 0		
@@ -1236,7 +1278,7 @@ function changesulbi(keyno) {
         				if(annacclist[i] == ''){
         					annacclist[i] = 0    					
         				}else{
-        					annacclist[i] =  annacclist[i]				
+	        				annacclist[i] =  annacclist[i]
         				}
         			}
  					     	    
@@ -1248,13 +1290,13 @@ function changesulbi(keyno) {
         		$(".etcTr").hide();
         		$(".hiddenTr").show();
         		$("#inputplus0").html('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td>')
-    			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_ten()" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td>')
-    			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[KWh]</td>')
+    			$("#inputplus1").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적<select id="sa2_accpowertype" name="sa2_accpowertype" onchange = "MwhCal_ten(); kwchange(this.value);" style="padding-top:0;padding-bottom:0;background-color:#f0f2f5;border:none;border-radius:4px;margin-left:10px;margin-right:10px;font-size:12px"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td>')
+    			$("#inputplus2").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[<input class="w-2\/12 font-semibold text-center" id="sa2_preacctype" name = "sa2_preacctype" value = "" readonly="readonly">]</td>')
     			$("#inputplus3").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">기간 발전[KWh]</td>')
     			$("#inputplus4").hide();
         		$("#inputplus5").html('<td class="tg-0lax px-4 py-3 text-center font-semibold bg-table-violet" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">인버터 번호</td>')
-    			$("#inputplus6").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적<input id="kwselect" name = "kwselect" value = ""/> </td>')
-    			$("#inputplus7").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[KWh]</td>')
+    			$("#inputplus6").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">연간 현재 누적[<input class="w-2\/12 font-semibold text-center" id="sa2_accpowertype2" name = "sa2_accpowertype2" value = "" readonly="readonly">]</td>')
+    			$("#inputplus7").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">전회 누적[<input class="w-2\/12 font-semibold text-center" id="sa2_preacctype2" name = "sa2_preacctype2" value = "" readonly="readonly">]</td>')
     			$("#inputplus8").html('<td class="tg-0lax px-4 py-3 text-center font-semibold" style="min-width:15rem;max-width:20rem;width:15rem;border-right:solid 1px rgba(229, 231, 235);border-left:solid 1px rgba(229, 231, 235)">기간 발전[KWh]</td>')
     			$("#inputplus9").hide();
         		
@@ -1328,15 +1370,21 @@ function changesulbi(keyno) {
 		       
 	       		//td 어펜드 후에 kwh, mwh넣어주고 "MWh" 일때만 수식 function 실행
   		       	$("#sa2_accpowertype").val(preacctype);
-  		      	var preacctypeVal = $("#sa2_accpowertype").val(preacctype);
+  		       	$("#sa2_preacctype").val(preacctype);
+  		       	$("#sa2_preacctype2").val(preacctype);
+  		      	var preacctypeVal = $("#sa2_accpowertype").val();
+  		      	
+  		      	//11번 인버터부터 kw/mw표시 function
+  		      	kwchange(preacctypeVal)
+  		      	
  				if(preacctypeVal == "MWh"){
  					MwhCal_ten()
  				}
 	       		
 	       		
         	}else{
-        		
-        		if(result.preData == "" || result.preData == null || result.preData == "undefined"){
+      
+        		if(Object.keys(result.preData).length === 0){
         			
 	        		var nowpower = 0
 	        		var todaypower = 0
@@ -1350,7 +1398,7 @@ function changesulbi(keyno) {
         		var nowpowerlist = []
         		var todaypowerlist = []
         		var accpowerlist = []
-
+		
         		if(nowpower == 0 && todaypower == 0 && accpower == 0){
         			for(var i = 0; i <= num-1; i++ ){
         				accpowerlist[i] = 0	
@@ -1365,7 +1413,13 @@ function changesulbi(keyno) {
         				if(accpowerlist[i] == ''){
         					accpowerlist[i] = 0    					
         				}else{
-        					accpowerlist[i] =  accpowerlist[i]				
+        					//이전데이터 Mwh로 적었으면 *1000 아니면 그대로 넣기(점검때마다 kw로도 적고 mw로도 적기때문에)
+        					if(preacctype == "MWh"){
+        						accpowerlist[i] =  accpowerlist[i]*1000
+        	 				}else{
+        						accpowerlist[i] =  accpowerlist[i]				
+        	 					
+        	 				}
         				}
         			}
         	    }
@@ -1510,13 +1564,18 @@ function changesulbi(keyno) {
 
 function validationCheck(){		
 	if($("#sa2_title").val() == ''){
+// 		cf_smallBox('error', "발전소를", 3000,'#d24158');
 		alert("발전소를 선택해주세요");
+		document.getElementById("su_name").focus();
 		return false
 	}else if($("#sa2_wether").val() == ''){
+// 		cf_smallBox('error', "날씨를 선택해주세요", 3000,'#d24158');
 		alert("날씨를 선택해주세요");
+		document.getElementById("sa2_wether").focus();
 		return false
 	}else if($("#sa2_adminname").val() == ''){
 		alert("관리자를 선택해주세요");
+		document.getElementById("sa2_adminname").focus();
 		return false
 	}
 	return true
@@ -1662,6 +1721,7 @@ function qwe() {
 function method_1(a,b,c,d){
 	
 	var acctype =  $("#sa2_accpowertype").val();
+	var acctype2 =  $("#sa2_preacctype").val();
 	var periodtype =  $("#sa2_periodpowertype").val();
 	
 	
@@ -1677,17 +1737,25 @@ function method_1(a,b,c,d){
 		bb = 0;
 	}
 	
+	if(acctype == "MWh"){
+		aa = aa * 1000;
+	}else{
+		aa = aa;
+	}
+	
+	if(acctype2 == "MWh"){
+		bb = bb * 1000;
+	}else{
+		bb = bb;
+	}
+	
+	
+	
 	//안전관리 첫 작성시 기간발전 0으로 만들어줌
 	if(aa-bb == aa){
 		$("#"+ c +">  td:nth-child("+  num + ")  > input").val(0);
 	}else{
-		//MWh 일때 *1000 해줌
-		if(acctype == "MWh"){
-			$("#"+ c +">  td:nth-child("+  num + ")  > input").val(((aa-bb)*1000).toFixed(2));		
-		}else{
-			$("#"+ c +">  td:nth-child("+  num + ")  > input").val((aa-bb).toFixed(2));		
-		}
-			
+		$("#"+ c +">  td:nth-child("+  num + ")  > input").val((aa-bb).toFixed(2));			
 	}
 	
 	
@@ -1698,16 +1766,8 @@ function method_1(a,b,c,d){
 	
 		
 	for(var i=0;i<list.length;i++){
-		if(acctype == "MWh"){
-			sum += list[i]*1000
-			
-		}else{
-			sum += list[i]	
-		}
-			
+		sum += list[i]	
 	}
-	
-	
 	
 	
 	$("#sa2_inverterallKWh").val(sum.toFixed(3));
@@ -1745,6 +1805,12 @@ function method_2(a,b,c){
 	//현재 누적= aa, 전회차 누적 = bb, aa-bb
 	var aa = $("#"+ a +" > td:nth-child("+ c +") > input").val();
 	var bb = $("#"+ a +" > td:nth-child("+ c +") > input[type=hidden]:nth-child(2)").val();
+	
+	if(acctype == "MWh"){
+		aa = aa * 1000;
+	}else{
+		aa = aa;
+	}
 
 	
 	var periodpower = aa-bb
@@ -1755,12 +1821,7 @@ function method_2(a,b,c){
 		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(0);
 	}else{
 		//아닐경우 뺌
-		if(acctype == "MWh"){
-			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val((periodpower*1000).toFixed(2));
-		}else{
-			$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));			
-			
-		}
+		$("#"+ b +" > td:nth-child("+ c +") > input.tb_gbla1").val(periodpower.toFixed(2));			
 	}
 
 	
@@ -1772,13 +1833,7 @@ function method_2(a,b,c){
 	
 	//기간발전량 합처리
 	for(var i=0;i<list.length;i++){
-			
-			if(acctype == "MWh"){
-				sum += list[i]*1000
-			}else{
-				sum += list[i]
-			}
-			
+		sum += list[i]			
 	}
 	
 	//MWh 일때 *1000 해줌
@@ -1941,146 +1996,47 @@ function dateReplace(){
 
 
 function MwhCal_one(){
-	
+
 	var num = Number($("#sa2_inverternumtype").val())
-	var acctype =  $("#sa2_accpowertype").val();
-	var periodtype =  $("#sa2_periodpowertype").val();	
-	var inverterdate = $("#sa2_inverterdate").val()
-	var palntKW = $("#sa2_palntKW").val()
-	var palntCT = $("#sa2_palntCT").val()
 	
-	if(inverterdate == "0"){
-		inverterdate = "1"
-	}else{
-		inverterdate == inverterdate
+	for(var i = 2; i<=num+1; i++){
+		method_2('inputplus3', 'inputplus4', i)
 	}
-	
-	var vv1 = Number(inverterdate)
-	var vvv1 = Number(palntKW)
-	var palntCTnum = Number(palntCT)
-	
-	
-	
-	var allkwh = $("#sa2_inverterallKWh").val()
-	var daykwh = $("#sa2_inverterdayKWh").val()
-	var dayhour = $("#sa2_inverterdayhour").val()
-	
-	
-	if(acctype == "MWh"){
-		
-		for(var i = 2; i<=num+1; i++){
-			
-			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val();
-			var sumcal_d2 = sumcal_d * 1000
-			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val(sumcal_d2);
-		}
-		
-		
-		var allkwh2 = Number(allkwh)*1000;
-		var daykwh2 = allkwh2/vv1;
-		var dayhour2 = daykwh2/palntCTnum;
-		
-		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
-		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
-		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
-		
-	}else{
-		
-		for(var i = 2;  i<=num+1; i++){
-			
-			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val();
-			var sumcal_d2 = sumcal_d / 1000
-			var sumcal_d = $("#inputplus4 > td:nth-child("+ i +") > input.tb_gbla1").val(sumcal_d2);
-		}
-		
-	
-		var allkwh2 = Number(allkwh)/1000;
-		var daykwh2 = allkwh2/vv1;
-		var dayhour2 = daykwh2/palntCTnum;
-		
-		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
-		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
-		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
-	}
-	
 }
 
 function MwhCal_ten(){
 	
 	var num = Number($("#sa2_inverternumtype").val())
-	var acctype =  $("#sa2_accpowertype").val();
-	var periodtype =  $("#sa2_periodpowertype").val();	
-	var inverterdate = $("#sa2_inverterdate").val()
-	var palntKW = $("#sa2_palntKW").val()
-	var palntCT = $("#sa2_palntCT").val()
 	
-	if(inverterdate == "0"){
-		inverterdate = "1"
-	}else{
-		inverterdate == inverterdate
-	}
-	
-	var vv1 = Number(inverterdate)
-	var vvv1 = Number(palntKW)
-	var palntCTnum = Number(palntCT)
-	
-	
-	
-	var allkwh = $("#sa2_inverterallKWh").val()
-	var daykwh = $("#sa2_inverterdayKWh").val()
-	var dayhour = $("#sa2_inverterdayhour").val()
-	
-	
-	if(acctype == "MWh"){
-		for(var i=2; i<num; i++){
-			sumcal_one = $("#inputplus3 > td:nth-child("+  i + ")  > input").val();
-			sumcal_ten = $("#inputplus8 > td:nth-child("+  i + ")  > input").val();
-			sumcal_one2 = sumcal_one*1000
-			sumcal_ten2 = sumcal_ten*1000
-			$("#inputplus3 > td:nth-child("+ i + ")  > input").val(sumcal_one2);
-			$("#inputplus8 > td:nth-child("+ i + ")  > input").val(sumcal_ten2);
+	for(var i = 2; i<=num+1; i++){
+		if(i > 11){
+			method_1('inputplus6', 'inputplus7','inputplus8', i)			
+		}else{
+			method_1('inputplus1', 'inputplus2','inputplus3', i)		
 		}
-		
-		
-		$("#sa2_periodpowertype").val("MWh");
-		
-		var allkwh2 = Number(allkwh)*1000;
-		var daykwh2 = allkwh2/vv1;
-		var dayhour2 = daykwh2/palntCTnum;
-		
-		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
-		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
-		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
-		
-	}else{
-		
-		for(var i=1; i<num; i++){
-			sumcal_one = $("#inputplus3 > td:nth-child("+  i + ")  > input").val();
-			sumcal_ten = $("#inputplus8 > td:nth-child("+  i + ")  > input").val();
-			sumcal_one2 = sumcal_one/1000
-			sumcal_ten2 = sumcal_ten/1000
-			$("#inputplus3 > td:nth-child("+ i + ")  > input").val(sumcal_one2);
-			$("#inputplus8 > td:nth-child("+ i + ")  > input").val(sumcal_ten2);
-		}
-		
-		var allkwh2 = Number(allkwh)/1000;
-		var daykwh2 = allkwh2/vv1;
-		var dayhour2 = daykwh2/palntCTnum;
-		
-		$("#sa2_inverterallKWh").val(allkwh2.toFixed(2))
-		$("#sa2_inverterdayKWh").val(daykwh2.toFixed(2))
-		$("#sa2_inverterdayhour").val(dayhour2.toFixed(2))
 	}
-	
 }
 
 function changeDate(){
 
+	//첫작성시 오늘 날짜로 넣기위한 포맷팅
+	var currentDate = new Date();
+	var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+	var day = ('0' + currentDate.getDate()).slice(-2);
+	var formattedDate = month + '/' + day;
+	
 	var Year = $("#sa2_dateY").val();
 	var Mon = $("#sa2_dateM").val();
 	var Day = $("#sa2_dateD").val();
-	var Pre_Conn_date = $("#Pre_Conn_date").val() //09,26
+
+	var Pre_Conn_date = $("#Pre_Conn_date").val() //09/26
+	if(!Pre_Conn_date){
+		Pre_Conn_date = formattedDate;
+	}else{
+		Pre_Conn_date = $("#Pre_Conn_date").val()
+	}
 	
+
 	
 	//DayDiff => 작성 주기 계산
 	var Now_Conn_date = Year+"-"+Mon+"-"+Day;
@@ -2093,6 +2049,11 @@ function changeDate(){
 	
 	var timeDiff = date1 - date2;
 	var dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+	
+	//첫작성 시
+	if(dayDiff == 0){
+		dayDiff = 1;
+	}
 	
 	$("#sa2_inverterdate").val(dayDiff)
 	$("#sa2_meter2date").val(dayDiff)
@@ -2134,6 +2095,12 @@ function changeDate(){
 		$("#sa2_meter2allKWh").val(meter_allKWh.toFixed(2))
 		$("#sa2_meter2dayKWh").val(meter_dayKWh.toFixed(2))
 		$("#sa2_meter2dayhour").val(meter_dayhour.toFixed(2))
+}
+
+function kwchange(value){
+	
+	$("#sa2_accpowertype2").val(value);
+	
 }
 
 </script>

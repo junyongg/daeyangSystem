@@ -379,7 +379,8 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_peridev = #{sa2_peridev},
 				sa2_AC_Change = #{AC_sangsun},
 				sa2_LR = #{sa2_LR},
-				Conn_date = #{sa2_date}
+				Conn_date = #{sa2_date},
+				sa2_accpowertype2 = #{sa2_accpowertype2}
 				
 			WHERE sa2_keyno = #{sa2_keyno}
 		</update>
@@ -907,7 +908,10 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_UI_KEYNO,
 				sa2_LR,
 				sa2_su_keyno,
-				Conn_date
+				Conn_date,
+				sa2_accpowertype2,
+				sa2_preacctype,
+				sa2_preacctype2
 				
 			)VALUES(
 				#{sa2_title},
@@ -968,7 +972,10 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{SA_UI_KEYNO},
 				#{sa2_LR},
 				#{SU_KEYNO},
-				#{sa2_date}
+				#{sa2_date},
+				#{sa2_accpowertype2},
+				#{sa2_preacctype},
+				#{sa2_preacctype2}
 			)
 		</insert>
 		

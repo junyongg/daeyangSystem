@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -1173,18 +1174,25 @@ public class safeAdminController {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		HashMap<String, Object> map2 = new HashMap<String, Object>();
-//		map2.put("su_keyno",SU_KEYNO);
-//		map2.put("UIKEYNO",UIKEYNO);
+		
+		map2 = Component.getData("sfa.preDataSelect",SU_KEYNO);
+		
+		////첫작성시 데이터 없을때 빈map으로 return
+		if(map2 == null) {
+			map2 = new HashMap<>();
+		}
 		
 		map.put("data", Component.getData("sfa.safeuserselect_one", SU_KEYNO));		
 		map.put("count", Component.getData("sfa.safeWritecount",SU_KEYNO));		
 		map.put("predate", Component.getData("sfa.preDateSelect",SU_KEYNO));
 		map.put("datediff", Component.getData("sfa.dateDiff",SU_KEYNO));
-		map.put("preData", Component.getData("sfa.preDataSelect",SU_KEYNO));
+		map.put("preData", map2);
 		map.put("lastday", Component.getData("sfa.lastday"));
 		map.put("prewatt", Component.getData("sfa.preWattSelect",SU_KEYNO));
 		map.put("InverterData", Component.getList("sfa.InverterData_Select",SU_KEYNO));
-		map.put("CurrentData", Component.getList("sfa.CurrentData",SU_KEYNO));
+		List<Object> currentData = Component.getList("sfa.CurrentData", SU_KEYNO);
+		//첫작성시 데이터 없을때 빈배열로 return
+		map.put("CurrentData", currentData != null ? currentData : Collections.emptyList());
 
 		
 		return map;

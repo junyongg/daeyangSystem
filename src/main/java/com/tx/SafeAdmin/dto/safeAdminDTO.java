@@ -153,7 +153,10 @@ public class safeAdminDTO {
 	 sa2_LR,
 	 SU_KEYNO,
 	 sa2_dateDow,
-	 sa2_date3 = "";
+	 sa2_date3,
+	 sa2_accpowertype2,
+	 sa2_preacctype,
+	 sa2_preacctype2 = "";
 
 	
 }

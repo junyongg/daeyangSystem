@@ -34,7 +34,7 @@ $(function(){
 
 function pf_pageLoadingCheck(){
 	if(pageLoadingCheck){
-		pf_LinkPage();
+		pf_LinkPage(getCurrentPageFromURL());
 	}else{
 		setTimeout(pf_pageLoadingCheck,100);
 	}
@@ -133,7 +133,12 @@ function pf_addInput(obj){
 	
 }
 
-
+//페이징 처리 유지
+function getCurrentPageFromURL() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var pageParam = urlParams.get('pageIndex');
+    return pageParam ? parseInt(pageParam, 10) : 1;
+}
 
 
 //페이지 넘기기
@@ -152,7 +157,10 @@ function pf_LinkPage(num){
 		}
 	})
 	
-	$('#pageIndex').val(num);	
+	$('#pageIndex').val(num);
+	
+	// 페이지 번호를 history스택에 추가(페이징 유지)
+    history.pushState(null, null, '?pageIndex=' + num);
 	
 	setTimeout(pf_getList,200);	
 	

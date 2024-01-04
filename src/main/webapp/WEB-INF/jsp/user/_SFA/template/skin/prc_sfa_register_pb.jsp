@@ -1367,6 +1367,15 @@ function changesulbi(keyno) {
 	       			
 	       		}
 	       		list.length = 0;
+	       		
+	 
+	       		//자동계산(전월 누적으로 총발전량, 1일평균 계산 및 첫 작성일때 분기처리)
+        		if(result.preData == null || result.preData == 'undefined'){
+        			Divison(0)
+        		}else{
+        			Divison(result.preData.sa2_meter1KWh)
+        		}
+	       		
 		       
 	       		//td 어펜드 후에 kwh, mwh넣어주고 "MWh" 일때만 수식 function 실행
   		       	$("#sa2_accpowertype").val(preacctype);

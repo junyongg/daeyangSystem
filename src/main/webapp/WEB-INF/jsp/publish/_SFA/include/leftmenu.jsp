@@ -30,6 +30,13 @@
 	          <span class="ml-4">점검일지등록</span>
 	        </a>
 	      </li>
+	      <li class="relative py-3">
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/dyAdmin/safe/user.do">
+	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
+	          <span class="ml-4">발전소등록</span>
+	        </a>
+	      </li>
 		</c:if>
 		<c:if test="${fn:contains(str,'세금') }">
 			<li class="relative py-3">
@@ -100,6 +107,13 @@
 	        href="/sfa/safe/safeAdmin.do">
 	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
 	          <span class="ml-4">점검일지등록</span>
+	        </a>
+	      </li>
+	      <li class="relative py-3">
+	        <a class="text-black bg-button-gray py-3.5 px-3 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 rounded-lg" 
+	        href="/dyAdmin/safe/user.do">
+	          <img src="/resources/img/icon/exclamationMarkBlack.svg" class="fill-red w-5 h-5" alt="안전관리 아이콘">
+	          <span class="ml-4">발전소등록</span>
 	        </a>
 	      </li>
 	</c:if>

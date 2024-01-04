@@ -173,6 +173,7 @@
 														<input type="hidden" id="buttionType2" name="buttionType2" value="insert">
 														<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
 														<input type="hidden" id="SA_UI_KEYNO" name="SA_UI_KEYNO" value="${UI_KEYNO }">
+														<button class="btn btn-sm btn-default" type="button" onclick="window.scrollTo(0,0);" ><i class="glyphicon glyphicon-chevron-up"></i>Top</button>
 														<button type="button" onclick="providerInsert2();" class="btn btn-sm btn-primary" id="ActionType2"><i class="fa fa-floppy-o"></i> 저장
 														</button>
 													</div>

@@ -30,8 +30,15 @@
           <tr class="font-bold text-black">
             <td class="px-4 py-3 text-center text-xs">
               <div class="text-center mt-2">
-                <a>
+                <a class="arrow" data-index="1" style="cursor: pointer;">
                  	 발전소명
+	               	 <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+	                    viewBox="0 0 320 512" class="inline-flex" height="1em" width="1em"
+	                    xmlns="http://www.w3.org/2000/svg">
+	<!--                     <path -->
+	<!--                       d="M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41zm255-105L177 64c-9.4-9.4-24.6-9.4-33.9 0L24 183c-15.1 15.1-4.4 41 17 41h238c21.4 0 32.1-25.9 17-41z"> -->
+	<!--                     </path> -->
+	               	</svg>
                 </a>
               </div>
             </td>
@@ -52,6 +59,13 @@
             <td class="px-4 py-3 text-center text-xs">
               <div class="text-center mt-2">
                 <a>
+                 	 최근작성일
+                </a>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-center text-xs">
+              <div class="text-center mt-2">
+                <a>
                  	 주소
                 </a>
               </div>
@@ -66,7 +80,7 @@
 					<td class="px-4 py-3 text-center" colspan="100%">검색된 데이터가 없습니다.</td>
 				</tr>
 			</c:if>
-			<c:forEach items="${resultList4 }" var="b">
+			<c:forEach items="${resultList4 }" var="b"  varStatus="status">
 	          <tr class="">
 	            <td class="py-3 text-left" style="white-space: nowrap; text-align: left; padding-left: 3%; !important;">
 	             	<a class="text-sm" href="/sfa/safe/safeAdmin.do?SU_KEYNO=${b.SU_KEYNO}">${b.SU_SA_SULBI}</a>
@@ -86,8 +100,12 @@
 		              <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-400">${b.combined_column }</span>
 		            </td>
 	            </c:if>
+	            <td class="py-3 text-left" style="white-space: nowrap;">
+	             	<span class="text-sm">${b.preAdminDate}</span>
+	            </td>
 	            <td class="py-3 text-left" style="white-space: nowrap; text-align: left; padding-left: 3%; !important;">
-	             	<span class="text-sm">${b.SU_SA_AD}</span>
+	             	<span class="text-sm" id = "suSaAd_${status.index}">${b.SU_SA_AD}</span>
+	             	<button type="button" onclick="copyText('suSaAd_${status.index}')" class="text-xs inline-flex items-center px-2 py-1 md:px-3 md:py-1 border border-transparent rounded-lg text-white bg-black">주소 복사</button>
 	            </td>
 	          </tr>
 	         </c:forEach>
@@ -115,5 +133,21 @@ $(function(){
 	pf_defaultPagingSetting('${search.orderBy}','${search.sortDirect}');
 
 })
+
+function copyText(vlaue) {
+    var textElement = document.getElementById(vlaue);
+	
+    // 텍스트 선택 및 복사
+    var range = document.createRange();
+    range.selectNode(textElement);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+   
+    console.log(textElement)
+
+    alert("클립보드에 복사되었습니다.");
+}
 
 </script>

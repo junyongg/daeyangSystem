@@ -33,6 +33,9 @@
 					<button class="btn btn-sm btn-primary smallBtn" type="button" onclick="pf_LinkPage()" style="margin-right:10px;">
 						<i class="fa fa-plus"></i> 검색
 					</button>
+					<button class="btn btn-sm btn-primary" type="button" onclick="location.href='/sfa/safe/checkingStatus.do'" style="margin-right:10px;">
+						<i class="glyphicon glyphicon-chevron-up"></i> 안전관리 페이지로 이동
+					</button>
 				</div>
 				
 				</th>

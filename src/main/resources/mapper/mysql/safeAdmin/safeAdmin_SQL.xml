@@ -1132,11 +1132,22 @@ where UI_KEYNO = 'UI_HMWNH'
 					SELECT *, 
 					COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checking,
 					CONCAT(COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END), '회 / ', a.SU_SA_RG,'회') AS combined_column,
-					a.SU_SA_RG - COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checkminus 
+					a.SU_SA_RG - COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checkminus,
+					date_format(b.Conn_date, '%Y-%m-%d') as preAdminDate
 					FROM dy_sa_user a
 					LEFT JOIN dy_sa2_paper b
 					ON a.SU_KEYNO = b.sa2_su_keyno 
 					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
+					and
+					(YEAR(b.Conn_date), MONTH(b.Conn_date)) = (
+				        SELECT
+				            YEAR(MAX(b2.Conn_date)),
+				            MONTH(MAX(b2.Conn_date))
+				        FROM
+				            dy_sa2_paper b2
+				        WHERE
+				            a.SU_KEYNO = b2.sa2_su_keyno
+				    	)
 					GROUP BY a.SU_KEYNO
 				) AA
 			where 1=1
@@ -1161,7 +1172,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			 	<foreach collection="searchList" item="item">
 			 		<choose>
 			 			<when test='item.searchIndex.equals("1")'>
-		 		AND		sa2_title			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+		 		AND		SU_SA_SULBI			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
 			 			</when>
 			 			<when test='item.searchIndex.equals("2")'>
 		 		AND		AA.checking				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
@@ -1181,15 +1192,16 @@ where UI_KEYNO = 'UI_HMWNH'
 		 	</if>
 			<choose>
 				<when test="orderBy == 1">
-		 		ORDER BY	sa2_title ${sortDirect}
+		 		ORDER BY	AA.SU_SA_SULBI ${sortDirect}, AA.checkminus
 		 		</when>
 		 		<when test="orderBy == 2">
-		 		ORDER BY	AA.checkminus ${sortDirect}
+		 		ORDER BY	AA.checkminus ${sortDirect}, AA.SU_SA_SULBI
 		 		</when>
 		 		<otherwise>
-		 		ORDER BY 	AA.checkminus DESC
+		 		ORDER BY 	AA.SU_SA_SULBI
 		 		</otherwise>
 	 		</choose>
+	 		
 			<if test=" recordCountPerPage != 0">
 				LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
 			</if>  

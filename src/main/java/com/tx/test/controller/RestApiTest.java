@@ -261,14 +261,16 @@ public class RestApiTest {
 		   String mmdd = new SimpleDateFormat("MMdd").format(Calendar.getInstance().getTime());
 		   String month = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 		   String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
-		   String year2 = year.substring(2, year.length());
+		   
 		   
 		   Calendar cal = Calendar.getInstance();
 		   String format = "yyyy-MM-dd";
 		   String format2 = format.replace("-", "");
 		   SimpleDateFormat sdf = new SimpleDateFormat(format2);
 		   cal.add(cal.MONTH, -1); //월을 1달 뺀다.
+		   System.out.println(cal);
 		   String date = sdf.format(cal.getTime());
+		   String year2 = date.substring(2,4);
 		   String month2 = date.substring(4,6);
 		   
 		   
@@ -856,11 +858,15 @@ public class RestApiTest {
 	public void sendNTS(HttpServletRequest req,billDTO bill,
 			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
 		
-		//토큰받기
-		String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
-		tocken = URLEncoder.encode(tocken, "UTF-8");
+		String[] list = dbl_keyno.split(",");
 		
-		AsyncService.sendNTS(bill, dbl_keyno, tocken);	
+		for(String l : list) {
+			
+			Component.updateData("bills.checkYI", l);
+			
+		}
+		
+		AsyncService.sendNTS(bill, dbl_keyno);	
 	}
 	
 	
@@ -1219,6 +1225,14 @@ public class RestApiTest {
 			@RequestParam(value="subkey")String subkey) throws Exception {
 		
 		String msg = "";
+		String[] list = subkey.split(",");
+
+		for(String l : list) {
+			
+			Component.updateData("bills.checkYI", l);
+			
+		}
+		
 		
 		AsyncService.allSendNTS(bill, subkey);
 			

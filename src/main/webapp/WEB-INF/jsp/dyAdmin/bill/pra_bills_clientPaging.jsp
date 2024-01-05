@@ -108,6 +108,9 @@
 												<c:if test="${b.dbl_checkYN eq 'W' }">
 												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
 												</c:if>                                           						
+												<c:if test="${b.dbl_checkYN eq 'I' }">
+												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
+												</c:if>                                           						
 												<c:if test="${b.dbl_checkYN eq 'Y' }">
 												<td><input type="checkbox" name="" id ="" value = "${b.dbl_keyno}" disabled></td>
 												</c:if>                         						
@@ -127,6 +130,9 @@
 												</c:if>
 												<c:if test="${b.dbl_status eq '2' }">
 												<td style="color: #3333FF">전송대기</td>
+												</c:if>                          						
+												<c:if test="${b.dbl_status eq '3' }">
+												<td style="color: #3333FF">전송중</td>
 												</c:if>                          						
 												<c:if test="${b.dbl_status eq '0' }">
 												<td style="color: #00CC66">전송완료</td>

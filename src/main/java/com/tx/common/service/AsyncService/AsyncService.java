@@ -10,6 +10,6 @@ public interface AsyncService {
    
    public void allSendNTS(billDTO bill, String subkey) throws Exception;
    
-   public void sendNTS(billDTO bill, String dbl_keyno, String tocken) throws Exception;
+   public void sendNTS(billDTO bill, String dbl_keyno) throws Exception;
 	
 }

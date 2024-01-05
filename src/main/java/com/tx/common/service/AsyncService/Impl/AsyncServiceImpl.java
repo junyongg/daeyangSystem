@@ -200,12 +200,12 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 				data.put("taxdetailList", jArray);// 배열을 넣음
 				
 				// 전자세금계산서 발행 후 리턴
-				String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
-//				String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
+//				String restapi = Api("https://www.hometaxbill.com:8084/homtax/post", data.toString());
+				String restapi = Api("http://115.68.1.5:8084/homtax/post", data.toString());
 				
 				if(restapi.equals("fail")) {
-					System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
-//					System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
+//					System.out.println("https://www.hometaxbill.com:8084/homtax/post 서버에 문제가 발생했습니다.");
+					System.out.println("http://115.68.1.5:8084/homtax/post 서버에 문제가 발생했습니다.");
 					return "서버문제장애";
 				}
 				
@@ -338,16 +338,23 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 	@Override
 	@Async("threadPoolTaskExecutor")
 	public void sendNTS(billDTO bill,
-			@RequestParam(value="chkvalue")String dbl_keyno, String tocken) throws Exception {
+			@RequestParam(value="chkvalue")String dbl_keyno) throws Exception {
 		
-		
+		String msg = "";
 		String[] list = dbl_keyno.split(",");
 	
 		
-		if(tocken.length() > 0) {
+		if(list.length == 0) {	
+			msg = "전송할 세금계산서가 없습니다.";
+		}else {
 			for(int i= 0; i<list.length; i++) {
 				
+				//카카오톡 발급 토큰받기
+				String tocken = requestAPI.TockenRecive(SettingData.Apikey,SettingData.Userid);
+				tocken = URLEncoder.encode(tocken, "UTF-8");
 				
+				//전송 Y/N 체크
+				Component.updateData("bills.checkYN", list[i]);
 				
 				bill = Component.getData("bills.selectAllView", list[i]);
 
@@ -365,11 +372,9 @@ public class AsyncServiceImpl extends EgovAbstractServiceImpl implements AsyncSe
 					sendApi(bill, tocken);
 				}
 				
-				//전송 Y/N 체크
-				Component.updateData("bills.checkYN", list[i]);
 				
 			}
-		}		
+		}
 	}
 	
 	

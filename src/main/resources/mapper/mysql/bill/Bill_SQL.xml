@@ -359,6 +359,14 @@
 	WHERE dbl_keyno = #{dbl_keyno}
 	</update>
 	
+	<!-- 전송중(I)로 업데이트 -->
+	<update id="checkYI" parameterType="billDTO">
+	UPDATE dy_bills_log
+	SET dbl_checkYN = 'I',
+		dbl_status = '3'
+	WHERE dbl_keyno = #{dbl_keyno}
+	</update>
+	
 	<select id="billslogselect" resultType="hashmap" >
 			SELECT * 
 			FROM dy_bills_log

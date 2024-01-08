@@ -529,6 +529,17 @@ where UI_KEYNO = 'UI_HMWNH'
 	    where SU_KEYNO = #{SU_KEYNO}
 	    order by SU_SA_SULBI asc
     </select>
+    <select id="pre_next_select" parameterType="String" resultType="hashmap">
+	    select *
+		from( 
+			SELECT *,
+			lag(SU_KEYNO) over(order by SU_SA_SULBI asc) as su_keyno_pre,
+			lead(SU_KEYNO) over(order by SU_SA_SULBI asc) as su_keyno_next
+			from dy_sa_user
+			order by SU_SA_SULBI asc
+			)A
+		where A.SU_KEYNO = #{SU_KEYNO}
+    </select>
     
     <!-- 문자 전송을 위한 데이터 뽑기(이름, 전화번호) -->
     <select id="safeuserselect_alim" parameterType="String" resultType="safeUserDTO">
@@ -560,13 +571,27 @@ where UI_KEYNO = 'UI_HMWNH'
 	    where sa2_keyno = #{sa2_keyno}
     </select>
     
+    <select id="safepaperselect2_preone" parameterType="String" resultType="hashmap">
+	    SELECT *
+		FROM (
+		    SELECT *
+		    FROM dy_sa2_paper
+		    WHERE sa2_su_keyno = #{sa2_keyno}
+		    ORDER BY Conn_date DESC
+		    LIMIT 2
+		) AS recent_data
+		ORDER BY Conn_date ASC
+		LIMIT 1;
+    </select>
+    
     <select id="safe_TwoPreData" parameterType="hashmap" resultType="hashmap">
 	   SELECT *
 		FROM (
 		   SELECT *, ROW_NUMBER() OVER (ORDER BY Conn_date DESC) AS row_num
 		   FROM dy_sa_user a
 		   LEFT JOIN dy_sa2_paper b ON a.SU_KEYNO = b.sa2_su_keyno AND a.SU_UI_KEYNO = b.sa2_UI_KEYNO
-		   WHERE SU_KEYNO = #{SU_KEYNO} AND a.SU_UI_KEYNO = #{UI_KEYNO}
+		   WHERE SU_KEYNO = #{SU_KEYNO} 
+		   AND a.SU_UI_KEYNO = #{UI_KEYNO}
 		) AS ranked
 		WHERE row_num = 2;
     </select>

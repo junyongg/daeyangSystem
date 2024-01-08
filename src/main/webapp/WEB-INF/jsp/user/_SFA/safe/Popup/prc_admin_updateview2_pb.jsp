@@ -695,6 +695,12 @@ function inverterNumber(){
 		var periodpower = "${list.sa2_periodpower}";
 		
 		var accpower2 = "${list2.sa2_accpower}";
+		var pretype_one = "${list2.sa2_accpowertype}";
+		
+		//첫 작성 시
+		if(!pretype_one){
+			pretype_one = "KWh"
+		}
 
 		var nowpowerlist = []
 		var todaypowerlist = []
@@ -704,29 +710,36 @@ function inverterNumber(){
 		var accpowerlist2 = []
 
 		nowpowerlist = nowpower.split(",")
-		todaypowerlist = todaypower.split(",")	
+		todaypowerlist = todaypower.split(",")
 		accpowerlist = accpower.split(",")	
 		periodpowerlist = periodpower.split(",")
 		
-		accpowerlist2 = accpower2.split(",")	
+		
+		if(!accpower2){
+			accpowerlist2 = new Array(num).fill(0);
+		}else{
+			accpowerlist2 = accpower2.split(",")	
+		}
+		
 
 		
 		function EmptyValue(value) { 
-			return value = value.map(function(item) {
-	  			return item.trim() !== "" ? item : 0;
+			return value.map(function(item) {
+				return typeof item === 'string' ? item.trim() !== "" ? item.trim() : 0 : item;
 			});
 		}
+		
+		accpowerlist2 = EmptyValue(accpowerlist2)
 		
 		nowpowerlist = EmptyValue(nowpowerlist);
 		todaypowerlist = EmptyValue(todaypowerlist);
 		accpowerlist = EmptyValue(accpowerlist);
 		periodpowerlist = EmptyValue(periodpowerlist);
 		
-		if(preacctype == "MWh"){
+		if(pretype_one == "MWh"){
 			accpowerlist2 = EmptyValue(accpowerlist2).map(item => item * 1000);
-		}else{
-			accpowerlist2 = EmptyValue(accpowerlist2);
 		}
+
 		
 		var conutt = count + 1
 		
@@ -859,16 +872,22 @@ function MwhCal_ten(){
 }
 
 function changeDate(){
-
-	//첫작성시 오늘 날짜로 넣기위한 포맷팅
-	var currentDate = new Date();
-	var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-	var day = ('0' + currentDate.getDate()).slice(-2);
-	var formattedDate = month + '/' + day;
 	
 	var Year = $("#sa2_dateY").val();
 	var Mon = $("#sa2_dateM").val();
 	var Day = $("#sa2_dateD").val();
+	var pre_Year = "${list2.sa2_date}";
+	if(pre_Year){
+		pre_Year = pre_Year
+	}else{ 
+		pre_Year = Year
+	}
+	
+	pre_Year = pre_Year.substring(0,4);
+	
+	//첫작성시 작성 날짜로 넣기위한 포맷팅
+	var formattedDate = Mon + '/' + Day;
+	
 	
 	
 	var perioddata = $("#perioddata").val();
@@ -883,7 +902,8 @@ function changeDate(){
 	var idx = perioddata.indexOf('/');
 	var perioddata2 = perioddata.substring(0,idx);
 	var perioddata3 = perioddata.substring(idx+1);
-	var perioddata4 = Year+"-"+perioddata2+"-"+perioddata3;
+	var perioddata4 = pre_Year+"-"+perioddata2+"-"+perioddata3;
+	console.log(perioddata4)
 	
 	var date3 = new Date(perioddata4);
 	date3.setHours(0, 0, 0, 0);
@@ -892,6 +912,7 @@ function changeDate(){
 	//DayDiff => 작성 주기 계산
 	var Now_Conn_date = Year+"-"+Mon+"-"+Day;
 	var date1 = new Date(Now_Conn_date);
+	console.log(date1)
 	date1.setHours(0, 0, 0, 0);
 	
 	var Current_Conn_date = $("#Current_Conn_date").val();
@@ -900,6 +921,7 @@ function changeDate(){
 	
 	var timeDiff = date1 - date3;
 	var dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+	console.log(dayDiff)
 	
 	//첫작성 시
 	if(dayDiff == 0){

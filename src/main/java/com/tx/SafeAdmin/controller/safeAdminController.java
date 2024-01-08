@@ -1182,7 +1182,7 @@ public class safeAdminController {
 			map2 = new HashMap<>();
 		}
 		
-		map.put("data", Component.getData("sfa.safeuserselect_one", SU_KEYNO));		
+		map.put("data", Component.getData("sfa.pre_next_select", SU_KEYNO));		
 		map.put("count", Component.getData("sfa.safeWritecount",SU_KEYNO));		
 		map.put("predate", Component.getData("sfa.preDateSelect",SU_KEYNO));
 		map.put("datediff", Component.getData("sfa.dateDiff",SU_KEYNO));

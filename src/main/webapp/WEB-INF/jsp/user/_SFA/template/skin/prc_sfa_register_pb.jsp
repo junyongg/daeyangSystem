@@ -28,9 +28,6 @@
 					class="px-3 py-1 md:px-3 md:py-1 lg:px-5 lg:py-2 w-full rounded-lg bg-white my-4 md:md-4 lg:my-7">
 					<div class="flex">
 						<div class="" data-html2canvas-ignore="true">
-							<!--             <select name="" id="" style="background-color: white; border: 1px solid rgb(240, 242, 245); border-radius: 4px; margin-left: 10px; margin-right: 10px; font-size: 12px; padding-top: 4px; padding-bottom: 4px;"> -->
-							<!--               <option>전기설비 기록표</option> -->
-							<!--             </select> -->
 						</div>
 						<div class="flex items-center">
 							<div class="flex items-center ">
@@ -48,11 +45,7 @@
 <%-- 									<c:forEach items="${safeuserlist}" var="b"> --%>
 <%-- 										<option value="${b.SU_KEYNO}">${b.SU_SA_SULBI }</option> --%>
 <%-- 									</c:forEach> --%>
-								</select> <span class="mr-3">발전소 명:</span> <span class="text-active-blue">
-									<input type="text" name="sa2_title" id="sa2_title"
-									class="w-full border-none text-xs" style="text-align: center;"
-									readonly="readonly">
-								</span>
+								</select> 
 								<div class="flex flex-wrap items-center">
 									<p
 										class="imagePixel flex items-center rounded-full px-2 py-1 text-xs bg-badge-green text-active-green mr-3 mb-2">
@@ -70,6 +63,14 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div> 
+<!-- 						<span class="flex mr-3">발전소 명:</span>  -->
+						<span class="flex text-active-blue">
+							<input type="text" name="sa2_title" id="sa2_title"
+							class="w-full border-none text-4xl" style="text-align: center; flex-wrap: wrap;"
+							readonly="readonly">
+						</span>
 					</div>
 				</div>
 				<div class="w-full rounded-lg bg-white my-4 md:md-4 lg:my-7">
@@ -102,6 +103,10 @@
 <!-- 							<span> 이전 양식 조회 : </span> -->
 							<button type="button" id="autoInsert" onclick = "Recent_popup();"
 								class="mx-3 text-xs font-semibold items-center w-24 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">이전 양식 조회</button>
+							<button type="button" id="autoInsert" onclick = "pre_select();"
+								class="mx-3 text-xs font-semibold items-center w-24 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">이전 발전소</button>
+							<button type="button" id="autoInsert" onclick = "next_select();"
+								class="mx-3 text-xs font-semibold items-center w-24 py-2 border border-transparent rounded text-white bg-black flex-shrink-0 mb-2">다음 발전소</button>
 						</div>
 					</div>
 					<div class="w-full border"></div>
@@ -778,6 +783,8 @@
 				<input type="hidden" id="Pre_Conn_date" name="Pre_Conn_date" value="">
 				<input type="hidden" id="SA_UI_KEYNO" name="SA_UI_KEYNO" value="${UI_KEYNO }">
 				<input type="hidden" id="accpowerList" name="accpowerList" value="">
+				<input type="hidden" id="pre_keyno" name="pre_keyno" value="">
+				<input type="hidden" id="next_keyno" name="next_keyno" value="">
 			</div>
 		</div>
 	</main>
@@ -1189,6 +1196,10 @@ function changesulbi(keyno) {
         	$("#sa2_meter2date").val(diff)
         	$("#prewatt").val(result.prewatt)
         	$("#Pre_Conn_date").val(predate)
+        	$("#pre_keyno").val(result.data.su_keyno_pre)
+        	$("#next_keyno").val(result.data.su_keyno_next)
+        	console.log($("#pre_keyno").val())
+        	console.log($("#next_keyno").val())
         	
         	
         	
@@ -2109,6 +2120,37 @@ function changeDate(){
 function kwchange(value){
 	
 	$("#sa2_accpowertype2").val(value);
+	
+}
+
+function pre_select(){
+	
+	var pre_keyno = $("#pre_keyno").val();
+	
+	
+	if(pre_keyno){
+		window.location.href = "/sfa/safe/safeAdmin.do?SU_KEYNO="+pre_keyno
+	}else{
+		alert("현재 발전소가 첫번째 발전소 입니다.")
+	}
+	
+	
+	
+	
+}
+
+function next_select(){
+	
+	var next_keyno = $("#next_keyno").val();
+	
+	if(next_keyno){
+		window.location.href = "/sfa/safe/safeAdmin.do?SU_KEYNO="+next_keyno
+// 		changesulbi(next_keyno)	
+	}else{
+		alert("현재 발전소가 마지막 발전소 입니다.")
+	}
+	
+	
 	
 }
 

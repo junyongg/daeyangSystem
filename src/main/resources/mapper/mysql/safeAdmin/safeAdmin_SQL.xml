@@ -729,6 +729,12 @@ where UI_KEYNO = 'UI_HMWNH'
 		DELETE  FROM dy_sa_user
 		where SU_KEYNO  = #{SU_KEYNO}
 	</delete>
+	
+	<update id="safeUserDel_YN" parameterType="String">
+		UPDATE dy_sa_user
+		SET SU_Del_YN = 'Y'
+		WHERE SU_KEYNO = #{SU_KEYNO}
+	</update>
     
     <!-- 안전관리 발전소 카톡, 문자 전송 여부 체크용 페이징, 검색, 정렬 sql -->
        <sql id="safeUser_getListBody">

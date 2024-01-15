@@ -856,7 +856,7 @@ public class safeAdminController {
 	public String USerDeleteAjax(HttpServletRequest req, @RequestParam(value = "SU_KEYNO") String SU_KEYNO)
 			throws Exception {
 
-		Component.deleteData("sfa.safeUserDelete", SU_KEYNO);
+		Component.updateData("sfa.safeUserDel_YN", SU_KEYNO);
 
 		String msg = "발전소 삭제 완료";
 

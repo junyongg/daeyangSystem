@@ -78,24 +78,26 @@
 												<td colspan="8">검색된 데이터가 없습니다.</td>
 											</tr>
 										</c:if>
-										<c:forEach items="${resultList4 }" var="b">
-											<tr>
-												<td style="white-space: nowrap;">${b.COUNT}</td>
-												<td style="white-space: nowrap;"><a href="javascript:;" onclick="providerSelect2('${b.SU_KEYNO }')">${b.SU_SA_SULBI}</a></td>
-												<td style="white-space: nowrap;">${b.SU_SA_AD}</td>
-												<c:if test="${b.SU_SA_KAKAOYN eq 'Y'}">
-												<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${b.SU_KEYNO}" onChange="checkcheck(this.value)" checked> </td>
-												</c:if>
-												<c:if test="${b.SU_SA_KAKAOYN eq 'N'}">
-												<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${b.SU_KEYNO}" onChange="checkcheck(this.value)"> </td>
-												</c:if>
-												<c:if test="${b.SU_SA_MSGYN eq 'Y'}">
-												<td id ="chktd"><input type="checkbox" name="chk2" id ="chk2" value = "${b.SU_KEYNO}" onChange="checkcheck2(this.value)" checked></td>
-												</c:if>
-												<c:if test="${b.SU_SA_MSGYN eq 'N'}">
-												<td id ="chktd"><input type="checkbox" name="chk2" id ="chk2" value = "${b.SU_KEYNO}" onChange="checkcheck2(this.value)"></td>
-												</c:if>
-											</tr>
+										<c:forEach items="${resultList4}" var="b">
+											<c:if test="${b.SU_Del_YN eq 'N' }">
+												<tr>
+													<td style="white-space: nowrap;">${b.COUNT}</td>
+													<td style="white-space: nowrap;"><a href="javascript:;" onclick="providerSelect2('${b.SU_KEYNO }')">${b.SU_SA_SULBI}</a></td>
+													<td style="white-space: nowrap;">${b.SU_SA_AD}</td>
+													<c:if test="${b.SU_SA_KAKAOYN eq 'Y'}">
+													<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${b.SU_KEYNO}" onChange="checkcheck(this.value)" checked> </td>
+													</c:if>
+													<c:if test="${b.SU_SA_KAKAOYN eq 'N'}">
+													<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${b.SU_KEYNO}" onChange="checkcheck(this.value)"> </td>
+													</c:if>
+													<c:if test="${b.SU_SA_MSGYN eq 'Y'}">
+													<td id ="chktd"><input type="checkbox" name="chk2" id ="chk2" value = "${b.SU_KEYNO}" onChange="checkcheck2(this.value)" checked></td>
+													</c:if>
+													<c:if test="${b.SU_SA_MSGYN eq 'N'}">
+													<td id ="chktd"><input type="checkbox" name="chk2" id ="chk2" value = "${b.SU_KEYNO}" onChange="checkcheck2(this.value)"></td>
+													</c:if>
+												</tr>
+											</c:if>
 										</c:forEach>
 									</tbody>
 								</table>

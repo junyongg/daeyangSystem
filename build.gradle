@@ -21,7 +21,7 @@ jar {
 
 repositories {
 	jcenter()
-	maven { url "http://maven.egovframe.kr:8080/maven/" }
+	maven { url "http://maven.egovframe.go.kr/maven/" }
 	 maven() {
         url "https://maven.atlassian.com/3rdparty/"
     }

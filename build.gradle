@@ -20,15 +20,10 @@ jar {
 }
 
 repositories {
-	jcenter()
-	maven { url "http://maven.egovframe.kr:8080/maven/" }
-	 maven() {
-        url "https://maven.atlassian.com/3rdparty/"
-    }
-
-
-
-
+	mavenCentral()
+	maven { 
+		url "https://maven.egovframe.go.kr/maven/" 
+	}
 }
 
 def springframework_version = '4.3.16.RELEASE'
@@ -65,7 +60,11 @@ dependencies {
 	implementation group: 'javax.servlet', name: 'jstl', version:'1.2'
 	implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
 	implementation group: 'egovframework.rte', name: 'egovframework.rte.fdl.cmmn', version:egovframework_version
-	implementation group: 'egovframework.rte', name: 'egovframework.rte.ptl.mvc', version:egovframework_version
+	implementation (group: 'egovframework.rte', name: 'egovframework.rte.ptl.mvc', version:egovframework_version)
+	{
+		exclude(module: 'spring-modules-validation')
+	}
+	implementation group: 'egovframework.rte', name: 'spring-modules-validation', version:'0.9'
 	implementation group: 'egovframework.rte', name: 'egovframework.rte.psl.dataaccess', version:egovframework_version
 	implementation group: 'egovframework.rte', name: 'egovframework.rte.fdl.idgnr', version:egovframework_version
 	implementation group: 'egovframework.rte', name: 'egovframework.rte.fdl.property', version:egovframework_version
@@ -178,43 +177,6 @@ flyway{
 
 def changeLog_mysql = "src/main/liquibase/mysql/changelog_mysql.xml"
 def changeLog_oracle = "src/main/liquibase/oracle/changelog_oracle.xml"
-
-liquibase {
-    activities {
-        mysql_local {
-             changeLogFile changeLog_mysql
-                url 'jdbc:mysql://221.144.83.86:3306/'
-                username 'ems'
-                password 'xmfhslrtm1!'
-            
-        }
-        mysql_real {
-             changeLogFile changeLog_mysql
-                url 'jdbc:mysql://IP:PORT/DATABASE'
-                username 'ID'
-                password 'PASSWORD'
-            
-        }
-        oracle_local {
-             changeLogFile changeLog_oracle
-                url 'jdbc:oracle:thin:@183.105.56.21:1521:xe'
-                username 'ctcms_test'
-                password 'ctcms2020!'
-            
-        }
-        oracle_real {
-             changeLogFile changeLog_oracle
-                url 'jdbc:oracle:thin:@'
-                username 'ID'
-                password 'PASSWORD'
-            
-        }
-        
-    
-    }
-
-    runList = 'mysql_local' // real 에 실서버 정보 넣고  실행
-}
 
 
 project.ext{

@@ -387,22 +387,23 @@ public class DyController {
  	   
 	   type.put("type",key);
 	   type.put("name",name);
-	   type.put("number","A");
-	   //개별데이터
-	   HashMap<String,Object> data =  Component.getData("main.select_inverterData_ONE",type);
-	   type.put("number","B");
-	   HashMap<String,Object> data2 =  Component.getData("main.select_inverterData_ONE",type);
-	   if(data != null) {
-		   float a = Float.parseFloat(data.get("Cumulative_Generation").toString());
-		   float b = Float.parseFloat(data2.get("Cumulative_Generation").toString()) ;
-		   
-		   float daily = a-b;
-		   daily = (float)Math.round((daily*100))/100;
-		   data.put("Daily_Generation", daily);
-	   }
-			   
 	   
-	   map.put("invertData", data);
+	   //개별데이터
+	   HashMap<String,Object> date =  Component.getData("main.inverter_date",type);
+	   
+	   if(date != null) {
+		   type.put("date",date.get("mind"));
+		   HashMap<String, Object> a = Component.getData("main.inverter_Cumulative_Generation",type);
+		   type.put("date",date.get("maxd"));
+		   HashMap<String, Object> b = Component.getData("main.inverter_Cumulative_Generation",type);
+		   
+		   float daily = Float.parseFloat(b.get("Cumulative_Generation").toString())-Float.parseFloat(a.get("Cumulative_Generation").toString());
+		   daily = (float)Math.round((daily*100))/100;
+		   
+		   b.put("Daily_Generation", daily);
+		   
+		   map.put("invertData", b);
+	   }
 	   map.put("name", name);
 	   //AllPower , Active
  	   return map;

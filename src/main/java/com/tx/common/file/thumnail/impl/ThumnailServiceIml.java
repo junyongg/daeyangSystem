@@ -422,15 +422,15 @@ public class ThumnailServiceIml extends EgovAbstractServiceImpl implements Thumn
 	    // 회전 시킨다.
 	    switch (orientation) {
 	        case 6: // 이미지 회전값이 270 기운 경우 (왼쪽으로 90 기운 경우)
-	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_90, null); 
+	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_90); 
 	            break;
 	        case 1: // @details 이미지 회전값이 0인경우 ( 정방향 )
 	            break;
 	        case 3: // 이미지 회전값이 180 기운 경우
-	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_180, null);  
+	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_180);  
 	            break;
 	        case 8: // 이미지 회전값이 90 기운 경우
-	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_270, null);    
+	            srcImg = Scalr.rotate(srcImg, Scalr.Rotation.CW_270);    
 	            break;
 
 	        default:

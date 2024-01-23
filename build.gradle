@@ -20,6 +20,7 @@ jar {
 }
 
 repositories {
+
 	mavenCentral()
 	maven { 
 		url "https://maven.egovframe.go.kr/maven/" 

@@ -182,7 +182,7 @@ public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAnd
 	          * header font style
 	          */
 	         XSSFFont headerXSSFFont = (XSSFFont) workbook.createFont();
-	         headerXSSFFont.setColor(new XSSFColor(new byte[]{(byte) 255, (byte) 255, (byte) 255}));
+	         headerXSSFFont.setColor(new XSSFColor(new byte[]{(byte) 255, (byte) 255, (byte) 255}, null));
 
 	         /**
 	          * header cell style
@@ -196,7 +196,7 @@ public class MailAndExcelDown extends EgovAbstractServiceImpl implements MailAnd
 	         headerXssfCellStyle.setBorderBottom(BorderStyle.THIN);
 
 	         // 배경 설정
-	         headerXssfCellStyle.setFillForegroundColor(new XSSFColor(new byte[]{(byte) 34, (byte) 37, (byte) 41}));
+	         headerXssfCellStyle.setFillForegroundColor(new XSSFColor(new byte[]{(byte) 34, (byte) 37, (byte) 41}, null));
 	         headerXssfCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	         headerXssfCellStyle.setFont(headerXSSFFont);
 

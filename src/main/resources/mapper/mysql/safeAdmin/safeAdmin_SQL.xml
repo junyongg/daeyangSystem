@@ -1080,7 +1080,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		
 		<!-- 바로 전회차 데이터 뽑기-->
 		<select id="preDataSelect" resultType="hashmap">
-			select *
+			<!-- select *
 			FROM dy_sa2_paper a
 			join dy_sa_user b
 			on a.sa2_su_keyno = b.SU_KEYNO
@@ -1092,7 +1092,15 @@ where UI_KEYNO = 'UI_HMWNH'
 				on a.SU_KEYNO  = b.sa2_su_keyno
 				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
 				where SU_KEYNO = #{su_keyno}
-			)
+			) -->
+			SELECT *
+			FROM dy_sa_user a
+			join dy_sa2_paper b
+			on a.SU_KEYNO  = b.sa2_su_keyno
+			and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
+			where SU_KEYNO = #{su_keyno}
+			order by b.Conn_date desc
+			limit 1
 		</select>
 		
 		<!-- 이전데이터 조회  -->
@@ -1112,20 +1120,16 @@ where UI_KEYNO = 'UI_HMWNH'
 		</select>
 		
 		 <!-- 이전달 가장 마지막 전월유효전력량 데이터 뽑기(자동계산) -->
-		<select id="preWattSelect" resultType="String">
-			select max(a.sa2_meter1KWh) prewatt
+		<select id="preWattSelect" resultType="String" parameterType="hashmap">
+			SELECT a.sa2_meter1KWh AS prewatt
 			FROM dy_sa2_paper a
-			join dy_sa_user b
-			on a.sa2_su_keyno = b.SU_KEYNO
-			where date_format(a.Conn_date, '%Y-%m') =
-				(select date_format(max(now()-interval 1 month),'%Y-%m')
-				FROM dy_sa_user a
-				join dy_sa2_paper b
-				on a.SU_KEYNO  = b.sa2_su_keyno
-				and a.SU_UI_KEYNO = b.sa2_UI_KEYNO
-				where a.SU_KEYNO = #{su_keyno}
-				)
-			and a.sa2_su_keyno = #{su_keyno}
+			JOIN dy_sa_user b ON a.sa2_su_keyno = b.SU_KEYNO
+			<![CDATA[
+				WHERE date_format(a.Conn_date, '%Y-%m')  < #{formatDate}
+		 	]]>
+			AND a.sa2_su_keyno = #{su_keyno}
+			ORDER BY a.Conn_date DESC
+			LIMIT 1;
 		</select>
 
 		
@@ -1170,10 +1174,11 @@ where UI_KEYNO = 'UI_HMWNH'
 					ON a.SU_KEYNO = b.sa2_su_keyno 
 					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
 					and
-					(YEAR(b.Conn_date), MONTH(b.Conn_date)) = (
+					(YEAR(b.Conn_date), MONTH(b.Conn_date), day(b.Conn_date)) = (
 				        SELECT
 				            YEAR(MAX(b2.Conn_date)),
-				            MONTH(MAX(b2.Conn_date))
+				            MONTH(MAX(b2.Conn_date)),
+				            DAY(MAX(b2.Conn_date))
 				        FROM
 				            dy_sa2_paper b2
 				        WHERE

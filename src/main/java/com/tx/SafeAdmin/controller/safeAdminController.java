@@ -786,7 +786,7 @@ public class safeAdminController {
 
 		} else {
 			List<UserDTO> list = Component.getList("sfa.Group_select", UIA_KEYNO);
-			userlist = list;
+			userlist = list; 
 		}
 
 //		    	List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
@@ -1170,11 +1170,16 @@ public class safeAdminController {
 	public HashMap<String, Object> SafeUserInfoSelect(HttpServletRequest req, safeAdminDTO bill,
 			@RequestParam(value = "SU_KEYNO") String SU_KEYNO
 			,@RequestParam(value = "UIKEYNO") String UIKEYNO
+			,@RequestParam(value = "formatDate") String formatDate
 			) throws Exception {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		HashMap<String, Object> map2 = new HashMap<String, Object>();
-		
+		HashMap<String, Object> map3 = new HashMap<String, Object>();
+		map3.put("SU_KEYNO", SU_KEYNO);
+		map3.put("formatDate", formatDate);
+		System.out.println(map3);
+
 		map2 = Component.getData("sfa.preDataSelect",SU_KEYNO);
 		
 		////첫작성시 데이터 없을때 빈map으로 return
@@ -1188,7 +1193,7 @@ public class safeAdminController {
 		map.put("datediff", Component.getData("sfa.dateDiff",SU_KEYNO));
 		map.put("preData", map2);
 		map.put("lastday", Component.getData("sfa.lastday"));
-		map.put("prewatt", Component.getData("sfa.preWattSelect",SU_KEYNO));
+		map.put("prewatt", Component.getData("sfa.preWattSelect",map3));
 		map.put("InverterData", Component.getList("sfa.InverterData_Select",SU_KEYNO));
 		List<Object> currentData = Component.getList("sfa.CurrentData", SU_KEYNO);
 		//첫작성시 데이터 없을때 빈배열로 return

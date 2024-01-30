@@ -1495,8 +1495,6 @@ function changesulbi(keyno) {
         		if(result.preData == null || result.preData == 'undefined'){
         			Divison(0)
         		}else{
-        			console.log("else탐")
-        			console.log(result.preData)
         			Divison(result.preData.sa2_meter1KWh)
         		}
         		
@@ -1622,8 +1620,7 @@ function Divison(obj){
 	var day = $("#sa2_meter1date").val()
 	var vol = $("#sa2_palntKW").val()
 	//전월 마지막 점검데이터의 전월 누적 송전 유효 전력량
-	var prev = $("#prewatt").val()
-	console.log(prev);
+	var prev = $("#prewatt").val()	
 	
 	if(day == 0){
 		day = 1
@@ -1650,7 +1647,7 @@ function Divison(obj){
 
 	//첫작성시 전월누적 없어서 NaN뜰 때  분기처리
 	if(isNaN(num)){
-		console.log("0탐");
+		
 		$("#sa2_meter1allKWh").val(0)
 		$("#sa2_meter1dayKWh").val(0)
 		$("#sa2_meter1dayhour").val(0)
@@ -2121,7 +2118,7 @@ function changeDate(){
 		$("#sa2_meter2dayKWh").val(meter_dayKWh.toFixed(2))
 		$("#sa2_meter2dayhour").val(meter_dayhour.toFixed(2))
 		
-		//시간 변경에 따른 전월계량기 데이터 뽑아오기 위한 ajax
+		/* //시간 변경에 따른 전월계량기 데이터 뽑아오기 위한 ajax
 		//처음엔 12월이었다가 11월로 변경했을 경우 전월 계량기 데이터는 11월데이터 -> 10월로 바뀌어서 들어가야함
 		var keyno = $("#SU_KEYNO").val();
 		var UIKEYNO = $("#SA_UI_KEYNO").val();
@@ -2130,7 +2127,6 @@ function changeDate(){
 		dateReplace()
 		var Date = $("#sa2_date").val();
 		var formatDate = Date.substring(0,7);
-		
 		
 		$.ajax({
 	        url: '/sfa/safe/safeuserselect.do?${_csrf.parameterName}=${_csrf.token}',
@@ -2144,7 +2140,7 @@ function changeDate(){
 	        success: function(result) {
 	        	$("#prewatt").val(result.prewatt)
 	        }
-		})
+		}) */
 }
 
 function kwchange(value){

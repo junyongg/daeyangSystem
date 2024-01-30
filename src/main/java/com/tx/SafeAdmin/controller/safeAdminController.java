@@ -1178,7 +1178,6 @@ public class safeAdminController {
 		HashMap<String, Object> map3 = new HashMap<String, Object>();
 		map3.put("SU_KEYNO", SU_KEYNO);
 		map3.put("formatDate", formatDate);
-		System.out.println(map3);
 
 		map2 = Component.getData("sfa.preDataSelect",SU_KEYNO);
 		

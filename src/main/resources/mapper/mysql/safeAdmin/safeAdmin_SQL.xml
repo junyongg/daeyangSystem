@@ -1127,7 +1127,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			<![CDATA[
 				WHERE date_format(a.Conn_date, '%Y-%m')  < #{formatDate}
 		 	]]>
-			AND a.sa2_su_keyno = #{su_keyno}
+			AND a.sa2_su_keyno = #{SU_KEYNO}
 			ORDER BY a.Conn_date DESC
 			LIMIT 1;
 		</select>
@@ -1168,17 +1168,16 @@ where UI_KEYNO = 'UI_HMWNH'
 					COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checking,
 					CONCAT(COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END), '회 / ', a.SU_SA_RG,'회') AS combined_column,
 					a.SU_SA_RG - COUNT(CASE WHEN YEAR(b.Conn_date) = YEAR(NOW()) AND MONTH(b.Conn_date) = MONTH(NOW()) THEN 1 ELSE NULL END) AS checkminus,
-					date_format(b.Conn_date, '%Y-%m-%d') as preAdminDate
+					date_format(MAX(b.Conn_date), '%Y-%m-%d') as preAdminDate
 					FROM dy_sa_user a
 					LEFT JOIN dy_sa2_paper b
 					ON a.SU_KEYNO = b.sa2_su_keyno 
 					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
 					and
-					(YEAR(b.Conn_date), MONTH(b.Conn_date), day(b.Conn_date)) = (
+					(YEAR(b.Conn_date), MONTH(b.Conn_date)) = (
 				        SELECT
 				            YEAR(MAX(b2.Conn_date)),
-				            MONTH(MAX(b2.Conn_date)),
-				            DAY(MAX(b2.Conn_date))
+				            MONTH(MAX(b2.Conn_date))				            
 				        FROM
 				            dy_sa2_paper b2
 				        WHERE

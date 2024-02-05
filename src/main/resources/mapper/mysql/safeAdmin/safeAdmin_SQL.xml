@@ -1171,10 +1171,8 @@ where UI_KEYNO = 'UI_HMWNH'
 					date_format(MAX(b.Conn_date), '%Y-%m-%d') as preAdminDate
 					FROM dy_sa_user a
 					LEFT JOIN dy_sa2_paper b
-					ON a.SU_KEYNO = b.sa2_su_keyno 
-					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
-					and
-					(YEAR(b.Conn_date), MONTH(b.Conn_date)) = (
+					ON a.SU_KEYNO = b.sa2_su_keyno
+					and (YEAR(b.Conn_date), MONTH(b.Conn_date)) = (
 				        SELECT
 				            YEAR(MAX(b2.Conn_date)),
 				            MONTH(MAX(b2.Conn_date))				            
@@ -1183,6 +1181,7 @@ where UI_KEYNO = 'UI_HMWNH'
 				        WHERE
 				            a.SU_KEYNO = b2.sa2_su_keyno
 				    	)
+					WHERE SU_UI_KEYNO = #{SU_UI_KEYNO}
 					GROUP BY a.SU_KEYNO
 				) AA
 			where 1=1

@@ -100,9 +100,18 @@
 		              <span class="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-700 bg-green-400">${b.combined_column }</span>
 		            </td>
 	            </c:if>
-	            <td class="py-3 text-left" style="white-space: nowrap;">
-	             	<span class="text-sm">${b.preAdminDate}</span>
-	            </td>
+	            <c:choose>
+					<c:when test="${empty b.preAdminDate || b.preAdminDate eq ''}">
+			            <td class="py-3 text-left" style="white-space: nowrap;">
+			             	<span class="text-sm">최근 작성 없음</span>
+			            </td>
+			        </c:when>
+			        <c:otherwise>
+			        	<td class="py-3 text-left" style="white-space: nowrap;">
+			             	<span class="text-sm">${b.preAdminDate}</span>
+			            </td>
+			        </c:otherwise>
+			    </c:choose>
 	            <td class="py-3 text-left" style="white-space: nowrap; text-align: left; padding-left: 3%; !important;">
 	             	<span class="text-sm" id = "suSaAd_${status.index}">${b.SU_SA_AD}</span>
 	             	<button type="button" onclick="copyText('suSaAd_${status.index}')" class="text-xs inline-flex items-center px-2 py-1 md:px-3 md:py-1 border border-transparent rounded-lg text-white bg-black">주소 복사</button>

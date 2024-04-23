@@ -1,9 +1,6 @@
 package com.tx.dyUser.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,12 +21,6 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.extractor.ExcelExtractor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -573,7 +564,7 @@ public class DyController {
     	mv.addObject("result",result);
     	mv.addObject("errorlist",errorlist);
     	
-		if(excel != null){
+	/*	if(excel != null){
 			
 			mv.addObject("DPP_NAME",ob.get("DPP_NAME"));
 			mv.addObject("now",now);
@@ -598,7 +589,7 @@ public class DyController {
 			} catch (Exception e) {
 				System.out.println("쿠키 에러 :: "+e.getMessage());
 			}
-		}
+		}*/
     	return mv;
     }
     
@@ -1048,8 +1039,8 @@ public class DyController {
     	
     	if(DaliyType.equals("1")) {
     		
-    		result =  Component.getList("main.select_inverterData",type);
-    		result =  changeDailyData(result);
+//    		result =  Component.getList("main.select_inverterData",type);
+//    		result =  changeDailyData(result);
     		//당일일때만 오늘날짜 데이터 뽑는것 
         	type.put("minmax","min");
         	mv.addObject("mindata",Component.getData("main.daily_statistics_MinMax", type));
@@ -1070,7 +1061,7 @@ public class DyController {
         		MainList.add(subList);
         	}
     	}else {
-    		result =  Component.getList("main.select_inverterData_other",type);
+//    		result =  Component.getList("main.select_inverterData_other",type);
     		
     		//최대 최솟값 날짜랑 데이터 뽑기
         	type.put("minmax","min");

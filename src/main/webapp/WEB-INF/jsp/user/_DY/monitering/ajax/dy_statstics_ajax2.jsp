@@ -83,7 +83,7 @@
 					                    <td>${fn:substring(result1.Conn_date,0,11)}</td>
 					                    <td>${fn:substring(result1.Conn_date,11,16)}</td>
 					                    <td>${ob.DPP_NAME }</td>
-					                    <td>${fn:substring(result1.DI_NAME,0,5)}</td>
+					                    <td>${fn:substringBefore(result1.DI_NAME,'호')}</td>
 					                    <td>${result1.Daily_Generation }</td>
 					                    <td>${result1.Cumulative_Generation }</td>
 					                    <td><fmt:formatNumber value="${result1.Daily_Generation/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>

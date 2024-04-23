@@ -595,7 +595,7 @@
 	    	                                		</c:if>
     	                                		</c:when>
     	                                		<c:otherwise>
-    	                                			${ob.DPP_NAME }| ${fn:substring(model.DI_NAME,0,5)}
+    	                                			${ob.DPP_NAME }| ${fn:substringBefore(model.DI_NAME,'호')}
     	                                		</c:otherwise>
     	                                	</c:choose>
     	                                </td>

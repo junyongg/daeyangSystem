@@ -112,7 +112,7 @@
 	
 	<beans:bean id="customAuthenticationProvider" class="com.tx.common.security.provider.CustomAuthenticationProvider">
         <beans:property name="usedLimitMaxSession" value="true" />	<!-- 동일 아이디 동시접속 제한 여부 default false -->
-        <beans:property name="maxSessions" value="10" />	<!-- 동일 아이디 동시접속 제한 수 -->
+        <beans:property name="maxSessions" value="30" />	<!-- 동일 아이디 동시접속 제한 수 -->
         <beans:property name="existingSessionKill" value="true" /> <!-- true : 기존 세션 죽임, false : 현재 세션 튕김 , 기본값 true -->
 	</beans:bean>
 	

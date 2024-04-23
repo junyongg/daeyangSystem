@@ -312,7 +312,7 @@ table{
 	                <c:choose>
 	                	<c:when test="${DaliyType eq '1' }">
 		                    <td>${result.Conn_date }</td>
-		                    <td>${fn:substring(result.DI_NAME,0,5)}</td>
+		                    <td>${fn:substringBefore(result.DI_NAME,'호')}</td>
 		                    <td><fmt:formatNumber value="${result.daily }" pattern="0.0"/></td>
 		                    <td>${result.Cumulative_Generation }</td>
 		                    <td><fmt:formatNumber value="${result.daily/(ob.DPP_VOLUM/ob.DPP_INVER_COUNT)  }" pattern="0.00"/></td>

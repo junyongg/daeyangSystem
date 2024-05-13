@@ -40,7 +40,7 @@ public class ScheduleService {
 
 
 	//날씨 데이터 매시 57분마다 
-	@Scheduled(cron="0 58 * * * ?")
+	/*@Scheduled(cron="0 58 * * * ?")
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
@@ -206,15 +206,14 @@ public class ScheduleService {
 	public void InsertDetail() throws Exception {
 		
 //		Component.deleteData("sub.deletehourData");
-		
-		
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
 //		Component.getData("sub.inserthourDetail",list);
-		
-		
 	
 		List<HashMap<String, Object>> list = Component.getListNoParam("sub.10minutes_Data");
-		Component.getData("sub.insert_10minutes_Detail",list);
+		
+		if(list.size() > 0) {			
+			Component.getData("sub.insert_10minutes_Detail",list);
+		}
 
 	}
 	
@@ -240,7 +239,7 @@ public class ScheduleService {
 	     sendApi(bill);
 		  }
 	  }
-	}
+	}*/
 	   
 	   
 	public static String Api(String strUrl, String jsonMessage) { // strUrl = 전송할 restapi 서버 url , jsonMessage = 전송할 데이터

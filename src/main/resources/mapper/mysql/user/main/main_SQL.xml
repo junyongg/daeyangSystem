@@ -539,7 +539,7 @@
 						FROM dy_inverter_data_main 
 						WHERE DDM_DPP_KEYNO = #{type}
 						<![CDATA[
-					 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	>=	DATE_SUB( DATE_FORMAT(#{searchBeginDate},'%Y-%m-%d'), INTERVAL 1 DAY)
+					 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	>=	DATE_SUB( DATE_FORMAT(#{searchBeginDate},'%Y-%m-%d'), INTERVAL 1 MONTH)
 					 		AND			DATE_FORMAT(DDM_DATE,'%Y-%m-%d') 	<=	#{searchEndDate}
 					 	]]>
 					 	ORDER BY DDM_DATE DESC
@@ -553,7 +553,7 @@
 					 	ORDER BY DDM_DATE desc
 		) B ON  
 			<choose>
-				<when test="excelType == 2 || DaliyType == 4">DATE_FORMAT(A.DDM_DATE,'%Y-%m') = DATE_FORMAT(DATE_ADD( DATE_FORMAT(B.DDM_DATE,'%Y-%m-%d'), INTERVAL 1 DAY),'%Y-%m')</when>
+				<when test="excelType == 2 || DaliyType == 4">DATE_FORMAT(A.DDM_DATE,'%Y-%m') = DATE_FORMAT(DATE_ADD( DATE_FORMAT(B.DDM_DATE,'%Y-%m-%d'), INTERVAL 1 MONTH),'%Y-%m')</when>
 				<otherwise>DATE_FORMAT(A.DDM_DATE,'%Y-%m-%d') = DATE_ADD( DATE_FORMAT(B.DDM_DATE,'%Y-%m-%d'), INTERVAL 1 DAY)</otherwise>
 			</choose>
 		GROUP BY DATE_FORMAT(A.DDM_DATE, '%Y-%m-%d')

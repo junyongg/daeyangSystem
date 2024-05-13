@@ -22,7 +22,7 @@
 	            <p class="power_tit">[${ob.DPP_AREA }] ${ob.DPP_NAME }</p>
 	
 	            <div class="power_select">
-	                <select class="select_nor sm3 w100" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax(this.value);">
+	                <select class="select_nor select2 sm3 w100" id="DPP_KEYNO" name="DPP_KEYNO" value="${DPP_KEYNO }" onchange="DPPDataAjax(this.value);">
 	                    <c:forEach items="${list }" var="list">
 	                    	<option value="${list.DPP_KEYNO }" ${list.DPP_KEYNO eq DPP_KEYNO ? 'selected' : '' } >${list.DPP_NAME }</option>
 	                    </c:forEach>
@@ -412,8 +412,8 @@
         </section>
 
 		<!-- 세부 내용 표시 부분 -->
-		<!-- <article class="artBoard bott_r" id="staticAjax">
-		</article> -->
+		<article class="artBoard bott_r" id="staticAjax">
+		</article>
         
     </div>
     <!-- COMTAINER END -->
@@ -422,11 +422,16 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${sp:getString('DAUM_APPKEY')}&libraries=services"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="/resources/smartadmin/js/plugin/select2/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/> 
+
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 <script>
 $(function(){
   	ajaxData();
-//  	searching();
+  	searching();
 });
 
 function DPPDataAjax(keyno){
@@ -689,5 +694,9 @@ function searching(){
 	});
 	
 }
+
+$('.select2').select2({
+    closeOnSelect: true
+});
 
 </script>

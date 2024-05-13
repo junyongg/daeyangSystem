@@ -186,6 +186,7 @@
 		</if>
 		<if test="group != null and group != '' ">
 			GROUP BY A.DI_NAME
+			ORDER BY A.Conn_date ASC
 		</if>
 	</select>
 	<!-- 당일 통계 -->

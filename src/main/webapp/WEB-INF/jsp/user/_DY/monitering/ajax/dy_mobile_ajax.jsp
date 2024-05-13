@@ -171,7 +171,7 @@
 
 <!-- <h2 class="circle" style="float: left;">통계분석</h2> -->
 <!-- 		    <a id="more" href="javascript:;" style="padding: 0px 0px 0px 10px;font-size: 15px;margin-top: 7px;float: left;" onclick="moreTable();">더보기</a> -->
-<div class="statis_cate_box">
+<%-- <div class="statis_cate_box">
     <dl>
         <dt>조회범위</dt>
         <dd>
@@ -208,9 +208,9 @@
     </dl>
     
     
-</div>
+</div> --%>
 
-<div class="table_wrapper md con_h n02">
+<%-- <div class="table_wrapper md con_h n02">
     <table class="tbl_normal fixed">
         <colgroup>
             <col style="width: 15%;">
@@ -228,10 +228,10 @@
                 <th>누적발전량(KWh)</th>
                 <th>발전시간(h)</th>
                 <th>현재 출력(KW)</th>
-                <%-- <c:if test="${DaliyType eq '1' }">
+                <c:if test="${DaliyType eq '1' }">
                  <th>현재 전압(V)</th>
                  <th>현재 전류(A)</th>
-                </c:if> --%>
+                </c:if>
             </tr>
         </thead>
         <tbody>
@@ -254,7 +254,7 @@
 		          <td><fmt:formatNumber value="${result.thour }" pattern="0.00"/></td>
 		          <td>
 					X
-<%-- 		          <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
+		          <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/>
 		          </td>
 	              </c:when>
              	<c:otherwise>
@@ -265,7 +265,7 @@
                   <td><fmt:formatNumber value="${result.DDM_T_HOUR  }" pattern="0.00"/></td>
                   <td>
 					X
-<%-- 		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/> --%>
+		                     <fmt:formatNumber value="${result.DDM_ACTIVE_P }" pattern="0.00"/>
                   </td>
              	</c:otherwise>
              </c:choose>
@@ -273,7 +273,7 @@
             </c:forEach>
         </tbody>
     </table>
-</div>
+</div> --%>
 
 
 <!-- <h2 class="circle">발전량분석</h2> -->

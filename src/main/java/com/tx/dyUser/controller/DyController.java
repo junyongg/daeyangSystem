@@ -1552,13 +1552,13 @@ public class DyController {
 				map.put("day", i);
 				map.put("keyno", keyno);
 				
-				Component.deleteData("ttest.deleteMain",map);
+				Component.deleteData("main.deleteMain",map);
 				
-				List<String> slist = Component.getList("ttest.recent_date", map);
+				List<String> slist = Component.getList("main.recent_date", map);
 				
 				map.put("list", slist);
 				if(slist.size() > 0) {
-					Component.deleteData("ttest.deleteToday", map);
+					Component.deleteData("main.deleteToday", map);
 				}
 			}
 		}

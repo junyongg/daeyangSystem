@@ -14,10 +14,11 @@
 		GROUP BY  DI_NAME, DATETIEMS, DP_KEYNO
 	</select>
 	<!-- 10분 단위 데이터 등록 -->
-	<select id="10minutes_Data" resultType="hashmap">
+	<select id="10minutes_Data" resultType="hashmap" parameterType="String">
 		SELECT * 
 		FROM dy_inverter_data  
 		WHERE DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+		AND DP_KEYNO = #{keyno}
 		ORDER BY DI_NAME , Conn_date DESC
 	</select>
 	

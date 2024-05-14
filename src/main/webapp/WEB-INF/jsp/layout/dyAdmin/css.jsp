@@ -20,14 +20,14 @@
 <link rel="stylesheet" type="text/css" media="all" href="/resources/smartadmin/css/demo.min.css">
 
 <!-- FAVICONS -->
-<c:choose>
+<%-- <c:choose>
 	<c:when test="${not empty homeData.HM_FAVICON }">
 		<c:set var="homeIcon" value="${domain }${homeData.HM_FAVICON }"/>
 	</c:when>
 	<c:otherwise>
 		<c:set var="homeIcon" value="${domain }/resources/favicon.ico"/>
 	</c:otherwise>
-</c:choose>
+</c:choose> --%>
 <link rel="shortcut icon" href="${homeIcon }" type="image/x-icon">
 <link rel="icon" href="${homeIcon }" type="image/x-icon">
 

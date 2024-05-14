@@ -40,7 +40,7 @@ public class ScheduleService {
 
 
 	//날씨 데이터 매시 57분마다 
-	/*@Scheduled(cron="0 58 * * * ?")
+	@Scheduled(cron="0 58 * * * ?")
 	public void test() throws Exception{
        WetherService w = new WetherService();
 		
@@ -176,6 +176,7 @@ public class ScheduleService {
 				
 				List<String> slist = Component.getList("main.recent_date", keyno);
 				if(slist != null && slist.size() > 0) {
+					
 					map.put("list", slist);
 					map.put("keyno", keyno);
 					
@@ -201,18 +202,26 @@ public class ScheduleService {
 	}
 
 	
-	//시간별 데이터 추출 세달 전까지만 수집   
+	//시간별 데이터 추출 세달 전까지만 수집
+	
 	@Scheduled(cron="0 30 20 * * ?")
 	public void InsertDetail() throws Exception {
 		
 //		Component.deleteData("sub.deletehourData");
 //		List<HashMap<String, Object>> list = Component.getListNoParam("sub.hourData");
 //		Component.getData("sub.inserthourDetail",list);
-	
-		List<HashMap<String, Object>> list = Component.getListNoParam("sub.10minutes_Data");
 		
-		if(list.size() > 0) {			
-			Component.getData("sub.insert_10minutes_Detail",list);
+		List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+
+		for(HashMap<String,Object> l : list) {
+			
+			String keyno = l.get("DPP_KEYNO").toString();
+			List<HashMap<String, Object>> datas = Component.getList("sub.10minutes_Data", keyno);
+			
+			if(datas.size() > 0) {			
+				Component.getData("sub.insert_10minutes_Detail",datas);
+			}
+			
 		}
 
 	}
@@ -239,7 +248,7 @@ public class ScheduleService {
 	     sendApi(bill);
 		  }
 	  }
-	}*/
+	}
 	   
 	   
 	public static String Api(String strUrl, String jsonMessage) { // strUrl = 전송할 restapi 서버 url , jsonMessage = 전송할 데이터

@@ -743,7 +743,8 @@ function moreTable(){
 	        	InverterType : $("#InverterType").val(),
 	        	DaliyType : $("#DaliyType").val(),
 	        	searchBeginDate : $("#searchBeginDate").val(),
-	        	searchEndDate : $("#searchEndDate").val()
+	        	searchEndDate : $("#searchEndDate").val(),
+	        	inverterType : "${ob.DPP_INVER}"
 	        },
 	        async: false,  
 	        success: function(result) {

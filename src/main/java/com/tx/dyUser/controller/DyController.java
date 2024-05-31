@@ -728,10 +728,9 @@ public class DyController {
     	HashMap<String,Object> ob =  Component.getData(sql,type);
     	
     	mv.addObject("UI_KEYNO",user.get("UI_KEYNO").toString());
-    	if (!ob.get("DPP_DLS_KEYNO").equals("") || !ob.get("DPP_DLS_KEYNO").toString().isEmpty()) dls_now = ob.get("DPP_DLS_KEYNO").toString();
-    	System.out.println(ob.get("DPP_FM_KEYNO").toString());
-    	
-    	
+    	if (ob.get("DPP_DLS_KEYNO") != null && !ob.get("DPP_DLS_KEYNO").toString().isEmpty()) {
+    		dls_now = ob.get("DPP_DLS_KEYNO").toString();
+    	}
     	
     	if(ob.get("DPP_FM_KEYNO") != null && !ob.get("DPP_FM_KEYNO").equals("")) {
     		FileSub fsVo = new FileSub();

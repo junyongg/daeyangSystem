@@ -29,6 +29,8 @@
 				, dls_other2
 				, dls_now
 				, dls_endDate
+				, dls_usernumber
+				, dls_volum
 		)
 		VALUES
 		(
@@ -44,6 +46,8 @@
 				, #{dls_other2}
 				, #{dls_now}
 				, #{dls_endDate}
+				, #{dls_usernumber}
+				, #{dls_volum}
 		)
     </insert>
 	
@@ -61,8 +65,9 @@
 			, dls_phone2		= #{dls_phone2}
 			, dls_other2		= #{dls_other2}
 			, dls_endDate		= #{dls_endDate}
+			, dls_usernumber	= #{dls_usernumber}
+			, dls_volum		    = #{dls_volum}
 			
-		
 		WHERE dls_dpp_keyno 	= #{dls_dpp_keyno}
 		AND dls_now				= #{dls_now}
     </update>

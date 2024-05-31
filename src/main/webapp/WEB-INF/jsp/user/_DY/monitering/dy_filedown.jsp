@@ -638,38 +638,6 @@ input { font-size: 14x; }
 		    	
 		    	$("#container > section:nth-child(1) > article > div:nth-child(4) > a:nth-child("+value+")").addClass("active")
 	    		
-		    	if (data.license1 != null){
-		    		$("#dls_conn").val(data.license1.dls_conn);
-			    	$("#dls_depart").val(data.license1.dls_depart);
-			    	$("#dls_depart2").val(data.license1.dls_depart2);
-			    	$("#dls_name").val(data.license1.dls_name);
-			    	$("#dls_name2").val(data.license1.dls_name2);
-			    	$("#dls_other").val(data.license1.dls_other);
-			    	$("#dls_other2").val(data.license1.dls_other2);
-			    	$("#dls_phone").val(data.license1.dls_phone);
-			    	$("#dls_phone2").val(data.license1.dls_phone2);
-			    	$("#dls_endDate").val(data.license1.dls_endDate);
-			    	$("#dls_usernumber").val(data.license1.dls_usernumber);
-			    	$("#dls_volum").val(data.license1.dls_volum);
-		    	}
-		    	if (data.license2 != null){
-		    	
-		    		$("#dlm_address").val(data.license2.dlm_address);
-			    	$("#dlm_street").val(data.license2.dlm_street);
-			    	$("#dlm_area").val(data.license2.dlm_area);
-			    	$("#dlm_land").val(data.license2.dlm_land);
-			    	$("#dlm_use").val(data.license2.dlm_use);
-			    	$("#dlm_usage").val(data.license2.dlm_usage);
-			    	
-			    	if (data.license2.dlm_type == '0'){
-			    		$("#dlm_type").prop("checked", true);
-			    		$("#dlm_type2").prop("checked", false);
-			    	}else{
-			    		$("#dlm_type").prop("checked", false);
-			    		$("#dlm_type2").prop("checked", true);
-			    	}
-		    	}
-		    	
 		    	if(value == "3"){
 		    		//고객번호 , 접수용량 추가 및 기본내용 삭제 
 		    		$(".th_name2").text("접수번호")
@@ -735,6 +703,37 @@ input { font-size: 14x; }
 		    	}
 		    	
 		    	
+		    	if (data.license1 != null){
+		    		$("#dls_conn").val(data.license1.dls_conn);
+			    	$("#dls_depart").val(data.license1.dls_depart);
+			    	$("#dls_depart2").val(data.license1.dls_depart2);
+			    	$("#dls_name").val(data.license1.dls_name);
+			    	$("#dls_name2").val(data.license1.dls_name2);
+			    	$("#dls_other").val(data.license1.dls_other);
+			    	$("#dls_other2").val(data.license1.dls_other2);
+			    	$("#dls_phone").val(data.license1.dls_phone);
+			    	$("#dls_phone2").val(data.license1.dls_phone2);
+			    	$("#dls_endDate").val(data.license1.dls_endDate);
+			    	$("#dls_usernumber").val(data.license1.dls_usernumber);
+			    	$("#dls_volum").val(data.license1.dls_volum);
+		    	}
+		    	if (data.license2 != null){
+		    	
+		    		$("#dlm_address").val(data.license2.dlm_address);
+			    	$("#dlm_street").val(data.license2.dlm_street);
+			    	$("#dlm_area").val(data.license2.dlm_area);
+			    	$("#dlm_land").val(data.license2.dlm_land);
+			    	$("#dlm_use").val(data.license2.dlm_use);
+			    	$("#dlm_usage").val(data.license2.dlm_usage);
+			    	
+			    	if (data.license2.dlm_type == '0'){
+			    		$("#dlm_type").prop("checked", true);
+			    		$("#dlm_type2").prop("checked", false);
+			    	}else{
+			    		$("#dlm_type").prop("checked", false);
+			    		$("#dlm_type2").prop("checked", true);
+			    	}
+		    	}
 		    	
 		    	if(data.license1 == null){
 					$("#saveButton").text("저장")

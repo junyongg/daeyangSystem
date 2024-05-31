@@ -3,6 +3,8 @@ package com.tx.common.service.excel.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -87,51 +90,58 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 			for (rowindex = 1; rowindex < rows; rowindex++) {	// 행의 수만큼 반복
 
 				row = sheet.getRow(rowindex);	// rowindex 에 해당하는 행을 읽는다
-				ArrayList<String> filter = new ArrayList<String>();	// 한 행을 읽어서 저장할 변수 선언
 
 				if (row != null) {
 					cells = row.getPhysicalNumberOfCells();    // 열의 수
 					
-					for (columnindex = 1; columnindex <= cells; columnindex++) {	// 열의 수만큼 반복
-						XSSFCell cell_filter = row.getCell(columnindex-1);	// 셀값을 읽는다
-						String value = "";
+					if(cells != 0) {
 						
-						// 셀이 빈값일경우를 위한 널체크
-						if (cell_filter == null) {
-							value = " ";
-						} else {
-							// 타입별로 내용 읽기
-							switch (cell_filter.getCellType()) {
-							case FORMULA:
-								value = cell_filter.getCellFormula();
-								break;
-							case NUMERIC:		
-								
-								value = cell_filter.getNumericCellValue() + "";
-								int val = value.indexOf(".");
-								
-								if(value.substring(val, value.length()).equals(".0")){
-									value = value.substring(0, val);
-								}else{
-									value = value;
+						ArrayList<String> filter = new ArrayList<String>();	// 한 행을 읽어서 저장할 변수 선언
+						
+						for (columnindex = 1; columnindex <= cells; columnindex++) {	// 열의 수만큼 반복
+							XSSFCell cell_filter = row.getCell(columnindex-1);	// 셀값을 읽는다
+							String value = "";
+							
+							// 셀이 빈값일경우를 위한 널체크
+							if (cell_filter == null) {
+								value = " ";
+							} else {
+								// 타입별로 내용 읽기
+								switch (cell_filter.getCellType()) {
+								case FORMULA:
+									value = cell_filter.getCellFormula();
+									break;
+								case NUMERIC:		
+									
+									value = cell_filter.getNumericCellValue() + "";
+									int val = value.indexOf(".");
+									
+									if(value.substring(val, value.length()).equals(".0")){
+										value = value.substring(0, val);
+									}
+									
+									// 날짜 형식인 경우 처리
+									if (DateUtil.isCellDateFormatted(cell_filter)) {
+										SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+										value = dateFormat.format(cell_filter.getDateCellValue());
+									}
+									break;
+								case STRING:
+									value = cell_filter.getStringCellValue() + "";
+									break;
+								case BLANK:
+									value = cell_filter.getBooleanCellValue() + "";
+									break;
+								case ERROR:
+									value = cell_filter.getErrorCellValue() + "";
+									break;
 								}
-								
-								break;
-							case STRING:
-								value = cell_filter.getStringCellValue() + "";
-								break;
-							case BLANK:
-								value = cell_filter.getBooleanCellValue() + "";
-								break;
-							case ERROR:
-								value = cell_filter.getErrorCellValue() + "";
-								break;
 							}
+							filter.add(value);	//읽은 셀들을 filter에 추가 (행)
 						}
-						filter.add(value);	//읽은 셀들을 filter에 추가 (행)
-					}
+						filters.add(filter); //filter(행)을 filters(열)에 추가
+					}// if(cells != 0)
 				}
-				filters.add(filter); //filter(행)을 filters(열)에 추가
 			}
 		}
 		fis.close();	//파일 읽기 종료

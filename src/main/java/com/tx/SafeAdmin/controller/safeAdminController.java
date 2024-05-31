@@ -2114,4 +2114,15 @@ public class safeAdminController {
 		return mv;
 	}
 	
+	@RequestMapping("/postget.do")
+	@ResponseBody
+	public HashMap<String, Object> postget(HttpServletRequest req, 
+			@RequestParam(value="dbp_keyno")String dbp_keyno) throws Exception {
+		
+		HashMap<String, Object> map = Component.getData("bills.billsSelect_one", dbp_keyno);
+		
+		
+		return map;
+	}
+	
 }

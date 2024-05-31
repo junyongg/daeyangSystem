@@ -153,6 +153,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="safeUserDTO" type="com.tx.SafeAdmin.dto.safeUserDTO"/>
 		<typeAlias alias="DateDTO" type="com.tx.SafeAdmin.dto.DateDTO"/>
 		
+		<!-- 사업개발부 일정관리 -->
+		<typeAlias alias="busDevDTO" type="com.tx.businessDev.dto.busDevDTO"/>
+		<typeAlias alias="CalenderDTO" type="com.tx.businessDev.dto.calenderDTO"/>
+		
 		<!-- 파일점검부분 -->
 		<typeAlias alias="LicenseDTO" type="com.tx.dyAdmin.member.dto.LicenseDTO"/>
 		

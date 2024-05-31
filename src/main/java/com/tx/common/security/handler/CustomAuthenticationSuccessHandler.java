@@ -142,8 +142,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 		
 		// 5. referrer 체크
-		String referrerPage =  checkReferrer(request); 
-		if(referrerPage != null) return referrerPage;
+		//String referrerPage =  checkReferrer(request); 
+		//if(referrerPage != null) return referrerPage;
 			
 		
 		

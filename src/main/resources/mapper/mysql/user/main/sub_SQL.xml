@@ -16,10 +16,11 @@
 	<!-- 10분 단위 데이터 등록 -->
 	<select id="10minutes_Data" resultType="hashmap" parameterType="String">
 		SELECT * 
-		FROM dy_inverter_data  
-		WHERE DATE_FORMAT(Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
-		AND DP_KEYNO = #{keyno}
-		ORDER BY DI_NAME , Conn_date DESC
+        FROM dy_inverter_data a
+        join dy_power_plant b
+        on a.DP_KEYNO = b.DPP_KEYNO 
+        WHERE DATE_FORMAT(a.Conn_date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        and b.DPP_STATUS = 'Y'
 	</select>
 	
 	<!-- 시간별 데이터 등록 -->

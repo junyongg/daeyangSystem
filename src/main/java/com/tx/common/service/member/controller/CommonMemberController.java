@@ -71,20 +71,32 @@ public class CommonMemberController {
 			) throws Exception {
 		String tiles = TilesDTO.getTiles(req);
 		
-		if( tiles == null || tiles.equals("cf") ||tiles.equals("sfa")) tiles = "dy";
+		Map<String, Object> user = CommonService.getUserInfo(req);
 		
-		ModelAndView mv  = new ModelAndView("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
+		ModelAndView mv  = new ModelAndView();
 		
+		//로그인한 상태라면 각 tiles에 맞는 메인화면으로 리다이렉트
+		if(user != null){
+			//ID에 맞게 tiles 변경(임시)
+			if(user.get("UI_ID").equals("daeyang0715")) {
+				tiles = "dy";
+			}else if(user.get("UI_ID").equals("dyesco0715")){
+				tiles = "sfa";
+			}
+			
+			mv.setViewName("redirect:/"+tiles+"/index.do");
+			return mv;
+			
+		//로그인한 상태가 아니라면 tiles = dy로 바꿔서 로그인 페이지로
+		}else {
+			if( tiles == null || tiles.equals("cf") ||tiles.equals("sfa") || tiles.equals("bd")) tiles = "dy";
+			mv.setViewName("/user/"+SiteService.getSitePath(tiles)+"/member/prc_login");
+		}
+		
+	
 		SiteManagerDTO SiteManagerDTO =  Component.getData("SiteManager.getData",SiteProperties.getCmsUser());
 		mv.addObject("SiteManager", SiteManagerDTO);
 		
-		Map<String, Object> user = CommonService.getUserInfo(req);
-		
-		//로그인한 상태라면 메인화면으로 리다이렉트 (관리자와 회원 구분)
-		if(user != null){
-			mv.setViewName("redirect:/"+tiles+"/index.do");
-			return mv;
-		}
 		
 		//리턴페이지 셋팅
 		if(req.getParameter("returnPage") != null){
@@ -103,14 +115,7 @@ public class CommonMemberController {
 		//RsaService.setRsa(req);
 		mv.addObject("tiles",tiles);
 		
-		
-		mv.addObject("mirrorPage", "/"+tiles+"/member/login.do");	
-		/*
-		 * if(tiles.equals("sfa")) { mv.addObject("mirrorPage", "/dy/member/login.do");
-		 * }else {
-		 * 
-		 * }
-		 */
+		mv.addObject("mirrorPage", "/"+tiles+"/member/login.do");
 		
 		
 		return mv;

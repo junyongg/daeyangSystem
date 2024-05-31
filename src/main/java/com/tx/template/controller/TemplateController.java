@@ -69,14 +69,23 @@ public class TemplateController {
 		//모바일 부분 체크 이후 url 변경
 		String userAgent = req.getHeader("user-agent");
 		boolean mobile1 = userAgent.matches( ".*(iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson).*");
-		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*"); 
+		boolean mobile2 = userAgent.matches(".*(LG|SAMSUNG|Samsung).*");
 
 		if (mobile1 || mobile2) {
 			mv.setViewName("redirect:/"+tiles+"/mobile.do");
 		}
+		
+		//안전관리
 		else if("sfa".equals(tiles)) {
 			mv.setViewName("redirect:/"+tiles+"/safe/safe.do");
 		}
+		
+		//개발팀 인허가 일정관리
+		else if("bd".equals(tiles)) {
+			mv.setViewName("redirect:/"+tiles+"/main.do");
+		}
+		
+		//모니터링
 		else {
 			mv.setViewName("redirect:/"+tiles+"/moniter/general.do");
 		}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sub2"> 
+	
+	<select id="select_inverterData_date_1" resultType="hashmap">
+		SELECT DP_KEYNO ,DI_NAME ,Active_Power ,Conn_date 
+	   	FROM dy_inverter_data where DP_KEYNO = #{type}
+	   	AND date_format(Conn_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+	</select>
+	
+	<delete id="deleteMain">
+		<![CDATA[
+			DELETE  FROM dy_inverter_data_main 
+				WHERE DDM_DATE < (SELECT DDM_DATE FROM dy_inverter_data_main WHERE date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now() - interval #{day} day,'%Y-%m-%d') 
+				AND DDM_DPP_KEYNO = #{keyno} 
+				ORDER BY DDM_DATE DESC LIMIT 1 ) 
+			AND date_format(DDM_DATE,'%Y-%m-%d') =  date_format(now() - interval #{day} day ,'%Y-%m-%d') 
+			AND DDM_DPP_KEYNO = #{keyno} 
+		]]>
+	</delete>
+	
+	<select id="recent_date" resultType="String"> 
+		SELECT Conn_date FROM( 
+			SELECT * FROM dy_inverter_data 
+			WHERE DATE_FORMAT(Conn_date, '%Y-%m-%d') = DATE_FORMAT(now() - interval #{day} day ,'%Y-%m-%d') 
+			and DP_KEYNO = #{keyno} 
+			ORDER BY Conn_date DESC LIMIT 100
+		)A
+		GROUP BY A.DI_NAME
+	</select>
+	
+	<delete id="deleteToday">
+		DELETE
+ 		FROM dy_inverter_data
+	    WHERE Conn_date not in 
+	    <foreach item="l" index="index" collection="list" open="(" separator="," close=")">
+			#{l}	    
+	    </foreach>
+	    AND DATE_FORMAT(Conn_date, '%Y-%m-%d') = DATE_FORMAT(now() - interval #{day} day ,'%Y-%m-%d')
+	    AND DP_KEYNO = #{keyno}
+	</delete>
+	
+</mapper>

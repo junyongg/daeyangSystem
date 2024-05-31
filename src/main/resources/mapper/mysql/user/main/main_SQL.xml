@@ -195,17 +195,17 @@
 		FROM dy_inverter_data
 		WHERE DP_KEYNO = #{type}
  		AND	DATE(Conn_date) 	=	DATE(now()) 
-		AND CAST(Active_Power as DECIMAL(10,6)) = (
+		AND Active_Power = (
 			SELECT
 				<if test="minmax.equals('min')"> 
-					MIN(CAST(Active_Power as DECIMAL(10,6)))
+					MIN(Active_Power)
 				</if>
 				<if test="minmax.equals('max')">
-					MAX(CAST(Active_Power as DECIMAL(10,6)))
+					MAX(Active_Power)
 				</if>
 			FROM dy_inverter_data
 			WHERE DP_KEYNO = #{type}
-			AND CAST(Active_Power as DECIMAL(10,6)) > 0
+			AND Active_Power > 0
 	 		AND	DATE(Conn_date) =	DATE(now())
 			ORDER BY Conn_date DESC
 		)
@@ -274,7 +274,7 @@
       FROM(
          SELECT *
          FROM(
-            SELECT IFNULL(AA.Active_Power,0) as power ,
+            SELECT IFNULL(ROUND(AA.Active_Power,2),0) as power ,
             <![CDATA[
                case when substr(AA.DATETIEMS,4,2) >='00' and substr(AA.DATETIEMS,4,2)<'30' then concat(substr(AA.DATETIEMS,1,2),':00')
                     when substr(AA.DATETIEMS,4,2) >='30' and substr(AA.DATETIEMS,4,2)<'60' then concat(substr(AA.DATETIEMS,1,2),':30')
@@ -449,7 +449,7 @@
 		AND CAST(B.DDM_D_DATA as DECIMAL(10,6)) = (
 			SELECT 
 				<if test="minmax.equals('min')"> 
-					MIN(CAST( D.DDM_D_DATA as DECIMAL(10,6)))
+					MIN(D.DDM_D_DATA)
 				</if>
 				<if test="minmax.equals('max')">
 					MAX(CAST( D.DDM_D_DATA as DECIMAL(10,6)))
@@ -902,7 +902,7 @@
 	
 	
 	<!-- 일일 삭제 -->
-	<select id="deleteToday" resultType="hashmap">
+	<delete id="deleteToday">
 		DELETE
  		FROM dy_inverter_data
 	    WHERE Conn_date not in 
@@ -911,7 +911,7 @@
 	    </foreach>
 	    AND DATE_FORMAT(Conn_date, '%Y-%m-%d') = DATE_FORMAT(now() ,'%Y-%m-%d')
 	    AND DP_KEYNO = #{keyno}
-	</select>
+	</delete>
 	
 	<!-- 메인삭제 -->
 	<delete id="deleteMain">
@@ -1013,5 +1013,7 @@
 			LIMIT 5
 		]]>	
 	</select>
+	
+	
 	
 </mapper>

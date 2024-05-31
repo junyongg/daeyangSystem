@@ -35,7 +35,7 @@ public class LicenseDTO extends Common {
 					dls_phone2,
 					dls_other2,
 					dls_now,
-					
+					dls_endDate,
 					//other
 					savetype
 					;

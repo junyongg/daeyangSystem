@@ -28,6 +28,7 @@
 				, dls_phone2
 				, dls_other2
 				, dls_now
+				, dls_endDate
 		)
 		VALUES
 		(
@@ -42,6 +43,7 @@
 				, #{dls_phone2}
 				, #{dls_other2}
 				, #{dls_now}
+				, #{dls_endDate}
 		)
     </insert>
 	
@@ -58,6 +60,8 @@
 			, dls_depart2		= #{dls_depart2}
 			, dls_phone2		= #{dls_phone2}
 			, dls_other2		= #{dls_other2}
+			, dls_endDate		= #{dls_endDate}
+			
 		
 		WHERE dls_dpp_keyno 	= #{dls_dpp_keyno}
 		AND dls_now				= #{dls_now}
@@ -69,6 +73,7 @@
 		select *
 		from dy_license_main
 		where dlm_dpp_keyno = #{dls_dpp_keyno}
+		and dlm_now = #{dls_now}
 		
 	</select>
 	
@@ -85,6 +90,7 @@
 				, dlm_usage
 				, dlm_dpp_keyno
 				, dlm_type
+				, dlm_now
 		)
 		VALUES
 		(
@@ -96,6 +102,7 @@
 				, #{dlm_usage}
 				, #{dlm_dpp_keyno}
 				, #{dlm_type}
+				, #{dls_now}
 		)
     </insert>
 	
@@ -111,6 +118,7 @@
 			, dlm_type		= #{dlm_type}
 		
 		WHERE dlm_dpp_keyno 	= #{dlm_dpp_keyno}
+		and dlm_now =  #{dls_now}
     </update>
 	
 	<!-- 서브 업데이트시 현재진행 최신화 -->

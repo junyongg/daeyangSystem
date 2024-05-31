@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -510,7 +511,11 @@ public class DyController {
         	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
         	
         	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
-        	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+        	//MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+        	
+        	List<String> TenM = new ArrayList<>(Arrays.asList(new String[] {"06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30"}));
+        	MainList.add(TenM);        	
+        	
         	if(InverterType.equals("0")) {
         		//select = 1이면 인버터 합산,  InverterType = 0
         		for(int i=1;i<=numbering;i++) {
@@ -723,8 +728,12 @@ public class DyController {
     	HashMap<String,Object> ob =  Component.getData(sql,type);
     	
     	mv.addObject("UI_KEYNO",user.get("UI_KEYNO").toString());
+    	if (!ob.get("DPP_DLS_KEYNO").equals("") || !ob.get("DPP_DLS_KEYNO").toString().isEmpty()) dls_now = ob.get("DPP_DLS_KEYNO").toString();
+    	System.out.println(ob.get("DPP_FM_KEYNO").toString());
     	
-    	if(ob.get("DPP_FM_KEYNO") != null) {
+    	
+    	
+    	if(ob.get("DPP_FM_KEYNO") != null && !ob.get("DPP_FM_KEYNO").equals("")) {
     		FileSub fsVo = new FileSub();
         	fsVo.setFS_FM_KEYNO(ob.get("DPP_FM_KEYNO").toString());
         	List<FileSub> list = Component.getList("File.AFS_SubFileselectpath",fsVo );
@@ -765,11 +774,17 @@ public class DyController {
      */
     @RequestMapping("/dy/moniter/SubdataView.do")
     @ResponseBody
-    public LicenseDTO SubdataView(LicenseDTO license ) throws Exception{
+    public HashMap<String,Object> SubdataView(LicenseDTO license ) throws Exception{
     	
-    	license = Component.getData("li.liView",license);
+    	LicenseDTO license1 = Component.getData("li.liView",license);
+    	LicenseDTO license2 = Component.getData("li.main_liView", license);
     	
-    	return license; 
+    	HashMap<String,Object> map = new HashMap<String, Object>();
+    	map.put("license1",license1);
+    	map.put("license2",license2);
+    	
+    	
+    	return map; 
     }
     
     
@@ -1048,7 +1063,10 @@ public class DyController {
         	mv.addObject("maxdata",Component.getData("main.daily_statistics_MinMax", type));
         	
         	//리스트 숫자에 맞게 투입 (종합일때) 그래프 처리
-        	MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+        	//MainList.add(Component.getList("main.select_inverterData_date",type)); //날짜 먼저 등록
+        	List<String> TenM = new ArrayList<>(Arrays.asList(new String[] {"06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30"}));
+        	MainList.add(TenM);   
+        	
         	if(InverterType.equals("0")) {
         		for(int i=1;i<=numbering;i++) {
             		type.put("inverterNum",i);
@@ -1537,33 +1555,36 @@ public class DyController {
    
    
    @RequestMapping("/ttest.do")
-   @Transactional
    public void ttest(HttpServletRequest req) throws Exception{
 	
-	   List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
+	    //List<HashMap<String,Object>> list = Component.getListNoParam("main.selectPower");
 		
-		for(HashMap<String,Object> l : list) {
+		//for(HashMap<String,Object> l : list) {
+	
+			//String keyno = l.get("DPP_KEYNO").toString();
+			String keyno = "31";
 			
-			for (int i=100; i>0; i--) {
-				HashMap<String,Object> map = new HashMap<String, Object>();
+			for (int i=793; i > 0; i--) {
 				
-				String keyno = l.get("DPP_KEYNO").toString();
+				System.out.print("day : ");
+				System.out.println(i);
+				
+				HashMap<String,Object> map = new HashMap<String, Object>();
 				
 				map.put("day", i);
 				map.put("keyno", keyno);
 				
-				Component.deleteData("main.deleteMain",map);
+				Component.deleteData("sub2.deleteMain",map);
 				
-				List<String> slist = Component.getList("main.recent_date", map);
+				List<String> slist = Component.getList("sub2.recent_date", map);
 				
 				map.put("list", slist);
 				if(slist.size() > 0) {
-					Component.deleteData("main.deleteToday", map);
+					Component.deleteData("sub2.deleteToday", map);
 				}
 			}
-		}
-	   
-	   
+	   //}
+		
    }
    
    

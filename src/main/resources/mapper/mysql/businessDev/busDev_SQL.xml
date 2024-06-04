@@ -100,10 +100,13 @@
 	</select>
 	
 	<select id="ALimDataSelect" resultType="hashmap" parameterType="String">
-			SELECT *,
+			SELECT bd_plant_name,
 	       	DATEDIFF(bd_plant_DevEndDate, CURRENT_DATE) AS caldateD,
 	       	DATEDIFF(bd_plant_BusEndDate, CURRENT_DATE) AS caldateB
-			FROM dy_bd_plant	
+			FROM dy_bd_plant
+			<![CDATA[
+			WHERE (DATEDIFF(bd_plant_DevEndDate, CURRENT_DATE) <= 30 OR DATEDIFF(bd_plant_BusEndDate, CURRENT_DATE) <= 30)
+			]]>
 	</select>
 	
 	

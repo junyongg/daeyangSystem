@@ -89,14 +89,33 @@ public class calenderController {
 				
 				HashMap<String, Object> busDate = new HashMap<>();
 				
-				int caldateD = Integer.parseInt(DataList.get(i).get("caldateD").toString());
-				int caldateB = Integer.parseInt(DataList.get(i).get("caldateB").toString());
+				Integer caldateD = null;
+	            Integer caldateB = null;
+
+	            Object caldateDObj = DataList.get(i).get("caldateD");
+	            if (caldateDObj != null) {
+	                try {
+	                    caldateD = Integer.parseInt(caldateDObj.toString());
+	                } catch (NumberFormatException e) {
+	                    continue; // caldateD가 유효하지 않으면 이 항목 건너뛰기
+	                }
+	            }
+
+	            Object caldateBObj = DataList.get(i).get("caldateB");
+	            if (caldateBObj != null) {
+	                try {
+	                    caldateB = Integer.parseInt(caldateBObj.toString());
+	                } catch (NumberFormatException e) {
+	                    continue; // caldateB가 유효하지 않으면 이 항목 건너뛰기
+	                }
+	            }
+				
 				
 				String bdPlantName = DataList.get(i).get("bd_plant_name").toString();
 				String text = bdPlantName + "의 ";
 				
-				boolean isCaldateD = caldateD <= 30;
-				boolean isCaldateB = caldateB <= 30;
+				boolean isCaldateD = caldateD != null && caldateD <= 30;
+	            boolean isCaldateB = caldateB != null && caldateB <= 30;
 				
 				if (isCaldateD && isCaldateB) {
 					if(caldateD < 0 && caldateB < 0) {

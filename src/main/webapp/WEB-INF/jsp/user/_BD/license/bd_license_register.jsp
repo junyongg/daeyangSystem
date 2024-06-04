@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf" %>
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <main class="h-full overflow-y-auto ">
           <div class="container grid px-6 mx-auto">
             <div class="relative">
@@ -21,7 +23,7 @@
 						<input type="file" id="excelFile" name="excelFile">
 					</div>
 
-                <select name="user" id="user" onchange="providerSelect(this.value)" class="default_input_style input_padding_y_4px w3-margin" style="width:80%; text-align: center; border-color: black !important;">
+                <select name="user" id="user" onchange="providerSelect(this.value)" class="w3-select w3-border" style="width:80%; text-align: center;">
                     <option value="0">신규등록</option>
                     <c:forEach items="${plantList }" var="b">
 					<option value="${b.bd_plant_keyno }">${b.bd_plant_name }</option>
@@ -126,12 +128,14 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="/jsp/user/_BD/license/JS/datePickerSetting.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script type="text/javascript">
 
 $(function() {
 	
 	datePickerSetting();
+	 $('#user').select2(); //검색 select
 	
 });
 
@@ -377,4 +381,31 @@ function supdeleteInfo(){
 	}else
 		return false;
 }
+
+
+document.getElementById('select-search').addEventListener('input', function() {
+    var filter = this.value.toUpperCase();
+    var items = document.querySelectorAll('.select-items div');
+    items.forEach(function(item) {
+        if (item.textContent.toUpperCase().indexOf(filter) > -1) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    document.querySelector('.select-items').style.display = 'block';
+});
+
+document.querySelectorAll('.select-items div').forEach(function(item) {
+    item.addEventListener('click', function() {
+        document.getElementById('select-search').value = this.textContent;
+        document.querySelector('.select-items').style.display = 'none';
+    });
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.matches('#select-search')) {
+        document.querySelector('.select-items').style.display = 'none';
+    }
+});
 </script>

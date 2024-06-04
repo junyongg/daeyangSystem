@@ -29,6 +29,9 @@
       <table class="pagingTable w-full whitespace-nowrap">
         <thead class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
           <tr class="font-bold text-black">
+          	<td class="px-4 py-3 text-center">
+              <input type="checkbox" id="cbx_chkAll" onclick="seletAll()" class="mt-2">
+            </td>
             <td class="px-4 py-3 text-center text-xs">
               <div class="text-center mt-2">
                 <a>
@@ -82,6 +85,9 @@
 			</c:if>
 			<c:forEach items="${resultList4 }" var="b"  varStatus="status">
 	          <tr class="">
+	          	<td class="px-4 py-3">	          	
+	         		<input type="checkbox" name="chk" id ="chk" value = "${b.bd_plant_keyno}">
+	          	</td>
 	            <td class="py-3 text-left" style="white-space: nowrap; text-align: center; !important;">
 	             	<span class="text-sm">${b.bd_plant_name }</span>
 	            </td>
@@ -101,6 +107,8 @@
     </form>
   </div>
   <c:if test="${not empty resultList4 }">
+  	<div><button class="text-sm md:text-sm lg:text-base font-bold inline-flex items-center px-4 py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-transparent rounded-lg text-white bg-button-blue" id="deleteButton"
+			type="button" onclick="Delete_plant()" style="background-color: #E53935; margin-top: 1%;">삭제</button></div>
       <span class="pagetext flex items-center font-semibold tracking-wide uppercase">총 ${paginationInfo.totalRecordCount }건  / 총 ${paginationInfo.totalPageCount} 페이지 중 ${paginationInfo.currentPageNo} 페이지</span>
       <div class="flex mt-2 sm:mt-auto sm:justify-end">
         <nav aria-label="페이지">

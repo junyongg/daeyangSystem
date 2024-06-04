@@ -115,7 +115,7 @@
 
 <script type="text/javascript">
 
-	window.onload = function () {
+	/* window.onload = function () {
 	    if (window.Notification) {
 	        Notification.requestPermission().then(function (permission) {
 	            if (permission === 'granted') {
@@ -158,7 +158,44 @@
 	function handleClick() {
 // 		 location.href = '/bd/license/registration.do';
 		 this.close();
+	} */
+	
+	window.onload = function () {
+		showNotification();
 	}
+	
+	function showNotification() {
+		
+		var container = document.getElementById('notification-container');
+		
+		var request = $.ajax({
+            url: "/bd/calender/Calender_pushAlim.do",
+            method: "GET",
+            dataType: "json"
+        });
+		request.done(function(response) {
+			response.forEach((item, index) => {
+		    	 if (item.text !== "") {
+		    		 var notification = document.createElement('div');
+                     notification.className = 'notification';
+                     notification.innerText = item.text;
+
+		    	        setTimeout(function() {
+		    	            notification.classList.add('show');
+		    	        }, index * 500);
+		    	        
+		    	        notification.addEventListener('click', function() {
+                            notification.classList.remove('show');
+                            
+                            setTimeout(function() {
+                                container.removeChild(notification); //클릭 시 알림 삭제
+                            }, 500);
+		    	        });
+                     container.appendChild(notification);
+		    	   }
+		    });
+		});
+    }
 </script>
 <style>
 
@@ -176,10 +213,42 @@ body {
   max-width: 1100px;
   margin: 0 auto;
 }
+.notification-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column-reverse;;
+            align-items: flex-end;
+             max-height: 400px; 
+            overflow-y: auto;
+        }
+       
+.notification {
+            display: none;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.5s, transform 0.5s;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+.notification.show {
+	  display: block;
+	  opacity: 1;
+	  transform: translateY(0);
+	  }
 </style>
   </head>
   <body>
     <div id='calendar'></div>
+    <div id="notification-container" class="notification-container"></div>
   </body>
 </main>
 	

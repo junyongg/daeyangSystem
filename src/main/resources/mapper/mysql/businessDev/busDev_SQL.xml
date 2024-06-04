@@ -75,6 +75,14 @@
 		WHERE bd_plant_keyno  = #{bd_plant_keyno}
 	</delete>
 	
+	<delete id="PlantDeleteArray" parameterType="arraylist">
+			DELETE FROM dy_bd_plant 
+			where
+			<foreach item = "l" index="index" collection="array" open="(" close=")" separator="or">
+			bd_plant_keyno = #{l}
+			</foreach>
+	</delete>
+	
 	<select id="AllPlantSelect" resultType="hashmap" parameterType="hashmap">
 		SELECT * 
 		FROM dy_bd_plant

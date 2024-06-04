@@ -138,4 +138,43 @@ function DateSetting(value){
     $('#searchEndDate').val(currentDate);
 }
 
+function seletAll(){
+	
+	if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+	else $("input[name=chk]").prop("checked", false);
+}
+
+function Delete_plant(){
+	
+	var array = new Array(); 
+	$('input:checkbox[name=chk]:checked').each(function() { // 체크된 체크박스의 value 값을 가지고 온다.
+	    array.push(this.value);
+	});
+	
+	$("#chkvalue").val(array);
+	
+	if(array.length > 0){
+		if(confirm("양식을 삭제하시겠습니까?")){
+			$.ajax({
+					type: "POST",
+					url: "/bd/license/deletePlant.do?${_csrf.parameterName}=${_csrf.token}",
+					data: $('#Form').serializeArray(),
+					async: false,
+					success : function(data){
+						alert("삭제가 완료되었습니다.");
+						location.reload();
+					}, 
+					error: function(){
+						
+					}
+			});
+		}else{
+
+		}
+	}else{
+		alert("삭제할 양식을 선택해주세요.")
+	}
+return false;
+}
+
 </script>

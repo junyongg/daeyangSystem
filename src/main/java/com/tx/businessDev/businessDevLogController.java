@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -181,9 +182,9 @@ public class businessDevLogController {
 				HashMap<String , Object> m = new HashMap<String, Object>();
 				
 				m.put("bd_plant_name",r.get(0));				
-				m.put("bd_plant_owner",r.get(1));				
-				m.put("bd_plant_phone",r.get(2));
-				m.put("bd_plant_add",r.get(3));
+				m.put("bd_plant_add",r.get(1));				
+				m.put("bd_plant_owner",r.get(2));
+				m.put("bd_plant_phone",r.get(3));
 				m.put("bd_plant_volum",r.get(4));
 				m.put("bd_plant_installtype",r.get(5));
 				m.put("bd_plant_BusDueDate",r.get(6));
@@ -200,5 +201,25 @@ public class businessDevLogController {
 		
 		return "redirect:/bd/license/registration.do";	
  	}
+	
+	
+	@RequestMapping(value="/bd/license/deletePlant.do")
+	@ResponseBody
+	public String DeletePaper(HttpServletRequest req
+			, @RequestParam(value="chkvalue", required = false) String keyno
+			) throws Exception {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		String [] keynolist = keyno.split(",");
+
+		map.put("keynolist", keynolist);
+
+		Component.deleteData("busDev.PlantDeleteArray", keynolist);
+		
+		String msg  = "양식 삭제 완료";
+		
+		return msg;
+	}
 	
 }

@@ -73,6 +73,7 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 		
 		@SuppressWarnings("resource")
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		int rowindex = 0;
 		int columnindex = 0;		
 		ArrayList<ArrayList<String>> filters = new ArrayList<ArrayList<String>>();		
@@ -109,14 +110,16 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 								// 타입별로 내용 읽기
 								switch (cell_filter.getCellType()) {
 								case FORMULA:
-									value = cell_filter.getCellFormula();
+									value = evaluator.evaluate(cell_filter).formatAsString();
+									value = value.replace("\"", "");
+									
 									break;
 								case NUMERIC:		
-									
 									value = cell_filter.getNumericCellValue() + "";
 									int val = value.indexOf(".");
 									
-									if(value.substring(val, value.length()).equals(".0")){
+									// .0일때  처리
+									if(value.substring(val, value.length()).equals(".0")){ 
 										value = value.substring(0, val);
 									}
 									
@@ -137,6 +140,11 @@ public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) th
 									break;
 								}
 							}
+							//24.06.10 형식일 경우 2024-06-10으로 insert(FORMULA, STRING 값을 처리
+							if (value.matches("\\d{2}\\.\\d{2}\\.\\d{2}")) {
+                                value = "20" + value.substring(0, 2) + "-" + value.substring(3, 5) + "-" + value.substring(6, 8);
+                            }
+							
 							filter.add(value);	//읽은 셀들을 filter에 추가 (행)
 						}
 						filters.add(filter); //filter(행)을 filters(열)에 추가

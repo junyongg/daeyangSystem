@@ -33,11 +33,39 @@
   integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
   crossorigin="anonymous"
   referrerpolicy="no-referrer"></script>
-	
+  
+<style type="text/css" >
+.wrap-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            line-height: 100vh; /* 세로 중앙 정렬을 위해 사용 */
+}
 
+.display-none {
+    display: none; !important
+}
+.wrap-loading div{ /*로딩 이미지*/
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-left: -21px;
+    margin-top: -21px;
+} 
+</style>
 </head>
 <body>
-   	  <div class>
+   	  <div>
+	   	<div class="wrap-loading display-none">
+	    	<div><img src="/resources/img/loading/loading.gif" /></div>
+		</div>
    	  	<div class="flex bg-gray-50 false">	
 	   	 	<tiles:insertAttribute name="leftmenu" />			   	 	
 	   	 	<div class="flex flex-col flex-1 w-full">
@@ -47,11 +75,6 @@
        	 	</div>
       	 	</div>
      	</div> 
-    	<div class="loading_box" style="display: none;">
-			<div class="bg"></div>
-			<img src="/resources/img/loading/loading.gif"
-				title="Loading.." alt="로딩중"/>
-		</div>
 </body>
 
 </html>

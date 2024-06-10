@@ -2,7 +2,6 @@
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf" %>
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
 <main class="h-full overflow-y-auto ">
           <div class="container grid px-6 mx-auto">
             <div class="relative">
@@ -132,6 +131,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script type="text/javascript">
 
+
 $(function() {
 	
 	datePickerSetting();
@@ -238,12 +238,39 @@ function prodeleteInfo(){
 
 
 function excelInsert(){
-	if($("#excelFile").val() == ''){
+	var fileInput = document.getElementById("excelFile");
+    var file = fileInput.files[0];
+    
+    console.log(file)
+	
+    if(!file) {
 		alert("파일을 선택해 주세요");
 	}else{
-		alert("발전소 등록이 완료되었습니다");
-		$("#Form").attr("action","/bd/license/insertExcel.do?${_csrf.parameterName}=${_csrf.token}");
-		$("#Form").submit();
+		var formData = new FormData();
+		formData.append("excelFile", file);
+		
+		 $.ajax({
+		        url: '/bd/license/insertExcel.do?${_csrf.parameterName}=${_csrf.token}',
+		        type: 'POST',
+		        enctype:'multipart/form-data',
+		        contentType : false,
+		        processData : false,
+		        cache:false,
+		        data: formData,
+		        success: function(result) {
+		        	alert("발전소 등록이 완료되었습니다");
+		        	location.reload();
+		        }
+		        ,beforeSend:function(){
+		            $('.wrap-loading').removeClass('display-none');
+		        }
+		        ,complete:function(){
+		            $('.wrap-loading').addClass('display-none');
+		        }
+		        ,error: function(){
+		        	alert("공급자 선택 에러");
+		        }
+			}); 
 	}
 }
 
@@ -381,31 +408,4 @@ function supdeleteInfo(){
 	}else
 		return false;
 }
-
-
-document.getElementById('select-search').addEventListener('input', function() {
-    var filter = this.value.toUpperCase();
-    var items = document.querySelectorAll('.select-items div');
-    items.forEach(function(item) {
-        if (item.textContent.toUpperCase().indexOf(filter) > -1) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-    document.querySelector('.select-items').style.display = 'block';
-});
-
-document.querySelectorAll('.select-items div').forEach(function(item) {
-    item.addEventListener('click', function() {
-        document.getElementById('select-search').value = this.textContent;
-        document.querySelector('.select-items').style.display = 'none';
-    });
-});
-
-document.addEventListener('click', function(e) {
-    if (!e.target.matches('#select-search')) {
-        document.querySelector('.select-items').style.display = 'none';
-    }
-});
 </script>
